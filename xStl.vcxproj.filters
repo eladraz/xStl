@@ -1,0 +1,659 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{46edc3e0-43a8-4e36-8318-f039901687d8}</UniqueIdentifier>
+      <Extensions>cpp;c;cxx;def;odl;idl;hpj;bat;asm</Extensions>
+    </Filter>
+    <Filter Include="Source Files\data">
+      <UniqueIdentifier>{f10b1908-3325-4893-90b8-b710d8b82e1e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\os">
+      <UniqueIdentifier>{fd54688f-0d86-4c49-848a-9c82de04b72d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\os\winOS">
+      <UniqueIdentifier>{5558f2e6-bae2-4a9e-a676-ca70bc6280da}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\enc">
+      <UniqueIdentifier>{3a90b90b-11cf-47dd-abe4-5bca15995f6b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\enc\random">
+      <UniqueIdentifier>{9b82aa98-7480-461a-94da-3998677c93ee}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\enc\encryption">
+      <UniqueIdentifier>{6a85f8ec-c663-4c89-ae68-4ba6a92161ca}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\enc\digest">
+      <UniqueIdentifier>{555ecea3-040e-455b-9865-a00a741ecfbc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\except">
+      <UniqueIdentifier>{75ea8eb8-fbca-45a0-ae25-806631bbf07c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\stream">
+      <UniqueIdentifier>{d5c3f6fc-b260-42bb-be46-57c2ebcae6ef}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\parser">
+      <UniqueIdentifier>{9b64baea-4436-4c3a-8ad3-839c43a9f525}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\utils">
+      <UniqueIdentifier>{8c8b515d-8b40-40b4-ae31-7e594fbce1c6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{c541703a-4b92-463e-a50d-84271de02382}</UniqueIdentifier>
+      <Extensions>h;hpp;hxx;hm;inl;inc</Extensions>
+    </Filter>
+    <Filter Include="Header Files\Utils.h">
+      <UniqueIdentifier>{3e621d50-57ef-4767-ae09-415059dabd2a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\data.h">
+      <UniqueIdentifier>{376311fa-be48-43f3-8cd1-a312f51a5a27}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\os.h">
+      <UniqueIdentifier>{cf4edb1b-7387-45e3-8e4c-e2b3aee21342}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\os.h\winOS">
+      <UniqueIdentifier>{772dadc4-b180-4c79-a01d-34bbdf46e510}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\enc.h">
+      <UniqueIdentifier>{d6039346-ec43-41b6-af21-dea1b75fe14a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\enc.h\digest.h">
+      <UniqueIdentifier>{cecea292-e149-4b13-8380-fa08923d1940}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\enc.h\random.h">
+      <UniqueIdentifier>{5704f0e1-d4df-4b97-962b-88a5d49cf6d7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\enc.h\enc.h">
+      <UniqueIdentifier>{ed5e79d7-bde2-40ec-b813-301ac9aab5da}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\except.h">
+      <UniqueIdentifier>{c06b5607-af62-4fad-8220-c5bbf1bc8c20}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\stream.h">
+      <UniqueIdentifier>{5fed7930-19bf-4927-ae15-0b574327e327}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\parser.h">
+      <UniqueIdentifier>{f0985293-8dff-4a0f-9820-d6a4e776af78}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{301d7ffc-225f-4888-a33e-4186d951d920}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe</Extensions>
+    </Filter>
+    <Filter Include="Source Files\os\xdk">
+      <UniqueIdentifier>{7fc694db-f1f8-4ce0-bf39-c20317813089}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="$(XSTL_PATH)\Source\xStl\remoteAddress.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="$(XSTL_PATH)\Source\xStl\types.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="$(XSTL_PATH)\Source\xStl\data\Alignment.cpp">
+      <Filter>Source Files\data</Filter>
+    </ClCompile>
+    <ClCompile Include="$(XSTL_PATH)\Source\xStl\data\char.cpp">
+      <Filter>Source Files\data</Filter>
+    </ClCompile>
+    <ClCompile Include="$(XSTL_PATH)\Source\xStl\data\counter.cpp">
+      <Filter>Source Files\data</Filter>
+    </ClCompile>
+    <ClCompile Include="$(XSTL_PATH)\Source\xStl\data\datastream.cpp">
+      <Filter>Source Files\data</Filter>
+    </ClCompile>
+    <ClCompile Include="$(XSTL_PATH)\Source\xStl\data\endian.cpp">
+      <Filter>Source Files\data</Filter>
+    </ClCompile>
+    <ClCompile Include="$(XSTL_PATH)\Source\xStl\data\hash.cpp">
+      <Filter>Source Files\data</Filter>
+    </ClCompile>
+    <ClCompile Include="$(XSTL_PATH)\Source\xStl\data\queueFifo.cpp">
+      <Filter>Source Files\data</Filter>
+    </ClCompile>
+    <ClCompile Include="$(XSTL_PATH)\Source\xStl\data\serializedObject.cpp">
+      <Filter>Source Files\data</Filter>
+    </ClCompile>
+    <ClCompile Include="$(XSTL_PATH)\Source\xStl\data\setArray.cpp">
+      <Filter>Source Files\data</Filter>
+    </ClCompile>
+    <ClCompile Include="$(XSTL_PATH)\Source\xStl\data\smartptr.cpp">
+      <Filter>Source Files\data</Filter>
+    </ClCompile>
+    <ClCompile Include="$(XSTL_PATH)\Source\xStl\data\string.cpp">
+      <Filter>Source Files\data</Filter>
+    </ClCompile>
+    <ClCompile Include="$(XSTL_PATH)\Source\xStl\data\wildcardMatcher.cpp">
+      <Filter>Source Files\data</Filter>
+    </ClCompile>
+    <ClCompile Include="$(XSTL_PATH)\Source\xStl\os\filename.cpp">
+      <Filter>Source Files\os</Filter>
+    </ClCompile>
+    <ClCompile Include="$(XSTL_PATH)\Source\xStl\os\fragmentsDescriptor.cpp">
+      <Filter>Source Files\os</Filter>
+    </ClCompile>
+    <ClCompile Include="$(XSTL_PATH)\Source\xStl\os\lock.cpp">
+      <Filter>Source Files\os</Filter>
+    </ClCompile>
+    <ClCompile Include="$(XSTL_PATH)\Source\xStl\os\lockable.cpp">
+      <Filter>Source Files\os</Filter>
+    </ClCompile>
+    <ClCompile Include="$(XSTL_PATH)\Source\xStl\os\os.cpp">
+      <Filter>Source Files\os</Filter>
+    </ClCompile>
+    <ClCompile Include="$(XSTL_PATH)\Source\xStl\os\streamMemoryAccesser.cpp">
+      <Filter>Source Files\os</Filter>
+    </ClCompile>
+    <ClCompile Include="$(XSTL_PATH)\Source\xStl\os\thread.cpp">
+      <Filter>Source Files\os</Filter>
+    </ClCompile>
+    <ClCompile Include="$(XSTL_PATH)\Source\xStl\os\ThreadedClass.cpp">
+      <Filter>Source Files\os</Filter>
+    </ClCompile>
+    <ClCompile Include="$(XSTL_PATH)\Source\xStl\os\threadUnsafeMemoryAccesser.cpp">
+      <Filter>Source Files\os</Filter>
+    </ClCompile>
+    <ClCompile Include="$(XSTL_PATH)\Source\xStl\os\virtualMemoryAccesser.cpp">
+      <Filter>Source Files\os</Filter>
+    </ClCompile>
+    <ClCompile Include="$(XSTL_PATH)\Source\xStl\os\WindowsOS\event.cpp">
+      <Filter>Source Files\os\winOS</Filter>
+    </ClCompile>
+    <ClCompile Include="$(XSTL_PATH)\Source\xStl\os\WindowsOS\mutex.cpp">
+      <Filter>Source Files\os\winOS</Filter>
+    </ClCompile>
+    <ClCompile Include="$(XSTL_PATH)\Source\xStl\os\WindowsOS\osExcept.cpp">
+      <Filter>Source Files\os\winOS</Filter>
+    </ClCompile>
+    <ClCompile Include="$(XSTL_PATH)\Source\xStl\os\WindowsOS\windowsOS.cpp">
+      <Filter>Source Files\os\winOS</Filter>
+    </ClCompile>
+    <ClCompile Include="$(XSTL_PATH)\Source\xStl\os\WindowsOS\winFile.cpp">
+      <Filter>Source Files\os\winOS</Filter>
+    </ClCompile>
+    <ClCompile Include="$(XSTL_PATH)\Source\xStl\os\WindowsOS\winFilename.cpp">
+      <Filter>Source Files\os\winOS</Filter>
+    </ClCompile>
+    <ClCompile Include="$(XSTL_PATH)\Source\xStl\os\WindowsOS\winRandom.cpp">
+      <Filter>Source Files\os\winOS</Filter>
+    </ClCompile>
+    <ClCompile Include="$(XSTL_PATH)\Source\xStl\os\WindowsOS\winThread.cpp">
+      <Filter>Source Files\os\winOS</Filter>
+    </ClCompile>
+    <ClCompile Include="$(XSTL_PATH)\Source\xStl\enc\digest.cpp">
+      <Filter>Source Files\enc</Filter>
+    </ClCompile>
+    <ClCompile Include="$(XSTL_PATH)\Source\xStl\enc\encryption.cpp">
+      <Filter>Source Files\enc</Filter>
+    </ClCompile>
+    <ClCompile Include="$(XSTL_PATH)\Source\xStl\enc\random.cpp">
+      <Filter>Source Files\enc</Filter>
+    </ClCompile>
+    <ClCompile Include="$(XSTL_PATH)\Source\xStl\enc\utils.cpp">
+      <Filter>Source Files\enc</Filter>
+    </ClCompile>
+    <ClCompile Include="$(XSTL_PATH)\Source\xStl\enc\random\pmacRnd.cpp">
+      <Filter>Source Files\enc\random</Filter>
+    </ClCompile>
+    <ClCompile Include="$(XSTL_PATH)\Source\xStl\enc\random\prf.cpp">
+      <Filter>Source Files\enc\random</Filter>
+    </ClCompile>
+    <ClCompile Include="$(XSTL_PATH)\Source\xStl\enc\random\rc4rnd.cpp">
+      <Filter>Source Files\enc\random</Filter>
+    </ClCompile>
+    <ClCompile Include="$(XSTL_PATH)\Source\xStl\enc\enc\rc4.cpp">
+      <Filter>Source Files\enc\encryption</Filter>
+    </ClCompile>
+    <ClCompile Include="$(XSTL_PATH)\Source\xStl\enc\digest\Crc16.cpp">
+      <Filter>Source Files\enc\digest</Filter>
+    </ClCompile>
+    <ClCompile Include="$(XSTL_PATH)\Source\xStl\enc\digest\HashDigest.cpp">
+      <Filter>Source Files\enc\digest</Filter>
+    </ClCompile>
+    <ClCompile Include="$(XSTL_PATH)\Source\xStl\enc\digest\hmac.cpp">
+      <Filter>Source Files\enc\digest</Filter>
+    </ClCompile>
+    <ClCompile Include="$(XSTL_PATH)\Source\xStl\enc\digest\md5.cpp">
+      <Filter>Source Files\enc\digest</Filter>
+    </ClCompile>
+    <ClCompile Include="$(XSTL_PATH)\Source\xStl\enc\digest\sha1.cpp">
+      <Filter>Source Files\enc\digest</Filter>
+    </ClCompile>
+    <ClCompile Include="$(XSTL_PATH)\Source\xStl\except\assert.cpp">
+      <Filter>Source Files\except</Filter>
+    </ClCompile>
+    <ClCompile Include="$(XSTL_PATH)\Source\xStl\except\exception.cpp">
+      <Filter>Source Files\except</Filter>
+    </ClCompile>
+    <ClCompile Include="$(XSTL_PATH)\Source\xStl\except\trace.cpp">
+      <Filter>Source Files\except</Filter>
+    </ClCompile>
+    <ClCompile Include="$(XSTL_PATH)\Source\xStl\except\traceStack.cpp">
+      <Filter>Source Files\except</Filter>
+    </ClCompile>
+    <ClCompile Include="$(XSTL_PATH)\Source\xStl\stream\basicIO.cpp">
+      <Filter>Source Files\stream</Filter>
+    </ClCompile>
+    <ClCompile Include="$(XSTL_PATH)\Source\xStl\stream\bitStream.cpp">
+      <Filter>Source Files\stream</Filter>
+    </ClCompile>
+    <ClCompile Include="$(XSTL_PATH)\Source\xStl\stream\cacheStream.cpp">
+      <Filter>Source Files\stream</Filter>
+    </ClCompile>
+    <ClCompile Include="$(XSTL_PATH)\Source\xStl\stream\fileStream.cpp">
+      <Filter>Source Files\stream</Filter>
+    </ClCompile>
+    <ClCompile Include="$(XSTL_PATH)\Source\xStl\stream\filterStream.cpp">
+      <Filter>Source Files\stream</Filter>
+    </ClCompile>
+    <ClCompile Include="$(XSTL_PATH)\Source\xStl\stream\ioStream.cpp">
+      <Filter>Source Files\stream</Filter>
+    </ClCompile>
+    <ClCompile Include="$(XSTL_PATH)\Source\xStl\stream\lzw.cpp">
+      <Filter>Source Files\stream</Filter>
+    </ClCompile>
+    <ClCompile Include="$(XSTL_PATH)\Source\xStl\stream\marginStringerStream.cpp">
+      <Filter>Source Files\stream</Filter>
+    </ClCompile>
+    <ClCompile Include="$(XSTL_PATH)\Source\xStl\stream\memoryAccesserStream.cpp">
+      <Filter>Source Files\stream</Filter>
+    </ClCompile>
+    <ClCompile Include="$(XSTL_PATH)\Source\xStl\stream\memoryStream.cpp">
+      <Filter>Source Files\stream</Filter>
+    </ClCompile>
+    <ClCompile Include="$(XSTL_PATH)\Source\xStl\stream\pipeStream.cpp">
+      <Filter>Source Files\stream</Filter>
+    </ClCompile>
+    <ClCompile Include="$(XSTL_PATH)\Source\xStl\stream\rle.cpp">
+      <Filter>Source Files\stream</Filter>
+    </ClCompile>
+    <ClCompile Include="$(XSTL_PATH)\Source\xStl\stream\serialStream.cpp">
+      <Filter>Source Files\stream</Filter>
+    </ClCompile>
+    <ClCompile Include="$(XSTL_PATH)\Source\xStl\stream\socketAddr.cpp">
+      <Filter>Source Files\stream</Filter>
+    </ClCompile>
+    <ClCompile Include="$(XSTL_PATH)\Source\xStl\stream\socketException.cpp">
+      <Filter>Source Files\stream</Filter>
+    </ClCompile>
+    <ClCompile Include="$(XSTL_PATH)\Source\xStl\stream\socketStream.cpp">
+      <Filter>Source Files\stream</Filter>
+    </ClCompile>
+    <ClCompile Include="$(XSTL_PATH)\Source\xStl\stream\stringerStream.cpp">
+      <Filter>Source Files\stream</Filter>
+    </ClCompile>
+    <ClCompile Include="$(XSTL_PATH)\Source\xStl\stream\traceStream.cpp">
+      <Filter>Source Files\stream</Filter>
+    </ClCompile>
+    <ClCompile Include="$(XSTL_PATH)\Source\xStl\parser\braces.cpp">
+      <Filter>Source Files\parser</Filter>
+    </ClCompile>
+    <ClCompile Include="$(XSTL_PATH)\Source\xStl\parser\except.cpp">
+      <Filter>Source Files\parser</Filter>
+    </ClCompile>
+    <ClCompile Include="$(XSTL_PATH)\Source\xStl\parser\parser.cpp">
+      <Filter>Source Files\parser</Filter>
+    </ClCompile>
+    <ClCompile Include="$(XSTL_PATH)\Source\xStl\parser\types.cpp">
+      <Filter>Source Files\parser</Filter>
+    </ClCompile>
+    <ClCompile Include="$(XSTL_PATH)\Source\xStl\parser\variable.cpp">
+      <Filter>Source Files\parser</Filter>
+    </ClCompile>
+    <ClCompile Include="$(XSTL_PATH)\Source\xStl\utils\dumpMemory.cpp">
+      <Filter>Source Files\utils</Filter>
+    </ClCompile>
+    <ClCompile Include="$(XSTL_PATH)\Source\xStl\utils\TimeoutMonitor.cpp">
+      <Filter>Source Files\utils</Filter>
+    </ClCompile>
+    <ClCompile Include="$(XSTL_PATH)\Source\xStl\enc\digest\Crc64.cpp">
+      <Filter>Source Files\enc\digest</Filter>
+    </ClCompile>
+    <ClCompile Include="$(XSTL_PATH)\Source\xStl\os\osrand.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\xStl\os\XDK\event.cpp">
+      <Filter>Source Files\os\xdk</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\xStl\os\XDK\mutex.cpp">
+      <Filter>Source Files\os\xdk</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\xStl\os\XDK\ntXdkFile.cpp">
+      <Filter>Source Files\os\xdk</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\xStl\os\XDK\ntXdkOS.cpp">
+      <Filter>Source Files\os\xdk</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\xStl\os\XDK\ntXdkRandom.cpp">
+      <Filter>Source Files\os\xdk</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\xStl\os\XDK\ntXdkThread.cpp">
+      <Filter>Source Files\os\xdk</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\xStl\stream\endianFilterStream.cpp">
+      <Filter>Source Files\stream</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="$(XSTL_PATH)\Include\xStl\data\array.inl">
+      <Filter>Source Files\data</Filter>
+    </None>
+    <None Include="$(XSTL_PATH)\Include\xStl\data\autoReference.inl">
+      <Filter>Source Files\data</Filter>
+    </None>
+    <None Include="$(XSTL_PATH)\Include\xStl\data\datastream.inl">
+      <Filter>Source Files\data</Filter>
+    </None>
+    <None Include="$(XSTL_PATH)\Include\xStl\data\hash.inl">
+      <Filter>Source Files\data</Filter>
+    </None>
+    <None Include="$(XSTL_PATH)\Include\xStl\data\list.inl">
+      <Filter>Source Files\data</Filter>
+    </None>
+    <None Include="$(XSTL_PATH)\Include\xStl\data\sarray.inl">
+      <Filter>Source Files\data</Filter>
+    </None>
+    <None Include="$(XSTL_PATH)\Include\xStl\data\smartptr.inl">
+      <Filter>Source Files\data</Filter>
+    </None>
+    <None Include="$(XSTL_PATH)\Include\xStl\data\orderedList.inl">
+      <Filter>Source Files\data</Filter>
+    </None>
+    <None Include="$(XSTL_PATH)\Include\xStl\data\graph.inl">
+      <Filter>Source Files\data</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="$(XSTL_PATH)\Include\xStl\exceptions.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="$(XSTL_PATH)\Include\xStl\operators.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="$(XSTL_PATH)\Include\xStl\refCountObject.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="$(XSTL_PATH)\Include\xStl\remoteAddress.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="$(XSTL_PATH)\Include\xStl\types.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="$(XSTL_PATH)\Include\xStl\utils\algorithm.h">
+      <Filter>Header Files\Utils.h</Filter>
+    </ClInclude>
+    <ClInclude Include="$(XSTL_PATH)\Include\xStl\utils\arguments.h">
+      <Filter>Header Files\Utils.h</Filter>
+    </ClInclude>
+    <ClInclude Include="$(XSTL_PATH)\Include\xStl\utils\callbacker.h">
+      <Filter>Header Files\Utils.h</Filter>
+    </ClInclude>
+    <ClInclude Include="$(XSTL_PATH)\Include\xStl\utils\dumpMemory.h">
+      <Filter>Header Files\Utils.h</Filter>
+    </ClInclude>
+    <ClInclude Include="$(XSTL_PATH)\Include\xStl\utils\genericCallbackerFunctor.h">
+      <Filter>Header Files\Utils.h</Filter>
+    </ClInclude>
+    <ClInclude Include="$(XSTL_PATH)\Include\xStl\utils\TimeoutMonitor.h">
+      <Filter>Header Files\Utils.h</Filter>
+    </ClInclude>
+    <ClInclude Include="$(XSTL_PATH)\Include\xStl\data\alignment.h">
+      <Filter>Header Files\data.h</Filter>
+    </ClInclude>
+    <ClInclude Include="$(XSTL_PATH)\Include\xStl\data\array.h">
+      <Filter>Header Files\data.h</Filter>
+    </ClInclude>
+    <ClInclude Include="$(XSTL_PATH)\Include\xStl\data\autoReference.h">
+      <Filter>Header Files\data.h</Filter>
+    </ClInclude>
+    <ClInclude Include="$(XSTL_PATH)\Include\xStl\data\char.h">
+      <Filter>Header Files\data.h</Filter>
+    </ClInclude>
+    <ClInclude Include="$(XSTL_PATH)\Include\xStl\data\counter.h">
+      <Filter>Header Files\data.h</Filter>
+    </ClInclude>
+    <ClInclude Include="$(XSTL_PATH)\Include\xStl\data\datastream.h">
+      <Filter>Header Files\data.h</Filter>
+    </ClInclude>
+    <ClInclude Include="$(XSTL_PATH)\Include\xStl\data\dualElement.h">
+      <Filter>Header Files\data.h</Filter>
+    </ClInclude>
+    <ClInclude Include="$(XSTL_PATH)\Include\xStl\data\endian.h">
+      <Filter>Header Files\data.h</Filter>
+    </ClInclude>
+    <ClInclude Include="$(XSTL_PATH)\Include\xStl\data\hash.h">
+      <Filter>Header Files\data.h</Filter>
+    </ClInclude>
+    <ClInclude Include="$(XSTL_PATH)\Include\xStl\data\list.h">
+      <Filter>Header Files\data.h</Filter>
+    </ClInclude>
+    <ClInclude Include="$(XSTL_PATH)\Include\xStl\data\messageQueue.h">
+      <Filter>Header Files\data.h</Filter>
+    </ClInclude>
+    <ClInclude Include="$(XSTL_PATH)\Include\xStl\data\queueFifo.h">
+      <Filter>Header Files\data.h</Filter>
+    </ClInclude>
+    <ClInclude Include="$(XSTL_PATH)\Include\xStl\data\sarray.h">
+      <Filter>Header Files\data.h</Filter>
+    </ClInclude>
+    <ClInclude Include="$(XSTL_PATH)\Include\xStl\data\serializedObject.h">
+      <Filter>Header Files\data.h</Filter>
+    </ClInclude>
+    <ClInclude Include="$(XSTL_PATH)\Include\xStl\data\setArray.h">
+      <Filter>Header Files\data.h</Filter>
+    </ClInclude>
+    <ClInclude Include="$(XSTL_PATH)\Include\xStl\data\smartptr.h">
+      <Filter>Header Files\data.h</Filter>
+    </ClInclude>
+    <ClInclude Include="$(XSTL_PATH)\Include\xStl\data\string.h">
+      <Filter>Header Files\data.h</Filter>
+    </ClInclude>
+    <ClInclude Include="$(XSTL_PATH)\Include\xStl\data\wildcardMatcher.h">
+      <Filter>Header Files\data.h</Filter>
+    </ClInclude>
+    <ClInclude Include="$(XSTL_PATH)\Include\xStl\os\directoryFormatParser.h">
+      <Filter>Header Files\os.h</Filter>
+    </ClInclude>
+    <ClInclude Include="$(XSTL_PATH)\Include\xStl\os\event.h">
+      <Filter>Header Files\os.h</Filter>
+    </ClInclude>
+    <ClInclude Include="$(XSTL_PATH)\Include\xStl\os\file.h">
+      <Filter>Header Files\os.h</Filter>
+    </ClInclude>
+    <ClInclude Include="$(XSTL_PATH)\Include\xStl\os\fileException.h">
+      <Filter>Header Files\os.h</Filter>
+    </ClInclude>
+    <ClInclude Include="$(XSTL_PATH)\Include\xStl\os\filename.h">
+      <Filter>Header Files\os.h</Filter>
+    </ClInclude>
+    <ClInclude Include="$(XSTL_PATH)\Include\xStl\os\fragmentsDescriptor.h">
+      <Filter>Header Files\os.h</Filter>
+    </ClInclude>
+    <ClInclude Include="$(XSTL_PATH)\Include\xStl\os\lock.h">
+      <Filter>Header Files\os.h</Filter>
+    </ClInclude>
+    <ClInclude Include="$(XSTL_PATH)\Include\xStl\os\lockable.h">
+      <Filter>Header Files\os.h</Filter>
+    </ClInclude>
+    <ClInclude Include="$(XSTL_PATH)\Include\xStl\os\mutex.h">
+      <Filter>Header Files\os.h</Filter>
+    </ClInclude>
+    <ClInclude Include="$(XSTL_PATH)\Include\xStl\os\os.h">
+      <Filter>Header Files\os.h</Filter>
+    </ClInclude>
+    <ClInclude Include="$(XSTL_PATH)\Include\xStl\os\osdef.h">
+      <Filter>Header Files\os.h</Filter>
+    </ClInclude>
+    <ClInclude Include="$(XSTL_PATH)\Include\xStl\os\osExcept.h">
+      <Filter>Header Files\os.h</Filter>
+    </ClInclude>
+    <ClInclude Include="$(XSTL_PATH)\Include\xStl\os\serialPort.h">
+      <Filter>Header Files\os.h</Filter>
+    </ClInclude>
+    <ClInclude Include="$(XSTL_PATH)\Include\xStl\os\streamMemoryAccesser.h">
+      <Filter>Header Files\os.h</Filter>
+    </ClInclude>
+    <ClInclude Include="$(XSTL_PATH)\Include\xStl\os\thread.h">
+      <Filter>Header Files\os.h</Filter>
+    </ClInclude>
+    <ClInclude Include="$(XSTL_PATH)\Include\xStl\os\threadedClass.h">
+      <Filter>Header Files\os.h</Filter>
+    </ClInclude>
+    <ClInclude Include="$(XSTL_PATH)\Include\xStl\os\threadUnsafeMemoryAccesser.h">
+      <Filter>Header Files\os.h</Filter>
+    </ClInclude>
+    <ClInclude Include="$(XSTL_PATH)\Include\xStl\os\time.h">
+      <Filter>Header Files\os.h</Filter>
+    </ClInclude>
+    <ClInclude Include="$(XSTL_PATH)\Include\xStl\os\virtualMemoryAccesser.h">
+      <Filter>Header Files\os.h</Filter>
+    </ClInclude>
+    <ClInclude Include="$(XSTL_PATH)\Include\xStl\os\waitable.h">
+      <Filter>Header Files\os.h</Filter>
+    </ClInclude>
+    <ClInclude Include="$(XSTL_PATH)\Include\xStl\os\WindowsOS\winFilename.h">
+      <Filter>Header Files\os.h\winOS</Filter>
+    </ClInclude>
+    <ClInclude Include="$(XSTL_PATH)\Include\xStl\os\WindowsOS\winOSdef.h">
+      <Filter>Header Files\os.h\winOS</Filter>
+    </ClInclude>
+    <ClInclude Include="$(XSTL_PATH)\Include\xStl\enc\digest.h">
+      <Filter>Header Files\enc.h</Filter>
+    </ClInclude>
+    <ClInclude Include="$(XSTL_PATH)\Include\xStl\enc\encryption.h">
+      <Filter>Header Files\enc.h</Filter>
+    </ClInclude>
+    <ClInclude Include="$(XSTL_PATH)\Include\xStl\enc\random.h">
+      <Filter>Header Files\enc.h</Filter>
+    </ClInclude>
+    <ClInclude Include="$(XSTL_PATH)\Include\xStl\enc\utils.h">
+      <Filter>Header Files\enc.h</Filter>
+    </ClInclude>
+    <ClInclude Include="$(XSTL_PATH)\Include\xStl\enc\digest\Crc16.h">
+      <Filter>Header Files\enc.h\digest.h</Filter>
+    </ClInclude>
+    <ClInclude Include="$(XSTL_PATH)\Include\xStl\enc\digest\HashDigest.h">
+      <Filter>Header Files\enc.h\digest.h</Filter>
+    </ClInclude>
+    <ClInclude Include="$(XSTL_PATH)\Include\xStl\enc\digest\hmac.h">
+      <Filter>Header Files\enc.h\digest.h</Filter>
+    </ClInclude>
+    <ClInclude Include="$(XSTL_PATH)\Include\xStl\enc\digest\md5.h">
+      <Filter>Header Files\enc.h\digest.h</Filter>
+    </ClInclude>
+    <ClInclude Include="$(XSTL_PATH)\Include\xStl\enc\digest\sha1.h">
+      <Filter>Header Files\enc.h\digest.h</Filter>
+    </ClInclude>
+    <ClInclude Include="$(XSTL_PATH)\Include\xStl\enc\random\pmacRnd.h">
+      <Filter>Header Files\enc.h\random.h</Filter>
+    </ClInclude>
+    <ClInclude Include="$(XSTL_PATH)\Include\xStl\enc\random\prf.h">
+      <Filter>Header Files\enc.h\random.h</Filter>
+    </ClInclude>
+    <ClInclude Include="$(XSTL_PATH)\Include\xStl\enc\random\rc4rnd.h">
+      <Filter>Header Files\enc.h\random.h</Filter>
+    </ClInclude>
+    <ClInclude Include="$(XSTL_PATH)\Include\xStl\enc\enc\rc4.h">
+      <Filter>Header Files\enc.h\enc.h</Filter>
+    </ClInclude>
+    <ClInclude Include="$(XSTL_PATH)\Include\xStl\except\assert.h">
+      <Filter>Header Files\except.h</Filter>
+    </ClInclude>
+    <ClInclude Include="$(XSTL_PATH)\Include\xStl\except\exception.h">
+      <Filter>Header Files\except.h</Filter>
+    </ClInclude>
+    <ClInclude Include="$(XSTL_PATH)\Include\xStl\except\trace.h">
+      <Filter>Header Files\except.h</Filter>
+    </ClInclude>
+    <ClInclude Include="$(XSTL_PATH)\Include\xStl\except\traceStack.h">
+      <Filter>Header Files\except.h</Filter>
+    </ClInclude>
+    <ClInclude Include="$(XSTL_PATH)\Include\xStl\stream\basicIO.h">
+      <Filter>Header Files\stream.h</Filter>
+    </ClInclude>
+    <ClInclude Include="$(XSTL_PATH)\Include\xStl\stream\bitStream.h">
+      <Filter>Header Files\stream.h</Filter>
+    </ClInclude>
+    <ClInclude Include="$(XSTL_PATH)\Include\xStl\stream\cacheStream.h">
+      <Filter>Header Files\stream.h</Filter>
+    </ClInclude>
+    <ClInclude Include="$(XSTL_PATH)\Include\xStl\stream\deserializer.h">
+      <Filter>Header Files\stream.h</Filter>
+    </ClInclude>
+    <ClInclude Include="$(XSTL_PATH)\Include\xStl\stream\fileStream.h">
+      <Filter>Header Files\stream.h</Filter>
+    </ClInclude>
+    <ClInclude Include="$(XSTL_PATH)\Include\xStl\stream\filterStream.h">
+      <Filter>Header Files\stream.h</Filter>
+    </ClInclude>
+    <ClInclude Include="$(XSTL_PATH)\Include\xStl\stream\forkStream.h">
+      <Filter>Header Files\stream.h</Filter>
+    </ClInclude>
+    <ClInclude Include="$(XSTL_PATH)\Include\xStl\stream\ioStream.h">
+      <Filter>Header Files\stream.h</Filter>
+    </ClInclude>
+    <ClInclude Include="$(XSTL_PATH)\Include\xStl\stream\lzw.h">
+      <Filter>Header Files\stream.h</Filter>
+    </ClInclude>
+    <ClInclude Include="$(XSTL_PATH)\Include\xStl\stream\marginStringerStream.h">
+      <Filter>Header Files\stream.h</Filter>
+    </ClInclude>
+    <ClInclude Include="$(XSTL_PATH)\Include\xStl\stream\memoryAccesserStream.h">
+      <Filter>Header Files\stream.h</Filter>
+    </ClInclude>
+    <ClInclude Include="$(XSTL_PATH)\Include\xStl\stream\memoryStream.h">
+      <Filter>Header Files\stream.h</Filter>
+    </ClInclude>
+    <ClInclude Include="$(XSTL_PATH)\Include\xStl\stream\pipeStream.h">
+      <Filter>Header Files\stream.h</Filter>
+    </ClInclude>
+    <ClInclude Include="$(XSTL_PATH)\Include\xStl\stream\rle.h">
+      <Filter>Header Files\stream.h</Filter>
+    </ClInclude>
+    <ClInclude Include="$(XSTL_PATH)\Include\xStl\stream\serialStream.h">
+      <Filter>Header Files\stream.h</Filter>
+    </ClInclude>
+    <ClInclude Include="$(XSTL_PATH)\Include\xStl\stream\socketAddr.h">
+      <Filter>Header Files\stream.h</Filter>
+    </ClInclude>
+    <ClInclude Include="$(XSTL_PATH)\Include\xStl\stream\socketException.h">
+      <Filter>Header Files\stream.h</Filter>
+    </ClInclude>
+    <ClInclude Include="$(XSTL_PATH)\Include\xStl\stream\socketStream.h">
+      <Filter>Header Files\stream.h</Filter>
+    </ClInclude>
+    <ClInclude Include="$(XSTL_PATH)\Include\xStl\stream\stringerStream.h">
+      <Filter>Header Files\stream.h</Filter>
+    </ClInclude>
+    <ClInclude Include="$(XSTL_PATH)\Include\xStl\stream\traceStream.h">
+      <Filter>Header Files\stream.h</Filter>
+    </ClInclude>
+    <ClInclude Include="$(XSTL_PATH)\Include\xStl\parser\braces.h">
+      <Filter>Header Files\parser.h</Filter>
+    </ClInclude>
+    <ClInclude Include="$(XSTL_PATH)\Include\xStl\parser\except.h">
+      <Filter>Header Files\parser.h</Filter>
+    </ClInclude>
+    <ClInclude Include="$(XSTL_PATH)\Include\xStl\parser\parser.h">
+      <Filter>Header Files\parser.h</Filter>
+    </ClInclude>
+    <ClInclude Include="$(XSTL_PATH)\Include\xStl\parser\types.h">
+      <Filter>Header Files\parser.h</Filter>
+    </ClInclude>
+    <ClInclude Include="$(XSTL_PATH)\Include\xStl\parser\variable.h">
+      <Filter>Header Files\parser.h</Filter>
+    </ClInclude>
+    <ClInclude Include="$(XSTL_PATH)\Include\xStl\enc\digest\Crc64.h">
+      <Filter>Header Files\enc.h\digest.h</Filter>
+    </ClInclude>
+    <ClInclude Include="$(XSTL_PATH)\Include\xStl\data\orderedList.h">
+      <Filter>Header Files\data.h</Filter>
+    </ClInclude>
+    <ClInclude Include="$(XSTL_PATH)\Include\xStl\data\graph.h">
+      <Filter>Header Files\data.h</Filter>
+    </ClInclude>
+    <ClInclude Include="Include\xStl\stream\endianFilterStream.h">
+      <Filter>Header Files\stream.h</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>

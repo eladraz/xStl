@@ -1,0 +1,564 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="12.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Kernel Debug|Win32">
+      <Configuration>Kernel Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Kernel Debug|x64">
+      <Configuration>Kernel Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Kernel Release|Win32">
+      <Configuration>Kernel Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Kernel Release|x64">
+      <Configuration>Kernel Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{7E3F7378-91A7-47EB-8A3D-EFEFF99096E0}</ProjectGuid>
+    <Keyword>Win32Proj</Keyword>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <CharacterSet>MultiByte</CharacterSet>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <PlatformToolset>v120</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Kernel Release|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <CharacterSet>MultiByte</CharacterSet>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <PlatformToolset>v120</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <CharacterSet>MultiByte</CharacterSet>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <PlatformToolset>v120</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Kernel Release|x64'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <CharacterSet>MultiByte</CharacterSet>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <PlatformToolset>v120</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v120</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v120</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Label="Configuration" Condition="'$(Configuration)|$(Platform)'=='Kernel Debug|Win32'">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+  </PropertyGroup>
+  <PropertyGroup Label="Configuration" Condition="'$(Configuration)|$(Platform)'=='Kernel Debug|Win32'">
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v120</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Label="Configuration" Condition="'$(Configuration)|$(Platform)'=='Kernel Debug|x64'">
+    <PlatformToolset>v120</PlatformToolset>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+    <Import Project="$(VCTargetsPath)\BuildCustomizations\masm.props" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Kernel Release|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Kernel Release|x64'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup>
+    <_ProjectFileVersion>10.0.30319.1</_ProjectFileVersion>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">out\libDebug\xStl\</OutDir>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">out\libDebug64\xStl\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">out\objDebug\xStl\</IntDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">out\objDebug64\xStl\</IntDir>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">out\libRelease\xStl\</OutDir>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Kernel Release|Win32'">out\libKernelRelease\xStl\</OutDir>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|x64'">out\libRelease64\xStl\</OutDir>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Kernel Release|x64'">out\libRelease64\xStl\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">out\objRelease\xStl\</IntDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Kernel Release|Win32'">out\objKernelRelease\xStl\</IntDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|x64'">out\objRelease64\xStl\</IntDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Kernel Release|x64'">out\objRelease64\xStl\</IntDir>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Kernel Debug|Win32'">out\libKernelDebug\xStl\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Kernel Debug|Win32'">out\objKernelDebug\xStl\</IntDir>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <Optimization>Disabled</Optimization>
+      <AdditionalIncludeDirectories>$(XPDDK_PATH)\inc\ddk;$(XPDDK_PATH)\inc\api;$(XPDDK_PATH)\inc\ddk\wxp;$(XPDDK_PATH)\inc\wxp;$(XPDDK_PATH)\inc\crt;$(XPDDK_PATH)\inc;$(XDK_PATH)\Include;$(XSTL_PATH)\Include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>I386;WIN32;DEBUG;XSTL_UNICODE;_LIB;_MBCS;UNICODE;DOUBLE_NEWLINE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessToFile>false</PreprocessToFile>
+      <PreprocessSuppressLineNumbers>false</PreprocessSuppressLineNumbers>
+      <MinimalRebuild>true</MinimalRebuild>
+      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
+      <PrecompiledHeaderFile>xStl/xStlPrecompiled.h</PrecompiledHeaderFile>
+      <DisableSpecificWarnings>
+      </DisableSpecificWarnings>
+    </ClCompile>
+    <Lib>
+      <OutputFile>$(OutDir)xStl.lib</OutputFile>
+    </Lib>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <Optimization>Disabled</Optimization>
+      <AdditionalIncludeDirectories>$(XSTL_PATH)\Include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WIN32;DEBUG;XSTL_UNICODE;_LIB;_MBCS;UNICODE;DOUBLE_NEWLINE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessToFile>false</PreprocessToFile>
+      <PreprocessSuppressLineNumbers>false</PreprocessSuppressLineNumbers>
+      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <PrecompiledHeaderFile>xStl/xStlPrecompiled.h</PrecompiledHeaderFile>
+      <DisableSpecificWarnings>
+      </DisableSpecificWarnings>
+    </ClCompile>
+    <Lib>
+      <OutputFile>$(OutDir)xStl.lib</OutputFile>
+    </Lib>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <Optimization>MaxSpeed</Optimization>
+      <InlineFunctionExpansion>OnlyExplicitInline</InlineFunctionExpansion>
+      <OmitFramePointers>true</OmitFramePointers>
+      <AdditionalIncludeDirectories>$(XPDDK_PATH)\inc\ddk;$(XPDDK_PATH)\inc\api;$(XPDDK_PATH)\inc\ddk\wxp;$(XPDDK_PATH)\inc\wxp;$(XPDDK_PATH)\inc\crt;$(XPDDK_PATH)\inc;$(XDK_PATH)\Include;$(XSTL_PATH)\Include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>I386;WIN32;NDEBUG;XSTL_UNICODE;_LIB;_MBCS;XSTL_UNICODE_;UNICODE;DOUBLE_NEWLINE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <IgnoreStandardIncludePath>false</IgnoreStandardIncludePath>
+      <StringPooling>true</StringPooling>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <PrecompiledHeaderFile>xStl/xStlPrecompiled.h</PrecompiledHeaderFile>
+    </ClCompile>
+    <Lib>
+      <OutputFile>$(OutDir)xStl.lib</OutputFile>
+      <LinkTimeCodeGeneration>false</LinkTimeCodeGeneration>
+    </Lib>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Kernel Release|Win32'">
+    <ClCompile>
+      <Optimization>MaxSpeed</Optimization>
+      <InlineFunctionExpansion>OnlyExplicitInline</InlineFunctionExpansion>
+      <OmitFramePointers>true</OmitFramePointers>
+      <AdditionalIncludeDirectories>$(DDK_PATH)\inc\api;$(DDK_PATH)\inc\crt;$(DDK_PATH)\inc\ddk;$(DDK_PATH)\inc\ddk\wxp;$(DDK_PATH)\lib\wxp;$(XDK_PATH)\Include;$(XSTL_PATH)\Include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>I386;WIN32;NDEBUG;_LIB;XSTL_UNICODE;UNICODE;_X86_;i386;STD_CALL;CONDITION_HANDLING;_KERNEL;XPDDK;EHLIB_SPECIAL_EXCEPTIONS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <IgnoreStandardIncludePath>false</IgnoreStandardIncludePath>
+      <StringPooling>true</StringPooling>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <FunctionLevelLinking>false</FunctionLevelLinking>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <PrecompiledHeaderFile>xStl/xStlPrecompiled.h</PrecompiledHeaderFile>
+      <CallingConvention>StdCall</CallingConvention>
+      <BufferSecurityCheck>false</BufferSecurityCheck>
+      <AdditionalOptions>/EHa %(AdditionalOptions)</AdditionalOptions>
+      <EnableEnhancedInstructionSet>NoExtensions</EnableEnhancedInstructionSet>
+    </ClCompile>
+    <Lib>
+      <OutputFile>$(OutDir)xStl.lib</OutputFile>
+    </Lib>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <Optimization>MaxSpeed</Optimization>
+      <InlineFunctionExpansion>OnlyExplicitInline</InlineFunctionExpansion>
+      <OmitFramePointers>true</OmitFramePointers>
+      <AdditionalIncludeDirectories>$(XSTL_PATH)\Include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WIN32;NDEBUG;XSTL_UNICODE;_LIB;_MBCS;XSTL_UNICODE_;UNICODE;DOUBLE_NEWLINE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <IgnoreStandardIncludePath>false</IgnoreStandardIncludePath>
+      <StringPooling>true</StringPooling>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <PrecompiledHeaderFile>xStl/xStlPrecompiled.h</PrecompiledHeaderFile>
+    </ClCompile>
+    <Lib>
+      <OutputFile>$(OutDir)xStl.lib</OutputFile>
+    </Lib>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Kernel Release|x64'">
+    <ClCompile>
+      <Optimization>MaxSpeed</Optimization>
+      <InlineFunctionExpansion>OnlyExplicitInline</InlineFunctionExpansion>
+      <OmitFramePointers>true</OmitFramePointers>
+      <AdditionalIncludeDirectories>$(XSTL_PATH)\Include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WIN32;NDEBUG;XSTL_UNICODE;_LIB;_MBCS;XSTL_UNICODE_;UNICODE;DOUBLE_NEWLINE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <IgnoreStandardIncludePath>false</IgnoreStandardIncludePath>
+      <StringPooling>true</StringPooling>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <PrecompiledHeaderFile>xStl/xStlPrecompiled.h</PrecompiledHeaderFile>
+    </ClCompile>
+    <Lib>
+      <OutputFile>$(OutDir)xStl.lib</OutputFile>
+    </Lib>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Kernel Debug|Win32'">
+    <ClCompile>
+      <PreprocessorDefinitions>I386;WIN32;_DEBUG;_LIB;XSTL_UNICODE;UNICODE;_X86_;i386;STD_CALL;CONDITION_HANDLING;_KERNEL;XPDDK;EHLIB_SPECIAL_EXCEPTIONS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <CallingConvention>StdCall</CallingConvention>
+      <AdditionalIncludeDirectories>$(DDK_PATH)\inc\api;$(DDK_PATH)\inc\crt;$(DDK_PATH)\inc\ddk;$(DDK_PATH)\inc\ddk\wxp;$(DDK_PATH)\lib\wxp;$(XDK_PATH)\Include;$(XSTL_PATH)\Include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <BufferSecurityCheck>false</BufferSecurityCheck>
+      <FunctionLevelLinking>false</FunctionLevelLinking>
+      <AdditionalOptions>/EHa %(AdditionalOptions)</AdditionalOptions>
+    </ClCompile>
+    <Lib>
+      <OutputFile>$(OutDir)xStl.lib</OutputFile>
+    </Lib>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="$(XSTL_PATH)\Source\xStl\enc\digest\Crc64.cpp" />
+    <ClCompile Include="$(XSTL_PATH)\Source\xStl\remoteAddress.cpp" />
+    <ClCompile Include="$(XSTL_PATH)\Source\xStl\types.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Kernel Release|Win32'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Kernel Release|x64'">Create</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="$(XSTL_PATH)\Source\xStl\data\Alignment.cpp" />
+    <ClCompile Include="$(XSTL_PATH)\Source\xStl\data\char.cpp" />
+    <ClCompile Include="$(XSTL_PATH)\Source\xStl\data\counter.cpp" />
+    <ClCompile Include="$(XSTL_PATH)\Source\xStl\data\datastream.cpp" />
+    <ClCompile Include="$(XSTL_PATH)\Source\xStl\data\endian.cpp" />
+    <ClCompile Include="$(XSTL_PATH)\Source\xStl\data\hash.cpp" />
+    <ClCompile Include="$(XSTL_PATH)\Source\xStl\data\queueFifo.cpp" />
+    <ClCompile Include="$(XSTL_PATH)\Source\xStl\data\serializedObject.cpp" />
+    <ClCompile Include="$(XSTL_PATH)\Source\xStl\data\setArray.cpp" />
+    <ClCompile Include="$(XSTL_PATH)\Source\xStl\data\smartptr.cpp" />
+    <ClCompile Include="$(XSTL_PATH)\Source\xStl\data\string.cpp" />
+    <ClCompile Include="$(XSTL_PATH)\Source\xStl\data\wildcardMatcher.cpp" />
+    <ClCompile Include="$(XSTL_PATH)\Source\xStl\os\filename.cpp" />
+    <ClCompile Include="$(XSTL_PATH)\Source\xStl\os\fragmentsDescriptor.cpp" />
+    <ClCompile Include="$(XSTL_PATH)\Source\xStl\os\lock.cpp" />
+    <ClCompile Include="$(XSTL_PATH)\Source\xStl\os\lockable.cpp" />
+    <ClCompile Include="$(XSTL_PATH)\Source\xStl\os\os.cpp" />
+    <ClCompile Include="$(XSTL_PATH)\Source\xStl\os\streamMemoryAccesser.cpp" />
+    <ClCompile Include="$(XSTL_PATH)\Source\xStl\os\thread.cpp" />
+    <ClCompile Include="$(XSTL_PATH)\Source\xStl\os\ThreadedClass.cpp" />
+    <ClCompile Include="$(XSTL_PATH)\Source\xStl\os\threadUnsafeMemoryAccesser.cpp" />
+    <ClCompile Include="$(XSTL_PATH)\Source\xStl\os\virtualMemoryAccesser.cpp" />
+    <ClCompile Include="$(XSTL_PATH)\Source\xStl\os\WindowsOS\event.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Kernel Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Kernel Release|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="$(XSTL_PATH)\Source\xStl\os\WindowsOS\mutex.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Kernel Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Kernel Release|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="$(XSTL_PATH)\Source\xStl\os\WindowsOS\osExcept.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Kernel Release|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Kernel Debug|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="$(XSTL_PATH)\Source\xStl\os\WindowsOS\windowsOS.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Kernel Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Kernel Release|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="$(XSTL_PATH)\Source\xStl\os\WindowsOS\winFile.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Kernel Release|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Kernel Debug|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="$(XSTL_PATH)\Source\xStl\os\WindowsOS\winFilename.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Kernel Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Kernel Release|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="$(XSTL_PATH)\Source\xStl\os\WindowsOS\winRandom.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Kernel Release|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Kernel Debug|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="$(XSTL_PATH)\Source\xStl\os\WindowsOS\winThread.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Kernel Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Kernel Release|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="$(XSTL_PATH)\Source\xStl\enc\digest.cpp" />
+    <ClCompile Include="$(XSTL_PATH)\Source\xStl\enc\encryption.cpp" />
+    <ClCompile Include="$(XSTL_PATH)\Source\xStl\enc\random.cpp" />
+    <ClCompile Include="$(XSTL_PATH)\Source\xStl\enc\utils.cpp" />
+    <ClCompile Include="$(XSTL_PATH)\Source\xStl\enc\random\pmacRnd.cpp" />
+    <ClCompile Include="$(XSTL_PATH)\Source\xStl\enc\random\prf.cpp" />
+    <ClCompile Include="$(XSTL_PATH)\Source\xStl\enc\random\rc4rnd.cpp" />
+    <ClCompile Include="$(XSTL_PATH)\Source\xStl\enc\enc\rc4.cpp" />
+    <ClCompile Include="$(XSTL_PATH)\Source\xStl\enc\digest\Crc16.cpp" />
+    <ClCompile Include="$(XSTL_PATH)\Source\xStl\enc\digest\HashDigest.cpp" />
+    <ClCompile Include="$(XSTL_PATH)\Source\xStl\enc\digest\hmac.cpp" />
+    <ClCompile Include="$(XSTL_PATH)\Source\xStl\enc\digest\md5.cpp" />
+    <ClCompile Include="$(XSTL_PATH)\Source\xStl\enc\digest\sha1.cpp" />
+    <ClCompile Include="$(XSTL_PATH)\Source\xStl\except\assert.cpp" />
+    <ClCompile Include="$(XSTL_PATH)\Source\xStl\except\exception.cpp" />
+    <ClCompile Include="$(XSTL_PATH)\Source\xStl\except\trace.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Kernel Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Kernel Release|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="$(XSTL_PATH)\Source\xStl\except\traceStack.cpp" />
+    <ClCompile Include="$(XSTL_PATH)\Source\xStl\stream\basicIO.cpp" />
+    <ClCompile Include="$(XSTL_PATH)\Source\xStl\stream\bitStream.cpp" />
+    <ClCompile Include="$(XSTL_PATH)\Source\xStl\stream\cacheStream.cpp" />
+    <ClCompile Include="$(XSTL_PATH)\Source\xStl\stream\fileStream.cpp" />
+    <ClCompile Include="$(XSTL_PATH)\Source\xStl\stream\filterStream.cpp" />
+    <ClCompile Include="$(XSTL_PATH)\Source\xStl\stream\ioStream.cpp" />
+    <ClCompile Include="$(XSTL_PATH)\Source\xStl\stream\lzw.cpp" />
+    <ClCompile Include="$(XSTL_PATH)\Source\xStl\stream\marginStringerStream.cpp" />
+    <ClCompile Include="$(XSTL_PATH)\Source\xStl\stream\memoryAccesserStream.cpp" />
+    <ClCompile Include="$(XSTL_PATH)\Source\xStl\stream\memoryStream.cpp" />
+    <ClCompile Include="$(XSTL_PATH)\Source\xStl\stream\pipeStream.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Kernel Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Kernel Release|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="$(XSTL_PATH)\Source\xStl\stream\rle.cpp" />
+    <ClCompile Include="$(XSTL_PATH)\Source\xStl\stream\serialStream.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Kernel Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Kernel Release|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="$(XSTL_PATH)\Source\xStl\stream\socketAddr.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Kernel Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Kernel Release|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="$(XSTL_PATH)\Source\xStl\stream\socketException.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Kernel Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Kernel Release|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="$(XSTL_PATH)\Source\xStl\stream\socketStream.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Kernel Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Kernel Release|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="$(XSTL_PATH)\Source\xStl\stream\stringerStream.cpp" />
+    <ClCompile Include="$(XSTL_PATH)\Source\xStl\stream\traceStream.cpp" />
+    <ClCompile Include="$(XSTL_PATH)\Source\xStl\parser\braces.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Kernel Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Kernel Release|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="$(XSTL_PATH)\Source\xStl\parser\except.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Kernel Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Kernel Release|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="$(XSTL_PATH)\Source\xStl\parser\parser.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Kernel Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Kernel Release|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="$(XSTL_PATH)\Source\xStl\parser\types.cpp">
+      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(IntDir)%(Filename)1.obj</ObjectFileName>
+      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(IntDir)%(Filename)1.obj</ObjectFileName>
+      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(IntDir)%(Filename)1.obj</ObjectFileName>
+      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Kernel Release|Win32'">$(IntDir)%(Filename)1.obj</ObjectFileName>
+      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(IntDir)%(Filename)1.obj</ObjectFileName>
+      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Kernel Release|x64'">$(IntDir)%(Filename)1.obj</ObjectFileName>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Kernel Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Kernel Release|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="$(XSTL_PATH)\Source\xStl\parser\variable.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Kernel Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Kernel Release|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="$(XSTL_PATH)\Source\xStl\utils\dumpMemory.cpp" />
+    <ClCompile Include="$(XSTL_PATH)\Source\xStl\utils\TimeoutMonitor.cpp" />
+    <ClCompile Include="$(XSTL_PATH)\Source\xStl\os\osrand.cpp" />
+    <ClCompile Include="Source\xStl\os\XDK\event.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="Source\xStl\os\XDK\mutex.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="Source\xStl\os\XDK\ntXdkFile.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="Source\xStl\os\XDK\ntXdkOS.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="Source\xStl\os\XDK\ntXdkRandom.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="Source\xStl\os\XDK\ntXdkThread.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="Source\xStl\stream\endianFilterStream.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="$(XSTL_PATH)\Include\xStl\data\array.inl" />
+    <None Include="$(XSTL_PATH)\Include\xStl\data\autoReference.inl" />
+    <None Include="$(XSTL_PATH)\Include\xStl\data\datastream.inl" />
+    <None Include="$(XSTL_PATH)\Include\xStl\data\graph.inl" />
+    <None Include="$(XSTL_PATH)\Include\xStl\data\hash.inl" />
+    <None Include="$(XSTL_PATH)\Include\xStl\data\list.inl" />
+    <None Include="$(XSTL_PATH)\Include\xStl\data\orderedList.inl" />
+    <None Include="$(XSTL_PATH)\Include\xStl\data\sarray.inl" />
+    <None Include="$(XSTL_PATH)\Include\xStl\data\smartptr.inl" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="$(XSTL_PATH)\Include\xStl\data\graph.h" />
+    <ClInclude Include="$(XSTL_PATH)\Include\xStl\data\orderedList.h" />
+    <ClInclude Include="$(XSTL_PATH)\Include\xStl\enc\digest\Crc64.h" />
+    <ClInclude Include="$(XSTL_PATH)\Include\xStl\exceptions.h" />
+    <ClInclude Include="$(XSTL_PATH)\Include\xStl\operators.h" />
+    <ClInclude Include="$(XSTL_PATH)\Include\xStl\refCountObject.h" />
+    <ClInclude Include="$(XSTL_PATH)\Include\xStl\remoteAddress.h" />
+    <ClInclude Include="$(XSTL_PATH)\Include\xStl\types.h" />
+    <ClInclude Include="$(XSTL_PATH)\Include\xStl\utils\algorithm.h" />
+    <ClInclude Include="$(XSTL_PATH)\Include\xStl\utils\arguments.h" />
+    <ClInclude Include="$(XSTL_PATH)\Include\xStl\utils\callbacker.h" />
+    <ClInclude Include="$(XSTL_PATH)\Include\xStl\utils\dumpMemory.h" />
+    <ClInclude Include="$(XSTL_PATH)\Include\xStl\utils\genericCallbackerFunctor.h" />
+    <ClInclude Include="$(XSTL_PATH)\Include\xStl\utils\TimeoutMonitor.h" />
+    <ClInclude Include="$(XSTL_PATH)\Include\xStl\data\alignment.h" />
+    <ClInclude Include="$(XSTL_PATH)\Include\xStl\data\array.h" />
+    <ClInclude Include="$(XSTL_PATH)\Include\xStl\data\autoReference.h" />
+    <ClInclude Include="$(XSTL_PATH)\Include\xStl\data\char.h" />
+    <ClInclude Include="$(XSTL_PATH)\Include\xStl\data\counter.h" />
+    <ClInclude Include="$(XSTL_PATH)\Include\xStl\data\datastream.h" />
+    <ClInclude Include="$(XSTL_PATH)\Include\xStl\data\dualElement.h" />
+    <ClInclude Include="$(XSTL_PATH)\Include\xStl\data\endian.h" />
+    <ClInclude Include="$(XSTL_PATH)\Include\xStl\data\hash.h" />
+    <ClInclude Include="$(XSTL_PATH)\Include\xStl\data\list.h" />
+    <ClInclude Include="$(XSTL_PATH)\Include\xStl\data\messageQueue.h" />
+    <ClInclude Include="$(XSTL_PATH)\Include\xStl\data\queueFifo.h" />
+    <ClInclude Include="$(XSTL_PATH)\Include\xStl\data\sarray.h" />
+    <ClInclude Include="$(XSTL_PATH)\Include\xStl\data\serializedObject.h" />
+    <ClInclude Include="$(XSTL_PATH)\Include\xStl\data\setArray.h" />
+    <ClInclude Include="$(XSTL_PATH)\Include\xStl\data\smartptr.h" />
+    <ClInclude Include="$(XSTL_PATH)\Include\xStl\data\string.h" />
+    <ClInclude Include="$(XSTL_PATH)\Include\xStl\data\wildcardMatcher.h" />
+    <ClInclude Include="$(XSTL_PATH)\Include\xStl\os\directoryFormatParser.h" />
+    <ClInclude Include="$(XSTL_PATH)\Include\xStl\os\event.h" />
+    <ClInclude Include="$(XSTL_PATH)\Include\xStl\os\file.h" />
+    <ClInclude Include="$(XSTL_PATH)\Include\xStl\os\fileException.h" />
+    <ClInclude Include="$(XSTL_PATH)\Include\xStl\os\filename.h" />
+    <ClInclude Include="$(XSTL_PATH)\Include\xStl\os\fragmentsDescriptor.h" />
+    <ClInclude Include="$(XSTL_PATH)\Include\xStl\os\lock.h" />
+    <ClInclude Include="$(XSTL_PATH)\Include\xStl\os\lockable.h" />
+    <ClInclude Include="$(XSTL_PATH)\Include\xStl\os\mutex.h" />
+    <ClInclude Include="$(XSTL_PATH)\Include\xStl\os\os.h" />
+    <ClInclude Include="$(XSTL_PATH)\Include\xStl\os\osdef.h" />
+    <ClInclude Include="$(XSTL_PATH)\Include\xStl\os\osExcept.h" />
+    <ClInclude Include="$(XSTL_PATH)\Include\xStl\os\serialPort.h" />
+    <ClInclude Include="$(XSTL_PATH)\Include\xStl\os\streamMemoryAccesser.h" />
+    <ClInclude Include="$(XSTL_PATH)\Include\xStl\os\thread.h" />
+    <ClInclude Include="$(XSTL_PATH)\Include\xStl\os\threadedClass.h" />
+    <ClInclude Include="$(XSTL_PATH)\Include\xStl\os\threadUnsafeMemoryAccesser.h" />
+    <ClInclude Include="$(XSTL_PATH)\Include\xStl\os\time.h" />
+    <ClInclude Include="$(XSTL_PATH)\Include\xStl\os\virtualMemoryAccesser.h" />
+    <ClInclude Include="$(XSTL_PATH)\Include\xStl\os\waitable.h" />
+    <ClInclude Include="$(XSTL_PATH)\Include\xStl\os\WindowsOS\winFilename.h" />
+    <ClInclude Include="$(XSTL_PATH)\Include\xStl\os\WindowsOS\winOSdef.h" />
+    <ClInclude Include="$(XSTL_PATH)\Include\xStl\enc\digest.h" />
+    <ClInclude Include="$(XSTL_PATH)\Include\xStl\enc\encryption.h" />
+    <ClInclude Include="$(XSTL_PATH)\Include\xStl\enc\random.h" />
+    <ClInclude Include="$(XSTL_PATH)\Include\xStl\enc\utils.h" />
+    <ClInclude Include="$(XSTL_PATH)\Include\xStl\enc\digest\Crc16.h" />
+    <ClInclude Include="$(XSTL_PATH)\Include\xStl\enc\digest\HashDigest.h" />
+    <ClInclude Include="$(XSTL_PATH)\Include\xStl\enc\digest\hmac.h" />
+    <ClInclude Include="$(XSTL_PATH)\Include\xStl\enc\digest\md5.h" />
+    <ClInclude Include="$(XSTL_PATH)\Include\xStl\enc\digest\sha1.h" />
+    <ClInclude Include="$(XSTL_PATH)\Include\xStl\enc\random\pmacRnd.h" />
+    <ClInclude Include="$(XSTL_PATH)\Include\xStl\enc\random\prf.h" />
+    <ClInclude Include="$(XSTL_PATH)\Include\xStl\enc\random\rc4rnd.h" />
+    <ClInclude Include="$(XSTL_PATH)\Include\xStl\enc\enc\rc4.h" />
+    <ClInclude Include="$(XSTL_PATH)\Include\xStl\except\assert.h" />
+    <ClInclude Include="$(XSTL_PATH)\Include\xStl\except\exception.h" />
+    <ClInclude Include="$(XSTL_PATH)\Include\xStl\except\trace.h" />
+    <ClInclude Include="$(XSTL_PATH)\Include\xStl\except\traceStack.h" />
+    <ClInclude Include="$(XSTL_PATH)\Include\xStl\stream\basicIO.h" />
+    <ClInclude Include="$(XSTL_PATH)\Include\xStl\stream\bitStream.h" />
+    <ClInclude Include="$(XSTL_PATH)\Include\xStl\stream\cacheStream.h" />
+    <ClInclude Include="$(XSTL_PATH)\Include\xStl\stream\deserializer.h" />
+    <ClInclude Include="$(XSTL_PATH)\Include\xStl\stream\fileStream.h" />
+    <ClInclude Include="$(XSTL_PATH)\Include\xStl\stream\filterStream.h" />
+    <ClInclude Include="$(XSTL_PATH)\Include\xStl\stream\forkStream.h" />
+    <ClInclude Include="$(XSTL_PATH)\Include\xStl\stream\ioStream.h" />
+    <ClInclude Include="$(XSTL_PATH)\Include\xStl\stream\lzw.h" />
+    <ClInclude Include="$(XSTL_PATH)\Include\xStl\stream\marginStringerStream.h" />
+    <ClInclude Include="$(XSTL_PATH)\Include\xStl\stream\memoryAccesserStream.h" />
+    <ClInclude Include="$(XSTL_PATH)\Include\xStl\stream\memoryStream.h" />
+    <ClInclude Include="$(XSTL_PATH)\Include\xStl\stream\pipeStream.h" />
+    <ClInclude Include="$(XSTL_PATH)\Include\xStl\stream\rle.h" />
+    <ClInclude Include="$(XSTL_PATH)\Include\xStl\stream\serialStream.h" />
+    <ClInclude Include="$(XSTL_PATH)\Include\xStl\stream\socketAddr.h" />
+    <ClInclude Include="$(XSTL_PATH)\Include\xStl\stream\socketException.h" />
+    <ClInclude Include="$(XSTL_PATH)\Include\xStl\stream\socketStream.h" />
+    <ClInclude Include="$(XSTL_PATH)\Include\xStl\stream\stringerStream.h" />
+    <ClInclude Include="$(XSTL_PATH)\Include\xStl\stream\traceStream.h" />
+    <ClInclude Include="$(XSTL_PATH)\Include\xStl\parser\braces.h" />
+    <ClInclude Include="$(XSTL_PATH)\Include\xStl\parser\except.h" />
+    <ClInclude Include="$(XSTL_PATH)\Include\xStl\parser\parser.h" />
+    <ClInclude Include="$(XSTL_PATH)\Include\xStl\parser\types.h" />
+    <ClInclude Include="$(XSTL_PATH)\Include\xStl\parser\variable.h" />
+    <ClInclude Include="Include\xStl\stream\endianFilterStream.h" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+    <Import Project="$(VCTargetsPath)\BuildCustomizations\masm.targets" />
+  </ImportGroup>
+</Project>

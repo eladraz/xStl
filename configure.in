@@ -1,0 +1,71 @@
+AC_INIT([xStl], [1.000])
+AC_CONFIG_SRCDIR([])
+AC_CONFIG_AUX_DIR(config)
+AM_CONFIG_HEADER(config.h)
+AC_LANG_C
+AM_INIT_AUTOMAKE
+AM_MAINTAINER_MODE
+AC_PROG_INSTALL
+AC_PROG_LN_S
+AC_PROG_CC
+AC_PROG_CXX
+AC_PROG_LIBTOOL
+AC_HEADER_STDC
+
+AC_CHECK_HEADERS([sys/types.h sys/stat.h stdio.h stdlib.h string.h stdlib.h errno.h])
+AC_CHECK_LIB([pthread], [pthread_mutex_init], [], [
+ 		echo "pthread library is missing. pthread is required for this program"
+    		exit -1])
+
+AC_HEADER_STDBOOL
+AC_C_CONST
+AC_C_INLINE
+
+AC_ARG_ENABLE(debug,
+[  --enable-debug      Compile with debugging flags],
+[case "${enableval}" in
+	yes) debug=true ;;
+	no)  debug=false ;;
+	*) AC_MSG_ERROR(bad value ${enableval} for --enable-debug) ;;
+esac],[debug=false])
+AM_CONDITIONAL(DEBUG, test x$debug = xtrue)
+
+
+AC_ARG_ENABLE(unicode,
+[  --enable-unicode    Compile with UNICODE support],
+[case "${enableval}" in
+	yes) unicode=true ;;
+	:no)  unicode=false ;;
+	*) AC_MSG_ERROR(bad value ${enableval} for --enable-unicode) ;;
+esac],[unicode=false])
+AM_CONDITIONAL(UNICODE, test x$unicode = xtrue)
+
+AC_ARG_ENABLE(tests,
+[  --enable-tests      Compile xStl tests],
+[case "${enableval}" in
+	yes) tests=true ;;
+	:no)  tests=false ;;
+	*) AC_MSG_ERROR(bad value ${enableval} for --enable-tests) ;;
+esac],[tests=false])
+AM_CONDITIONAL(TESTS, test x$tests = xtrue)
+
+
+CFLAGS_XSTL_COMMON="-Wall -fPIC -DLINUX -Wno-write-strings"
+AC_SUBST(CFLAGS_XSTL_COMMON)
+
+AC_OUTPUT([Makefile
+           Source/xStl/Makefile
+           Source/xStl/data/Makefile
+           Source/xStl/enc/Makefile
+           Source/xStl/enc/digest/Makefile
+           Source/xStl/enc/enc/Makefile
+           Source/xStl/enc/random/Makefile
+           Source/xStl/except/Makefile
+           Source/xStl/os/Makefile
+           Source/xStl/os/UnixOS/Makefile
+           Source/xStl/parser/Makefile
+           Source/xStl/stream/Makefile
+           Source/xStl/utils/Makefile
+           tests/Makefile
+        ])
+
