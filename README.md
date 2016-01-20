@@ -37,19 +37,27 @@ Install [cygwin](http://www.cygwin.com/) with the following packages:
 * autoconf
 * libtool
 
+Setting Up Environment
+======================
+Git
+---
+```
+git clone https://github.com/eladraz/xStl
+```
+
 How to Build
 ============
 Windows
 -------
 In order to pass variable arguments to [Visual Studio](http://www.visualstudio.com/en-us/products/visual-studio-express-vs.aspx), you need to declare the following system argument:
-* XSTL_PATH
+* XSTL_PATH (for example: `C:\WORK\github\xStl`)
 
 > To add system variables you should:
 >> * Right-click **My Computer**, and then click **Properties**.
 >> * Click the **Advanced** tab.
 >> * Click **Environment variables**.
 >> * Click one the following options, for either a user or a system variable:
->>    * Click *New* to add a new variable name and value.
+>>    * Click *New* to add a new variable name (e.g. `XSTL_PATH`) and value (e.g. `C:\WORK\github\xStl`).
 >>    * Click an existing variable, and then click *Edit* to change its name or value.
 >>    * Click an existing variable, and then click *Delete* to remove it.
 
