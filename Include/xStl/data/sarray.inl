@@ -43,16 +43,6 @@
 #include "xStl/stream/basicIO.h"
 #include "xStl/os/os.h"
 
-static void __memcpy(void* dest,
-                 const void* src,
-                 uint size
-                 /*cWaitable wait*/)
-{
-    // reimplementing memcpy to avoid reentry
-    cOS::memcpy(dest, src, size);
-
-}
-
 template <class T>
 cSArray<T>::cSArray(uint numberOfElements /* = 0*/,
                     uint pageSize /* = 0*/) :
@@ -69,7 +59,7 @@ cSArray<T>::cSArray(const T* staticArray,
     ASSERT(staticArray != NULL);
 
     // Copy the array using memcpy
-    __memcpy(this->m_array, staticArray, this->m_size * sizeof(T));
+    cOS::memcpy(this->m_array, staticArray, this->m_size * sizeof(T));
 }
 
 template <class T>
@@ -88,7 +78,7 @@ void cSArray<T>::copyFrom(const cArray<T> &other)
     /* Fast copy array */
     this->freeArray();
     changeSize(other.getSize());
-    __memcpy(this->m_array, other.getBuffer(), this->m_size * sizeof(T));
+    cOS::memcpy(this->m_array, other.getBuffer(), this->m_size * sizeof(T));
 }
 
 template <class T>
@@ -113,8 +103,8 @@ void cSArray<T>::changeSize(uint newSize,
 
 		    if (this->m_array != NULL)
 		    {
-                __memcpy(buffer, this->m_array,
-                       t_min(newSize, this->m_size) * sizeof(T));
+                cOS::memcpy(buffer, this->m_array,
+                            t_min(newSize, this->m_size) * sizeof(T));
 			    delete [] this->m_array;
 		    }
 
@@ -137,7 +127,7 @@ template <class T>
 void cSArray<T>::append(const T& object)
 {
 	changeSize(this->m_size + 1);
-    __memcpy(this->m_array + this->m_size - 1, &object, sizeof(T));
+    cOS::memcpy(this->m_array + this->m_size - 1, &object, sizeof(T));
 }
 
 template <class T>
@@ -151,7 +141,7 @@ void cSArray<T>::append(const cArray<T>& array)
 	changeSize(this->m_size + array.getSize());
 
     // Copy the elements
-    __memcpy(this->m_array + org_size, array.getBuffer(), sizeof(T)*add_size);
+    cOS::memcpy(this->m_array + org_size, array.getBuffer(), sizeof(T)*add_size);
 }
 
 
@@ -161,7 +151,7 @@ void cSArray<T>::copyRange(cArray<T>& other,
                            uint count)
 {
     changeSize(count, false);
-    __memcpy(this->m_array, other.getBuffer() + startLocation, count * sizeof(T));
+    cOS::memcpy(this->m_array, other.getBuffer() + startLocation, count * sizeof(T));
 }
 
 
