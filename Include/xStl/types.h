@@ -340,9 +340,8 @@ void* getPtr(addressNumericValue address);
  * Definitions of normal return code from function.
  * The return type is: int.
  */
-#define RC_OK    (TRUE)
-#define RC_ERROR (FALSE)
-
+#define RC_OK    (0)
+#define RC_ERROR (1)
 
 /*
  * CHECK, CHECK_MSG macro.
