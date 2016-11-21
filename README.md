@@ -1,4 +1,6 @@
 ![unmaintained](http://img.shields.io/badge/status-unmaintained-red.png)
+[![build status](https://travis-ci.org/eladraz/xStl.svg?branch=master)](https://travis-ci.org/eladraz/xStl/)
+[![coverity status](https://scan.coverity.com/projects/10737/badge.svg)](https://scan.coverity.com/projects/eladraz-xstl)
 
 xStl
 ====
