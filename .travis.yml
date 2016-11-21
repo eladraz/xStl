@@ -1,0 +1,32 @@
+sudo: required
+dist: trusty
+
+env:
+  global:
+  # The next declaration is the encrypted COVERITY_SCAN_TOKEN, created
+  #   via the "travis encrypt" command using the project repo's public key
+  - secure: "kIlmGothQN6wp2oa8FT9cH7FSW7bEtcocmq8BIQ7pbNqLI10WuCChqSOR2RsbcxmhxkdBT8TGUjMibGG+wZ2A251DoB2cBMdTUEh8QYiLDaGgz+GApIAyN9IEqIK2/1BogqcHcV+wmVMhl9eT7r7svnIIMSHBaEXbeHqxJiLT4t2pmmx3MKctmXjtpgK5B8rGL8zzq2/aZpEXYEeluoVPZPAxmO9Wfii296wpQO/50KTjFBCvih3dJDpsP2eJerXfKJmbi12Z23XQd/dlM542GWQ1seupFpy80Xrpmfl/lIB21JByjX3b1L0gPZjCgK9h3jsZY8oduJp8+NSgnTjA0otyWhwRhCIcl1Nva6WO6/z4O6H2/kgHaZhTNqSW/eJDPEPn7rUFZAU0IdA0e2zSYplgoXCZI4dO5rLr0p/4YsHMxvn+zt8QbruB9WVoLL2J8eXDCCz5gHGd5b0ZpVPJWI4S82kMrnQjn6s75yv1n60TRY8mkQ+he370l7OhHtrAfQKCco1F6j7P05lPy4IZAxPx+nFTvh05jbnTeJRCUekO5b79MGEN731BEpVwCdaw84hUQaYzAntY4PhMZv+K6eihLo+WYbF2fwERvCs4f2t5kmW6shFt68HfqVgH8JcfAwIH9xlqLqNoYT3rhYh1bu05ziOLacUSs11Vhe4Jbc="
+
+before_install:
+  - echo -n | openssl s_client -connect scan.coverity.com:443 | sed -ne '/-BEGIN CERTIFICATE-/,/-END CERTIFICATE-/p' | sudo tee -a /etc/ssl/certs/ca-
+
+language: c
+
+compiler:
+  - clang
+  - gcc
+
+before_script:
+  - sudo apt-get install automake autoconf libtool build-essential git-core
+
+script: ./autogen.sh && ./configure --prefix=${PWD}/out --enable-debug --enable-unicode --enable-tests && make -j 2 && make install && ${PWD}/out/bin/xstl_tests
+
+addons:
+  coverity_scan:
+    project:
+      name: "eladraz/xStl"
+      description: "xStl builds from Travis-CI"
+    notification_email: e@eladraz.com
+    build_command_prepend: "./autogen.sh && ./configure --prefix=${PWD}/out --enable-debug --enable-unicode --enable-tests"
+    build_command:  "make -j 4"
+    branch_pattern: master
