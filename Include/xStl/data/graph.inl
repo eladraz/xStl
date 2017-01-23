@@ -73,7 +73,7 @@ bool cGraph<T,S>::isConnected(const  T& id1, const T& id2)
 
 	for (; nodesIterator != m_nodes.end(); ++nodesIterator)
 	{
-		GraphNode<T,S>* graphNode = *nodesIterator;
+		GraphNode<T,S>& graphNode = *nodesIterator;
 		if (id1 == graphNode.getId())
 		{
 			return graphNode.isNeighbor(id2);
