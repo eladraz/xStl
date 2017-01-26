@@ -57,7 +57,7 @@ public:
     /*
      * Return the message which describes the exception
      */
-    const cString& getMessage() const;
+    virtual const character* getMessage();
 
 private:
     // The exception message

@@ -49,7 +49,7 @@ ParserException::ParserException(char * file, uint32 line, const cString& filena
     m_message+= message;
 }
 
-const cString& ParserException::getMessage() const
+const character* ParserException::getMessage()
 {
-    return m_message;
+    return m_message.getBuffer();
 }
