@@ -100,13 +100,13 @@ public:
      * the bytes from read-ahead queue. In case the queue is empty the function
      * call to read() in order to fill it.
      */
-    virtual unsigned int read(void *buffer, const unsigned int length);
+    virtual uint read(void *buffer, const uint length);
 
     /*
      * Write 'length' bytes from buffer into the lazy-write buffer. In case the
      * buffer was filled the function sends the block down to the stream
      */
-    virtual unsigned int write(const void *buffer, const unsigned int length);
+    virtual uint write(const void *buffer, const uint length);
 
     /*
      * Return the number of bytes in the stream. This function is valid only

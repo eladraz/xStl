@@ -98,7 +98,7 @@ bool cCacheStream::isEOS()
     return m_stream->isEOS();
 }
 
-unsigned int cCacheStream::write(const void *buffer, const unsigned int length)
+uint cCacheStream::write(const void *buffer, const uint length)
 {
     // Only if the buffer is full, empty it
     if (m_writePosition == m_writeCache.getSize())
@@ -109,14 +109,14 @@ unsigned int cCacheStream::write(const void *buffer, const unsigned int length)
     }
 
     // Add the rest of the buffer
-    unsigned int written = t_min(length, (unsigned int)(m_writeCache.getSize() -
-                                                        m_writePosition));
+    unsigned int written = t_min(length, (uint)(m_writeCache.getSize() -
+                                                m_writePosition));
     cOS::memcpy(m_writeCache.getBuffer() + m_writePosition, buffer, written);
     m_writePosition+= written;
     return written;
 }
 
-unsigned int cCacheStream::read(void *buffer, const unsigned int length)
+uint cCacheStream::read(void *buffer, const uint length)
 {
     // Read more data
     if (m_readPosition == m_readUse)
@@ -128,7 +128,7 @@ unsigned int cCacheStream::read(void *buffer, const unsigned int length)
     }
 
     // Return back data
-    unsigned int lread = t_min(length, (unsigned int)(m_readUse - m_readPosition));
+    unsigned int lread = t_min(length, (uint)(m_readUse - m_readPosition));
     cOS::memcpy(buffer, m_readCache.getBuffer() + m_readPosition, lread);
 
     m_readPosition+= lread;
