@@ -49,7 +49,7 @@
 #ifdef XSTL_LINUX
 #include <sys/select.h>
 #include <netinet/tcp.h>
-#define SO_DONTLINGER   (uint)(~SO_LINGER)
+#define SO_DONTLINGER   (unsigned int)(~SO_LINGER)
 #endif
 
 /*
