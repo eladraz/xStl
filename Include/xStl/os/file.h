@@ -103,7 +103,7 @@ public:
     /*
      * Destructor. Free all resources.
      */
-    ~cFile();
+    virtual ~cFile();
 
     /*
      * Return true if 'filename' exist. False otherwise.
