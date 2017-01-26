@@ -104,10 +104,9 @@ public:
     cSmartPtr(const cSmartPtr<T>& other);
 
     /*
-     * Destructor. Derefrence the pointer and delete it when 0 riched.
+     * Destructor. Derefrence the pointer and delete it when 0 reaches.
      */
     ~cSmartPtr();
-
 
     // operators
 
