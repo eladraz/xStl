@@ -199,7 +199,7 @@ bool cTestObject::isException = false;
 #define MAX_STRING (400)
 character* makeString(char* string)
 {
-    static character temp[MAX_STRING];
+    static character temp[MAX_STRING + 1];
     uint len = t_min((int)strlen(string), (int)MAX_STRING);
     for (uint i = 0; i < len; i++)
     {
