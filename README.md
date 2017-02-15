@@ -49,6 +49,19 @@ git clone https://github.com/eladraz/xStl
 
 How to Build
 ============
+CMake
+-----
+CMake is cross-compile system for many platform and many system.
+You can read about it more [here](https://cmake.org/install/)
+
+Here is a quick example on how to run xStl with ninja build:
+```
+mkdir build
+cd build
+cmake -G Ninja ..
+ninja -j
+```
+
 Windows
 -------
 In order to pass variable arguments to [Visual Studio](http://www.visualstudio.com/en-us/products/visual-studio-express-vs.aspx), you need to declare the following system argument:
