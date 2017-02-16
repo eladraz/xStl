@@ -17,9 +17,34 @@ compiler:
   - gcc
 
 before_script:
-  - sudo apt-get install automake autoconf libtool build-essential git-core
+  - sudo apt-get install automake autoconf libtool build-essential git-core cmake
 
-script: ./autogen.sh && ./configure --prefix=${PWD}/out --enable-debug --enable-unicode --enable-tests && make -j 2 && make install && ${PWD}/out/bin/xstl_tests
+script:
+  # Run cmake build library
+  - mkdir build
+  - cd build
+  - cmake ..
+  - make -j 2
+  # cmake: build tests
+  - cd ../tests
+  - mkdir build
+  - cd build
+  - cmake ..
+  - make -j 2
+  - cd ..
+  # Run tests
+  - ./out/bin/xstl_tests
+  # Clean tests
+  - rm -rf build out
+  - cd ..
+  # Clean library
+  - rm -rf out build
+  # Run autotools
+  - ./autogen.sh
+  - ./configure --prefix=${PWD}/out --enable-debug --enable-unicode --enable-tests
+  - make -j 2
+  - make install
+  - ${PWD}/out/bin/xstl_tests
 
 addons:
   coverity_scan:
