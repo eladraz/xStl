@@ -1,4 +1,4 @@
-INCLUDES = -I $(top_srcdir)/Include 
+INCLUDES = -I $(top_srcdir)/Include
 
 if DEBUG
 DBGFLAGS = -ggdb -DDEBUG
