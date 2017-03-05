@@ -173,7 +173,7 @@ public:
      *
      * throws 'EXCEPTION_OUT_OF_MEM' exception.
      */
-    virtual void copyRange(cArray<T>& other,
+    virtual void copyRange(const cArray<T>& other,
                            uint startLocation,
                            uint count);
 

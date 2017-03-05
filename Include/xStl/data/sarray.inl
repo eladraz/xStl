@@ -146,7 +146,7 @@ void cSArray<T>::append(const cArray<T>& array)
 
 
 template <class T>
-void cSArray<T>::copyRange(cArray<T>& other,
+void cSArray<T>::copyRange(const cArray<T>& other,
                            uint startLocation,
                            uint count)
 {

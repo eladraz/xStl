@@ -353,7 +353,7 @@ void cArray<T>::append(const cArray<T>& array)
 }
 
 template <class T>
-void cArray<T>::copyRange(cArray<T>& other,
+void cArray<T>::copyRange(const cArray<T>& other,
                           uint startLocation,
                           uint count)
 {
