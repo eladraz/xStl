@@ -55,8 +55,8 @@
 #if defined(XSTL_WINDOWS)
     #include <windows.h>
 #elif defined(XSTL_LINUX)
-    static const char IOSTREAM_COUT_FILENAME[] = "/dev/tty"; //"CONOUT$";
-    static const char IOSTREAM_CERR_FILENAME[] = "/dev/tty"; //"CONOUT$";
+    static const char IOSTREAM_COUT_FILENAME[] = "/dev/stdout"; //"CONOUT$";
+    static const char IOSTREAM_CERR_FILENAME[] = "/dev/stderr"; //"CONOUT$";
 #elif defined(XSTL_NTDDK)
 #else
     #include <conio.h>
