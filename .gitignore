@@ -1,6 +1,9 @@
 /config/
 /tests/xstl_tests
 /out/
+/build/
+/tests/out/
+/tests/build/
 /stamp-h?
 /config.*
 /configure
@@ -15,5 +18,5 @@ Makefile.in
 /aclocal.m4
 /libtool
 /README
-/TEMP.TMP
+TEMP.TMP
 
