@@ -130,14 +130,14 @@ endif()
 if (WIN32)
 	add_definitions(-DWIN32)
 	list(APPEND XSTL_LIB_FILES
-		Source/xStl/WindowsOS/event.cpp
-		Source/xStl/WindowsOS/mutex.cpp
-		Source/xStl/WindowsOS/osExcept.cpp
-		Source/xStl/WindowsOS/winFile.cpp
-		Source/xStl/WindowsOS/winFilename.cpp
-		Source/xStl/WindowsOS/winRandom.cpp
-		Source/xStl/WindowsOS/winThread.cpp
-		Source/xStl/WindowsOS/windowsOS.cpp
+		Source/xStl/os/WindowsOS/event.cpp
+		Source/xStl/os/WindowsOS/mutex.cpp
+		Source/xStl/os/WindowsOS/osExcept.cpp
+		Source/xStl/os/WindowsOS/winFile.cpp
+		Source/xStl/os/WindowsOS/winFilename.cpp
+		Source/xStl/os/WindowsOS/winRandom.cpp
+		Source/xStl/os/WindowsOS/winThread.cpp
+		Source/xStl/os/WindowsOS/windowsOS.cpp
 		Source/xStl/stream/pipeStream.cpp
 	)
 endif()
