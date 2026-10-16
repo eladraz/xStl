@@ -1,5 +1,5 @@
 ![unmaintained](http://img.shields.io/badge/status-unmaintained-red.png)
-[![build status](https://travis-ci.org/eladraz/xStl.svg?branch=master)](https://travis-ci.org/eladraz/xStl/)
+[![CI](https://github.com/eladraz/xStl/actions/workflows/ci.yml/badge.svg?branch=master)](https://github.com/eladraz/xStl/actions/workflows/ci.yml)
 [![coverity status](https://scan.coverity.com/projects/10737/badge.svg)](https://scan.coverity.com/projects/eladraz-xstl)
 
 xStl

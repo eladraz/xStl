@@ -1,0 +1,167 @@
+name: CI
+
+# All jobs use GitHub-hosted standard runners, which are free for public
+# repositories.
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  cmake:
+    name: CMake ${{ matrix.os }} ${{ matrix.cc }} ${{ matrix.build_type }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, ubuntu-24.04-arm, macos-latest, macos-15-intel]
+        build_type: [Debug, Release]
+        cc: [default]
+        include:
+          # Linux x64 with both compilers
+          - os: ubuntu-latest
+            build_type: Debug
+            cc: clang
+          - os: ubuntu-latest
+            build_type: Release
+            cc: clang
+    steps:
+      - uses: actions/checkout@v5
+
+      - name: Select clang
+        if: matrix.cc == 'clang'
+        run: |
+          echo "CC=clang" >> "$GITHUB_ENV"
+          echo "CXX=clang++" >> "$GITHUB_ENV"
+
+      - name: Build library
+        run: |
+          cmake -S . -B build -DCMAKE_BUILD_TYPE=${{ matrix.build_type }}
+          cmake --build build -j 4
+
+      - name: Build tests
+        run: |
+          cmake -S tests -B tests/build -DCMAKE_BUILD_TYPE=${{ matrix.build_type }}
+          cmake --build tests/build -j 4
+
+      - name: Run tests
+        working-directory: tests
+        run: ./out/bin/xstl_tests
+
+  autotools:
+    name: Autotools ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, macos-latest]
+    steps:
+      - uses: actions/checkout@v5
+
+      - name: Install tools (Linux)
+        if: runner.os == 'Linux'
+        run: sudo apt-get update && sudo apt-get install -y autoconf automake libtool
+
+      - name: Install tools (macOS)
+        if: runner.os == 'macOS'
+        run: brew install autoconf automake libtool
+
+      - name: Build and install
+        run: ./build.sh
+
+      - name: Run tests
+        run: ./out/bin/xstl_tests
+
+  windows:
+    name: MSBuild windows ${{ matrix.platform }} ${{ matrix.configuration }}
+    runs-on: windows-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        platform: [Win32, x64]
+        configuration: [Debug, Release]
+    env:
+      # The Visual Studio projects locate sources and headers through XSTL_PATH
+      XSTL_PATH: ${{ github.workspace }}
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: microsoft/setup-msbuild@v2
+
+      # The projects target the VS2013 toolset (v120), which the runner does not
+      # have, so build with the installed v143 toolset instead.
+      - name: Build solution
+        run: >
+          msbuild xStl.sln -m
+          /p:Configuration=${{ matrix.configuration }}
+          /p:Platform=${{ matrix.platform }}
+          /p:PlatformToolset=v143
+          /p:WindowsTargetPlatformVersion=10.0
+
+      - name: Run tests
+        shell: pwsh
+        working-directory: tests
+        run: |
+          $exe = Get-ChildItem -Recurse -Filter xStlTests.exe -Path out | Select-Object -First 1
+          if (-not $exe) { throw "xStlTests.exe not found" }
+          & $exe.FullName
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+
+  coverity:
+    name: Coverity Scan
+    # Coverity Scan is free for open-source projects. It runs on pushes to master
+    # only, and only when the COVERITY_SCAN_TOKEN repository secret is set.
+    if: github.event_name == 'push' && github.ref == 'refs/heads/master' && github.repository == 'eladraz/xStl'
+    runs-on: ubuntu-latest
+    env:
+      COVERITY_SCAN_TOKEN: ${{ secrets.COVERITY_SCAN_TOKEN }}
+      COVERITY_PROJECT: eladraz/xStl
+    steps:
+      - uses: actions/checkout@v5
+
+      - name: Check token
+        id: token
+        run: |
+          if [ -z "$COVERITY_SCAN_TOKEN" ]; then
+            echo "COVERITY_SCAN_TOKEN is not set; skipping Coverity Scan"
+            echo "present=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "present=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Download Coverity build tool
+        if: steps.token.outputs.present == 'true'
+        run: |
+          curl -fsSL -o cov-analysis.tgz \
+            --form project="$COVERITY_PROJECT" --form token="$COVERITY_SCAN_TOKEN" \
+            https://scan.coverity.com/download/cxx/linux64
+          mkdir cov-analysis
+          tar xzf cov-analysis.tgz --strip-components=1 -C cov-analysis
+
+      - name: Build with cov-build
+        if: steps.token.outputs.present == 'true'
+        run: |
+          sudo apt-get update && sudo apt-get install -y autoconf automake libtool
+          ./autogen.sh
+          ./configure --prefix="$PWD/out" --enable-debug --enable-unicode --enable-tests
+          ./cov-analysis/bin/cov-build --dir cov-int make -j 4
+
+      - name: Submit to Coverity Scan
+        if: steps.token.outputs.present == 'true'
+        run: |
+          tar czf xStl.tgz cov-int
+          curl -fsS \
+            --form token="$COVERITY_SCAN_TOKEN" \
+            --form email=e@eladraz.com \
+            --form file=@xStl.tgz \
+            --form version="${GITHUB_SHA}" \
+            --form description="xStl builds from GitHub Actions" \
+            "https://scan.coverity.com/builds?project=$(printf %s "$COVERITY_PROJECT" | sed 's|/|%2F|')"
