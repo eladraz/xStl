@@ -30,6 +30,14 @@ ArchLinux
     `sudo pacman -S base-devel automake autoconf git`
     `sudo pacman -S gcc-multilib libtool-multilib binutils-multilib`
 
+macOS
+-----
+Tested on macOS 26 (Apple Silicon/arm64) with Apple clang 21.
+* CMake build (recommended)
+    `xcode-select --install` and `brew install cmake`
+* Autotools build (optional, not yet verified on macOS)
+    `brew install autoconf automake libtool` (`autogen.sh` uses `glibtoolize` on macOS)
+
 Cygwin
 ------
 Install [cygwin](http://www.cygwin.com/) with the following packages:
@@ -54,13 +62,25 @@ CMake
 CMake is cross-compile system for many platform and many system.
 You can read about it more [here](https://cmake.org/install/)
 
-Here is a quick example on how to run xStl with ninja build:
+The library and the tests are two separate CMake projects. Build the library
+first; it is written to `out/lib` (static `libxStlcm_static.a` and shared `libxStlcm.so`/`.dylib`).
+The tests project then finds it there.
+
 ```
-mkdir build
-cd build
-cmake -G Ninja ..
-ninja -j
+# Build the library (build type defaults to Debug)
+cmake -S . -B build -DCMAKE_BUILD_TYPE=Release
+cmake --build build -j
+
+# Build and run the tests (binary is written to tests/out/bin)
+cmake -S tests -B tests/build -DCMAKE_BUILD_TYPE=Release
+cmake --build tests/build -j
+cd tests && ./out/bin/xstl_tests
 ```
+
+The tests print `OK!` and exit with 0 when every module passes. `Trace: CHECK FAILED`
+lines in the output are expected: some tests deliberately trigger assertions.
+
+To use Ninja instead of Make, add `-G Ninja` to the configure commands.
 
 Windows
 -------
@@ -79,12 +99,12 @@ In order to pass variable arguments to [Visual Studio](http://www.visualstudio.c
 In order to build the xStl library, open `xStl.sln` solution project with [Visual Studio](http://www.visualstudio.com/en-us/products/visual-studio-express-vs.aspx).
 In Visual Studio's configuration manager, choose the desired build configuration (Win32/x64/Debug/Release) and build `xStl` or `xStl_test`.
 
-Linux
------
+Linux / macOS
+-------------
 ### Compilation Shortcut (build.sh script)
 In order to compile xStl you can simply run `build.sh`:
 ```
-#/bin/sh
+#!/bin/sh
 PWD=`pwd`
 ./autogen.sh && ./configure [--prefix=${PWD}/out] [--enable-debug] [--enable-unicode] [--enable-tests] && make -j4 && make install
 ```
