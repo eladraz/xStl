@@ -1,4 +1,4 @@
-cmake_minimum_required (VERSION 2.6)
+cmake_minimum_required (VERSION 2.6...3.5)
 project (xstl_tests)
 set (xstl_tests_VERSION_MAJOR 1)
 set (xstl_tests_VERSION_MINOR 0)
