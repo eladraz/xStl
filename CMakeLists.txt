@@ -102,6 +102,7 @@ list(APPEND XSTL_LIB_FILES
 	Source/xStl/stream/traceStream.cpp
 	Source/xStl/stream/bitStream.cpp
 	Source/xStl/stream/fileStream.cpp
+	Source/xStl/stream/lzw.cpp
 	Source/xStl/stream/ioStream.cpp
 	Source/xStl/stream/memoryAccesserStream.cpp
 	Source/xStl/stream/socketException.cpp

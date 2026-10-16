@@ -26,6 +26,7 @@ if(CMAKE_BUILD_TYPE MATCHES RelWithDebInfo)
 endif()
 
 add_executable(xstl_tests
+     test_compression.cpp
      test_md5.cpp
      test_string.cpp
      test_counter.cpp
