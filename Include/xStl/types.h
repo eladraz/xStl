@@ -107,7 +107,7 @@
     #define XSTL_LITTLE_ENDIAN
 #elif defined LINUX
     // Linux 32 bit version
-    #if defined(__x86_64)
+    #if defined(__x86_64) || defined(__aarch64__) || defined(__LP64__)
         #define XSTL_64BIT
     #else
         #define XSTL_32BIT
