@@ -95,8 +95,11 @@ void cOS::sleepSeconds(uint seconds)
 }
 void cOS::sleepMicroseconds(uint micro)
 {
-    struct timespec tm = { 0, micro*1000 };
-    while (nanosleep(&tm, &tm));
+    struct timespec tm;
+    tm.tv_sec = (time_t)(micro / 1000000);
+    tm.tv_nsec = (long)((micro % 1000000) * 1000);
+    // Resume after signal interruption; any other error aborts the sleep
+    while ((nanosleep(&tm, &tm) != 0) && (errno == EINTR));
 }
 
 cOSDef::systemTime cOS::getSystemTime()
