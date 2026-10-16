@@ -43,6 +43,9 @@
 #include "xStl/utils/algorithm.h"
 #include <string.h>
 #include <wchar.h>
+#ifdef XSTL_MACOSX
+    #include <AvailabilityMacros.h>
+#endif
 
 #ifdef XSTL_WINDOWS
     // Disable the deprecated warnning. We are using these API in a safe manner
@@ -175,7 +178,8 @@ int cChar::stricmp(const character* string1, const character* string2)
     #else
         // UNICODE
         #ifdef XSTL_LINUX
-            #ifdef XSTL_MACOSX
+            #if defined(XSTL_MACOSX) && (MAC_OS_X_VERSION_MIN_REQUIRED < 1070)
+                // wcscasecmp is available only from Mac OS X 10.7
                 // TODO!
                 return ::wcscmp((const wchar_t*)string1, (const wchar_t*)string2);
             #else
