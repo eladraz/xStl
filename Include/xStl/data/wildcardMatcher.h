@@ -35,7 +35,7 @@
 /*
  * wildcardMatcher.h
  *
- * Matches a string to a pattern. The pattern can contains wildcard characters
+ * Matches a string to a pattern. The pattern can contain wildcard characters
  * such as '*' and '?'.
  *
  * Author: Elad Raz <e@eladraz.com>
@@ -44,7 +44,7 @@
 #include "xStl/data/string.h"
 
 /*
- * Matches a string to a pattern. The pattern can contains wildcard characters
+ * Matches a string to a pattern. The pattern can contain wildcard characters
  * such as '*' and '?'.
  */
 class cWildcardMatcher {
@@ -54,8 +54,8 @@ public:
      *
      * string - The string to be tested
      * wildcardPattern - The pattern to use
-     * isCaseSensetive - True means that the match is case sensetive,
-     *                   otherwise is incase sensetive
+     * isCaseSensetive - True means that the match is case sensitive,
+     *                   otherwise is case insensitive
      */
     static bool match(const cString& string,
                       const cString& wildcardPattern,

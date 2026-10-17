@@ -32,7 +32,7 @@
 /*
  * ntXdkFile.cpp
  *
- * Implementation file for the OS::cFile interface for the XDK enviroment
+ * Implementation file for the OS::cFile interface for the XDK environment
  *
  * Author: Elad Raz <e@eladraz.com>
  */
@@ -54,7 +54,7 @@ cFile::cFile(const cString& filename,
              const uint flags /* = cFile::READ */) :
     m_handle(INVALID_FILE_HANDLE)
 {
-    // All file API must works at PASSIVE_LEVEL
+    // All file APIs must work at PASSIVE_LEVEL
     testPageableCode();
 
     ACCESS_MASK desiredAccess = SYNCHRONIZE;
@@ -94,7 +94,7 @@ cFile::cFile(const cString& filename,
     OBJECT_ATTRIBUTES objectAttributes;
     cUnicodeString fileNameUnicodeString(filename);
 
-    // The filename is insensitive
+    // The filename is case-insensitive
     InitializeObjectAttributes(&objectAttributes,
         fileNameUnicodeString,
         OBJ_CASE_INSENSITIVE,
@@ -167,10 +167,10 @@ void cFile::openHandle(const cOSDef::fileHandle& handle,
 
 cFile::~cFile()
 {
-    // All file API must works at PASSIVE_LEVEL
+    // All file APIs must work at PASSIVE_LEVEL
     testPageableCode();
 
-    // Test if the is opened
+    // Test if the file is opened
     if (isOpen())
     {
         flush();
@@ -185,7 +185,7 @@ cFile::~cFile()
 
 uint cFile::read(void *buffer, const uint length)
 {
-    // All file API must works at PASSIVE_LEVEL
+    // All file APIs must work at PASSIVE_LEVEL
     testPageableCode();
 
     ASSERT(isOpen());
@@ -214,7 +214,7 @@ uint cFile::read(void *buffer, const uint length)
 
 uint cFile::write(const void *buffer, const uint length)
 {
-    // All file API must works at PASSIVE_LEVEL
+    // All file APIs must work at PASSIVE_LEVEL
     testPageableCode();
 
     ASSERT(isOpen());
@@ -243,7 +243,7 @@ uint cFile::write(const void *buffer, const uint length)
 
 uint cFile::length() const
 {
-    // All file API must works at PASSIVE_LEVEL
+    // All file APIs must work at PASSIVE_LEVEL
     testPageableCode();
 
     ASSERT(isOpen());
@@ -269,7 +269,7 @@ void cFile::flush()
 
 uint cFile::getPointer() const
 {
-    // All file API must works at PASSIVE_LEVEL
+    // All file APIs must work at PASSIVE_LEVEL
     testPageableCode();
 
     ASSERT(isOpen());
@@ -297,7 +297,7 @@ uint64 cFile::getPointer64() const
 
 void cFile::seek(const int distance, const basicInput::seekMethod method)
 {
-    // All file API must works at PASSIVE_LEVEL
+    // All file APIs must work at PASSIVE_LEVEL
     testPageableCode();
 
     ASSERT(isOpen());

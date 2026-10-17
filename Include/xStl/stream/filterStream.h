@@ -36,12 +36,12 @@
 /*
  * filterStream.h
  *
- * Define the "filterStream"s objects.
- * The filter_streams provide the interface of the standart basicIO (basicInput,
- * basicOutput) and provide the fileter interface which cascade stream to one
- * other. The class is abstract base class for all the decorators.
+ * Define the "filterStream" objects.
+ * The filter_streams provide the interface of the standard basicIO (basicInput,
+ * basicOutput) and provide the filter interface which cascades a stream into one
+ * another. The class is an abstract base class for all the decorators.
  *
- * This class should use as a chain.
+ * This class should be used as a chain.
  *
  * Author: Elad Raz <e@eladraz.com>
  */
@@ -60,7 +60,7 @@ public:
     /*
      * Constructor
      *
-     * inputStream - The input stream which being filtered
+     * inputStream - The input stream which is being filtered
      */
     filterStreamInput(const cSmartPtr<basicInput>& inputStream);
 
@@ -87,7 +87,7 @@ public:
     /*
      * Constructor
      *
-     * outputStream - The output stream which being filtered
+     * outputStream - The output stream which is being filtered
      */
     filterStreamOutput(const cSmartPtr<basicOutput>& outputStream);
 
@@ -118,7 +118,7 @@ public:
     /*
      * Constructor
      *
-     * stream - The stream which being filtered
+     * stream - The stream which is being filtered
      */
     filterStream(const cSmartPtr<basicIO>& stream);
 
@@ -134,7 +134,7 @@ protected:
 };
 
 /*
- * Take care to the endian of all filters streams. The endian should be the
+ * Take care of the endianness of all filter streams. The endianness should be the
  * same as the down stream endian implementation.
  */
 #ifdef XSTL_16BIT

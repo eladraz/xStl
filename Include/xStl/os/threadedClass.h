@@ -59,13 +59,13 @@
  *    b.start();
  *    c.start();
  *
- *    // Wait until all thread executed
+ *    // Wait until all threads have executed
  *    a.wait();
  */
 class cThreadedClass {
 public:
     /*
-     * Virtual empty destructor. This class should be inherit from.
+     * Virtual empty destructor. This class should be inherited from.
      */
     virtual ~cThreadedClass();
 
@@ -76,13 +76,13 @@ public:
 
     /*
      * Generate the thread.
-     * Throw exception if the 'start()' command was already being executed.
+     * Throw an exception if the 'start()' command was already executed.
      */
     void start();
 
     /*
-     * Wait until the thread will finish it's execution.
-     * If the thread wasn't start yet, the function immediatly return
+     * Wait until the thread finishes its execution.
+     * If the thread wasn't started yet, the function returns immediately
      */
     void wait();
 
@@ -128,9 +128,9 @@ private:
      *        MyThread a;
      *        a.start();
      *     }
-     *   The context of 'a' variable will be move to the
+     *   The context of the 'a' variable will be moved to the
      *   'threadedClassThreadFunction' but also a will be terminated by invoking
-     *   the class destructor. This caused some kind of a race-condition.
+     *   the class destructor. This causes a kind of race condition.
      *   The internal implementation should guarantee that this cases will not
      *   crash the system.
      */

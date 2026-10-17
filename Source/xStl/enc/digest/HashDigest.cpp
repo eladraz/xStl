@@ -131,14 +131,14 @@ cBuffer cHashDigest::digest()
 {
     cBuffer ret(getDigestLength());
 
-    // Final the round
+    // Finalize the round
     cSmartPtr<cDigest> m_clone = clone();
     cHashDigest* ptr = (cHashDigest*)m_clone.getPointer();
     ptr->HASHFinal();
 
     uint8* p = ret.getBuffer();
 
-    /* Endian indepented */
+    /* Endian independent */
     for (unsigned int i = 0; i < getDigestLen(); i++, p+= sizeof(uint32))
     {
         writeUint32(p, ptr->m_digest[i]);
@@ -194,7 +194,7 @@ void cHashDigest::HASHFinal()
     }
 
     /*
-     * Theres 512 = 2^9 bits in one block
+     * There are 512 = 2^9 bits in one block
      * Watch the endian order!
      */
     if (isLittleEndian()) {

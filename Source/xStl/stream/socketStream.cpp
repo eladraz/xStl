@@ -150,7 +150,7 @@ void cSocketStream::create(int protocol, /* = IPPROTO_TCP, */
                        (const char*)&flags, sizeof(flags)) != 0)
         {
             traceHigh("cSocketStream::create(): TCP_NODELAY failed" << endl);
-            // No need to throw exception
+            // No need to throw an exception
         }
 
         if (setsockopt(m_handle, SOL_SOCKET, SO_DONTLINGER,
@@ -184,7 +184,7 @@ void cSocketStream::close()
     if (m_isInit)
     {
 #if defined(XSTL_WINDOWS) || defined (XSTL_CE)
-        // Windows have a special function for closing a socket
+        // Windows has a special function for closing a socket
         closesocket(m_handle);
 #else
 #ifdef XSTL_LINUX
@@ -200,7 +200,7 @@ void cSocketStream::close()
 
 void cSocketStream::connect(LPSOCKADDR name, unsigned int size)
 {
-    // Preform the socket call
+    // Perform the socket call
     int ret = ::connect(m_handle, name, size);
 
     if (ret != 0)
@@ -217,7 +217,7 @@ void cSocketStream::connect(const cSockAddr& addr)
 
 void cSocketStream::bind(LPSOCKADDR name, unsigned int size)
 {
-    // Preform the socket call
+    // Perform the socket call
     int ret = ::bind(m_handle, name, size);
 
     if (ret != 0)
@@ -245,7 +245,7 @@ void cSocketStream::listen(unsigned int backlog /* = SOMAXCONN */)
 
 void cSocketStream::accept(cSocketStream & newSocket, LPSOCKADDR addr, int size)
 {
-    // Close the previous connection, if exist
+    // Close the previous connection, if it exists
     newSocket.close();
 
 #if defined(XSTL_WINDOWS) || defined (XSTL_CE)
@@ -420,13 +420,13 @@ bool cSocketStream::isEOS()
 
     if (!FD_ISSET(m_handle, &errorfd))
     {
-        // Check whether the socket close gracefully
+        // Check whether the socket closed gracefully
         if (m_isClosed)
         {
             return true;
         }
 
-        // There isn't any errors.
+        // There aren't any errors.
         return false;
     }
 

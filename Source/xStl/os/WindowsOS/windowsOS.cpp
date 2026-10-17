@@ -67,8 +67,8 @@ void cOS::memcpy(void* dest,
 
 void* cOS::smallMemoryAllocation(uint size)
 {
-    return HeapAlloc(GetProcessHeap(), // Use the deafult heap manager
-                     HEAP_GENERATE_EXCEPTIONS |    // Thorws exception
+    return HeapAlloc(GetProcessHeap(), // Use the default heap manager
+                     HEAP_GENERATE_EXCEPTIONS |    // Throws an exception
                      HEAP_ZERO_MEMORY,  // Default security attributes
                      size);     // The number of bytes to be allocated
 }
@@ -77,7 +77,7 @@ void* cOS::smallMemoryRealloc(void* mem, uint newSize, bool preserveMemory /* = 
 {
     if (preserveMemory)
     {
-        // This feature is not implement by microsoft Heap manager.
+        // This feature is not implemented by the Microsoft heap manager.
 
         // Allocate new chunk of memory
         void* newMemory = smallMemoryAllocation(newSize);
@@ -93,15 +93,15 @@ void* cOS::smallMemoryRealloc(void* mem, uint newSize, bool preserveMemory /* = 
     }
 
     // Use the HeapReAlloc...
-    return HeapReAlloc(GetProcessHeap(), // Use the deafult heap manager
-                       HEAP_GENERATE_EXCEPTIONS,     // Throws exception
+    return HeapReAlloc(GetProcessHeap(), // Use the default heap manager
+                       HEAP_GENERATE_EXCEPTIONS,     // Throws an exception
                        mem,
                        newSize);
 }
 
 void cOS::smallMemoryFree(void* mem)
 {
-    if (HeapFree(GetProcessHeap(), // Use the deafult heap manager
+    if (HeapFree(GetProcessHeap(), // Use the default heap manager
                  0,
                  mem) == 0)
     {
@@ -138,7 +138,7 @@ cOSDef::systemTime cOS::getSystemTime()
         GetSystemTime(&sysTime);
         SystemTimeToFileTime(&sysTime, &localTime);
     #else
-        // Normal windows operating system
+        // Normal Windows operating system
         GetSystemTimeAsFileTime(&localTime);
     #endif
 
@@ -155,7 +155,7 @@ uint cOS::calculateTimesDiffMilli(cOSDef::systemTime currentTime,
 {
     // UTC format
 
-    // 100 nanoseconds, nano is 1/1,000,000. micro is is 1/1,000. 10 factor
+    // 100 nanoseconds, nano is 1/1,000,000. micro is 1/1,000. 10 factor
     // 1000 micro is milli, 1000 factor
     return (uint)((currentTime - startTime) / 10000L);
 }
@@ -188,7 +188,7 @@ cString cOS::getLastErrorString()
 void cOS::debuggerBreak()
 {
     #ifdef _DEBUG
-    // If the debugger is not connected then SEH exception will be throw
+    // If the debugger is not connected then SEH exception will be thrown
     __try {
         DebugBreak();
     } __except (EXCEPTION_EXECUTE_HANDLER) {

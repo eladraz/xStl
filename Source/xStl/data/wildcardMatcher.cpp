@@ -49,7 +49,7 @@ bool cWildcardMatcher::match(const cString& string,
     if (wildcardPattern.length() == 0)
         return string.length() == 0;
 
-    // Reads all character until a wildcard character...
+    // Reads all characters until a wildcard character...
     for (uint i = 0; i < wildcardPattern.length(); i++)
     {
         character ch = wildcardPattern[i];

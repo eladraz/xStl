@@ -48,7 +48,7 @@
 #endif
 
 #ifdef XSTL_WINDOWS
-    // Disable the deprecated warnning. We are using these API in a safe manner
+    // Disable the deprecated warning. We are using these APIs in a safe manner
     #pragma warning(push)
     #pragma warning(disable:4996)
 #endif
@@ -183,7 +183,7 @@ int cChar::stricmp(const character* string1, const character* string2)
                 // TODO!
                 return ::wcscmp((const wchar_t*)string1, (const wchar_t*)string2);
             #else
-                // Most Linuxs
+                // Most Linux systems
                 return wcscasecmp((const wchar_t*)string1, (const wchar_t*)string2);
             #endif // XSTL_MACOSX
         #else
@@ -222,7 +222,7 @@ void cChar::strappend(character* strDest,
 
     uint destLength = cChar::getStrlen(strDest);
 
-    // Calculate the maximun amount of character that should be copied
+    // Calculate the maximum number of characters that should be copied
     uint toBeCopied = count - destLength - 1;
 
     #ifndef XSTL_UNICODE

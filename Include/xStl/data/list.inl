@@ -49,7 +49,7 @@ cList<T>::cList()
 template <class T>
 cList<T>::~cList()
 {
-    freeList(); // Do all the needs.
+    freeList(); // Do everything that is needed.
 }
 
 template <class T>
@@ -255,9 +255,9 @@ void cList<T>::remove(const T& object)
         XSTL_THROW(cException, EXCEPTION_OUT_OF_RANGE);
     }
 
-    /* The previous node should be point to the next node */
+    /* The previous node should point to the next node */
     ListNode *prev = tmp->prev;
-    ListNode *next = tmp->next; // This could never be NULL!! but m_last
+    ListNode *next = tmp->next; // This can never be NULL!! but m_last
 
     /* Delete the node */
     delete tmp;
@@ -353,16 +353,16 @@ void cList<T>::freeList()
     ASSERT(m_first != NULL);
     ASSERT(m_last != NULL);
 
-    ListNode *temp = m_first; /* For scaning the list */
+    ListNode *temp = m_first; /* For scanning the list */
     ListNode *tdel;           /* To delete a node in the list */
 
-    /* Scanning the link-list from it's begins Until the end */
+    /* Scanning the link-list from its beginning until the end */
     while (temp != NULL)
     {
         tdel = temp;
         temp = temp->next;	// Get the next pointer.
         delete tdel;		// Free the memory of the last pointer.
-		                    // The deconstructor of T will be called.
+		                    // The destructor of T will be called.
     }
 
     m_first = NULL;

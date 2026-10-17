@@ -29,7 +29,7 @@
  * POSSIBILITY OF SUCH DAMAGE
  */
 
-// For this files, the WIN32 macro must be defined...
+// For these files, the WIN32 macro must be defined...
 #ifdef WIN32
 
 #ifndef __TBA_STL_OS_WINOS_WINFILENAME_H
@@ -38,7 +38,7 @@
 /*
  * winFilename.h
  *
- * A set of function which parse the DOS filename structs.
+ * A set of functions which parse the DOS filename structs.
  *
  * Author: Elad Raz <e@eladraz.com>
  */
@@ -47,8 +47,8 @@
 #include "xStl/os/filename.h"
 
 /*
- * A set of function which parse the DOS filename structs.
- * A DOS format is build up from:
+ * A set of functions which parse the DOS filename structs.
+ * A DOS format is built up from:
  *    <DRIVE-LETTER>:\<Directory>\<>
  */
 class cDosDirectoryParser : public cDirectoryFormatParser {
@@ -64,7 +64,7 @@ protected:
     /*
      * See cDirectoryFormatParser::translateAbsolutePath
      *
-     * Replace all the '.' and the '..' directories into thier original meanning
+     * Replace all the '.' and the '..' directories into their original meaning
      */
     virtual cString translateAbsolutePath(const cString& absolutePath);
 
@@ -98,7 +98,7 @@ protected:
 
         /*
          * Return the directory of the file. The directory contains the base position
-         * of the file, including it's database name.
+         * of the file, including its database name.
          */
         virtual cString getDirectoryName(const cString& absoluteTranslatedPath) const;
 

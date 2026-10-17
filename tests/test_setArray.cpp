@@ -61,7 +61,7 @@ public:
             TESTS_ASSERT(!simple.isSet(i));
         }
 
-        // Start puting random values
+        // Start putting random values
         for (i = 0; i < 10; ++i)
         {
             uint location = cOSRand::rand() % testSize;

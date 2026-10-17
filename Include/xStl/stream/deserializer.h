@@ -35,7 +35,7 @@
 /*
  * Deserializer.h
  *
- * The deserializer is a main component which responsible to generates xStl
+ * The deserializer is a main component which is responsible for generating xStl
  * objects.
  *
  * Author: Elad Raz <e@eladraz.com>

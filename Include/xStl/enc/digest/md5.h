@@ -36,7 +36,7 @@
 /*
  * md5.h
  *
- * Declare cMD5 class which implement the MD5 one way hash function.
+ * Declare the cMD5 class which implements the MD5 one-way hash function.
  *
  * Author: Elad Raz <e@eladraz.com>
  */
@@ -53,14 +53,14 @@
  *
  * MD5 implementation class.
  *
- * Most of the code taken from C code on the internet:
+ * Most of the code was taken from C code on the Internet:
  * Part of the Python Cryptography Toolkit, version 1.0.1
  * Colin Plumb's original code modified by A.M. Kuchling
  * Further hacked and adapted to pike by Niels Möller
  *
- * The original code was change for C++ usage:
+ * The original code was changed for C++ usage:
  *  - Creating base-class (cHashDigest)
- *  - Warp the function in cDigest format.
+ *  - Wrap the function in cDigest format.
  */
 class cMD5 : public cHashDigest
 {
@@ -89,7 +89,7 @@ public:
     virtual cSmartPtr<cDigest> clone();
 
     /*
-     * Consts for the MD5 algorithm
+     * Constants for the MD5 algorithm
      */
     enum {
         MD5_DATALEN    = 16,

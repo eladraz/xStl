@@ -48,7 +48,7 @@
 #pragma warning (disable:4127)
 #endif
 
-// For the constructor and deconstructor test
+// For the constructor and destructor test
 // Copy constructor and operator=.
 enum ActionList {
     EMPTY,
@@ -101,7 +101,7 @@ public:
             do {
                 cArray<TESTARRAY> list;
                 TESTS_ASSERT_EQUAL(lastAction, EMPTY);
-                nObjects = (cOSRand::rand() % 200) + 1; // At-least one object
+                nObjects = (cOSRand::rand() % 200) + 1; // At least one object
                 list.changeSize(nObjects);
                 TESTS_ASSERT_EQUAL(lastAction, CONSTRUCTOR);
                 TESTS_ASSERT_EQUAL(counstructorCounter, nObjects);
@@ -209,7 +209,7 @@ public:
             for (i = 0; i < 4; i++)
                 TESTS_ASSERT_EQUAL(array1[i], (x + i) * 4);
 
-            // Test for pointer collusions...
+            // Test for pointer collisions...
             for (i = 0; i < 4; i++)
                 array1[i] = (x + i) * 6;
             for (i = 0; i < 10; i++)

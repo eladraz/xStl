@@ -118,7 +118,7 @@ void cBitStream::seek(const int distance, const basicInput::seekMethod method)
     m_stream->seek(bytesSeek, method);
     readBits((uint8)bitsSeek);
 
-    // TODO! Test this function realy carfully!!
+    // TODO! Test this function really carefully!!
     //       This function is NOT completed.
 }
 
@@ -129,7 +129,7 @@ bool cBitStream::isEOS()
 
 uint cBitStream::write(const void *buffer, const uint length)
 {
-    /* Write each bit sepreatly */
+    /* Write each bit separately */
     for (unsigned int i = 0; i < length; i++)
     {
         /* Change the bit */

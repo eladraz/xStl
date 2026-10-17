@@ -35,8 +35,8 @@
 /*
  * memorystream.h
  *
- * Declare the cMemoryStream class which implement the basicIO interface overs
- * cBuffer class.
+ * Declare the cMemoryStream class which implements the basicIO interface over
+ * the cBuffer class.
  *
  * Author: Elad Raz <e@eladraz.com>
  */
@@ -57,8 +57,8 @@
 /*
  * class cMemoryStream
  *
- * Memory stream is a memory file which store inside a 'cBuffer' container.
- * The memory file can increase it's size if the fixedSize is false.
+ * Memory stream is a memory file which is stored inside a 'cBuffer' container.
+ * The memory file can increase its size if the fixedSize is false.
  */
 class cMemoryStream : public cForkStream {
 public:
@@ -69,10 +69,10 @@ public:
      * realData  - The data to be linked as the memory stream
      * pageSize  - The pageSize to be used in the stream
      * initSize  - The number of random bytes to be initialized.
-     * fixedSize - True incase the memory-stream has a fixed size and it
+     * fixedSize - True in case the memory-stream has a fixed size and it
      *             cannot be expanded.
      *
-     * Throws exception incase there isn't engouh memory.
+     * Throws an exception in case there isn't enough memory.
      */
     cMemoryStream(uint pageSize = DEFAULT_STREAM_PAGE_SIZE,
                   uint initSize = 0,
@@ -92,10 +92,10 @@ public:
      */
     defaultEndianImpl;
 
-    // Driven from the basicIO
+    // Derived from the basicIO
 
     /*
-     * Retrive the position of the write/read head
+     * Retrieve the position of the write/read head
      */
     virtual uint getPointer() const;
 
@@ -115,21 +115,21 @@ public:
     virtual void flush();
 
     /*
-     * Read from the memory array into a buffer. If the reading reach the end
-     * of the array then the function return the number of bytes readed until
-     * EOF reached.
+     * Read from the memory array into a buffer. If the reading reaches the end
+     * of the array then the function returns the number of bytes read until
+     * EOF is reached.
      */
     virtual uint read(void *buffer, const uint length);
 
     /*
      * Write bytes to the stream.
-     * Change the bytes of the array. If the file postion reached the end of the
+     * Change the bytes of the array. If the file position reached the end of the
      * array, and m_fixedSize is false then the array size will increase.
      */
     virtual uint write(const void *buffer, const uint length);
 
     /*
-     * Move to a specific position in the file. Throw exception if failed.
+     * Move to a specific position in the file. Throw an exception if failed.
      * See basicInput::seek for more information.
      */
     virtual void seek(const int distance, const basicInput::seekMethod method);
@@ -139,7 +139,7 @@ public:
      * Returns how many bytes should be read for best performance in the
      * pipeRead() function in a single call to the read() function.
      *
-     * This value stand on 4kb which is the pageSize in most platform.
+     * This value stands at 4kb which is the pageSize in most platform.
      */
     virtual uint getPipeReadBestRequest() const { return 4096; }
 
@@ -157,7 +157,7 @@ public:
 
 protected:
     // Init the seeking methods.
-    // All seek operation are permits
+    // All seek operations are permitted
     virtual void initSeek();
 
 private:
@@ -166,7 +166,7 @@ private:
     // Deny operator =
     cMemoryStream& operator = (const cMemoryStream& other);
 
-    // Is the mem-file is fixed?
+    // Is the mem-file fixed?
     bool m_fixedSize;
 
     // The position inside the memory stream

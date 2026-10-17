@@ -105,7 +105,7 @@ uint cCacheStream::write(const void *buffer, const uint length)
     {
         m_stream->pipeWrite(m_writeCache.getBuffer(), m_writePosition);
         m_writePosition = 0;
-        // Notice that this transaction should be append!
+        // Notice that this transaction should be appended!
     }
 
     // Add the rest of the buffer

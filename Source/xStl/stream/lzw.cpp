@@ -65,7 +65,7 @@ cLZWcompression::cLZWcompression(cSmartPtr<basicIO> stream,
 
     m_bit_stream = new cBitStream(m_stream);
 
-    /* The numbers between 0..2^bitSize-1 are refrence */
+    /* The numbers between 0..2^bitSize-1 are references */
     /* to the real characters                           */
 
     /* The number 2^bitSize   is the clear signal   */
@@ -103,14 +103,14 @@ void cLZWcompression::initSeek()
     canGetPointer = false;
 }
 
-// Throws exception
+// Throws an exception
 uint cLZWcompression::length() const
 {
     ASSERT(false);
     return m_stream->length();
 }
 
-// Throws exception
+// Throws an exception
 uint cLZWcompression::getPointer() const
 {
     ASSERT(false);
@@ -124,14 +124,14 @@ void cLZWcompression::seek(const int distance, const basicInput::seekMethod meth
         XSTL_THROW(cException, EXCEPTION_SEEK_ERROR);
     }
 
-    /* Test whether the method is from the begining of the file */
+    /* Test whether the method is from the beginning of the file */
     if (method == IO_SEEK_SET)
     {
-        /* Start from begining of the file */
+        /* Start from beginning of the file */
         cBuffer tempArray;
 
         flush();
-        m_stream->seek(0, IO_SEEK_SET);  // Go to the begining of the file
+        m_stream->seek(0, IO_SEEK_SET);  // Go to the beginning of the file
 
         // Temporary reading of data
         if (basicInput::pipeRead(tempArray, distance) != (unsigned int)(distance))
@@ -198,7 +198,7 @@ uint cLZWcompression::write(const void *buffer, const uint length)
     unsigned int opcode;
     unsigned int pcode;
 
-    /* Take care to the first read */
+    /* Take care of the first read */
     /* The first opcode is a special case */
     if (m_first_write)
     {
@@ -210,7 +210,7 @@ uint cLZWcompression::write(const void *buffer, const uint length)
     /* Write each uint8 */
     for (unsigned int i = 0; i < (number_of_digits - 1); i++)
     {
-        /* If the pipe throw exception then we have a probleam */
+        /* If the pipe throws an exception then we have a problem */
         opcode = input_bitstream.readBits((uint8)m_bitSize);
         m_write_suffix = opcode;
 
@@ -230,7 +230,7 @@ uint cLZWcompression::write(const void *buffer, const uint length)
         /* Write-out data and reset the string    */
         if (!found)
         {
-            /* Write out the preifx */
+            /* Write out the prefix */
             m_bit_stream->writeBits(m_write_prefix, (uint8)m_io_bits);
 
             /* Add the new string to the table */
@@ -295,7 +295,7 @@ bool cLZWcompression::writeString(unsigned int pcode, cBitStream & stream)
 
 unsigned int cLZWcompression::copyStream(cBitStream &bits_pipe, cMemoryStream &mem, void *buffer)
 {
-    unsigned int length = bits_pipe.getDownStream()->getPointer(); /* Its mem stream, and it's possiable */
+    unsigned int length = bits_pipe.getDownStream()->getPointer(); /* It's a mem stream, and it's possible */
 
     /* Copy the data */
     cOS::memcpy((uint8 *)buffer, mem.getStream()->getBuffer(), length);
@@ -319,7 +319,7 @@ uint cLZWcompression::read(void *buffer, const uint length)
     bool          ret = FALSE;
     unsigned int  retv = 0;
 
-    /* Write out all old-information */
+    /* Write out all old information */
     while (m_readed_codes.begin() != m_readed_codes.end())
     {
         unsigned int resolved = *(m_readed_codes.begin());

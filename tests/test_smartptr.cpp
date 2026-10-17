@@ -30,9 +30,9 @@
  */
 
 /*
- * test_string.cpp
+ * test_smartptr.cpp
  *
- * Test the cString class.
+ * Test the cSmartPtr class.
  *
  * Author: Elad Raz <e@eladraz.com>
  */
@@ -46,7 +46,7 @@
 
 
 /*
- * Refrence count object test
+ * Reference count object test
  */
 class A
 {

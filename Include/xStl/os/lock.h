@@ -35,8 +35,8 @@
 /*
  * lock.h
  *
- * Implement the lockable-objects locking class. The locking class provide easy
- * access for the resource and some safety from exceptions during the locking
+ * Implement the lockable-objects locking class. The locking class provides easy
+ * access to the resource and some safety from exceptions during the locking
  * code.
  *
  * Author: Elad Raz <e@eladraz.com>
@@ -49,7 +49,7 @@
  * class cLock
  *
  * This class allows safety during locking of execution code. Instead of using
- * the lockable-object in following way:
+ * the lockable-object in the following way:
  *
  *    // (Global) variable
  *    cLockableObject& mutex;
@@ -59,13 +59,13 @@
  *      mutex.lock()
  *      // Critical section
  *
- *      // Error, exceotion throws here and the mutex remains accuiered.
+ *      // Error, exception throws here and the mutex remains acquired.
  *
  *      mutex.unlock()
  *    }
  *
- * Use the cLock object, so even if exception will thrown the exception-handler
- * will call the destructor of the class and the exception will be freed:
+ * Use the cLock object, so even if an exception is thrown the exception handler
+ * will call the destructor of the class and the lock will be released:
  *
  *    // (Global) variable
  *    cLockableObject& mutex;
@@ -80,25 +80,25 @@ class cLock
 {
 public:
     /*
-     * Constructor. Accuire the resource.
+     * Constructor. Acquire the resource.
      *
-     * Exception can be thrown during the lockable-object resource lock()
+     * An exception can be thrown during the lockable-object resource lock()
      * function.
      */
     cLock(cLockableObject& lockable);
 
     /*
-     * Destructor. Free the grabbing over the resource.
+     * Destructor. Release the lock over the resource.
      *
-     * Exception can be thrown during the lockable-object resource unlock()
+     * An exception can be thrown during the lockable-object resource unlock()
      * function.
      */
     ~cLock();
 
     /*
-     * The function unlock the grabbing over the resource. Many times the
+     * This function releases the lock over the resource. Many times the
      * application wants to lock the object for a part of the code, this
-     * function allows to improve performance by releasing the grabbing.
+     * function allows improving performance by releasing the lock.
      * Usage:
      *
      *  cLockableObject& lockable;
@@ -117,14 +117,14 @@ public:
     void unlock();
 
 private:
-    // The lockable object which is accuiered
+    // The lockable object which is acquired
     cLockableObject& m_lockable;
 
     // Deny operator = and copy-constructor
     cLock(const cLock& other);
     cLock& operator=(const cLock& other);
 
-    // Is the lockable is lock and should released at dtor
+    // Whether the lockable is locked and should be released at dtor
     bool m_isLock;
 };
 

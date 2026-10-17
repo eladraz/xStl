@@ -35,7 +35,7 @@
 /*
  * ddkOSdef.h
  *
- * Types, structs definitions and consts needed for the windows driver library
+ * Types, struct definitions and constants needed for the Windows driver library
  *
  * Author: Elad Raz <e@eladraz.com>
  */

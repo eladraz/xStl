@@ -103,7 +103,7 @@ cString HEXADDRESS(const addressNumericValue& address)
 {
     #ifdef XSTL_16BIT
         // TODO!
-        // Seperate segment:offset
+        // Separate segment:offset
         return HEXDWORD(address);
     #else
         // 32 bit applications

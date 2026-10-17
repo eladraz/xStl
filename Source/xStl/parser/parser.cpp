@@ -96,7 +96,7 @@ const cString& Parser::getFilename() const
 
 void Parser::checkNotEOS()
 {
-    PARSER_INTERNAL_CHECK(!isEOS(), "Unexcepected end-of-file reached");
+    PARSER_INTERNAL_CHECK(!isEOS(), "Unexpected end-of-file reached");
 }
 
 bool Parser::isEOS()
@@ -189,7 +189,7 @@ cString Parser::readWord()
         return ret;
     char ch = peekChar();
 
-    PARSER_INTERNAL_CHECK(!cChar::isBlanket(ch), "Letter was excpected");
+    PARSER_INTERNAL_CHECK(!cChar::isBlanket(ch), "Letter was expected");
 
     while ((!cChar::isBlanket(ch)) &&
            (!cChar::isNewLine(ch)))
@@ -210,7 +210,7 @@ cString Parser::readCString(bool isFirstLetter)
     // The first character must be a letter
     if (isFirstLetter)
     {
-        PARSER_INTERNAL_CHECK(cChar::isLetter(ch) || (ch == '_'), "Letter was excpected");
+        PARSER_INTERNAL_CHECK(cChar::isLetter(ch) || (ch == '_'), "Letter was expected");
     }
 
     // Read the string
@@ -233,7 +233,7 @@ cString Parser::readCString(bool isFirstLetter)
 
 cString Parser::readQuateString(bool isCString)
 {
-    // The first character must be a quate
+    // The first character must be a quote
     PARSER_INTERNAL_CHECK(readChar() == '"', "'string' was excpected here");
 
     // Read the string
@@ -251,7 +251,7 @@ cString Parser::readQuateString(bool isCString)
             case 'b': ch = '\b'; break; // backspace
             case 'f': ch = '\f'; break; // Formfeed
             case 'n': ch = '\n'; break; // Newline
-            case 'r': ch = '\r'; break; // Carraige return
+            case 'r': ch = '\r'; break; // Carriage return
             case 't': ch = '\t'; break; // tab
             case 'v': ch = '\v'; break; // Vertical tab
             case '\'': ch = '\''; break; // '
@@ -284,9 +284,9 @@ cString Parser::readSpeicalString()
         if (ch == '$')
         {
             // Read a special mark.
-            PARSER_INTERNAL_CHECK(readChar() == '(', "Open brace was excpected here");
+            PARSER_INTERNAL_CHECK(readChar() == '(', "Open brace was expected here");
             cString add = readCString();
-            PARSER_INTERNAL_CHECK(readChar() == ')', "Close brace was excpected here");
+            PARSER_INTERNAL_CHECK(readChar() == ')', "Close brace was expected here");
             ret+= XSTL_CHAR('$'); ret+= XSTL_CHAR('(');
             ret+= add;
             ret+= XSTL_CHAR(')');
@@ -295,7 +295,7 @@ cString Parser::readSpeicalString()
             ret+= (character)ch;
         }
 
-        // Exit when EOS riches.
+        // Exit when EOS is reached.
         if (isEOS())
         {
             break;
@@ -306,7 +306,7 @@ cString Parser::readSpeicalString()
     }
 
     // Error at first digit
-    PARSER_INTERNAL_CHECK(ret.length() > 0, "Special string have been excpected");
+    PARSER_INTERNAL_CHECK(ret.length() > 0, "Special string was expected");
 
     return ret;
 }
@@ -328,7 +328,7 @@ bool Parser::isCUnsignedInteger(uint* retNumber,
     if (shouldAdvancePosition)
         object = this;
 
-    // Flags which marks wheter the base of the number is 16.
+    // Flag which marks whether the base of the number is 16.
     bool isHex = false;
     // Test the first character special marks
     cString number = object->readCString(false);
@@ -344,7 +344,7 @@ bool Parser::isCUnsignedInteger(uint* retNumber,
         }
         // Base 8 or hex number
         if (number[1] != 'x')
-            return false; // PARSER_INTERNAL_CHECK "Hexdecimal number was excpected"
+            return false; // PARSER_INTERNAL_CHECK "Hexadecimal number was expected"
         i = 2;
         isHex = true;
     }
@@ -441,7 +441,7 @@ cString Parser::peekCString(bool isFirstLetter)
     // Peek the string.
     cString ret(readCString(isFirstLetter));
     // Restore the index
-    // There is no dangerous for reading new line.
+    // There is no danger in reading a new line.
     m_pointer = pointer;
 
     return ret;
@@ -496,7 +496,7 @@ void Parser::readBracesBlock()
         // Translate exception
         cString exception(XSTL_STRING("Braces error. Found '"));
         exception+= e.m_founded;
-        exception+= XSTL_STRING("' excpected '");
+        exception+= XSTL_STRING("' expected '");
         exception+= e.m_excpected;
         exception+= XSTL_STRING("'.");
 
@@ -524,7 +524,7 @@ BasicVariable Parser::readVariable(Types::Type type)
 
         if (isSigned)
         {
-            PARSER_INTERNAL_CHECK(number <= 0x80000000, "Overflow occuered");
+            PARSER_INTERNAL_CHECK(number <= 0x80000000, "Overflow occurred");
             int signedNumber = -((int)number);
             retData.setSignedInteger(signedNumber);
         } else
@@ -551,7 +551,7 @@ BasicVariable Parser::readVariable(Types::Type type)
 
 void Parser::removeComments(char* stream, uint length)
 {
-    // The buffer and it's remaining length
+    // The buffer and its remaining length
     if (length == 0) return;
 
     // The space character which is replaced
@@ -562,12 +562,12 @@ void Parser::removeComments(char* stream, uint length)
     //   false means that we are outside a comment block
     bool isComment = false;
     // The type of the comment:
-    //   true means that the comment are from type '//' and newline stops the comment
-    //   flase means that the comment are from type '/*/ and only '*/' stops the comment
+    //   true means that the comment is of type '//' and a newline stops the comment
+    //   false means that the comment is of type '/*' and only '*/' stops the comment
     bool isEndl = false;
-    // The internal state, wheter a '/' is found
+    // The internal state, whether a '/' is found
     bool isMagicSlash = false;
-    // The internal state, wheter a '*' is found
+    // The internal state, whether a '*' is found
     bool isMagicStar = false;
     // Test whether we are inside a string
     bool isString = false;

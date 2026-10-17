@@ -37,7 +37,7 @@
  * bitstream.h
  *
  * Basic bit stream access. Write/Read bits for a stream.
- * This class should use in a chain.
+ * This class should be used in a chain.
  *
  * Author: Elad Raz <e@eladraz.com>
  */
@@ -52,8 +52,8 @@
  * cBitStream
  *
  * Bit access to streams. Read 1/0 and write 1(non-zero)/0 as bytes. For example,
- * written to the stream the following array: [1,0,1,0,1,0,1,0] will be the same
- * as write '0xAA' into the decorated stream.
+ * writing the following array to the stream: [1,0,1,0,1,0,1,0] will be the same
+ * as writing '0xAA' into the decorated stream.
  *
  * There is no caching for this class. The write/read alignment is 1 byte per
  * operation. Use cCacheStream to enable alignment to the streams.
@@ -62,10 +62,10 @@ class cBitStream : public filterStream
 {
 public:
     /*
-     * Constructor. Build a filter stream which translate bits in uint8
-     * represination into byte for the down stream.
+     * Constructor. Build a filter stream which translates bits in uint8
+     * representation into byte for the down stream.
      *
-     * stream - The decorated stream class to be used for reading/written.
+     * stream - The decorated stream class to be used for reading/writing.
      */
     cBitStream(cSmartPtr<basicIO> stream);
 
@@ -79,7 +79,7 @@ public:
      */
     filterStreamEndianImpl;
 
-    // Driven from the basicIO
+    // Derived from the basicIO
 
     /*
      * Read 'length' bits from the decorated stream and put them in the buffer
@@ -89,13 +89,13 @@ public:
 
     /*
      * Write bits in BYTE alignment into the stream.
-     * For example: 1,0,1,0,1,1,1,1 will replace into a single byte: 0xF5.
+     * For example: 1,0,1,0,1,1,1,1 will be packed into a single byte: 0xF5.
      *
      * 'One' is non-zero number.
      *
      * W A R N I N G
      *   This function cannot work with the read() instruction
-     *   in the same time.
+     *   at the same time.
      */
     virtual uint write(const void *buffer, const uint length);
 
@@ -107,7 +107,7 @@ public:
 
     /*
      * Return the current position of BITS from the beginning of the stream.
-     * This function depend on the decorated class 'getPointer' supports
+     * This function depends on the decorated class's 'getPointer' support
      */
     virtual uint getPointer() const;
 
@@ -119,13 +119,13 @@ public:
 
     /*
      * Seek 'distance' bits from the 'method' position. See basicInput for
-     * more information. This method depend on the decorate class for seeking
+     * more information. This method depends on the decorated class for seeking
      * methods.
      */
     virtual void seek(const int distance, const basicInput::seekMethod method);
 
     /*
-     * Return true if we have reached to the end of the stream.
+     * Return true if we have reached the end of the stream.
      */
     virtual bool isEOS();
 
@@ -136,7 +136,7 @@ public:
     virtual uint getPipeReadBestRequest() const { return m_stream->getPipeReadBestRequest(); }
 
 
-    // Several of bits functions
+    // Several bit functions
 
     /*
      * Read from the stream "numberOfBits" and convert it into a number

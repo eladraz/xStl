@@ -35,7 +35,7 @@
 /*
  * random.h
  *
- * Defines static function commonly use in any encryption.
+ * Defines static functions commonly used in encryption.
  *
  * Author: Elad Raz <e@eladraz.com>
  */

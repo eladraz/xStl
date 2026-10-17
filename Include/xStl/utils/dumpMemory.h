@@ -35,7 +35,7 @@
 /*
  * dumpMemory.h
  *
- * A module which translate a cVirtualMemoryAccesser into a human readable
+ * A module which translates a cVirtualMemoryAccesser into a human readable
  * memory dump.
  *
  * Author: Elad Raz <e@eladraz.com>
@@ -46,7 +46,7 @@
 #include "xStl/stream/stringerStream.h"
 
 /*
- * The out operator << forward deceleration.
+ * The out operator << forward declaration.
  * See class DumpMemory
  */
 class DumpMemory;
@@ -65,13 +65,13 @@ public:
 
     /*
      * Default constructor. Setup the parameters to be used.
-     * See class into.
+     * See class intro.
      *
      * memory        - The object to be dumped
      * startAddress  - The starting address range for the dump
      * endAddress    - The ending address range for the dump
      * relocation    - The relative addressing for the display.
-     * elementsCount - The number of element in a single line
+     * elementsCount - The number of elements in a single line
      */
     DumpMemory(const cVirtualMemoryAccesser& memory,
                addressNumericValue startAddress,
@@ -80,14 +80,14 @@ public:
                uint elementsCount = DEFAULT_NUMBER_OF_ELEMENTS_IN_LINE);
 
     /*
-     * Default constructor for pre-readed memory. Setup the parameters to be
+     * Default constructor for pre-read memory. Setup the parameters to be
      * used. See class intro.
      *
-     * buffer       - The readed buffer
+     * buffer       - The read buffer
      * fragments    - The fragmentation of the same block
      * startAddress - The address of the buffer
      * addressType  - The type of the remote-address
-     * elementsCount - The number of element in a single line
+     * elementsCount - The number of elements in a single line
      */
     DumpMemory(const cBuffer& buffer,
                const cFragmentsDescriptor& fragments,
@@ -99,22 +99,22 @@ private:
     DumpMemory(const DumpMemory& other);
     DumpMemory& operator = (const DumpMemory& other);
 
-    // The operator << is the reason for this class existence.
+    // The operator << is the reason for this class's existence.
     friend cStringerStream& operator << (cStringerStream& out,
                                          const DumpMemory& memory);
 
     /*
-     * This function dump a single line to the output stream. The format of the
-     * trace is as in the following format:
+     * This function dumps a single line to the output stream. The format of the
+     * trace is as follows:
      *   ADDRESS    DATA                                     TEXT
      *   00000000   496E 7374 616C 6C20-4661 696C 6564 0D0A  Install Failed..
-     * If the data is stoped before 'lineCount' than the format is
+     * If the data stops before 'lineCount' then the format is
      *   00000040   726E 616C 2065 7272-6F72 2E             rnal error.
      *
      * pos       - The memory address to read the data
      * count     - The number of elements to read
      * data   - A buffer with at least 'count' elements. Used for optimization.
-     *          Avoid allocate and free the same buffer size over and over again
+     *          Avoids allocating and freeing the same buffer size over and over again
      * out    - The stream to write the data to
      */
     void dumpLine(addressNumericValue pos,

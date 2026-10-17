@@ -44,7 +44,7 @@
 #include "xStl/os/virtualMemoryAccesser.h"
 #include "xStl/stream/forkStream.h"
 
-// Forward decelration
+// Forward declaration
 class cMemoryAccesserStream;
 // The memory-accesser stream reference counter object
 typedef cSmartPtr<cMemoryAccesserStream> cMemoryAccesserStreamPtr;
@@ -63,13 +63,13 @@ public:
      * memory          - The virtual memory accesser for the stream
      * startAddress    - The start-address for the 'memory' accesser
      * endAddress      - The end-address for the 'memory' accesser. Also known
-     *                   as size of the stream.
+     *                   as the size of the stream.
      * ignoreFragments - When read() encounters a fragmented memory region it
      *                   usually throws an exception. When set to true read()
      *                   will ignore any fragmented memory and will fill them
      *                   with 0.
      * isFix           - When the stream grew more than expected, the endAddress
-     *                   can be enlarge.
+     *                   can be enlarged.
      *                   TODO! THIS VARIABLE MUST BE TRUE. THE FUNCTION IS NOT
      *                         IMPLEMENTED YET
      */
@@ -84,10 +84,10 @@ public:
      */
     defaultEndianImpl;
 
-    // Driven from the basicIO
+    // Derived from the basicIO
 
     /*
-     * Retrive the position of the write/read head
+     * Retrieve the position of the write/read head
      */
     virtual uint getPointer() const;
 
@@ -107,9 +107,9 @@ public:
     virtual void flush();
 
     /*
-     * Read from the memory array into a buffer. If the reading reach the end
-     * of the array then the function return the number of bytes readed until
-     * EOF reached.
+     * Read from the memory array into a buffer. If the reading reaches the end
+     * of the array then the function returns the number of bytes read until
+     * EOF is reached.
      *
      * NOTE: The fragments region will be filled with zero. There isn't any
      *       notification that the user can get using the streams interface.
@@ -122,7 +122,7 @@ public:
     virtual uint write(const void *buffer, const uint length);
 
     /*
-     * Move to a specific position in the stream. Throw exception if failed.
+     * Move to a specific position in the stream. Throw an exception if failed.
      * See basicInput::seek for more information.
      */
     virtual void seek(const int distance, const basicInput::seekMethod method);
@@ -131,7 +131,7 @@ public:
      * Returns how many bytes should be read for best performance in the
      * pipeRead() function in a single call to the read() function.
      *
-     * This value stand on 4kb which is the pageSize in most platform.
+     * This value stands at 4kb which is the pageSize in most platforms.
      */
     virtual uint getPipeReadBestRequest() const { return 4096; }
 
@@ -173,7 +173,7 @@ public:
 
 protected:
     // Init the seeking methods.
-    // All seek operation are permits
+    // All seek operations are permitted
     virtual void initSeek();
 
 private:
@@ -191,7 +191,7 @@ private:
     uint m_startAddress;
     // The size of the stream (end-start)
     uint m_endAddress;
-    // Should fragment memory be ignored or should be notify
+    // Should fragmented memory be ignored or should it be notified
     bool m_ignoreFragments;
 };
 

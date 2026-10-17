@@ -32,8 +32,8 @@
 /*
  * test_stream.cpp
  *
- * Test the all streams cut out from "basicIO":
- *  - cFileStream: generate temporary file and perfrom test. delete the file at the end
+ * Test all the streams derived from "basicIO":
+ *  - cFileStream: generate a temporary file and perform the test, then delete the file at the end
  *  - cMemoryStream: Create memory file.
  *
  * Author: Elad Raz <e@eladraz.com>

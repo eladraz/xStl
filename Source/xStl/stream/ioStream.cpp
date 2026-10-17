@@ -33,7 +33,7 @@
 /*
  * iostream.cpp
  *
- * Implemetation (Both Windows and UNIX) for the output/
+ * Implementation (Both Windows and UNIX) for the output/
  * input con streams.
  *
  * Author: Elad Raz <e@eladraz.com>
@@ -47,7 +47,7 @@
 #include "xStl/stream/ioStream.h"
 
 #if !(defined (XSTL_NTDDK) || defined(XSTL_16BIT))
-    // Windows and linux uses files.
+    // Windows and Linux use files.
     #include "xStl/stream/fileStream.h"
 #endif
 
@@ -72,7 +72,7 @@
 /*
  * conOutStream constructor
  *
- * Fill up the default behavor for the output stream
+ * Fill up the default behavior for the output stream
  */
 conOutStream::conOutStream(conOutObjects object)  :
     cStringerStream(true)
@@ -139,7 +139,7 @@ void conOutStream::outputString(const cString& string)
                 // The normal copy template
                 m_outputFile.write(string.getBuffer(), len);
             #else
-                // Covert to ascii
+                // Convert to ascii
                 m_outputFile.write(string.getASCIIstring().getBuffer(), len);
             #endif // XSTL_UNICODE
         #endif // XSTL_16BIT

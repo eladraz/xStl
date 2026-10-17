@@ -36,8 +36,8 @@
 /*
  * HashDigest.h
  *
- * Declare cHashDigest class which implement the all basic hash concepts such
- * as update, final, digest etc. (The divistion by block)
+ * Declare the cHashDigest class which implements all the basic hash concepts such
+ * as update, final, digest etc. (The division by block)
  *
  * Author: Elad Raz <e@eladraz.com>
  */
@@ -52,7 +52,7 @@
 /*
  * class cMD5
  *
- * MD5 implementation class. Most of the code taken from C code on the internet.
+ * MD5 implementation class. Most of the code was taken from C code on the Internet.
  */
 class cHashDigest : public cDigest,
                     public cEndian
@@ -71,17 +71,17 @@ public:
 
     /*
      * Reset the hash setting as this class just constructed.
-     * The implementation should overwrite this function and reset the defined
+     * The implementation should override this function and reset the defined
      * hash data.
      *
      * IMPORTANT NOTE:
-     * In addition the function call the base class reset function AT THE
+     * In addition the function calls the base class reset function AT THE
      * BEGINNING of the implementation.
      */
     virtual void reset();
 
     /*
-     * Update the hash using a 'buffer' and it's length.
+     * Update the hash using a 'buffer' and its length.
      *
      * buffer - The bytes to be digest.
      * length - The length of the buffer.
@@ -113,18 +113,18 @@ protected:
     void copyFrom(const cHashDigest& other);
 
     /*
-     * Consts for the Hash algorithm
+     * Constants for the Hash algorithm
      */
     virtual unsigned int getDigestLen() = 0;
     virtual unsigned int getDataLen() = 0;
 
     /*
-     * Final the MD5 round. Pad the block and sum up the digest.
+     * Finalize the MD5 round. Pad the block and sum up the digest.
      */
     void HASHFinal();
 
     /*
-     * Final one round of the block.
+     * Finalize one round of the block.
      */
     void HASHBlock(const uint8* block);
 

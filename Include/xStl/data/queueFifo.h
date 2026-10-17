@@ -41,9 +41,9 @@
  * The interface for the fifo-queue. The queue is a memory block with const
  * size which has two pointers: read pointer and write pointer. The program
  * can write down to the queue and in the other hand read from the queue.
- * The writing and the reading are circulate throw the allocated buffer.
+ * The writing and the reading are circular throughout the allocated buffer.
  *
- * This class is not thread-safe class. (IT WAS...)
+ * This class is not thread-safe. (IT WAS...)
  *
  * TODO
  * ----
@@ -57,7 +57,7 @@ class cQueueFifo
 public:
     /*
      * Constructor.
-     * Create an empty queue with 'size' bytes capabilites.
+     * Create an empty queue with a capacity of 'size' bytes.
      */
     cQueueFifo(uint size);
 
@@ -67,18 +67,18 @@ public:
      */
 
     /*
-     * Return how many bytes frees there are in the queue.
+     * Return how many free bytes there are in the queue.
      */
     uint getQueueFreespace();
 
     /*
-     * Return how many data bytes avliabe at the queue.
+     * Return how many data bytes are available in the queue.
      */
     uint getQueueOccupyspace();
 
     /*
-     * Read from the queue. The number of bytes actully read return
-     * from the function. If the queue is empty, the function return
+     * Read from the queue. The number of bytes actually read is returned
+     * from the function. If the queue is empty, the function returns
      * 0 as the number of bytes read. (There isn't an error...)
      *
      * buffer - The data will be stored at.
@@ -89,8 +89,8 @@ public:
     uint read(uint8 *buffer, uint count);
 
     /*
-     * Write bytes to the queue. The number of bytes written returned
-     * from the function. The function return different number than
+     * Write bytes to the queue. The number of bytes written is returned
+     * from the function. The function returns a different number than
      * 'count' only when the queue is full.
      *
      * buffer - The bytes to be written to the queue.
@@ -104,21 +104,21 @@ public:
 //private:
     /*
      * Internal unlock functions.
-     * This function used to prevent dead-locks...
+     * This function is used to prevent deadlocks...
      */
     uint getFreespace();
     uint getOccupyspace();
 
     /*
-     * The queue is implement as array of bytes.
+     * The queue is implemented as an array of bytes.
      * And two queue pointers.
      */
     cBuffer        m_queue;
     volatile uint  m_readPointer;
     volatile uint  m_writePointer;
 
-    // Stores whether the read and the write pointer are toghther because the
-    // queue is full or completly empty.
+    // Stores whether the read and the write pointer are together because the
+    // queue is full or completely empty.
     volatile bool m_isFull;
 
     // Is equal to m_queue.getSize();

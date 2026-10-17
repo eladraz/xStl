@@ -35,7 +35,7 @@
 /*
  * fileException.h
  *
- * Define the exceptions types regarding of handling a file
+ * Define the exceptions types regarding the handling of a file
  *
  * Author: Elad Raz <e@eladraz.com>
  */
@@ -53,7 +53,7 @@ class cFileException : public cException
 {
 public:
     /*
-     * Construct an exception using a string from description
+     * Construct an exception using a description string
      *
      * msg - The error message
      */
@@ -62,7 +62,7 @@ public:
     /*
      * Construct an exception using a number
      *
-     * id - The error message identfication number
+     * id - The error message identification number
      */
     cFileException(char * file, uint32 line, const uint32 id) : cException(file, line, id) {};
 };

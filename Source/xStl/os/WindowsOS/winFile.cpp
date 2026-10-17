@@ -160,7 +160,7 @@ void cFile::openHandle(const cOSDef::fileHandle& handle,
 
 cFile::~cFile()
 {
-    // Test if the is opened
+    // Test if the file is opened
     if (isOpen())
     {
         flush();

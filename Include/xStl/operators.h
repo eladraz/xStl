@@ -35,23 +35,23 @@
 /*
  * operators.h
  *
- * Define the MAKE_SIMPLE_OPERATORS macro which creates all standard comparing
+ * Define the MAKE_SIMPLE_OPERATORS macro which creates all standard comparison
  * operators by invoking calls to operators == and operator < only.
- * The class also deifne  the MAKE_INCREASE_OPERATORS which implement operator
- * ++, -- by calling to next() and prev() function.
+ * The class also defines the MAKE_INCREASE_OPERATORS which implements operators
+ * ++, -- by calling the next() and prev() functions.
  *
  * Author: Elad Raz <e@eladraz.com>
  */
 
 
 /*
- * Creates default implementation of operators:
+ * Creates the default implementation of operators:
  *    !=   Not equal
  *    >    Bigger
  *    >=   Bigger or equal
  *    <=   Less or equal
  * By dispatching a call to operator == or operator < which should
- * be implement by the class.
+ * be implemented by the class.
  */
 #define MAKE_SIMPLE_OPERATORS(className) \
     bool inline operator != (const className &other) const   \
@@ -72,8 +72,8 @@
     }
 
 /*
- * Using function 'void next()' and 'void prev()' function implement the
- * increasment operators.
+ * Use the functions 'void next()' and 'void prev()' to implement the
+ * increment operators.
  */
 #define MAKE_INCREASE_OPERATORS(className) \
     className& operator++()                \

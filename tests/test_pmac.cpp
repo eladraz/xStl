@@ -33,7 +33,7 @@
  * test_pmac.cpp
  *
  * Tests the P_MD5 and the P_SHA1 class.
- * The tests vectors are according to tests tasken from SSLeay0.9.6
+ * The test vectors are according to tests taken from SSLeay 0.9.6
  *
  *  P_MD5("secret", "level")  D3 1A FC AA
  *  P_SHA("secret", "level")  5D 55 43 2B

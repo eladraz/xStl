@@ -41,7 +41,7 @@
 
 #ifdef XSTL_WINDOWS
     // Template classes might not use all the local functions the interface has
-    // to ofer. Warning C4505 should be over-written for template functions
+    // to offer. Warning C4505 should be disabled for template functions
     #pragma warning(push)
     #pragma warning(disable:4505)
 #endif // XSTL_WINDOWS
@@ -50,7 +50,7 @@ template <class T, class S>
 class GraphNode
 {
 public:
-    /* Construcotr */
+    /* Constructor */
     GraphNode(const T& id, const S& value, uint numberOfPossibleColors) :
         m_id(id),
         m_value(value),
@@ -72,7 +72,7 @@ public:
         return m_neighbors;
     }
 
-    /* Returns the (uniquee) ID of the node */
+    /* Returns the (unique) ID of the node */
     const T& getId() const
     {
         return m_id;
@@ -186,9 +186,9 @@ public:
     void addNode(const T& id, const S& value);
 
     /* Check if the two nodes are connected.
-     * If the IDs dont represent nodes in the graph, then we return false.
+     * If the IDs don't represent nodes in the graph, then we return false.
      * id1, id2 - IDs of the two nodes.
-     * Returns - boolean if they are neighbors or not.
+     * Returns - a boolean: whether they are neighbors or not.
      */
     bool isConnected(const  T& id1, const T& id2);
 
@@ -242,7 +242,7 @@ private:
 #include "xStl/data/graph.inl"
 
 #ifdef XSTL_WINDOWS
-    // Return the warnning behaviour back to it's original mode
+    // Return the warning behaviour back to its original mode
     #pragma warning(pop)
 #endif
 

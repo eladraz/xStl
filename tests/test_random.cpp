@@ -32,7 +32,7 @@
 /*
  * test_random.cpp
  *
- * Tests the random for thier goodnes.
+ * Tests the random for their goodness.
  *
  * Author: Elad Raz <e@eladraz.com>
  */

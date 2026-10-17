@@ -49,16 +49,16 @@
 
 /*
  * The parser class knows how to parse a textual information. The class uses
- * pointer to a char* and a length of the data. The class uses 'uint' typedef
+ * a pointer to a char* and a length of the data. The class uses a 'uint' typedef
  * as an iterator inside the stream. The iterator is managed internally in
  * order to keep the line-number.
  *
  * NOTICE: The construction of this class is fast, so multiple instances of
- *         the parsing class can (and should) be instances for a single stream
+ *         the parsing class can (and should) be instantiated for a single stream
  *
  * Usage:
  *   cBuffer data = cFile("document").readAllStream();
- *   // If you like to call to Parser::easyParsing to make your life easier...
+ *   // If you would like to call Parser::easyParsing to make your life easier...
  *   Parser parser(data.getBuffer(), data.getSize());
  *
  *   // Reading a C style function:
@@ -71,7 +71,7 @@
  *   ...
  *
  * NOTE: The memory should be managed by the upper management class. The buffer
- *       which transfer to the class should be allocated and filled with data.
+ *       which is transferred to the class should be allocated and filled with data.
  *       The class doesn't free/duplicate any memory. The buffer pointer must
  *       be valid during the lifetime of this class.
  *
@@ -87,10 +87,10 @@ public:
      * Constructor for the parser.
      *
      * data       - Pointer to the raw data of the textual information.
-     * pointer    - Pointer to begining of the analyzing stream
+     * pointer    - Pointer to beginning of the analyzing stream
      * length     - The size of the data in bytes.
      * lineNumber - The line-number from the beginning of the stream of 'pointer'
-     *              This information can be giving only from the management class
+     *              This information can only be given by the management class
      * filename   - The name of the file which the parser is working on.
      */
     Parser(const char* data,
@@ -100,7 +100,7 @@ public:
            const cString& filename = unknownFilename);
 
     /*
-     * Return a pointer inside 'data' which represent the current location of
+     * Return a pointer inside 'data' which represents the current location of
      * the parser class
      */
     uint getIterator() const;
@@ -131,7 +131,7 @@ public:
     char readChar();
 
     /*
-     * Read all blanks character and stop when the iterator reaches non-blanket
+     * Read all blank characters and stop when the iterator reaches a non-blank
      * character.
      *
      * If the pointer points to the end of the stream, the function returns
@@ -140,11 +140,11 @@ public:
     void readBlanks();
 
     /*
-     * Read all blanks until end of line (\n\r) founded.
+     * Read all blanks until the end of the line (\n\r) is found.
      *
      * Used for processors where end-of-line has some significant dividing lines
      *
-     * Return true if end of line OR END OF STREAM founded.
+     * Return true if end of line OR END OF STREAM is found.
      * For any other character return false
      */
     bool readBlanksUntilEOL();
@@ -155,7 +155,7 @@ public:
     cString getBlanks();
 
     /*
-     * Read a word from the text. The stream must be point to a textual data.
+     * Read a word from the text. The stream must point to textual data.
      * The word ends at a blanket or end-of-stream
      *
      * Return the content of the word
@@ -163,53 +163,53 @@ public:
     cString readWord();
 
     /*
-     * Reads a C name. The name must contains either one of the following
-     * characters: letter, digit and _.
+     * Reads a C name. The name must contain only the following
+     * characters: letters, digits and _.
      *
-     * isFirstLetter - True which means that the first character must be
+     * isFirstLetter - True means that the first character must be
      *                 a letter.
      *
-     * Return the readed string.
+     * Return the read string.
      *
-     * Throws exception if EOS is reached or the first digit is not letter.
+     * Throws an exception if EOS is reached or the first digit is not a letter.
      */
     cString readCString(bool isFirstLetter = true);
 
     /*
-     * The function reads a string starting with quate (") and ends with a quate.
-     * The function parse the internal special characters such as '\t' '\n' and
-     * '\\', '\"' into thier original meanning.
+     * The function reads a string starting with quote (") and ends with a quote.
+     * The function parses the internal special characters such as '\t' '\n' and
+     * '\\', '\"' into their original meaning.
      *
-     * isCString - Set to true in order to read c-style quate strings
-     *             Set to false otherwise (all \n will remains \n...)
+     * isCString - Set to true in order to read c-style quote strings
+     *             Set to false otherwise (all \n will remain \n...)
      *
-     * Throws exception if EOS is reached or the first digit is not quate (").
+     * Throws an exception if EOS is reached or the first digit is not a quote (").
      */
     cString readQuateString(bool isCString = true);
 
     /*
      * Reads a string which contains BLABLA$(VariableName)BLABLA.bla names.
-     * The strings can contains numbers, letters, variables, dots, underscore.
+     * The strings can contain numbers, letters, variables, dots and underscores.
      *
-     * Throws exception if EOS is reached or the string is not formatted.
+     * Throws an exception if EOS is reached or the string is not formatted.
      */
     cString readSpeicalString();
 
     /*
-     * Try to read an integer from the stream. The integer can be formated as
+     * Try to read an integer from the stream. The integer can be formatted as
      * a C integer format: Decimal number 123, or hexadecimal with a prefix +
-     * of 0x, it can be also base 8 number with a prefix of 0.
+     * of 0x, or a base 8 number with a prefix of 0.
      *
-     * The parseing stop at the first non-digit character. If the character is
-     * alpha character (such as A..Z, a..z) an exception will be raised.
+     * The parsing stops at the first non-digit character. If the character is
+     * an alphabetic character (such as A..Z, a..z) an exception will be raised.
      *
      * NOTE:
-     * The readed number must be in unsigned format.
+     * The read number must be in unsigned format.
      *
      * TODO! Add base 8 parser.
      *
-     * Throws exception if the first character is not a digit.
-     * Throws exception if overflow had being occured.
+     * Throws an exception if the first character is not a digit.
+     * Throws an exception if an overflow occurred.
      */
     uint readCUnsignedInteger();
 
@@ -217,8 +217,8 @@ public:
      * Read and check whether the next token is a c style integer.
      * See 'readCUnsignedInteger' for more information
      *
-     * retNumber - A pointer into the readed integer. If this pointer is null
-     *             then the function only return true or false
+     * retNumber - A pointer into the read integer. If this pointer is null
+     *             then the function only returns true or false
      * shouldAdvancePosition - Set to true if the token position should be
      *                         advanced. Set to false to indicate that the
      *                         position should remain the same.
@@ -239,14 +239,14 @@ public:
     uint readHexString();
 
     /*
-     * For signed integer this variable is trying to read it's signed.
+     * For signed integers this variable is trying to read its sign.
      *
      * Return true if a minus (-) character is found before the number.
      */
     bool readSignedValue();
 
     /*
-     * The function rerieving the next C style string without polling it from
+     * The function retrieves the next C style string without polling it from
      * the stream.
      *
      * See readCString.
@@ -256,7 +256,7 @@ public:
     /*
      * Read a block of braces.
      *
-     * Throws exception if the block is invalid
+     * Throws an exception if the block is invalid
      */
     void readBracesBlock();
 
@@ -269,15 +269,15 @@ public:
 
     /*
      * Remove the C style comments ( '/ /' and '/ *' )
-     * The comments are replace with blanks.
+     * The comments are replaced with blanks.
      *
-     * stream - The stream which the comments should be removed
+     * stream - The stream from which the comments should be removed
      * length - The size of 'stream' in bytes
      */
     static void removeComments(char* stream, uint length);
 
     /*
-     * The function replace all double new line character such as
+     * The function replaces all double newline characters such as
      * "\r\n" or "\r\n" with a space and a single '\n' character
      *
      * stream - The stream
@@ -286,7 +286,7 @@ public:
     static void removeDoubleNewLine(char* stream, uint length);
 
     /*
-     * Make the parsing function work and written easly.
+     * Makes the parsing functions easy to write and run.
      * Calls the 'removeComments' and 'removeDoubleNewLine' functions.
      * See removeComments()
      * See removeDoubleNewLine()
@@ -298,7 +298,7 @@ public:
 
 private:
     /*
-     * Internal implementation of isEOS. Uses outsider pointer.
+     * Internal implementation of isEOS. Uses outside pointer.
      *
      * pointer - Iterator of the stream
      *
@@ -307,9 +307,9 @@ private:
     bool internalIsEOS(char* pointer);
 
     /*
-     * Test that the end-of-file is not reach yet.
+     * Test that the end-of-file is not reached yet.
      *
-     * Throw exception otherwise
+     * Throw an exception otherwise
      */
     void checkNotEOS();
 
@@ -332,11 +332,11 @@ private:
     const cString& m_filename;
 };
 
-// The macro which throw exception from a parser.
+// The macro which throws an exception from a parser.
 #define PARSER_THROW(parser, msg) XSTL_THROW(ParserException, (parser).getFilename(), (parser).getLinenumber(), (msg));
-// The macro which throw exception from a parser.
+// The macro which throws an exception from a parser.
 #define PARSER_CHECK(n, parser, msg) if (!(n)) { PARSER_THROW(parser, msg); };
-// Catch exception and translate them to parser exception
+// Catch exceptions and translate them to parser exceptions
 #define PARSER_CATCH(n, parser, msg) XSTL_TRY { n; } XSTL_CATCH_ALL { PARSER_THROW(parser, msg); };
 
 #endif // __TBA_XSTL_PARSER_PARSER_H

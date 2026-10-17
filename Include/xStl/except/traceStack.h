@@ -42,8 +42,8 @@
 #include "xStl/types.h"
 
 /*
- * The functions dumps the stack of the preivous functions.
- * Note: Not including calling function
+ * The function dumps the stack of the previous functions.
+ * Note: Does not include the calling function
  */
 void traceStack();
 

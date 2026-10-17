@@ -61,7 +61,7 @@ uint cStringerStream::write(const void* buffer, const uint length)
     // TODO! Add uint16 dump and uint32 dump...
     uint8* buf = (uint8*) buffer;
 
-    // Due to EVC compiler and gcc-4.0 compiler, moving the DATA8 as argument causes the compiler to mis-match the template
+    // Due to EVC compiler and gcc-4.0 compiler, moving the DATA8 as argument causes the compiler to mismatch the template
     // ;(
     DATA8 dump(buf, buf + length);
     hexDumpObject(*this, dump);
@@ -80,7 +80,7 @@ bool cStringerStream::flushBuffer(cString& ret)
 bool cStringerStream::flushEndlBuffer(cString& ret)
 {
     cLock lock(m_lock);
-    const cString els(endl); // was static, remove due to atexit() dependencies...
+    const cString els(endl); // was static, removed due to atexit() dependencies...
     uint index = m_lineRepository.find(els);
     if (index == m_lineRepository.length())
         return false;
@@ -88,7 +88,7 @@ bool cStringerStream::flushEndlBuffer(cString& ret)
     uint llen = cChar::getStrlen(endl);
     // A new line was detected, from 0 until index.
     ret = m_lineRepository.left(index + llen);
-    // Delete the outputed line.
+    // Delete the output line.
     m_lineRepository = m_lineRepository.right(m_lineRepository.length() -
             index -
             llen);
@@ -183,7 +183,7 @@ cStringerStream& cStringerStream::operator << (const uint16 word)
 {
     #ifdef XSTL_UNICODE
         // BUG: If (word=0), and XSTL_UNICODE is defined, it will be replaced
-        // to nul character.
+        // by a nul character.
         //
         // Why use XSTL_UNICODE when printing uint16 ?
         // Guy

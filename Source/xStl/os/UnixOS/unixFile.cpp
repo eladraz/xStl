@@ -69,7 +69,7 @@ cFile::cFile(const cString& filename,
     m_handle(INVALID_FILE_HANDLE)
 {
     #ifdef XSTL_MACOSX
-        // Files on MAC are automaticly 64bit
+        // Files on MAC are automatically 64bit
         int o_flags = 0;
     #else
         int o_flags = O_LARGEFILE;
@@ -100,8 +100,8 @@ cFile::cFile(const cString& filename,
         //handle = ::open(filename.getASCIIstring().getBuffer(), o_flags, mode);
         //umask(old);
 
-        // Create the file and reopen it. The above method doesn't seems to
-        // work on ubuntu
+        // Create the file and reopen it. The above method doesn't seem to
+        // work on Ubuntu
         FILE* file = fopen(filename.getASCIIstring().getBuffer(), "w+");
         if (file != NULL)
         {
@@ -134,11 +134,11 @@ cFile::cFile(cOSDef::fileHandle handle,
 
 bool cFile::isFileExist(const cString& filename)
 {
-    // Check if file exist
+    // Check if the file exists
     struct stat st;
     if (stat(filename.getASCIIstring().getBuffer(), &st) == 0)
     {
-        // Return true on all type of files/devices except directories
+        // Return true on all types of files/devices except directories
         return S_ISDIR(st.st_mode);
     }
 
@@ -183,7 +183,7 @@ void cFile::openHandle(const cOSDef::fileHandle& handle,
 
 cFile::~cFile()
 {
-    // Test if the is opened
+    // Test if the file is opened
     if (isOpen())
     {
         flush();
@@ -206,7 +206,7 @@ uint cFile::read(void *buffer, const uint length)
     // Test for errors
     if (readed == ((DWORD)-1))
     {
-        XSTL_THROW(cFileException, XSTL_STRING("Reading from file faild."));
+        XSTL_THROW(cFileException, XSTL_STRING("Reading from file failed."));
     }
 
     return readed;
@@ -221,7 +221,7 @@ uint cFile::write(const void *buffer, const uint length)
     if (written == ((DWORD)-1))
     {
         /* There was an error */
-        XSTL_THROW(cFileException, XSTL_STRING("Writeing to file faild."));
+        XSTL_THROW(cFileException, XSTL_STRING("Writing to file failed."));
     }
 
     return written;

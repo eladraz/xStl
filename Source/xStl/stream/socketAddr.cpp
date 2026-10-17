@@ -73,7 +73,7 @@ cSockAddrIn::cSockAddrIn(const cString& name, WORD port /* = 0 */)
     sin_family = AF_INET;
     sin_port   = htons(port);
 
-    // Covert to ASCII
+    // Convert to ASCII
     cSArray<char> asciiName = name.getASCIIstring();
 
     #ifndef XSTL_LINUX
@@ -107,7 +107,7 @@ cSockAddrIn::cSockAddrIn(DWORD addr, WORD port /* = 0 */)
 /*
  * cSockAddrIn::operator =
  *
- * Copy the class parametrs from one class to the other.
+ * Copy the class parameters from one class to the other.
  */
 cSockAddrIn & cSockAddrIn::operator = (const cSockAddrIn & other)
 {
@@ -134,7 +134,7 @@ DWORD cSockAddrIn::getIPAddr() const
     #ifdef XSTL_LINUX
         return ntohl(this->sin_addr.s_addr);
     #else
-        #error "Add platform functionalty here!";
+        #error "Add platform functionality here!";
     #endif
     #endif
 };
@@ -183,7 +183,7 @@ unsigned int cSockAddrIn::getSize() const
 
 
 /*
- * The global mutex to be lock the 'gethostbyname' function
+ * The global mutex used to lock the 'gethostbyname' function
  */
 static cMutex g_getHostByNameLock;
 
@@ -211,7 +211,7 @@ cSockAddrIn cSockAddrIn::getHostByName(const cString& name, WORD port /* = 0 */)
         // Linux version
         ret.sin_addr.s_addr = *((DWORD *)(addr->h_addr_list[0]));
     #else
-        #error "Add platform functionalty here!";
+        #error "Add platform functionality here!";
     #endif
     #endif
 
@@ -233,7 +233,7 @@ void cSockAddrIn::getAllHostsName(const cString& name,
     cLock lock(g_getHostByNameLock);
 
     /* Invoke the 'gethostname' function call */
-    /* Recieve a list of all address          */
+    /* Receive a list of all addresses          */
     cSArray<char> asciiName = name.getASCIIstring();
     hostent * addr = gethostbyname(asciiName.getBuffer());
 

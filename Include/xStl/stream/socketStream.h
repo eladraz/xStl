@@ -35,10 +35,10 @@
 /*
  * socketstream.h
  *
- * Declare the basic stream for socket's  stream class. Implement the brekley
+ * Declare the basic stream for the socket stream class. Implements the Berkeley
  * socket functionality and the WSA socket classes.
  *
- * Compiled on Windows platforms and UNIX's
+ * Compiled on Windows platforms and UNIX platforms
  *
  * Author: Elad Raz <e@eladraz.com>
  */
@@ -84,11 +84,11 @@
 /*
  * class socketInitSingleton
  *
- * Initialize the TCP stack on the constructor (Valid for Windows program). This
- * class is a singleton so there isn't any duplication calls for the
+ * Initialize the TCP stack on the constructor (valid for Windows programs). This
+ * class is a singleton so there aren't any duplicate calls for the
  * initialization
  *
- * The class should init the operation-system "sockets" library at the first
+ * The class should init the operating-system "sockets" library at the first
  * call to the constructor. "atexit" the function should free the library. The
  * class contains expand to init each TCP connection individually using the
  * "init" function
@@ -100,7 +100,7 @@ public:
 
     /*
      * Destructor. Free up the socket library. For windows this function
-     * call to the WSACleanup().
+     * call WSACleanup().
      */
     ~socketInitSingleton();
 
@@ -144,7 +144,7 @@ extern const TIMEVAL DEFAULT_WRITE_TIMEOUT;   // 1 second timeout
 /*
  * class cSocketStream
  *
- * Provide simple stream interface to all protocols under the Berkley sockets
+ * Provide simple stream interface to all protocols under the Berkeley sockets
  * and Winsock API's. The implementation of the stream is that the read and
  * the write function will not be blocking but wait for a specific timeout
  * given in the constructor.
@@ -156,16 +156,16 @@ public:
      * Constructor. Construct an empty socket object with initialize timeout
      * as arguments.
      *
-     * readTimout - How many seconds/usec to be wait until the reading operation
+     * readTimout - How many seconds/usec to wait until the reading operation
      *              will return.
-     * writeTimeout - How many seconds/usec to be wait until the writing
+     * writeTimeout - How many seconds/usec to wait until the writing
      *                operation will return.
      */
     cSocketStream(const TIMEVAL readTimeout = DEFAULT_READ_TIMEOUT,
                   const TIMEVAL writeTimeout = DEFAULT_WRITE_TIMEOUT);
 
     /*
-     * Virtual destructor. close the connection if exist.
+     * Virtual destructor. Close the connection if it exists.
      */
     virtual ~cSocketStream();
 
@@ -199,7 +199,7 @@ public:
     void close();
 
     /*
-     * Establish connection to a peer by it's address.
+     * Establish a connection to a peer by its address.
      *
      * name - The SOCKADDR struct for the connection description.
      * size - The length of the address.
@@ -227,14 +227,14 @@ public:
     /*
      * Prepare the socket for incoming transmissions.
      *
-     * backlog - Defines the maximum available connection simultaneous.
+     * backlog - Defines the maximum number of simultaneous connections.
      *
      * Throws cSocketException (Listen) in case of error.
      */
     void listen(unsigned int backlog = SOMAXCONN);
 
     /*
-     * Wait for new connection to arrive to the connection table, Return the new
+     * Wait for a new connection to arrive in the connection table. Return the new
      * connection socket in the "newSocket" variable
      * and the remote address into the "addr" variable with the size
      * limitation.
@@ -257,27 +257,27 @@ public:
 
     /*
      * Return the handler for the socket. This function should be used in case
-     * the programmer should call to a platform independed function.
+     * the programmer should call a platform-independent function.
      */
     SOCKET getHandler() const;
 
 
     /* Should handle DATAGRAM messages */
 
-    // These functions are driven from basicIO
+    // These functions are derived from basicIO
 
     /*
-     * Send the data into the socket. The function try to send the data for a
-     * period time, as defined in the "write-timeout-counter" and return.
-     * In case of unexpected close. The function throws exception.
+     * Send the data into the socket. The function tries to send the data for a
+     * period of time, as defined in the "write-timeout-counter", and returns.
+     * In case of an unexpected close the function throws an exception.
      *
      * Throws cSocketException(Init,Write) for error.
      */
     virtual uint write(const void *buffer, const uint length);
 
     /*
-     * Read a data from a socket. The function try to read from the socket data
-     * until exception was caught or timeout has reached.
+     * Read data from a socket. The function tries to read data from the socket
+     * until an exception is caught or the timeout is reached.
      *
      * Return the number of bytes read from the device.
      * Throws cSocketException(Init,Read) for error.
@@ -299,16 +299,16 @@ public:
      */
     virtual bool isEOS();
 
-    // These function are not implemented:
+    // These functions are not implemented:
 
     /*
-     * Not implement throw exception in debug mode. In release the function
-     * always return 0.
+     * Not implemented; throws an exception in debug mode. In release the function
+     * always returns 0.
      */
     virtual uint getPointer() const;
 
     /*
-     * Not implement.
+     * Not implemented.
      * Maybe the function should return the number of bytes waiting in the queue.
      */
     virtual uint length() const;
@@ -316,7 +316,7 @@ public:
     /*
      * Returns how many bytes should be read for best performance in the
      * pipeRead() function in a single call to the read() function.
-     * This value stand on the MTU/4
+     * This value stands at the MTU/4
      */
     virtual uint getPipeReadBestRequest() const { return 256; }
 

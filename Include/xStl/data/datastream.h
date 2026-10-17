@@ -35,7 +35,7 @@
 /*
  * datastream.h
  *
- * Provide set of tools to dump memory structs into the screen.
+ * Provides a set of tools to dump memory structs to the screen.
  *
  * Author: Elad Raz <e@eladraz.com>
  */
@@ -46,7 +46,7 @@
 
 #ifdef XSTL_WINDOWS
     // Template classes might not use all the local functions the interface has
-    // to ofer. Warning C4505 should be over-written for template functions
+    // to offer. Warning C4505 should be disabled for template functions
     #pragma warning(push)
     #pragma warning(disable:4505)
 #endif
@@ -60,7 +60,7 @@
 
 /*
  * The following functions are helpers only. But they can be good for other
- * implementation.
+ * implementations.
  */
 
 /*
@@ -69,9 +69,9 @@
 #define DB_DEFUALT_CHAR '.'
 
 /*
- * Return a printable character represinting the character.
+ * Return a printable character representing the character.
  *
- * ch           - The character to be query
+ * ch           - The character to be queried
  * nonPrintable - The non-printable value for non-printable characters.
  *
  * Return a printable value of the character.
@@ -80,7 +80,7 @@ uint8 DB(const uint8& ch,
          const uint8 nonPrintable = DB_DEFUALT_CHAR);
 
 /*
- * Return the high/low nibble of a character as an hex char.
+ * Return the high/low nibble of a character as a hex char.
  */
 character HEXHIGH(const uint8& ch);
 character HEXLOW(const uint8& ch);
@@ -94,15 +94,15 @@ cString HEXWORD(const uint16& word);
 cString HEXDWORD(const uint32& dword);
 
 #ifndef XSTL_16BIT
-// TODO! 16 bit compilers doesn't support 64bit integer.
+// TODO! 16 bit compilers don't support 64bit integers.
 // TODO! Add uint64 as a class
 cString HEXQWORD(const uint64& qword);
 #endif
 
 /*
- * Convert a number to the closet hexadecimal value. If the number if 8 bit
- * then HEXBYTE will be in used, if the number is 16 bit number then HEXWORD
- * will be used. etc.
+ * Convert a number to the closest hexadecimal value. If the number is 8 bit
+ * then HEXBYTE will be used, if the number is a 16 bit number then HEXWORD
+ * will be used, etc.
  */
 cString HEXNUMBER(uint number);
 
@@ -122,9 +122,9 @@ cString HEXREMOTEADDRESS(const remoteAddressNumericValue& address);
 /*
  * DUMP class
  *
- * An ostream class wrraper use this class to dump information according to
- * thier hex data.
- * Using the class as the following:
+ * An ostream class wrapper. Use this class to dump information according to
+ * its hex data.
+ * Use the class as follows:
  *  cStrem object;
  *  cout << DATA(object.begin(), object.end()) << endl;
  */
@@ -181,8 +181,8 @@ public:
 
 #if (defined(XSTL_WINDOWS) || defined(XSTL_NTDDK) || defined(XSTL_CE))
     /*
-     * For windows compilers, we don't need to declare any template
-     * function of friend function.
+     * For Windows compilers, we don't need to declare any template
+     * friend function.
      */
     template <class OSTREAM>
     friend OSTREAM& operator << (OSTREAM &out, DUMP<ITERATOR, INFO>& object);
@@ -191,8 +191,8 @@ public:
     friend OSTREAM & hexDumpObject(OSTREAM &out, DUMP<ITERATOR, INFO>& object);
 #else
     /*
-     * For g++ compiler we need to declare does function
-     * as an template function
+     * For the g++ compiler we need to declare these functions
+     * as template functions
      */
     template <class OSTREAM, class FW_ITR, class DT>
     friend OSTREAM& operator << (OSTREAM &out, DUMP<FW_ITR, DT>& object);
@@ -218,11 +218,11 @@ public:
 
 
 /*
- * Print an hex byte of the object. The object store the type information
- * of how to print the object and where (and how) it is store in the memory
+ * Print a hex byte of the object. The object stores the type information
+ * of how to print the object and where (and how) it is stored in the memory
  *
  * out    - The output stream to be used.
- * object - The object to be dump
+ * object - The object to be dumped
  *
  * Returns the reference object to the dump object.
  */
@@ -240,7 +240,7 @@ OSTREAM& operator << (OSTREAM &out, DUMP<FW_ITR, DT>& object);
 /*
  * DATA commands
  *
- * Since must of the use in the DUMP class will be to dump cBuffer data
+ * Since most of the use of the DUMP class will be to dump cBuffer data
  * then there is a shortcut.
  */
 typedef DUMP<const uint8*, uint8>                      DATA8;

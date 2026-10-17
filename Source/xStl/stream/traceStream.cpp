@@ -105,4 +105,4 @@ void traceStream::cleanUpMemory()
     m_singletonMedium = NULL;
 }
 
-#endif //_DEUBG
+#endif //_DEBUG

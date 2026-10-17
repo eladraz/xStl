@@ -35,7 +35,7 @@
 /*
  * DbgCom.h
  *
- * Send all output messages into debug-view window
+ * Send all output messages into the debug-view window
  *
  * Author: Elad Raz <e@eladraz.com>
  */

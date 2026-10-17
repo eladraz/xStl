@@ -42,8 +42,8 @@
 /*
  * tests.h
  *
- * Declare the global cTestObject which instance a test object. The object
- * register itself to a test-list which execute and control the execuation.
+ * Declare the global cTestObject which instantiates a test object. The object
+ * registers itself to a test-list which executes and controls the execution.
  *
  * Author: Elad Raz <e@eladraz.com>
  */
@@ -61,8 +61,8 @@ public:
     virtual ~cTestObject() {};
 
     /*
-     * This function perform the test for the module. This function may throw
-     * exception in-case of failure. The function should call to all sub-tests
+     * This function performs the test for the module. This function may throw
+     * an exception in case of failure. The function should call all sub-tests
      * functions.
      */
     virtual void test() = 0;
@@ -75,27 +75,27 @@ public:
     /*
      * Return a random abc string.
      *
-     * maxNumberOfDigits - The maximum number of digist which the string can be
+     * maxNumberOfDigits - The maximum number of digits which the string can be
      *
      * NOTE: The string cannot be empty.
      */
     static cString randomizeName(uint maxNumberOfDigits);
 
     /*
-     * Is one of the test failed.
+     * Whether one of the tests failed.
      */
     static bool isException;
 };
 
 /*
- * The function covert char* to character* without being thread-safe.
- * The only purpuse of this function is to covert __FILE__ macro to uni-code.
+ * The function converts char* to character* without being thread-safe.
+ * The only purpose of this function is to convert the __FILE__ macro to unicode.
  */
 character* makeString(char* string);
 
 
 /*
- * Usefull assertion.
+ * Useful assertion.
  */
 
 #define TESTS_ASSERT(condition)      if (!(condition)) { XSTL_THROW(cException, XSTL_STRING("Condition asserted")); }

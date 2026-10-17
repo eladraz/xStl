@@ -61,16 +61,16 @@ void cPMacRandom::generateRandom(uint length, cBuffer& output)
     output.changeSize(length, false);
     uint8* data = output.getBuffer();
 
-    // Try to read from the olded generated random...
+    // Try to read from the old generated random...
     while (length > 0)
     {
         uint rest = m_queue.getQueueOccupyspace();
 
         if (rest == 0)
         {
-            // There isn't data in the queue
+            // There isn't any data in the queue
             // Generate length bytes of random
-            // New blocks are reqiuerd.
+            // New blocks are required.
 
             // Hash for the previous A
             //   A(i) = HMAC_hash(secret, A(i-1))

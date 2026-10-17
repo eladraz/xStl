@@ -54,7 +54,7 @@
     // DOS can use files, however BIOS application can't...
     // TODO!
 #else
-    // Windows and linux platforms uses files as thier console output
+    // Windows and Linux platforms use files as their console output
     #include "xStl/stream/fileStream.h"
 #endif
 
@@ -62,23 +62,23 @@
 /*
  * conOutStream
  *
- * Output steam directed to the console output.
+ * Output stream directed to the console output.
  */
 class conOutStream : public cStringerStream
 {
 public:
     /*
-     * Constructor. This stream uses a cache and waits until new-line is send.
+     * Constructor. This stream uses a cache and waits until new-line is sent.
      */
     conOutStream();
 
     /*
-     * Return a global (Singelton) cout object
+     * Return a global (Singleton) cout object
      */
     static conOutStream& getCout();
 
     /*
-     * Return a global (Singelton) cerr object
+     * Return a global (Singleton) cerr object
      */
     static conOutStream& getCerr();
 
@@ -103,13 +103,13 @@ private:
      *
      * object - The type of the out-object
      *
-     * Throws exception in case of construction error.
+     * Throws an exception in case of construction error.
      */
     conOutStream(conOutObjects object);
 
     #if defined(XSTL_NTDDK)
         // WINDOWS NT+ DEVICE DRIVERS
-        // Only the cConsoleDeviceControls can pools out the console.
+        // Only the cConsoleDeviceControls can poll the console.
         // See cConsoleDevice
         friend class cConsoleDeviceControls;
         // Use as a repository for holding the console messages
@@ -118,9 +118,9 @@ private:
         enum { MAX_CON_MESSAGES = 2000 };
 
     #elif (defined (XSTL_16BIT) || defined (XSTL_CE))
-        // So far the implementation depend on standard libraries which uses
+        // So far the implementation depends on standard libraries which use
         // the C printf() method.
-        // Windows CE are implemented by the ConsoleLibrary. Please review the
+        // Windows CE is implemented by the ConsoleLibrary. Please review the
         // code on this project.
     #else
         // WINDOWS APP and UNIX application

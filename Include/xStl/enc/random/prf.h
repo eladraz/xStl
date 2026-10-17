@@ -35,8 +35,8 @@
 /*
  * prf.h
  *
- * The psedu-random-function (PRF) as descibes in the RFC2246 which is the TLS
- * protocol spesification.
+ * The pseudo-random-function (PRF) as described in RFC 2246 which is the TLS
+ * protocol specification.
  *
  * Author: Elad Raz <e@eladraz.com>
  */
@@ -50,7 +50,7 @@
 /*
  * class cPRF
  *
- * Defines the PRF function. The PRF function defines as follows:
+ * Defines the PRF function. The PRF function is defined as follows:
  *
  *      PRF(secret, label, seed) = P_MD5(S1, label + seed) XOR
  *                                 P_SHA-1(S2, label + seed);
@@ -59,20 +59,20 @@ class cPRF : public cRandom
 {
 public:
     /*
-     * Init the random mechanizm according to 'seed' and a 'secret' the
+     * Init the random mechanism according to 'seed' and a 'secret' the
      * seed is the 'label + seed' and the secret is split into two halves
-     * use to init the P-MD5 and the P-SHA-1 objects.
+     * used to init the P-MD5 and the P-SHA-1 objects.
      */
     cPRF(const cBuffer& seed, const cBuffer& secret);
 
     /*
      * Generate 'length' bytes of random and put it in 'output'. The 'output'
      * size is changed to 'length' and step over pure random. This function
-     * increase the internal random mechanizm.
+     * advances the internal random mechanism.
      * The generated random
      *
      * length - The amount of random to be generate.
-     * output - Will be filled with the required psedu-random generation code.
+     * output - Will be filled with the required pseudo-random generation code.
      */
     virtual void generateRandom(uint length, cBuffer& output);
 

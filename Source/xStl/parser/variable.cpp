@@ -58,7 +58,7 @@ BasicVariable::BasicVariable() :
 BasicVariable::BasicVariable(Types::Type type) :
     m_type(type)
 {
-    // Mark uninitiale BasicVariable
+    // Mark uninitialized BasicVariable
     m_data.m_uint32 = EYE_CATCHER;
 }
 
@@ -108,7 +108,7 @@ int BasicVariable::getSignedInteger() const
     case Types::TYPE_INT16: return m_data.m_int16;
     case Types::TYPE_INT32: return m_data.m_int32;
     default:
-        // Shouldn't be riched here!
+        // Should never be reached here!
         ASSERT(false);
         return EYE_CATCHER;
     }
@@ -134,7 +134,7 @@ void BasicVariable::setSignedInteger(int other)
         m_data.m_int32 = (int32)other;
         return;
     default:
-        // Shouldn't be riched here!
+        // Should never be reached here!
         ASSERT(false);
     }
 }
@@ -148,7 +148,7 @@ uint BasicVariable::getUnsignedInteger() const
     case Types::TYPE_UINT16: return m_data.m_uint16;
     case Types::TYPE_UINT32: return m_data.m_uint32;
     default:
-        // Shouldn't be riched here!
+        // Should never be reached here!
         ASSERT(false);
         return EYE_CATCHER;
     }
@@ -174,7 +174,7 @@ void BasicVariable::setUnsignedInteger(uint other)
         m_data.m_uint32 = (uint32)other;
         return;
     default:
-        // Shouldn't be riched here!
+        // Should never be reached here!
         ASSERT(false);
     }
 }

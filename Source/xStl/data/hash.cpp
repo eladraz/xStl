@@ -58,7 +58,7 @@ uint cHashFunction(const uint32& index, uint range)
 uint cHashFunction(const float& index, uint range)
 {
     // Convert the float bits into number
-    // And then preform the module process.
+    // And then perform the modulo operation.
     return *((uint *)(&index)) % range;
 }
 

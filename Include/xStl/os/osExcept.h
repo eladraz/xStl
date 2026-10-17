@@ -35,9 +35,9 @@
 /*
  * osExcept.h
  *
- * The OS exception is driven class from cExcetption which triggered in
- * response to operating system API faliure. The exception constructor
- * have the it's need to tell the developer what happended.
+ * The OS exception is a class derived from cException which is triggered in
+ * response to operating system API failure. The exception constructor
+ * has the information needed to tell the developer what happened.
  *
  * Author: Elad Raz <e@eladraz.com>
  */
@@ -46,16 +46,16 @@
 #include "xStl/os/osdef.h"
 
 /*
- * Used in order to throw exception which contains the operating system faliure
+ * Used in order to throw an exception which contains the operating system failure
  * code.
  *
- * Here are few examples:
+ * Here are a few examples:
  *
- * - xStl source code example. Take from file.cpp:
+ * - xStl source code example. Taken from file.cpp:
  *      if (CreateFile(...) == INVALID_HANDLE_VALUE)
  *         XSTL_THROW(cOsException());
  *
- *   OS: New OS exception throwed, code 0x2E, Access deined
+ *   OS: New OS exception thrown, code 0x2E, Access denied
  *
  * - XDK application:
  *     NTSTATUS ret = IoCreateDevice(...);
@@ -66,12 +66,12 @@ class cOsException : public cException {
 public:
     /*
      * Default constructor. The ctor should be called in response to API
-     * call. The function invoke a call to the operating system and query
+     * call. The function invokes a call to the operating system and queries
      * the error code ('GetLastError()' in Windows. 'errno' for all others)
      *
-     * For operating systems which thier last error code cannot be determine
-     * this function constructed a 'Faliure' code.
-     * For these king of operating systems use the predetermined code ctor.
+     * For operating systems whose last error code cannot be determined
+     * this function constructs a 'Failure' code.
+     * For these kinds of operating systems use the predetermined code ctor.
      */
     cOsException(char * file, uint32 line);
 
@@ -102,7 +102,7 @@ private:
 
 
 /*
- * Same as OS_CHECK, but allows pasing exception code to the construtor
+ * Same as OS_CHECK, but allows passing exception code to the constructor
  * of cOsException.
  */
 #define OS_CHECK_WITH_CODE(n,code) if (!(n)) { XSTL_THROW(cOsException, code); }

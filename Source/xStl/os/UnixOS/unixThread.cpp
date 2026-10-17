@@ -41,7 +41,7 @@
 #include "xStl/os/osdef.h"
 #include "xStl/os/thread.h"
 
-// sys/types.h in some compilers has a difinitions of uint
+// sys/types.h in some compilers has a definitions of uint
 #undef uint
 #include <signal.h>
 #include <unistd.h>

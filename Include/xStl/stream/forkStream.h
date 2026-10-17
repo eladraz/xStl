@@ -35,21 +35,21 @@
 /*
  * forkStream.h
  *
- * Interface for streams which can forked. The forked stream arre stream
- * which able to duplicate themself.
+ * Interface for streams which can be forked. A forked stream is a stream
+ * which is able to duplicate itself.
  *
  * Author: Elad Raz <e@eladraz.com>
  */
 #include "xStl/types.h"
 #include "xStl/stream/basicIO.h"
 
-// Forward decleration
+// Forward declaration
 class cForkStream;
 // The reference countable object for the forked objects
 typedef cSmartPtr<cForkStream> cForkStreamPtr;
 
 /*
- * The interface contains only one single and very powerfull function:
+ * The interface contains only a single, very powerful function:
  *    cForkStreamPtr fork().
  */
 class cForkStream : public basicIO {

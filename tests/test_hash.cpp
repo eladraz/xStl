@@ -43,7 +43,7 @@
 #include "tests.h"
 
 
-// For the constructor and deconstructor test
+// For the constructor and destructor test
 // Copy constructor and operator=.
 enum ActionList {
     EMPTY,
@@ -91,7 +91,7 @@ public:
     {
         cHash<cString, cString> hash;
 
-        // Test exception for non exist value
+        // Test exception for a non-existent value
         TESTS_EXCEPTION(hash["First"] = "1");
         TESTS_EXCEPTION(hash[""] = "1");
         TESTS_EXCEPTION(hash["Temp"] = "1");

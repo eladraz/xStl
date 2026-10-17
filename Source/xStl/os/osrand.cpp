@@ -70,7 +70,7 @@ uint cOSRand::rand()
     // Generate random
     generateRandom(sizeof(uint), retStream);
 
-    // Covert to number
+    // Convert to number
     uint ret = 0;
     for (uint i = 0; i < sizeof(uint); i++)
     {

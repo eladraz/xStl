@@ -49,7 +49,7 @@ void cRC4::loadKey(const cBuffer& key)
     uint8 index1, index2;
     uint  i;
 
-    // Reset the premutation entries.
+    // Reset the permutation entries.
     for (i = 0; i < RC4KEY_LEN; i++)
         m_premutation[i] = i;
 

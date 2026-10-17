@@ -35,10 +35,10 @@
 /*
  * time.h
  *
- * Abstract class for time. The time is a pack struct of the date in the year and
- * the time of the day. The class is wrapped in abstract interface which allows
- * accessing the time and modify it in very simple way.
- * The time can be the english calander time or even the hebrew calander time.
+ * Abstract class for time. The time is a packed struct of the date in the year and
+ * the time of the day. The class is wrapped in an abstract interface which allows
+ * accessing and modifying the time in a very simple way.
+ * The time can be the English calendar time or even the Hebrew calendar time.
  *
  * Author: Elad Raz <e@eladraz.com>
  */
@@ -50,36 +50,36 @@
 class cTime {
 public:
     /*
-     * Return the time packed in the current operation system mode. The result
-     * buffer can be covert to the 'time_t' struct which changes between OS
-     * platform.
+     * Return the time packed in the current operating system mode. The result
+     * buffer can be converted to the 'time_t' struct which changes between OS
+     * platforms.
      */
     cBuffer getOSTime();
 
     // Get functions
 
     /*
-     * Return the year. Note that the year is not limit to or from the year 1970
+     * Return the year. Note that the year is not limited to or from the year 1970
      */
     uint getYear();
 
     /*
-     * Return the mounth of the year
+     * Return the month of the year
      */
     uint getMounth();
 
     /*
-     * Return the day of the mounth
+     * Return the day of the month
      */
     uint getDay();
 
     // Set functions.
 
     /*
-     * Change the date. Change the year and the mounth and the day.
+     * Change the date. Change the year and the month and the day.
      *
      * newYear   - The new year for the date
-     * newMounth - The new mounth for the date
+     * newMounth - The new month for the date
      * newDay    - The new day for the date
      *
      * Return true if the change completed. False is the date is invalid (such as
@@ -90,10 +90,10 @@ public:
                  uint newDay);
 
     /*
-     * Change the OS date. The format of the date is depened by the
+     * Change the OS date. The format of the date depends on the
      * implementation.
      *
-     * newDate - The OS formated bytes which represent the date.
+     * newDate - The OS formatted bytes which represent the date.
      *
      * Return the status of the change or the validation of the time packet.
      */

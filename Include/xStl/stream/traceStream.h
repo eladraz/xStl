@@ -40,7 +40,7 @@
  * Usage:
  *    traceHigh( << "Hello world!" << endl);
  *
- *    This will be compiled only in debug mode. The strings will not be insert in
+ *    This will be compiled only in debug mode. The strings will not be inserted in
  *    release version.
  *
  * Author: Elad Raz <e@eladraz.com>
@@ -60,38 +60,38 @@
 /*
  * traceStream
  *
- * Output steam directed to the TRACE macro.
+ * Output stream directed to the TRACE macro.
  *
- * This class has 3 functions which returns singleton inside the system
+ * This class has 3 functions which return singletons inside the system
  * in order to allow this class to be called from destructors of global
- * objects, the resources allocated by this methods must be destruct in
+ * objects, the resources allocated by these methods must be destructed in
  * the lib C++ utility.
- * Ring3 application doesn't have a build way method of doing so, The
- * XDK method however calls to the destructors.
+ * Ring3 applications don't have a built-in way of doing so. The
+ * XDK method however calls the destructors.
  */
 class traceStream : public cStringerStream
 {
 public:
     /*
      * Constructor.
-     * This stream uses a cache and waits until new-line is send.
+     * This stream uses a cache and waits until new-line is sent.
      */
     traceStream(int traceLevel);
 
     /*
-     * Flash the trace
+     * Flush the trace
      */
     virtual ~traceStream();
 
     /*
-     * Return a global (singelton) object for the traces
+     * Return a global (singleton) object for the traces
      */
     static traceStream& getTraceHigh();
     static traceStream& getTraceMedium();
     static traceStream& getTraceLow();
 
     /*
-     * Destroy all stack signletons.
+     * Destroy all stack singletons.
      */
     static void cleanUpMemory();
 

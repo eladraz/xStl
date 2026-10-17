@@ -35,7 +35,7 @@
 /*
  * xstlLockable.h
  *
- * Define the cXstlLockable class which define what is the default lockable
+ * Define the cXstlLockable class which defines the default lockable
  * implementation for:
  *    - StringerStream
  *    - SmartPtr

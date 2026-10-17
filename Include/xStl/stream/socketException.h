@@ -35,7 +35,7 @@
 /*
  * socket_exception.h
  *
- * Define the group of socket exception.
+ * Define the group of socket exceptions.
  */
 #include "xStl/except/exception.h"
 
@@ -57,11 +57,11 @@
 /*
  * class cSocketException
  *
- * Basic Socket exception, from this class
- * all the Socket exception class will be inherited.
+ * Basic socket exception, from this class
+ * all the socket exception classes will be inherited.
  *
  * This class is a shell class to provide simple division
- * from other exception.
+ * from other exceptions.
  *
  * Author: Elad Raz <e@eladraz.com>
  */

@@ -44,7 +44,7 @@
 
 uint cVirtualMemoryAccesser::readUint(addressNumericValue address) const
 {
-    // If this change, than the implementation must be changed also
+    // If this changes, then the implementation must be changed too
     ASSERT(sizeof(uint) == sizeof(uint32));
 
     uint8 buf[4];
@@ -57,7 +57,7 @@ uint cVirtualMemoryAccesser::readUint(addressNumericValue address) const
 void cVirtualMemoryAccesser::writeUint(addressNumericValue address,
                                        uint value)
 {
-    // If this change, than the implementation must be changed also
+    // If this changes, then the implementation must be changed too
     ASSERT(sizeof(uint) == sizeof(uint32));
 
 #if defined(XSTL_32BIT)

@@ -38,20 +38,20 @@
  * Contains basic blocks of the data-types.
  *
  * Supported by g++ (Red Hat Linux) and Visual C++ compiler (Studio 6.0)
- * Also supported Digital Mars compiler
+ * Also supported by the Digital Mars compiler
  * The xStl code can be compiled to the following platforms:
  *   - Win32 Ring3 application
- *   - Unix's Posix base applications
+ *   - UNIX POSIX-based applications
  *   - NT-DDK driver (NT 4.0, 2000, XP)
  *
  * Author: Elad Raz <e@eladraz.com>
  */
 
 /*
- * Fix the different compilers and enviroment _DEBUG preprocessor
+ * Fix the different compilers and environment _DEBUG preprocessor
  */
 #ifdef DEBUG
-    // The DEBUG preprocessor is not in used, instead the _DEBUG macro is
+    // The DEBUG preprocessor macro is not used; instead the _DEBUG macro is
     // declared.
     #ifndef _DEBUG
         #define _DEBUG
@@ -62,7 +62,7 @@
 /*
  * Test for Windows version
  *
- * If the user using VC++ compiler then there is a
+ * If the user is using the VC++ compiler then there is a
  * precompiler code: WIN32/WIN64/_WIN32_WCE/LINUX/TC16
  */
 #ifdef _WIN32_WCE
@@ -92,7 +92,7 @@
     // Windows 32 bit version
     #define XSTL_32BIT
 
-    // Separate Ring0 application to Ring3 applications
+    // Separate Ring0 applications from Ring3 applications
     #ifndef _KERNEL
         #define XSTL_WINDOWS
         #include <windows.h>
@@ -136,7 +136,7 @@
 #endif
 
 /*
- * Usage of extern "C" in a C/C++ compilers. This macro is also defined
+ * Usage of extern "C" in C/C++ compilers. This macro is also defined
  * inside the XDK package.
  */
 #ifndef EXTERNC
@@ -160,7 +160,7 @@
 #define UNUSED_PARAM(x)  ((void)(x))
 
 /*
- * mechine types
+ * machine types
  */
 typedef unsigned char   uint8;
 typedef unsigned short  uint16;
@@ -181,7 +181,7 @@ typedef uint8 byte;
 
 #ifndef XSTL_16BIT
     // Add support to 64bit numbers.
-    // The problem is with compiler which doesn't supports 64bit numbers
+    // The problem is with compilers which don't support 64bit numbers
     // For instance Turbo C++ compiler
     #ifdef XSTL_LINUX
         // Linux
@@ -205,12 +205,12 @@ typedef uint8 byte;
 
 /*
  * The array size and the array access element. Used in all access to char*
- * buffers. DOS compilers uses 16bit access to array and 32bit application
- * uses 32bit pointer.
- * This parameter if define so the compiler can recognize the operators
+ * buffers. DOS compilers use 16bit access to arrays and 32bit applications
+ * use 32bit pointers.
+ * This parameter is defined so the compiler can recognize the operator
  * parameters.
  *
- * In Windows x64 bit int is a 32bit value so uint is x64 bit value...
+ * In Windows x64 int is a 32bit value, so uint stays 32bit (pointers use addressNumericValue).
  */
 #if defined(XSTL_32BIT) || defined(XSTL_16BIT) || defined(_M_X64)
     #define uint unsigned int
@@ -221,13 +221,13 @@ typedef uint8 byte;
 #define MAX_UINT ((uint)-1)
 
 /*
- * The address numeric value is a typedef which handle pointers as numbers.
+ * The address numeric value is a typedef which handles pointers as numbers.
  * See getNumeric
  * See getPtr
  */
 #ifdef XSTL_16BIT
     // 16 bit uses segment:offset address (24 bit according to the following
-    // calculatation: addr = offset + segment * 0x10)
+    // calculation: addr = offset + segment * 0x10)
     typedef uint32 addressNumericValue;
 #elif defined(_M_X64)
     // Windows x64 keeps uint as 32 bit, but pointers are 64 bit
@@ -254,8 +254,8 @@ void* getPtr(addressNumericValue address);
 /*
  * Basic data type
  *
- * Since Windows header file already include of this varibles
- * I will use thier declarations.
+ * Since the Windows header files already include these variables,
+ * I will use their declarations.
  */
 #ifndef _WINDEF_        // <windef.h> - ring3 stdafx.h include file
     typedef int8    CHAR;
@@ -325,7 +325,7 @@ void* getPtr(addressNumericValue address);
 #endif
 
 /*
- * Remark you can remark your code by writting:
+ * Remark: you can comment your code by writing:
  *    REMARK Author: Elad Raz
  * instead of:
  *        // Author: Elad Raz
@@ -333,7 +333,7 @@ void* getPtr(addressNumericValue address);
 #define REMARK    /##/
 
 /*
- * Include the exceptions handling
+ * Include the exception handling
  */
 #include "xStl/exceptions.h"
 
@@ -350,7 +350,7 @@ void* getPtr(addressNumericValue address);
  * CHECK, CHECK_MSG macro.
  *
  * Compile in both release and debug version. Make sure that the sentence is
- * true. Otherwise throws exception.
+ * true. Otherwise throws an exception.
  */
 #ifndef DOT_NET
 // Normal C++ application
@@ -372,7 +372,7 @@ void* getPtr(addressNumericValue address);
     #define CHECK_FAIL() { throw 0;}
 #endif // DOT_NET
 /*
- * A propere use of extern "C" in a C/C++ compilers
+ * A proper use of extern "C" in C/C++ compilers
  */
 #ifdef __cplusplus
     #define EXTERNC extern "C"

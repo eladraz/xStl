@@ -46,7 +46,7 @@
 /*
  * cArguments class
  *
- * Provide easy way to parse command line
+ * Provide an easy way to parse command line
  * arguments.
  *
  * Command line arguments
@@ -59,20 +59,20 @@
  *         Create a new macro name i with string 'filename.txt'
  *
  *   2. Strings
- *      A list of strings that become in the start of the
- *      line or in the end.
+ *      A list of strings that appear at the start of the
+ *      line or at the end.
  *      Input like:
  *        tcpdump -n eth0  [In this program -nlxs 5000 will not be parsed right]
  *
  *
- *  In case of advanced parseing it possibole
+ *  In case of advanced parsing it is possible
  *  to overload this class and modify the
  *  OnXXX() functions.
  */
 class cArguments
 {
 public:
-    // Constructors, Deconstructors
+    // Constructors, Destructors
     cArguments();
     cArguments(const int argc, const char **argv);
     ~cArguments();
@@ -109,7 +109,7 @@ private:
 /*
  * cArguments::cArguments
  *
- * Defualt constructor, Init the class.
+ * Default constructor. Init the class.
  */
 cArguments::cArguments()
 {
@@ -119,7 +119,7 @@ cArguments::cArguments()
  * cArguments::cArguments(const int argc, const char **argv)
  *
  * Init the class, Parse the data
- * thorw exception in case of an error
+ * throw an exception in case of an error
  */
 cArguments::cArguments(const int argc, const char **argv)
 {

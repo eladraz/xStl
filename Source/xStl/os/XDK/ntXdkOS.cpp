@@ -84,10 +84,10 @@ void* cOS::smallMemoryAllocation(uint size)
 {
     void* ret = ExAllocatePool(NonPagedPool, size);
 
-    // Throw exception if the memory cannot be allocated
+    // Throw an exception if the memory cannot be allocated
     if (ret == NULL)
     {
-        // Out of memory! Throw exception.
+        // Out of memory! Throw an exception.
         XSTL_THROW(cException, EXCEPTION_OUT_OF_MEM);
     }
 
@@ -123,7 +123,7 @@ void cOS::sleepMicroseconds(uint microseconds)
     {
         LARGE_INTEGER waitTime;
         waitTime.QuadPart = microseconds;
-        waitTime.QuadPart*= (-10L); // 100 nanoseconds, nano is 1/1,000,000. micro is is 1/1,000.
+        waitTime.QuadPart*= (-10L); // 100 nanoseconds, nano is 1/1,000,000. micro is 1/1,000.
         NTSTATUS ret = KeDelayExecutionThread(KernelMode, // Prevents recursive behaviour
                                               false, // And cannot be alertable
                                               &waitTime);
@@ -162,14 +162,14 @@ cOSDef::systemTime cOS::getSystemTime()
 uint cOS::calculateTimesDiffMilli(cOSDef::systemTime currentTime,
                                   cOSDef::systemTime startTime)
 {
-    // 100 nanoseconds, nano is 1/1,000,000. micro is is 1/1,000. 10 factor
+    // 100 nanoseconds, nano is 1/1,000,000. micro is 1/1,000. 10 factor
     // 1000 micro is milli, 1000 factor
     return (uint)((currentTime - startTime) / 10000L);
 }
 
 cString cOS::getLastErrorString()
 {
-    static const cString gMessage(XSTL_STRING("Unknown error occuered."));
+    static const cString gMessage(XSTL_STRING("Unknown error occurred."));
     return gMessage;
 }
 

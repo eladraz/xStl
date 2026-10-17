@@ -32,8 +32,8 @@
 /*
  * test_prf.cpp
  *
- * Test the PRF Psedu-random-function to be compatible with the SSLeay.0.9.6
- * implementation as describes in the RFC2246 documentation
+ * Test the PRF pseudo-random function to be compatible with the SSLeay 0.9.6
+ * implementation as described in the RFC 2246 documentation
  *
  * Author: Elad Raz <e@eladraz.com>
  */

@@ -75,7 +75,7 @@ public:
         uint32 rmsglen;
     };
 
-    // Singal between threads;
+    // Signal between threads;
     static volatile RETCODE m_msg;
 
     // The server side
@@ -100,7 +100,7 @@ public:
             unsigned int read = newSocket.pipeRead(rst, args->rmsglen);
             if (read != args->rmsglen)
             {
-                // Message doens't recieve
+                // Message wasn't received
                 cout << endl << "Server: cannot read message back!" << endl;
                 cout << "Read only " << (uint32)(read) << " out-of " << args->rmsglen << endl;
                 m_msg = THREAD_ERROR;
@@ -210,7 +210,7 @@ public:
     virtual cString getName() { return __FILE__; }
 };
 
-// The trh
+// The thread return code
 volatile cTestSockets::RETCODE cTestSockets::m_msg = cTestSockets::THREAD_OK;
 
 // Instance test object

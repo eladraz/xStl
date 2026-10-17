@@ -91,7 +91,7 @@ bool remoteAddressNumericValue::operator < (
 addressNumericValue remoteAddressNumericValue::getAddressValue() const
 {
     // The casting is used to prevent compiler errors.
-    // NOTE: There isn't a good way to implement only the targer code
+    // NOTE: There isn't a good way to implement only the target code
     switch (DEFAULT_REMOTE_ADDRESS_ENCODING)
     {
     case REMOTE_ADDRESS_16BIT:

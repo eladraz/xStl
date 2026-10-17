@@ -47,7 +47,7 @@
 cHMAC::cHMAC(cSmartPtr<cDigest> hashObj, const cBuffer& key) :
     m_hashObj(hashObj)
 {
-    // Test that the hash function is coordinate with this version of
+    // Test that the hash function is compatible with this version of
     // the HMAC
     ASSERT(getDigestLength() <= KEY_B_LENGTH);
 

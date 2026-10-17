@@ -35,7 +35,7 @@
 /*
  * rc4rnd.h
  *
- * The psedu-random-generated class for RC4 mechanizm.
+ * The pseudo-random-generated class for RC4 mechanism.
  *
  * Author: Elad Raz <e@eladraz.com>
  */
@@ -48,31 +48,31 @@
 /*
  * class cRC4Random
  *
- * The psedu-random-generated class for RC4 mechanizm.
+ * The pseudo-random-generated class for RC4 mechanism.
  */
 class cRC4Random : public cRandom
 {
 public:
     /*
-     * Init the random mechanizm according to 'seed'. The mechanizm is init
-     * the RC4 engine (which limit the seed to 256 bytes only...)
+     * Init the random mechanism according to 'seed'. The mechanism initializes
+     * the RC4 engine (which limits the seed to 256 bytes only...)
      */
     cRC4Random(const cBuffer& seed);
 
     /*
      * Generate 'length' bytes of random and put it in 'output'. The 'output'
      * size is changed to 'length' and step over pure random. This function
-     * increase the internal random mechanizm.
+     * advances the internal random mechanism.
      * The generated random
      *
      * length - The amount of random to be generate.
-     * output - Will be filled with the required psedu-random generation code.
+     * output - Will be filled with the required pseudo-random generation code.
      */
     virtual void generateRandom(uint length, cBuffer& output);
 
 private:
 
-    // The RC4 object to be generate the random from.
+    // The RC4 object to generate the random from.
     cRC4 m_rc4;
 };
 

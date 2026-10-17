@@ -35,7 +35,7 @@
 /*
  * file.h
  *
- * Contains file's functions API.
+ * Contains the file functions API.
  *
  * Author: Elad Raz <e@eladraz.com>
  */
@@ -46,7 +46,7 @@
 #include "xStl/os/osdef.h"
 
 /*
- * The cFile is an API which communicate with files.
+ * The cFile class is an API which communicates with files.
  *
  * 2008: New 64 bit seek file operation
  */
@@ -73,28 +73,28 @@ public:
      * Construct a file object and open it for the 'filename' file with flags
      * attributes.
      *
-     * filename - A string which represent the file over the disk for the current
-     *            operation-system:
+     * filename - A string which represents the file on the disk for the current
+     *            operating system:
      *              DOS/WINDOWS: c:\\windows\\notepad.exe
      *              LINUX: /bin/ls
-     *            Most often this string will be as a result from calling the
+     *            Most often this string will be the result of calling the
      *            cFilename::getFullPath()
      * flags - The open mode, creation mode and access mode for the file.
      *
-     * Throw FAILED exception if the file couldn't be open.
+     * Throw FAILED exception if the file couldn't be opened.
      */
     cFile(const cString& filename,
           const uint flags = cFile::READ);
 
     /*
-     * Open a file according to a file-handle. Gets the attribute for accessing
+     * Open a file according to a file-handle. Gets the attributes for accessing
      * the file-object (Read only/Write only assertion)
      *
      * handle - The handle for the file, according to the platform.
      * flags - The open mode, creation mode and access mode for the file.
-     * closeHandle - Is the 'handle' should be close at dtor.
+     * closeHandle - Whether the 'handle' should be closed at dtor.
      *
-     * Throw FAILED exception if the file couldn't be open.
+     * Throw FAILED exception if the file couldn't be opened.
      */
     cFile(cOSDef::fileHandle handle,
           const uint flags = cFile::READ,
@@ -106,15 +106,15 @@ public:
     virtual ~cFile();
 
     /*
-     * Return true if 'filename' exist. False otherwise.
+     * Return true if 'filename' exists. False otherwise.
      *
      * filename - The full-path file to test.
      *            NOTE: Some operating-systems will allow relative path also but
      *                  this API doesn't support it
      *
-     * The function shall implemented by best result from operating system,
-     * without actually open a file (So opened file will also existed) or
-     * changing it's modification time.
+     * The function shall be implemented to give the best result for the operating system,
+     * without actually opening a file (so an opened file will also exist) or
+     * changing its modification time.
      */
     static bool isFileExist(const cString& filename);
 
@@ -125,7 +125,7 @@ public:
      *            NOTE: Some operating-systems will allow relative path also but
      *                  this API doesn't support it
      *
-     * Return true if the file deleted, false otherwise
+     * Return true if the file was deleted, false otherwise
      */
     static bool deleteFile(const cString& filename);
 
@@ -140,11 +140,11 @@ public:
     cFile& operator = (const cFile& other);
 
     /*
-     * Return an handle to the file.
+     * Return a handle to the file.
      */
     const cOSDef::fileHandle& getHandle() const;
 
-    // Driven from the basicIO
+    // Derived from the basicIO
     /*
      * Read a buffer from the file.
      *
@@ -162,7 +162,7 @@ public:
     uint write(const void *buffer, const uint length);
 
     /*
-     * Move to a specific position in the file. Throw exception if failed.
+     * Move to a specific position in the file. Throw an exception if failed.
      * See basicInput::seek for more information.
      */
     void seek(const int distance, const basicInput::seekMethod method);

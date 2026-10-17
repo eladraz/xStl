@@ -35,7 +35,7 @@
 /*
  * callbacker.h
  *
- * A functor class. Provide callbacks to a class and procides an class context.
+ * A functor class. Provides callbacks to a class and provides a class context.
  *
  * Author: Elad Raz <e@eladraz.com>
  */
@@ -48,9 +48,9 @@
  *
  * Defines the callbackers interface. The usage of the callback functions is as
  * follows:
- *   There are serveral of classes: class A, class B, class C etc.
- *   There is an dispatcher class which wants to invoke messages to every
- *   register class (such as class A and class B).
+ *   There are several classes: class A, class B, class C etc.
+ *   There is a dispatcher class which wants to invoke messages to every
+ *   registered classes (such as class A and class B).
  *   The dispatcher class should contain the following function:
  *
  *      void registerCallback(cCallbackPtr callbackClass);
@@ -59,14 +59,14 @@
  *
  *   class A {
  *   public:
- *       // The following code will be called as a result from the dispatcher
+ *       // The following code will be called as a result of the dispatcher
  *       // event
  *       [virtual] void* onDispatcherEvent(void* argument);
  *
  *       DECLARE_CALLBACK(A, onDispatcherEvent);
  *   };
  *
- *   On the implementation of A the following code should be exist
+ *   On the implementation of A the following code should exist
  *
  *   // The constructor should register the callback
  *   A::A() {
@@ -83,9 +83,9 @@ public:
 
     /*
      * Perform the callback. The function will be called from the dispatcher
-     * class to notify that the event occuered.
+     * class to notify that the event occurred.
      *
-     * argument - Allow to transfer to the callback additional information.
+     * argument - Allows transferring additional information to the callback.
      *
      * Return any information in any format
      */
@@ -96,14 +96,14 @@ public:
 typedef cSmartPtr<cCallback> cCallbackPtr;
 
 /*
- * This macro generate a unique functor that will invoke the 'function' when
- * it's called.
+ * This macro generates a unique functor that will invoke the 'function' when
+ * it is called.
  */
 #define CALLBACKER(function_name) \
     FUNC_CALLBACKER(function_name, cCallbackPtr)
 
 /*
- * This macro generate fanctor thunk that will generate a call to a function.
+ * This macro generates a functor thunk that will generate a call to a function.
  */
 #define DECLARE_CALLBACK(class_name, function_name) \
     FUNC_DECLARE_CALLBACK(class_name, function_name, cCallback, call, void*, void*)

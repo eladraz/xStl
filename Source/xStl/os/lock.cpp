@@ -31,7 +31,7 @@
 
 #include "xStl/xStlPrecompiled.h"
 /*
- * lcok.cpp
+ * lock.cpp
  *
  * Implementation file.
  *
@@ -46,14 +46,14 @@ cLock::cLock(cLockableObject& lockable) :
     m_lockable(lockable),
     m_isLock(false)
 {
-    // Try to accuiered the resource
+    // Try to acquire the resource
     m_lockable.lock();
     m_isLock = true;
 }
 
 cLock::~cLock()
 {
-    // Free the grabbing, if grabed
+    // Release the lock, if grabbed
     if (m_isLock)
     {
         m_lockable.unlock();
@@ -65,7 +65,7 @@ void cLock::unlock()
     // For debug only
     ASSERT(m_isLock);
 
-    // Release the grab.
+    // Release the lock.
     if (m_isLock)
     {
         m_lockable.unlock();

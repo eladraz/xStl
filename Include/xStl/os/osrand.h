@@ -35,7 +35,7 @@
 /*
  * osrand.h
  *
- * Declare on independet functions for operation system (random)
+ * Declare operating-system-independent functions (random)
  *
  * Author: Elad Raz <e@eladraz.com>
  */
@@ -53,8 +53,8 @@
  *
  * Random API
  *
- * All of these function are thread-safe and can be invoke from several of thread
- * without worries of data-loses.
+ * All of these functions are thread-safe and can be invoked from several threads
+ * without worrying about data loss.
  */
 class cOSRand
 {
@@ -64,8 +64,8 @@ public:
     //
 
     /*
-     * Reset the mechanism into a a new constructed random object. This function
-     * called when the system is loaded into the default random object. See the
+     * Reset the mechanism into a newly constructed random object. This function
+     * is called when the system is loaded into the default random object. See the
      * file 'random.cpp' in the OS xStl directory.
      *
      * newLoading - The new mechanism and the seeding object
@@ -73,9 +73,9 @@ public:
     static void srand(const cSmartPtr<cRandom>& newLoading);
 
     /*
-     * Return the global random object used in this system. The return object
-     * can be shared to number of task in the system so it's won't be a good
-     * recommandiation to use it.
+     * Return the global random object used in this system. The returned object
+     * can be shared by a number of tasks in the system so it won't be a good
+     * recommendation to use it.
      *
      * TODO: Move to private: code?
      */
@@ -83,23 +83,23 @@ public:
 
     /*
      * Return a random number from the random-generation for the system.
-     * The function increase the global random mechanizm by sizeof(uint)
+     * The function advances the global random mechanism by sizeof(uint)
      * bytes.
      *
-     * This function is thread-safe call.
+     * This function is thread-safe.
      */
     static uint rand();
 
     /*
      * Generate a buffer of random information using the global-random object.
      *
-     * This function is thread-safe call, but the 'output' object should be touch
+     * This function is thread-safe, but the 'output' object should not be touched
      * from other threads.
      */
     static void generateRandom(uint length, cBuffer& output);
 
 private:
-    // When accessing the global random object it's should be locked.
+    // When accessing the global random object it should be locked.
     static cXstlLockable g_globalRandomMutex;
     // The global random object.
     static cSmartPtr<cRandom> g_globalRandom;

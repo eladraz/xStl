@@ -35,8 +35,8 @@
 /*
  * stringerStream.h
  *
- * The stringer module convert data into strings and output them into
- * virtual functions which handles the string.
+ * The stringer module converts data into strings and outputs them into
+ * virtual functions which handle the string.
  *
  * Author: Elad Raz <e@eladraz.com>
  */
@@ -50,8 +50,8 @@
 /*
  * Implements the serialization functions (such as write, operator << etc) to
  * convert raw data into strings.
- * The class add some abstraction with the functions 'outputString()' which
- * should be implement in the inherit class. The function
+ * The class adds some abstraction with the function 'outputString()' which
+ * should be implemented in the inheriting class. The function
  *
  * NOTE: This class is thread-safe
  */
@@ -67,14 +67,14 @@ public:
      * Constructor. Inits the string output stream.
      *
      * shouldWaitToNewLine - True if the output function (outputString) should
-     *                       be called only if new-line arrive or not.
+     *                       be called only when a new line arrives.
      */
     cStringerStream(bool shouldWaitToNewLine);
 
     /*
      * The following functions are implementation of the basicOutput
-     * interface. The function implements as converting the stream
-     * as characters set.
+     * interface. The functions are implemented by converting the stream
+     * to a character set.
      *
      * See basicOutput.
      */
@@ -127,13 +127,13 @@ public:
 
 protected:
     /*
-     * Abstract function. Use in the sub-classes in order to 'print' a string
+     * Abstract function. Used in the sub-classes in order to 'print' a string
      * to the device.
      *
-     * string - The string to be outputed.
+     * string - The string to be output.
      *
-     * NOTE: The outputString function doesn't call with any lockable object
-     *       acquire. Otherwise a deadlock may occured.
+     * NOTE: The outputString function isn't called with any lockable object
+     *       acquired. Otherwise a deadlock may occur.
      */
     virtual void outputString(const cString& string) = 0;
 
@@ -148,38 +148,38 @@ private:
 
     /*
      * Clear the output buffer and return a copy-of it.
-     * NOTE: This function is a thread-safe
+     * NOTE: This function is thread-safe
      *
-     * ret - Will be filled by the information to be outputed
+     * ret - Will be filled by the information to be output
      *
-     * Return true if ret was filled by information to be outputed
+     * Return true if ret was filled by information to be output
      */
     bool flushBuffer(cString& ret);
 
 
     /*
-     * Clear the output buffer until 'endl' appear. The information is stored
+     * Clear the output buffer until 'endl' appears. The information is stored
      * in a local stack variable.
-     * NOTE: This function is a thread-safe
+     * NOTE: This function is thread-safe
      *
-     * ret - Will be filled by the information to be outputed
+     * ret - Will be filled by the information to be output
      *
-     * Return true if ret was filled by information to be outputed
+     * Return true if ret was filled by information to be output
      */
     bool flushEndlBuffer(cString& ret);
 
     /*
      * Safely append data to the line storage repository.
      *
-     * data - The information that will be add to the line-repository
+     * data - The information that will be added to the line-repository
      */
     void addToRepository(const cString& data);
 
-    // The portion of the line save in a cache. Use for waiting to endln.
+    // The portion of the line saved in a cache. Used for waiting for endln.
     cString m_lineRepository;
     // Should the class
     bool m_shouldWaitToNewLine;
-    // The base for numeric conventions.
+    // The base for numeric conversions.
     uint m_base;
 
     // Protect the stream
@@ -207,7 +207,7 @@ class cStringStream : public cStringerStream
 {
 public:
     /*
-     * Constructor. This class shouldn't be wait for endln.
+     * Constructor. This class shouldn't wait for endln.
      *
      * optimization - The amount of memory to reserve.
      */
@@ -219,7 +219,7 @@ public:
     const cString& getData() const;
 
     /*
-     * Deletes the memory which holds so far.
+     * Deletes the memory held so far.
      */
     void clean();
 
@@ -239,7 +239,7 @@ private:
 };
 
 /*
- * The NULL stringer stream responsible for sending the string message into
+ * The NULL stringer stream is responsible for sending the string message into
  * a void space. The implementation is simple
  */
 class cNullStringerStream : public cStringerStream {

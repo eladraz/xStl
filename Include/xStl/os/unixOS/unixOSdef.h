@@ -35,8 +35,8 @@
 /*
  * unixOSdef.h
  *
- * Types, structs definitions and consts needed for the UNIXs type based
- * operating system
+ * Types, struct definitions and constants needed for the UNIX type based
+ * operating systems
  *
  * Author: Elad Raz <e@eladraz.com>
  */
@@ -55,7 +55,7 @@ typedef struct {
 } pthread_unix_mutex_wrap_t;
 
 /*
- * UNIX implementation. Tests on the following UNIX based OS:
+ * UNIX implementation. Tested on the following UNIX based OS:
  *    - Ubuntu
  *    - Fedora 6
  */

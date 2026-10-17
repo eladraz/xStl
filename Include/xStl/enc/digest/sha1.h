@@ -36,7 +36,7 @@
 /*
  * sha1.h
  *
- * Declare cSHA1 class which implement the SHA-1 (Secure Hash Algorithm) one-
+ * Declare the cSHA1 class which implements the SHA-1 (Secure Hash Algorithm) one-
  * way hash function.
  *
  * Author: Elad Raz <e@eladraz.com>
@@ -102,7 +102,7 @@ public:
     virtual cSmartPtr<cDigest> clone();
 
     /*
-     * Consts for the MD5 algorithm
+     * Constants for the MD5 algorithm
      */
     enum {
         SHA1_DATALEN    = 16,
@@ -111,7 +111,7 @@ public:
     virtual unsigned int getDataLen() { return SHA1_DATALEN; };
     virtual unsigned int getDigestLen() { return SHA1_DIGESTLEN; };
 
-    // Big endian impl
+    // Big endian implementation
     bigEndianImpl;
 
 private:

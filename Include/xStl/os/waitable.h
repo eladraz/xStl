@@ -37,11 +37,11 @@
  *
  * Defines the "waitable" objects. Waitable objects are objects which signal
  * a completion of operation.
- * When operation is made in the "background" (which can be hardware, or another
- * thread), a waitable object is generated. When the operation completed the
- * waitable object singals, and the blocking operation can progress.
- * The waitable object is shared for all platform and can be simulated for non-
- * preemptive operation systems.
+ * When an operation is made in the "background" (which can be hardware, or another
+ * thread), a waitable object is generated. When the operation completes the
+ * waitable object signals, and the blocking operation can progress.
+ * The waitable object is shared across all platforms and can be simulated for non-
+ * preemptive operating systems.
  *
  * Author: Elad Raz <e@eladraz.com>
  */
@@ -59,23 +59,23 @@ public:
     bool isSucceeded() const;
 
     /*
-     * Return true if the operation is active and the system and doesn't
-     * complete by:
+     * Return true if the operation is active in the system and wasn't
+     * completed by:
      *   - Normal behaviour (Operation completed, successfully or not)
      *   - Soft cancel (Abnormal termination)
-     *   - Timeout riched.
+     *   - Timeout reached.
      */
     bool isValid() const;
 
     /*
-     * Return true if the operation timeout was riched, and the operation was
+     * Return true if the operation timeout was reached, and the operation was
      * canceled.
      */
     bool isTimeout() const;
 
     /*
-     * Returns the number of system-ticks (CurrentTime-StartTime) that take the
-     * operation to be completed.
+     * Returns the number of system ticks (CurrentTime-StartTime) that the
+     * operation took to complete.
      */
     cOSDef::systemTime getOperationTime();
 

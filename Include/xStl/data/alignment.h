@@ -35,7 +35,7 @@
 /*
  * alignment.h
  *
- * Contain function which align data-structs into memory-size boundaries
+ * Contains functions which align data structures to memory-size boundaries
  *
  * Author: Elad Raz <e@eladraz.com>
  */
@@ -52,34 +52,34 @@
 class Alignment {
 public:
     /*
-     * Align into 4 bytes boundaries
+     * Align to 4-byte boundaries
      */
     #define alignUpToDword(number) alignUp((number), 3)
     #define alignDownToDword(number) alignDown((number), 3)
 
     /*
-     * Align into 8 bytes boundaries
+     * Align to 8-byte boundaries
      */
     #define alignUpToQword(number) alignUp((number), 7)
     #define alignDownToQword(number) alignDown((number), 7)
 
     /*
-     * Align a number up into 'base2NumberMinus1'
+     * Align a number up to 'base2NumberMinus1'
      */
     static addressNumericValue alignUp(addressNumericValue number,
                                        addressNumericValue base2NumberMinus1);
 
     /*
-     * Align a number down into 'base2NumberMinus1'
+     * Align a number down to 'base2NumberMinus1'
      */
     static addressNumericValue alignDown(addressNumericValue number,
                                          addressNumericValue base2NumberMinus1);
 
     /*
-     * Read 16 bit word by 32bit bus transaction
+     * Read a 16 bit word by a 32bit bus transaction
      *
      * ptr     - The pointer to read from
-     * busSize - The bus number of bytes size.
+     * busSize - The bus size in bytes.
      *           Right now this value is fixed to the current machine size.
      *
      */

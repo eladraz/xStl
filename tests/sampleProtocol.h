@@ -35,8 +35,8 @@
 /*
  * sampleProtocol.h
  *
- * A small protocol which test the ablilites of streams to communicate between
- * one anoter;
+ * A small protocol which tests the abilities of streams to communicate between
+ * one another;
  *
  * Author: Elad Raz <e@eladraz.com>
  */
@@ -45,21 +45,21 @@
 #include "xStl/stream/basicIO.h"
 
 /*
- * Assume that both stream have a data-link layer and a protocol/transfer layer,
- * which means that all bytes will be sent at the right order and gets correctly
+ * Assume that both streams have a data-link layer and a protocol/transfer layer,
+ * which means that all bytes will be sent in the right order and get correctly
  * to the end.
  * Test the stream bytes sending packets across the streams
  *
- * The protocol is as following:
+ * The protocol is as follows:
  *    - Handshake
  *    - Data transmission
  *    - Ending
  *
- * The handshake is consist from:
+ * The handshake consists of:
  *    - Sending hello stream
  *    - Sending a number
- *    - Sending how mush packets will be sent
- *    - Hasing the buffer sent so far
+ *    - Sending how many packets will be sent
+ *    - Hashing the buffer sent so far
  *
  * The data is built from:
  *    - Packet length
@@ -77,13 +77,13 @@ public:
 
     /*
      * Tests the client side protocol
-     * Read the server packets and response for commands.
+     * Read the server packets and respond to commands.
      */
     static void testClientSide(basicIO& stream,
                                cStringerStream& out);
 
 private:
-    // The maximum number of packets to be test for each communication
+    // The maximum number of packets to be tested for each communication
     enum { MAX_PACKET_COUNT = 1000 };
     // The maximum number of bytes for each testing packet
     enum { MAX_PACKET_LENGTH = 4096 };

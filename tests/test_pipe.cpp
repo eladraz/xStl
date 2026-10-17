@@ -79,7 +79,7 @@ public:
         {
             XSTL_TRY
             {
-                // Wait until the server will be up and running
+                // Wait until the server is up and running
                 cOS::sleepMillisecond(1000);
                 BasicIOPtr client = BasicIOPtr(new cPipeStream(cTestPipe::pipeName));
                 cNullStringerStream null;

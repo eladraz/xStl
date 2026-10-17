@@ -47,13 +47,13 @@
 
 /*
  * A pipe has 2 ends, one called server and the other called client. Each side
- * can write/read from the pipe. When the client write, the server can read the
+ * can write/read from the pipe. When the client writes, the server can read the
  * information.
  *
  * NOTE: Some pipes are INBOUND or OUTBOUND pipes, which means that only one
  *       side can access the pipe.
  *
- * NOTE: The unnamed piped are ignored here, you have better alternative using
+ * NOTE: The unnamed pipes are ignored here, you have a better alternative using
  *       xStl stream classes.
  */
 class cPipeStream : public basicIO {
@@ -82,10 +82,10 @@ public:
      */
     defaultEndianImpl;
 
-    // Driven from the basicIO
+    // Derived from the basicIO
 
     /*
-     * Retrive the position of the write/read head
+     * Retrieve the position of the write/read head
      */
     virtual uint getPointer() const;
 
@@ -105,21 +105,21 @@ public:
     virtual void flush();
 
     /*
-     * Read from the memory array into a buffer. If the reading reach the end
-     * of the array then the function return the number of bytes readed until
-     * EOF reached.
+     * Read from the memory array into a buffer. If the reading reaches the end
+     * of the array then the function returns the number of bytes read until
+     * EOF is reached.
      */
     virtual uint read(void *buffer, const uint length);
 
     /*
      * Write bytes to the stream.
-     * Change the bytes of the array. If the file postion reached the end of the
+     * Change the bytes of the array. If the file position reached the end of the
      * array, and m_fixedSize is false then the array size will increase.
      */
     virtual uint write(const void *buffer, const uint length);
 
     /*
-     * Move to a specific position in the file. Throw exception if failed.
+     * Move to a specific position in the file. Throw an exception if failed.
      * See basicInput::seek for more information.
      */
     virtual void seek(const int distance, const basicInput::seekMethod method);
@@ -128,7 +128,7 @@ public:
      * Returns how many bytes should be read for best performance in the
      * pipeRead() function in a single call to the read() function.
      *
-     * This value stand on 4kb which is the pageSize in most platform.
+     * This value stands at 4kb which is the pageSize in most platform.
      */
     virtual uint getPipeReadBestRequest() const { return 4096; }
 
@@ -146,7 +146,7 @@ private:
 
     // The pipe handle
     cFileStream m_pipeHandle;
-    // Set to true if the pipe is the server side and must be destruct in a
+    // Set to true if the pipe is the server side and must be destructed in a
     // special way
     bool m_shouldDestroyServerPipe;
 };

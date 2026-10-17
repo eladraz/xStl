@@ -35,7 +35,7 @@
 /*
  * braces.h
  *
- * The braces module 'eat' up braces until the current braces blocks ends.
+ * The braces module 'eats' up braces until the current braces block ends.
  *
  * Author: Elad Raz <e@eladraz.com>
  */
@@ -53,14 +53,14 @@ public:
     /*
      * Exception constructor.
      *
-     * founded - The character which has founded
-     * excpected - The character which has excepected to be founded
+     * founded - The character which was found
+     * excpected - The character which was expected to be found
      */
     BracesException(char * file, uint32 line, character founded, character excpected);
 
-    // The character which has founded
+    // The character which was found
     character m_founded;
-    // The character which has excepected to be founded
+    // The character which was expected to be found
     character m_excpected;
 };
 
@@ -97,12 +97,12 @@ public:
     bool eatCharacter(character data);
 
     /*
-     * Return true if the character is one of the openning character
+     * Return true if the character is one of the opening characters
      */
     bool isOpenBrace(character data);
 
     /*
-     * Return true if the character is one of the closer character
+     * Return true if the character is one of the closer characters
      */
     bool isCloseBrace(character data);
 
@@ -117,7 +117,7 @@ public:
     character getCloseCharacter(character open);
 
     /*
-     * Returns the cache excpected closer character
+     * Returns the cached expected closer character
      */
     character getNextCloserCharacer();
 
@@ -129,7 +129,7 @@ private:
 
     // The number of different braces
     enum { BRACES_COUNT = 3 };
-    // The possiable different braces types
+    // The possible different braces types
     static BracesData m_braces[BRACES_COUNT];
 };
 

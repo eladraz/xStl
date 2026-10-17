@@ -49,7 +49,7 @@
  * Write/read to/from the current virtual memory map.
  *
  * NOTE: This class doesn't verify pointer validation.
- *       Assumes all call must succeeded.
+ *       Assumes all calls must succeed.
  */
 class cThreadUnsafeMemoryAccesser : public cVirtualMemoryAccesser {
 public:
@@ -59,13 +59,13 @@ public:
     /*
      * Default constructor. Allow the application to block unneeded access to
      * different memory blocks.
-     * When supplies different value for 'start'..'end' than the memory location
+     * When different values are supplied for 'start'..'end' than the memory location,
      * 0 will be the 'start' and 'end-start' will be the end memory.
      *
      * startAddress - The starting physical address that can be accessed
      * endAddress   - The ending physical address that can be accessed
      *
-     * The thread will throw exception for any out-range access.
+     * An exception will be thrown for any out-of-range access.
      */
     cThreadUnsafeMemoryAccesser(addressNumericValue startAddress = 0,
         addressNumericValue endAddress = MAX_PHYSICAL_ADDRESS);
@@ -73,7 +73,7 @@ public:
      * See cThreadUnsafeMemoryAccesser::cThreadUnsafeMemoryAccesser.
      *
      * Change the range [start..end] to [virtual..virtual+size], however
-     * when accessing 'virtual', the address will translated to 'start'
+     * when accessing 'virtual', the address will be translated to 'start'
      */
     cThreadUnsafeMemoryAccesser(addressNumericValue startAddress,
         addressNumericValue endAddress,
@@ -105,7 +105,7 @@ public:
 protected:
     /*
      * Perform relocation over 'address'.
-     * Throw exception if the memory address is outside the context
+     * Throw an exception if the memory address is outside the context
      */
     addressNumericValue getAddress(addressNumericValue address) const;
 

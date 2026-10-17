@@ -35,8 +35,8 @@
 /*
  * trace.h
  *
- * Definition of a trace command in the program. The TRACE macro will shown in
- * the complied code only if the _DEBUG marco will be defined.
+ * Definition of a trace command in the program. The TRACE macro will be shown in
+ * the compiled code only if the _DEBUG macro is defined.
  *
  * Author: Elad Raz <e@eladraz.com>
  */
@@ -44,9 +44,9 @@
 #include "xStl/data/string.h"
 
 /*
- * The TRACE_LEVEL marco
+ * The TRACE_LEVEL macro
  *
- * Control whether the message is improtant or not.
+ * Control whether the message is important or not.
  */
 #ifndef TRACE_LEVEL
     #define TRACE_LEVEL (0)
@@ -57,7 +57,7 @@
 /*
  * TRACE_METHOD
  *
- * Which implementation will be the output messages:
+ * Which implementation will be used for the output messages:
  */
 #define TRACE_CERR    (0) // - using the cerr object
 #define TRACE_MSG     (1) // - message box, cross platform
@@ -68,7 +68,7 @@
 /*
  * TRACE_LOG_FILENAME
  *
- * When the user want to send the traces into a file, the filename should stored
+ * When the user wants to send the traces into a file, the filename should be stored
  * here.
  *
  * The default filename value is "log.txt"
@@ -79,14 +79,14 @@
 
 
 /*
- * Declare the standart output of the trace.
+ * Declare the standard output of the trace.
  */
 #ifndef TRACE_METHOD
     #define TRACE_METHOD (TRACE_CERR)
 #endif
 
 /*
- * Prioreties
+ * Priorities
  */
 #define TRACE_VERY_LOW   (0)
 #define TRACE_LOW        (3)
@@ -103,7 +103,7 @@
 /*
  * traceMessage()
  *
- * Internal function which implement the TRACE macro. Prints the message to the
+ * Internal function which implements the TRACE macro. Prints the message to the
  * screen if the trace_level is high enough.
  *
  * The function is cross-platform UNIX and WINDOWS.
@@ -112,7 +112,7 @@
     void traceMessage(int trace_level, const cString& message);
 #endif
 
-// Remove all previous libraries definitions for the TRACE macro
+// Remove all previous library definitions for the TRACE macro
 #undef TRACE
 
 /*

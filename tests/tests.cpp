@@ -49,7 +49,7 @@
 
 
 /*
- * All the constructed class are register inside a link-list which execute them.
+ * All the constructed classes are registered inside a link-list which executes them.
  */
 class tests_container{
 public:
@@ -107,7 +107,7 @@ cString cTestObject::randomizeName(uint maxNumberOfDigits)
 /*
  * main
  *
- * Scan all registered modules and
+ * Scan all registered modules and execute them.
  */
 int main(const int, const char**)
 {
@@ -118,12 +118,12 @@ int main(const int, const char**)
 
         // print logo ;)
         cout << endl;
-        cout << "Wellcome to xStl test module" << endl;
+        cout << "Welcome to xStl test module" << endl;
         cout << endl;
         cout << endl;
         cout << "xStl written by Elad Raz T.B.A." << endl;
         cout << "The system contains tests for " << total_counts << " modules" << endl;
-        cout << "Start tests execuation" << endl << endl;
+        cout << "Start tests execution" << endl << endl;
 
 
         // Spawn the tests.
@@ -135,8 +135,8 @@ int main(const int, const char**)
             XSTL_TRY
             {
                 #if defined(XSTL_CE) || defined(XSTL_LINUX)
-                    // Windows CE run slower then normal computer, the testing
-                    // library should view the progrss to the user.
+                    // Windows CE run slower than normal computer, the testing
+                    // library should view the progress to the user.
                     cout << "Testing " << (*i)->getName() << "... ";
                     cout.flush();
                 #endif
@@ -156,7 +156,7 @@ int main(const int, const char**)
                 #endif
 
                 cout << endl << "Exception: " << e.getMessage() << " (" << e.getID() << ')' << endl;
-                cout << "Exception: Throw at module " << (*i)->getName() << endl;
+                cout << "Exception: Thrown at module " << (*i)->getName() << endl;
             }
             XSTL_CATCH (...)
             {
@@ -165,7 +165,7 @@ int main(const int, const char**)
                 #endif
 
                 cout << endl << "Exception: Unknown exception thrown..." << endl;
-                cout << "Exception: Throw at module " << (*i)->getName() << endl;
+                cout << "Exception: Thrown at module " << (*i)->getName() << endl;
             }
             #if !(defined(XSTL_CE) || defined(XSTL_LINUX))
             cout << '.';
@@ -188,7 +188,7 @@ int main(const int, const char**)
     }
     XSTL_CATCH(...)
     {
-        cout << "Unexcpected error at tests module... "  << endl;
+        cout << "Unexpected error at tests module... "  << endl;
         cout << "During test #" << modules_passed<< endl;
         return RC_ERROR;
     }

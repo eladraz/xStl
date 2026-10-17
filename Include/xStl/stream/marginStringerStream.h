@@ -49,8 +49,8 @@
  *    void printComplexStruct(Object& object,
  *                            cMarginStringerStream& output)
  *    {
- *       output << "FieldA: " << blabla... << enld;
- *       output << "FieldC: " << packapacka... << enld;
+ *       output << "FieldA: " << blabla... << endl;
+ *       output << "FieldC: " << packapacka... << endl;
  *       if (object.hasInnerObject)
  *       {
  *           output.setMargin(output.getMargin() + 4);
@@ -85,12 +85,12 @@ public:
     void setMargin(uint newMargin);
 
     /*
-     * Equals to setMargin(getMargin() + marginInc)
+     * Equals setMargin(getMargin() + marginInc)
      */
     void increase(uint marginInc);
 
     /*
-     * Equals to setMargin(getMargin() - marginDec)
+     * Equals setMargin(getMargin() - marginDec)
      */
     void decrease(uint marginDec);
 

@@ -35,8 +35,8 @@
 /*
  * endian.h
  *
- * Interface for endian mechine. Modules which want to work with streams
- * should be provide this interface where users can select the needed
+ * Interface for endian machines. Modules which want to work with streams
+ * should provide this interface where users can select the needed
  * implementation for the endian (Big/little endian)
  *
  * Author: Elad Raz <e@eladraz.com>
@@ -47,12 +47,12 @@
 /*
  * class cEndian
  *
- * The interface for endian. Streaming uint16 and uint32 back and forward into
+ * The interface for endian. Streaming uint16 and uint32 back and forth into
  * a buffer.
- * Classes which supports different marchling code (little-endian and big-endian)
- * can declare them self as inherit from the cEndian class. In the implementation
- * call to the marcling codes as interface.
- * You can see two kind of example for the implementation in the basicInput/basic
+ * Classes which support different marshaling code (little-endian and big-endian)
+ * can declare themselves as inheriting from the cEndian class. In the implementation
+ * call the marshaling code through the interface.
+ * You can see two kinds of examples of the implementation in the basicInput/basic
  * Output classes and in the encryption digital hash modules (SHA-1 and MD5)
  */
 class cEndian {
@@ -70,7 +70,7 @@ public:
     virtual uint64 readUint64(const uint8* buffer) const = 0;
 
     /*
-     * Serialize 64 unsigned bit into a buffer
+     * Serialize a 64 bit unsigned number into a buffer
      * NOTE: 16 bit compilers cannot work with 64 bit numbers
      *
      * buffer - Pointer to at least 4 bytes memory
@@ -88,7 +88,7 @@ public:
     virtual uint32 readUint32(const uint8* buffer) const = 0;
 
     /*
-     * Serialize 32 unsigned bit into a buffer
+     * Serialize a 32 bit unsigned number into a buffer
      *
      * buffer - Pointer to at least 4 bytes memory
      * number - The number to serialize.
@@ -103,7 +103,7 @@ public:
     virtual uint16 readUint16(const uint8* buffer) const = 0;
 
     /*
-     * Serialize 16 unsigned bit into a buffer
+     * Serialize a 16 bit unsigned number into a buffer
      *
      * buffer - Pointer to at least 2 bytes memory
      * number - The number to serialize.
@@ -140,8 +140,8 @@ public:
 /*
  * Big-endian implementation.
  *
- * Most significant word first (Motorolla)
- * 0x1234 will be store as 12 34
+ * Most significant word first (Motorola)
+ * 0x1234 will be stored as 12 34
  */
 class cBigEndian
 {
@@ -165,7 +165,7 @@ public:
 
 
 /*
- * Definition which implement the big endian interface
+ * Definition which implements the big endian interface
  */
 #ifdef XSTL_16BIT
 // 16 bit compilers
@@ -192,7 +192,7 @@ public:
  * Little-endian implementation.
  *
  * Least significant word first (Intel)
- * 0x1234 will be store as 34 12
+ * 0x1234 will be stored as 34 12
  */
 class cLittleEndian {
 public:
@@ -215,7 +215,7 @@ public:
 
 
 /*
- * Definition which implement the little endian interface
+ * Definition which implements the little endian interface
  */
 #ifdef XSTL_16BIT
 // 16 bit compilers

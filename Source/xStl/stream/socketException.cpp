@@ -45,17 +45,17 @@
 
 
 const lpString SOCKET_EXCEPTION[] = {
-        XSTL_STRING("Socket creation faild"),
-        XSTL_STRING("Write timeout achived"),
-        XSTL_STRING("Read timeout achived"),
-        XSTL_STRING("Write to socket faild"),
-        XSTL_STRING("Reading from the socket faild"),
+        XSTL_STRING("Socket creation failed"),
+        XSTL_STRING("Write timeout reached"),
+        XSTL_STRING("Read timeout reached"),
+        XSTL_STRING("Write to socket failed"),
+        XSTL_STRING("Reading from the socket failed"),
         XSTL_STRING("The socket hasn't been created"),
         XSTL_STRING("Error while parsing the address"),
-        XSTL_STRING("Connection faild"),
-        XSTL_STRING("Bind to address faild"),
-        XSTL_STRING("Listen for incomming connection faild"),
-        XSTL_STRING("Accepting a new connection faild")
+        XSTL_STRING("Connection failed"),
+        XSTL_STRING("Bind to address failed"),
+        XSTL_STRING("Listen for incoming connection failed"),
+        XSTL_STRING("Accepting a new connection failed")
 };
 
 
@@ -68,7 +68,7 @@ cSocketException::cSocketException(char * file, uint32 line, const uint32 msgId)
     // Change the exception ID
     m_messageNumber = msgId;
 
-    // Fixs the exception string
+    // Fixes the exception string
     if (msgId >= SOCKET_EXCEPTION_BASE)
     {
         if ((msgId - SOCKET_EXCEPTION_BASE) <

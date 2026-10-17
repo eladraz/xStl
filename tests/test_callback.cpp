@@ -77,10 +77,10 @@ public:
         cSmartPtr<cCallback> m_callbackClass;
     };
 
-    // Preform the test...
+    // Perform the test...
     virtual void test()
     {
-        // Reset the dispacther
+        // Reset the dispatcher
         m_dispather.registerCallback(CALLBACKER(onDispatcherEvent));
 
         // Invoke commands
@@ -102,7 +102,7 @@ public:
     virtual cString getName() { return __FILE__; }
 
 private:
-    // The last argument transfered
+    // The last argument transferred
     uint32 m_number;
     // The reset value
     uint32 m_reset;

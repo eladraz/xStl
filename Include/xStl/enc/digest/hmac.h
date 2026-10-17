@@ -36,8 +36,8 @@
 /*
  * hmac.h
  *
- * Filter implementation of the hmac (hash by secret) algorithm as rfc 2104
- * suggest.
+ * Filter implementation of the hmac (hash by secret) algorithm as RFC 2104
+ * suggests.
  *
  * Author: Elad Raz <e@eladraz.com>
  */
@@ -51,12 +51,12 @@
 /*
  * class cHMAC
  *
- * Hash a data by a secrect and another hash algorithm. See RCF2104 for more
- * information. The class is init with a key and a smart-pointer to a constructed
+ * Hash data using a secret and another hash algorithm. See RFC2104 for more
+ * information. The class is initialized with a key and a smart-pointer to a constructed
  * hash object which will be used for the hashing.
  *
  * This class is not thread-safe. The hash-object shouldn't be shared within
- * several of differents threads.
+ * several of different threads.
  */
 class cHMAC : public cDigest
 {
@@ -70,9 +70,9 @@ public:
     cHMAC(cSmartPtr<cDigest> hashObj, const cBuffer& key);
 
     /*
-     * Copy constructor and operator = will be automatic generated and
-     * copies all data members.
-     * This is a normal behaviour.
+     * Copy constructor and operator = will be automatically generated and
+     * copy all data members.
+     * This is normal behavior.
      */
 
     /*
@@ -81,7 +81,7 @@ public:
     virtual void reset();
 
     /*
-     * Update the hash using a 'buffer' and it's length.
+     * Update the hash using a 'buffer' and its length.
      *
      * buffer - The bytes to be digest.
      * length - The length of the buffer.
@@ -111,12 +111,12 @@ public:
 
 private:
     /*
-     * The number of bytes for the inner and the outter key.
+     * The number of bytes for the inner and the outer key.
      */
     enum { KEY_B_LENGTH = 64 };
 
     /*
-     * The secret inner and outter key of the hmac.
+     * The secret inner and outer key of the hmac.
      */
     uint8 m_innerKey[KEY_B_LENGTH];
     uint8 m_outterKey[KEY_B_LENGTH];

@@ -35,7 +35,7 @@
 /*
  * orderedList.h
  *
- * Contains delcaration of ordered-list module.
+ * Contains declaration of ordered-list module.
  */
 #include "list.h"
 
@@ -47,7 +47,7 @@
 #else
     #ifdef XSTL_WINDOWS
         // Template classes might not use all the local functions the interface has
-        // to ofer. Warning C4505 should be over-written for template functions
+        // to offer. Warning C4505 should be disabled for template functions
         #pragma warning(push)
         #pragma warning(disable:4505)
     #endif
@@ -65,7 +65,7 @@
  *  T must have a < operator
  *  T must have an equal == operator
  *  T should have copy constructor.
- *  T must NOT be a pointer because this class calles the destructor of T only,
+ *  T must NOT be a pointer because this class calls the destructor of T only,
  *    and doesn't assume that T is a pointer!
  *
  * Author: Ilan Tayari
@@ -97,19 +97,19 @@ public:
 
     /*
      * Returns a reference to the first (lowest) item
-     * Throws exception if empty
+     * Throws an exception if empty
      */
     const T& first() const;
 
     /*
      * Returns a reference to the first (lowest) item
-     * Throws exception if empty
+     * Throws an exception if empty
      */
     T& first();
 
     /*
      * Removes the first (lowest) item
-     * Throws exception if empty
+     * Throws an exception if empty
      */
     void pop2null();
 
@@ -117,11 +117,11 @@ public:
     bool isEmpty() const;
 };
 
-// Include implementation. This is nessasary in template classes.
+// Include implementation. This is necessary in template classes.
 #include "xStl/data/orderedList.inl"
 
 #ifdef XSTL_WINDOWS
-    // Return the warnning behaviour back to it's original mode
+    // Return the warning behaviour back to its original mode
     #pragma warning(pop)
 #endif
 

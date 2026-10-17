@@ -45,7 +45,7 @@
 #include "xStl/data/char.h"
 
 /*
- * The types module contains enum of all supported types, thier string
+ * The types module contains enum of all supported types, their string
  * representation and functions which translates between them.
  */
 class Types
@@ -80,12 +80,12 @@ public:
 
 
     /*
-     * The functions translate between sensative string to its' corresponding
+     * The function translates a case-sensitive string to its corresponding
      * enum number of "Types"
      *
      * typeName - The name of the type
      *
-     * The function throws exception if the non of the types are match.
+     * The function throws an exception if none of the types match.
      */
     static Type getType(const cString& typeName);
 

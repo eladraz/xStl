@@ -58,6 +58,6 @@ xstl_tests_LDADD = -L$(top_srcdir)/Source/xStl -lxstl \
                    -L$(top_srcdir)/Source/xStl/utils -lxstl_utils
 
 
-# TODO! Need to add support to libxstl_parser
+# TODO! Need to add support for libxstl_parser
 
 

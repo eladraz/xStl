@@ -35,8 +35,8 @@
 /*
  * array.h
  *
- * Declaration on the global array memory handler. Provide a safe way to
- * allocate memory array. Handles all the thing that need to do.
+ * Declaration of the global array memory handler. Provides a safe way to
+ * allocate an array of memory. Handles everything that needs to be done.
  *
  * Author: Elad Raz <e@eladraz.com>
  */
@@ -47,7 +47,7 @@
 
 #ifdef XSTL_WINDOWS
 // Template classes might not use all the local functions the interface has
-// to ofer. Warning C4505 should be over-written for template functions
+// to offer. Warning C4505 should be disabled for template functions
 #pragma warning(push)
 #pragma warning(disable:4505)
 #endif
@@ -55,36 +55,36 @@
 /*
  * cArray template class.
  *
- * Contains standard implementation of arraies. This is a template vector for
+ * Contains standard implementation of arrays. This is a template vector for
  * class T. T should have default constructor (due to using operator new[]).
- * operator == should be implement only for reference call to remove().
+ * operator == should be implemented only for reference call to remove().
  *
- * The array also implement a 'paging' memory. The paging allow allocating more
+ * The array also implements a 'paging' memory. The paging allows allocating more
  * memory for the array but when the size of the array is changed within the
  * page size, no memory allocation operation is called.
  *
- * PS cArray can be used for many call to changeSize()
- *    only if you configure the page_size variable right.
+ * PS: cArray can be used for many calls to changeSize()
+ *    only if you configure the page_size variable correctly.
  *
  * T must have:
  *    default constructor.
  *    For using remove(T&) T must implement operator ==.
  *
- * TODO: Add to this class copy-on-write ablities (Reference count and unshare
+ * TODO: Add to this class copy-on-write abilities (Reference count and unshare
  *       method).
  */
 template <class T>
 class cArray
 {
 public:
-    // Forward deceleration for class iterator.
+    // Forward declaration for class iterator.
     class iterator;
 
     /*
      * Explicit constructor.
      *
-     * Create an array at size 'numberOfElements'. The 'pageSize' determine
-     * how many elements should allocated in addition to the needed items.
+     * Create an array at size 'numberOfElements'. The 'pageSize' determines
+     * how many elements should be allocated in addition to the needed items.
      *
      * throws 'EXCEPTION_OUT_OF_MEM' exception.
      */
@@ -122,9 +122,9 @@ public:
      * non-const operator. The return type can be NULL if the array is empty.
      *
      * Note:
-     * The return buffer is good for the following commands until other command
+     * The returned buffer is valid for the following commands until another command
      * from the cArray class is invoked. Each function of the array can
-     * reallocated the buffer pointer.
+     * reallocate the buffer pointer.
      */
     T* getBuffer() const;
 
@@ -148,24 +148,24 @@ public:
 
     /*
      * Increase or decrease the count of elements in the array. Destroy the
-     * previous memory if the preserverMemory is false. Otherwise, if the
-     * newSize is smaller then the old one, then the padding will be freed.
-     * If the new size is bigger then the old size, the new allocated fields
-     * will not be initilazied. if the newSize is equal to zero, then the list
+     * previous memory if the preserveMemory is false. Otherwise, if the
+     * newSize is smaller than the old one, then the padding will be freed.
+     * If the new size is bigger than the old size, the newly allocated fields
+     * will not be initialized. If the newSize is equal to zero, then the list
      * will be freed.
      */
     virtual void changeSize(uint newSize, bool preserveMemory = true);
 
     /*
-     * Change the the page size of the array. The effect of this function is
-     * on future called to the 'changeSize' function.
+     * Change the page size of the array. The effect of this function is
+     * on future calls to the 'changeSize' function.
      */
     void setPageSize(uint newPageSize);
 
     /*
-     * Like the python's operator [:], but mush less improve. Copy from the
+     * Like the Python's operator [:], but much less improved. Copy from the
      * array 'count' elements starting from 'startLocation' into 'other' array.
-     * 'other' will be reset into 'count' elements array.
+     * 'other' will be reset to an array of 'count' elements.
      *
      * other         - The output array
      * startLocation - The start location in the array
@@ -178,8 +178,8 @@ public:
                            uint count);
 
     /*
-     * Insert single object to the end of the array. The array is expand by one
-     * element and the 'object' is copyied to the end of the array.
+     * Insert a single object at the end of the array. The array is expanded by one
+     * element and the 'object' is copied to the end of the array.
      *
      * object - The object to append
      *
@@ -188,8 +188,8 @@ public:
     virtual void append(const T& object);
 
     /*
-     * Insert new array to the end of the array. The array is expand by one
-     * element and the 'object' is copyied to the end of the array.
+     * Insert a new array at the end of the array. The array is expanded by one
+     * element and the 'object' is copied to the end of the array.
      *
      * object - The object to append
      *
@@ -203,15 +203,15 @@ public:
     //void insert(const cArray<T>& array, const iterator& index);
 
     /*
-     * Construct a new iterator at the begining of the array. (Which means that
-     * the iterator is pointed to the first element in the array).
+     * Construct a new iterator at the beginning of the array. (Which means that
+     * the iterator points to the first element in the array).
      *
-     * The function declares as const because sometimes you need a way to scan
-     * the array without change it and you don't have any other way to preform
+     * The function is declared as const because sometimes you need a way to scan
+     * the array without changing it and you don't have any other way to perform
      * this.
      *
-     * NOTE: Microsoft visual studio .NET version 7.10 cannot compile the
-     *       code of the function if it's found outside the class deceleration.
+     * NOTE: Microsoft Visual Studio .NET version 7.10 cannot compile the
+     *       code of the function if it's found outside the class declaration.
      */
     iterator begin() const
     {
@@ -221,14 +221,14 @@ public:
     /*
      * Create a new iterator at the end of the array.
      *
-     * Note: You cannot access to the content of the iterator!
+     * Note: You cannot access the content of the iterator!
      *
-     * The function declares as const because sometimes you need a way to scan
-     * the array without change it and you don't have any other way to preform
+     * The function is declared as const because sometimes you need a way to scan
+     * the array without changing it and you don't have any other way to perform
      * this.
      *
-     * NOTE: Microsoft visual studio .NET version 7.10 cannot compile the
-     *       code of the function if it's found outside the class deceleration.
+     * NOTE: Microsoft Visual Studio .NET version 7.10 cannot compile the
+     *       code of the function if it's found outside the class declaration.
      */
     iterator end() const
     {
@@ -238,14 +238,14 @@ public:
     /*
      * Create a new iterator at a position in the array.
      *
-     * Note: You cannot access to the content of the iterator!
+     * Note: You cannot access the content of the iterator!
      *
-     * The function declares as const because sometimes you need a way to scan
-     * the array without change it and you don't have any other way to preform
+     * The function is declared as const because sometimes you need a way to scan
+     * the array without changing it and you don't have any other way to perform
      * this.
      *
-     * NOTE: Microsoft visual studio .NET version 7.10 cannot compile the
-     *       code of the function if it's found outside the class deceleration.
+     * NOTE: Microsoft Visual Studio .NET version 7.10 cannot compile the
+     *       code of the function if it's found outside the class declaration.
      */
     iterator at(const uint& index) const
     {
@@ -259,7 +259,7 @@ public:
      *
      * Index - The index of the elements.
      *
-     * Throws exception when the index is invalid.
+     * Throws an exception when the index is invalid.
      */
     T& operator [] (const uint index);
     const T& operator [] (const uint index) const;
@@ -270,7 +270,7 @@ public:
     cArray<T>& operator = (const cArray<T>& other);
 
     /*
-     * Operators which appends data to the array. Anoter array
+     * Operators which append data to the array. Another array
      * or another element.
      */
     cArray<T>  operator + (const cArray<T>& other);
@@ -292,8 +292,8 @@ public:
      * Implements the iterator on an array. Create the basic elements of an
      * iterator according to the basicIterator interface documentation.
      *
-     * The only reson this is an inline implementation is becuase the compilers
-     * seems to have difficulties handling internal template classes.
+     * The only reason this is an inline implementation is because the compilers
+     * seem to have difficulties handling internal template classes.
      *
      * Author: Elad Raz.
      */
@@ -301,7 +301,7 @@ public:
     {
         public:
             /*
-             * Copy constructor. Copy the iterator position from other object.
+             * Copy constructor. Copy the iterator position from another object.
              */
             iterator(const iterator &other)
             {
@@ -311,14 +311,14 @@ public:
             }
 
             /*
-             * Deconstructor.
+             * Destructor.
              */
             ~iterator()
             {
             }
 
             /*
-             * Forward the iterator by one position.
+             * Advance the iterator by one position.
              */
             void next()
             {
@@ -327,7 +327,7 @@ public:
             }
 
             /*
-             * Setting the iterator back to the previous element.
+             * Set the iterator back to the previous element.
              */
             void prev()
             {
@@ -337,7 +337,7 @@ public:
 
             /*
              * Java-style iterator function. Return true if the iterator
-             * is pointed to the last element in the array.
+             * points to the last element in the array.
              */
             bool hasNext()
             {
@@ -399,7 +399,7 @@ public:
             }
 
             /*
-             * Is the pointer is lower in the index range.
+             * Is the pointer lower in the index range.
              */
             bool operator < (const iterator &other) const
             {
@@ -442,7 +442,7 @@ public:
         private:
             /*
              * Only the cArray<T> class should access the internal data of the
-             * iterator - including constructing the iteratir.
+             * iterator - including constructing the iterator.
              */
             friend class cArray<T>;
 
@@ -459,7 +459,7 @@ public:
                 assertIndex();
             }
 
-            // Inside paramters
+            // Inside parameters
 
             // Pointer to the array object.
             cArray<T>  * m_tcArray;
@@ -468,10 +468,10 @@ public:
             uint m_index;
 
             /*
-             * Asserts the index which the iterator is pointed at.
+             * Asserts the index which the iterator points at.
              *
              * Since m_index is uint, it cannot be below zero, so if
-             * the index go below zero then there will be a warp.
+             * the index goes below zero then it will wrap around.
              */
             void assertIndex()
             {
@@ -484,15 +484,15 @@ protected:
     friend class cTestArray;
 
     /*
-     * Free the array. free all memory allocated and create empty array.
+     * Free the array: free all allocated memory and create an empty array.
      */
     void freeArray();
 
     /*
-     * Create empty array with 'pageSize' attribute. Init all members. The array
-     * should be free otherwise memory will not be free properly.
+     * Create an empty array with the 'pageSize' attribute. Init all members. The array
+     * should be free, otherwise memory will not be freed properly.
      *
-     * pageSize - The size of the paging in used.
+     * pageSize - The size of the paging in use.
      */
     void initArray(uint pageSize);
 
@@ -502,11 +502,11 @@ protected:
     virtual void copyFrom(const cArray<T> &other);
 
     /*
-     * Page around for the array elements, using the setting of the page size.
+     * Page-round the array elements, using the page size setting.
      *
      * bytes - The number of items to be allocated.
      *
-     * return the number of elements need to be allocated in the page boundries.
+     * Return the number of elements that need to be allocated in the page boundaries.
      */
     uint pageRound(uint bytes) const;
 
@@ -530,7 +530,7 @@ protected:
 // Declare cBuffer and cSArray class.
 #include "xStl/data/sarray.h"
 
-// Return the warnning behaviour back to it's original mode
+// Return the warning behaviour back to its original mode
 #ifdef XSTL_WINDOWS
 #pragma warning(pop)
 #endif

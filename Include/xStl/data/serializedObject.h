@@ -35,21 +35,21 @@
 /*
  * serializedObject.h
  *
- * A serialized object is an object which declare itself as streamable. The
- * object can saved into a stream and loaded later into the exact same state.
+ * A serialized object is an object which declares itself as streamable. The
+ * object can be saved into a stream and loaded later into the exact same state.
  *
  * Author: Elad Raz <e@eladraz.com>
  */
 #include "xStl/types.h"
 
-// Forward deceleration
+// Forward declaration
 class basicInput;
 class basicOutput;
 
 /*
  * A serialized-object should support the following interface.
  * The object must have a default constructor (Class::Class()). If the object
- * must have data it's should have the 'isValid' function as well
+ * must have data it should have the 'isValid' function as well
  */
 class cSerializedObject {
 public:
@@ -69,7 +69,7 @@ public:
     virtual void deserialize(basicInput& inputStream) = 0;
 
     /*
-     * Marshle the class objects into a stream
+     * Marshal the class objects into a stream
      */
     virtual void serialize(basicOutput& outputStream) const = 0;
 };

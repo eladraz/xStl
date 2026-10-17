@@ -35,8 +35,8 @@
 /*
  * assert.h
  *
- * Define default ASSERT function for assertion. The ASSERT function decaler
- * as be platform indepndece, which means it can work on Windows version,
+ * Define the default ASSERT function for assertions. The ASSERT function is declared
+ * to be platform independent, which means it can work on the Windows version,
  * Linux version and other future OS.
  *
  * Author: Elad Raz <e@eladraz.com>
@@ -48,8 +48,8 @@
 /*
  * assertFunction(BOOL condition, cString msg)
  *
- * Private inline functoin of the STL, This function shows the assertions and
- * throw exception.
+ * Private inline function of the STL. This function shows the assertions and
+ * throws an exception.
  */
 #ifdef _DEBUG
     #ifdef DOT_NET

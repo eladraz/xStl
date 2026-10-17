@@ -35,8 +35,8 @@
 /*
  * osdef.h
  *
- * Defines global data-structs for the operation-system handles and types.
- * The OS defs should define all types for all platfroms.
+ * Defines global data structures for the operating-system handles and types.
+ * The OS defs should define all types for all platforms.
  *
  * Author: Elad Raz <e@eladraz.com>
  */
@@ -45,7 +45,7 @@
 /*
  * Here is a list of types which this header file declares:
  *
- * systemTime  - The system quata time. Different by ticks.
+ * systemTime  - The system quanta time. Different by ticks.
  * mutexHandle - The OS handle for the cMutex implementation.
  *
  * TODO:
@@ -75,8 +75,8 @@
     // For know these compiler doesn't support any files or threads(!)
     #include "xStl/os/tc16/tc16OSdef.h"
 #else
-    // Unknown platfrom
-    #error "Unknown platfrom implementation!!!"
+    // Unknown platform
+    #error "Unknown platform implementation!!!"
 #endif
 
 #endif // __TBA_STL_OS_OSDEF_H

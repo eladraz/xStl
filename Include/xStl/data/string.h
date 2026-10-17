@@ -35,10 +35,10 @@
 /*
  * string.h
  *
- * Implementation of the 'string' in the xStl system. The string are wrappers
+ * Implementation of the 'string' in the xStl system. Strings are wrappers
  * for the  C 'char*' pointers. The class copies and manage the memory of the
- * string. The class doesn't wrapped only the standard C string it also helps
- * the Unicode string or any other non-default 'char' string.
+ * string. The class doesn't only wrap the standard C string, it also helps
+ * with Unicode strings or any other non-default 'char' string.
  *
  * Author: Elad Raz <e@eladraz.com>
  */
@@ -58,25 +58,25 @@ class cTestString;
 /*
  * cString class
  *
- * An extension to cSArray<character> class which contains support in the
- * strings operations. The string are normal C string with character type
- * extension. Basically a string is array of characters with a NULL terminate
- * character ('\0'). This class provide simple string operation operators
- * such as concating strings, taking part of a string or calculating the
+ * An extension to the cSArray<character> class which contains support for the
+ * string operations. Strings are normal C strings with a character type
+ * extension. Basically a string is an array of characters with a NULL terminating
+ * character ('\0'). This class provides simple string operation operators
+ * such as concatenating strings, taking part of a string or calculating the
  * length of the string.
- * The length of the string is private member. The function getBuffer()
- * return a direct memory access to the string with the ablitiy to
- * enlarge the memory allocated string. After changing the string the
+ * The length of the string is a private member. The function getBuffer()
+ * returns direct memory access to the string with the ability to
+ * enlarge the memory allocated for the string. After changing the string the
  * application must call the 'rearrangeStringVector' to fix-up the string
  * in the memory.
- * The string class uses the 'page' mechanizm of the cArray class to
- * optimized permormance. The page is a simple way to avoid memory
- * allocation when-ever concating or deleting part of the string.
+ * The string class uses the 'page' mechanism of the cArray class to
+ * optimize performance. The page is a simple way to avoid memory
+ * allocation whenever concatenating or deleting part of the string.
  * See cArray class description for more information.
  *
- * NOTE: The addition of the NULL terminate character are requiered to be
+ * NOTE: The addition of the NULL terminating character is required to be
  *       compatible with older C functions. The cost of appending the NULL
- *       character is not so hard and the benefit are larger.
+ *       character is not high and the benefit is larger.
  *
  * COMPATIBLE NOTE: This object can work with all standard C library functions
  *                  and with code written for it. See 'getBuffer()' function and
@@ -85,26 +85,26 @@ class cTestString;
 class cString : public cSerializedObject
 {
 public:
-    // Normal constructors and deconstructor
+    // Normal constructors and destructor
     enum {
-        // The default page for the string. See page declartion in the cArray
+        // The default page for the string. See page declaration in the cArray
         // class description for more information.
         DefaultStringPage = 30,
         // The constructor of cString can translate 'uint' and 'int' to
-        // strings. The alpha-betic of the converstion is the string in the
+        // strings. The alphabet of the conversion is the string in the
         // m_baseStrip static const member. For changing the strip compile
         // your own members and define the 'XSTL_UNIQUE_STRIP' in the
-        // compliation process
+        // compilation process
         DefaultStringBase = 10
     };
 
     /*
      * The default constructor. Wrap a pointer to a string with a cString
-     * object. The data of the string are copied to the class memory.
+     * object. The data of the string is copied to the class memory.
      *
      * string - The string to be wrapped. If this argument is NULL the class
      *          creates a new empty string object.
-     * optMem - The page size to be use when handling the string.
+     * optMem - The page size to be used when handling the string.
      *
      * Throws out of memory exception.
      */
@@ -113,12 +113,12 @@ public:
 
     #ifdef XSTL_UNICODE
     /*
-     * Incase we compile the xStl with the UNICODE support (good choice!)
+     * In case we compile the xStl with the UNICODE support (good choice!)
      * we added a default ASCII string constructor.
      *
      * string - The string to be wrapped. If this argument is NULL the class
      *          creates a new empty string object.
-     * optMem - The page size to be use when handling the string.
+     * optMem - The page size to be used when handling the string.
      *
      * Throws out of memory exception.
      */
@@ -128,16 +128,16 @@ public:
 
     /*
      * To allow easy communication with ASCII application the following
-     * function translates between unicode string and an ASCII string
-     * in a safe case.
-     * NOTE: The return array include null-terminate character ('\0')
+     * function translates between a unicode string and an ASCII string
+     * in a safe way.
+     * NOTE: The returned array includes the null-terminating character ('\0')
      */
     cSArray<char> getASCIIstring() const;
 
     /*
-     * Explictly returns a unicode-string.
+     * Explicitly returns a unicode-string.
      *
-     * NOTE: The return array include null-terminate unichar ('\0'L)
+     * NOTE: The returned array includes the null-terminating unichar ('\0'L)
      */
     cSArray<unichar> getUnicodeString() const;
 
@@ -145,7 +145,7 @@ public:
      * Creates a string object with a single character 'ch'
      *
      * ch     - The character to be inserted.
-     * optMem - The page size to be use when handling the string.
+     * optMem - The page size to be used when handling the string.
      *
      * Throws out of memory exception.
      */
@@ -155,12 +155,12 @@ public:
 
     #ifdef XSTL_UNICODE
     /*
-     * Incase we compile the xStl with the UNICODE support (good choice!)
+     * In case we compile the xStl with the UNICODE support (good choice!)
      * we added a default ASCII string constructor.
      *
      * string - The string to be wrapped. If this argument is NULL the class
      *          creates a new empty string object.
-     * optMem - The page size to be use when handling the string.
+     * optMem - The page size to be used when handling the string.
      *
      * Throws out of memory exception.
      */
@@ -173,8 +173,8 @@ public:
      * Creates a string object which represent 'number'
      *
      * number - The number to be translated.
-     * base   - The base for the convertor.
-     * optMem - The page size to be use when handling the string.
+     * base   - The base for the converter.
+     * optMem - The page size to be used when handling the string.
      *
      * Throws out of memory exception.
      */
@@ -186,8 +186,8 @@ public:
      * Creates a string object which represent 'number'
      *
      * number - The number to be translated.
-     * base   - The base for the convertor.
-     * optMem - The page size to be use when handling the string.
+     * base   - The base for the converter.
+     * optMem - The page size to be used when handling the string.
      *
      * Throws out of memory exception.
      */
@@ -199,8 +199,8 @@ public:
      * Creates a string object which represent 'number'
      *
      * number - The number to be translated.
-     * base   - The base for the convertor.
-     * optMem - The page size to be use when handling the string.
+     * base   - The base for the converter.
+     * optMem - The page size to be used when handling the string.
      *
      * Throws out of memory exception.
      */
@@ -212,8 +212,8 @@ public:
      * Creates a string object which represent 'number'
      *
      * number - The number to be translated.
-     * base   - The base for the convertor.
-     * optMem - The page size to be use when handling the string.
+     * base   - The base for the converter.
+     * optMem - The page size to be used when handling the string.
      *
      * Throws out of memory exception.
      */
@@ -223,7 +223,7 @@ public:
 
 
     /*
-     * Copy-constructor. Copies the memory of another stting.
+     * Copy-constructor. Copies the memory of another string.
      */
     cString(const cString& other);
 
@@ -240,9 +240,9 @@ public:
     uint length() const;
 
     /*
-     * Retervie copy of part from the string. The partial ranage starts from
-     * 'index' location and has 'size' length. Incase the function reaches
-     * the end of the string the function stops (And don't throw exception).
+     * Retrieve copy of part from the string. The partial range starts from
+     * 'index' location and has 'size' length. In case the function reaches
+     * the end of the string the function stops (and doesn't throw an exception).
      *
      * index - The start location of the string
      * size  - The length for the string.
@@ -252,8 +252,8 @@ public:
     cString mid(uint index, int size) const;
 
     /*
-     * Retervie copy of part from the string. The partial ranage starts from
-     * 'index1' location and ended 'index2' location. Incase the function
+     * Retrieve copy of part from the string. The partial range starts from
+     * 'index1' location and ended 'index2' location. In case the function
      * reaches the end of the string the function stops (And don't throw
      * exception).
      *
@@ -303,18 +303,18 @@ public:
         LowerThan   = -1,
         // The string is equal to other
         EqualTo     = 0,
-        // The string is greather than other
+        // The string is greater than other
         GreaterThan = 1
     };
 
     /*
-     * Compare two strings with case sensetive. The return value indicate
+     * Compare two strings case-sensitively. The return value indicates
      * whether the string is less than, greater than or equal to the 'other'
      * string
      *
      * other - cString object or character* array.
      *
-     * Returns CompareType object which describes the compration.
+     * Returns CompareType object which describes the comparison.
      */
     CompareType compare(const character* other) const;
     CompareType compare(const cString& other) const;
@@ -326,7 +326,7 @@ public:
      *
      * other - cString object or character* array.
      *
-     * Returns CompareType object which describes the compration.
+     * Returns CompareType object which describes the comparison.
      */
     CompareType icompare(const character* other) const;
     CompareType icompare(const cString& other) const;
@@ -346,16 +346,16 @@ public:
     cString& makeLower();
 
     /*
-     * Makes the string without all leading and lead-out blankes characters for
+     * Makes the string without all leading and trailing blank characters at
      * the beginning and the end of the string.
      */
     cString& trim();
 
     /*
      * Returns a string without all spaces blocks inside the string and 'trim'
-     * the string. Space-block defined as more than one blank character.
+     * the string. A space-block is defined as more than one blank character.
      * Example calling cString("  a    b elad   hj").trimAllSpaces() will result
-     * with cString("a b elad hj").
+     * in cString("a b elad hj").
      */
     cString& trimAllSpaces();
 
@@ -397,19 +397,19 @@ public:
      * 'replace' string.
      *
      * findString    - The string to look for
-     * replaceString - The string to substitue in place of 'find'.
+     * replaceString - The string to substitute in place of 'find'.
      */
     cString& replace(const cString& findString,
                      const cString& replaceString);
 
     /*
-     * Splits a string into link-list of strings. The strings are traces by the
-     * 'divider' string. For example spliting a string with the "\n" string will
-     * seperate the string into lines.
-     * Second exmpale: cString("a=13&b=5&c=2").split("&") will returned:
+     * Splits a string into link-list of strings. The strings are separated by the
+     * 'divider' string. For example splitting a string with the "\n" string will
+     * separate the string into lines.
+     * Second example: cString("a=13&b=5&c=2").split("&") will return:
      * ["a=3","b=5","c=2"]
      *
-     * divider - The string to be match using 'find' in the string.
+     * divider - The string to be matched using 'find' in the string.
      *
      * Returns link-list of string. The link-list should include at least one
      * string. If the link-list has only one item then it will be equal to this
@@ -418,16 +418,16 @@ public:
     cList<cString> split(const cString& divider) const;
 
     /*
-     * Returns a pointer to the string buffer. The pointer is direct pointer to
+     * Returns a pointer to the string buffer. The pointer is a direct pointer to
      * the class object data. Any change of the returned buffer will cause the
-     * string to be change. This function allow compatiblities with older code
-     * written to the libC. The lockSize allows to increase the length of the
-     * return buffer and allow to expand the string in the memory without the
-     * worry for overflows. After changing (And only changing) the data in the
-     * buffer a call to 'rearrangeStringVector()' required.
+     * string to change. This function allows compatibility with older code
+     * written for libC. The lockSize allows increasing the length of the
+     * returned buffer and allows expanding the string in memory without the
+     * worry about overflows. After changing (and only changing) the data in the
+     * buffer a call to 'rearrangeStringVector()' is required.
      *
      * lockSize - The total number of bytes for the string buffer. If this
-     *            number is lower the 'length()' the return buffer is with
+     *            number is lower than 'length()' the return buffer is with
      *            'length()' size.
      *
      * See 'rearrangeStringVector()' for more information.
@@ -435,7 +435,7 @@ public:
     character* getBuffer(const uint lockSize = 0);
 
     /*
-     * Return the content of the string. This function is provide as
+     * Return the content of the string. This function is provided as
      * compatibility with the older C code.
      */
     const character* getBuffer() const;
@@ -449,10 +449,10 @@ public:
     void rearrangeStringVector();
 
     /*
-     * Duplicate one string as the number of times mentation in the 'number'
+     * Duplicate a string the number of times specified in the 'number'
      * argument.
      *
-     * object - The object to be duplicate
+     * object - The object to be duplicated
      * number - The number of times for the duplication
      */
     static cString dup(const cString& object, uint number);
@@ -463,8 +463,8 @@ public:
      * otherwise, object is padded with 'padding' character to be at size of
      * 'number'
      *
-     * object  - The string to be pad
-     * number  - The number of characters to be padding
+     * object  - The string to be padded
+     * number  - The number of characters to pad to
      * padding - The padding character
      *
      * Return a padding string
@@ -476,7 +476,7 @@ public:
     // Operators
 
     /*
-     * Assignment operator. Copy the string which reperesnt in the 'other' into
+     * Assignment operator. Copy the string which is represented by 'other' into
      * this string object.
      *
      * other - cString/string object
@@ -486,14 +486,14 @@ public:
 
 
     /*
-     * Return true if the two string are equals. This function is equal to the
+     * Return true if the two strings are equal. This function is equivalent to the
      * 'compare() == 0' function.
      */
     bool operator == (const cString& other) const;
 
     /*
-     * Return true if the alpha-beit of this string is less than 'other' string
-     * This means that the comparing is incase-sensetive.
+     * Return true if this string is alphabetically less than the 'other' string.
+     * This means that the comparison is case-insensitive.
      */
     bool operator < (const cString& other) const;
 
@@ -503,7 +503,7 @@ public:
     MAKE_SIMPLE_OPERATORS(cString);
 
     /*
-     * Concating operators. Adding string with normal operator + or +=. The
+     * Concatenating operators. Adding string with normal operator + or +=. The
      * strings can be either cString strings or character* strings or single
      * characters.
      */
@@ -524,7 +524,7 @@ public:
     { concat(cString(other)); return *this; }
 
 
-    // The string "-" which indicate that the number is negative
+    // The string "-" which indicates that the number is negative
     static const character* m_stringNegativeInteger;
     // The strip for the character
     static const character* m_baseStrip;
@@ -552,11 +552,11 @@ private:
     friend class cTestString;
 
     /*
-     * Private function. Used at the constructors. Creates empty string and
-     * init all members. The functions assumes all member are uninitiliazed
-     * so memory will not allocated and therfore will not be free.
+     * Private function. Used in the constructors. Creates an empty string and
+     * initializes all members. The function assumes all members are uninitialized
+     * so memory will not be allocated and therefore will not be freed.
      *
-     * optMem - The page size to be use when handling the string.
+     * optMem - The page size to be used when handling the string.
      */
     void createEmptyString(uint optMem);
 

@@ -138,7 +138,7 @@ bool cFileStream::isEOS()
 {
     CHECK(isOpen());
 
-    /* Check whether the length of the file equal the position */
+    /* Check whether the length of the file equals the position */
     uint fileLength   = length();
     uint filePosition = getPointer();
 

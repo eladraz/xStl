@@ -35,8 +35,8 @@
 /*
  * sarray.h
  *
- * Declaration on the struct-array. Struct array are array which stores objects
- * without copy-construct and can be copied using 'memcpy' command.
+ * Declaration of the struct-array. A struct array is an array which stores objects
+ * without copy-construction and can be copied using 'memcpy' command.
  *
  * Author: Elad Raz <e@eladraz.com>
  */
@@ -49,16 +49,16 @@
 
 #ifdef XSTL_WINDOWS
     // Template classes might not use all the local functions the interface has
-    // to ofer. Warning C4505 should be over-written for template functions
+    // to offer. Warning C4505 should be disabled for template functions
     #pragma warning(push)
     #pragma warning(disable:4505)
 #endif
 
 #ifdef DMCOMP_NOAD
     /*
-     * The default C standard (By Digital Mars compiler) forbid extending
-     * template class since the base class is independed name
-     * Look on the following code:
+     * The default C standard (By Digital Mars compiler) forbids extending
+     * template class since the base class is a dependent name
+     * Look at the following code:
      *
      * template <class T>
      * class Base {
@@ -79,14 +79,14 @@
      *        }
      * };
      *
-     * Anyway, the compiler doesn't recognize base template class on the driven
+     * Anyway, the compiler doesn't recognize the base template class in the derived
      * class implementation code.
      * It can't recognize any static members/static const/methods/members of the
      * base class
      *
      * Hence, using the default settings of DMC compiler the struct-array
      * optimization will be disabled.
-     * Use dmc.exe -Ad to overide this behaviour.
+     * Use dmc.exe -Ad to override this behaviour.
      *
      * Elad.
      */
@@ -108,12 +108,12 @@ public:
     /*
      * Explicit default constructor.
      *
-     * Create array of 'numberOfElements' elements (uninitialize objects)
+     * Create array of 'numberOfElements' elements (uninitialized objects)
      * with page size of 'pageSize'.
      * Notice that the array is limited by the size of the compiler 'int'.
      *
      * numberOfElements - The number of elements in the array
-     * pageSize - The page-size for the array. See cArray for paging mechanizm
+     * pageSize - The page-size for the array. See cArray for paging mechanism
      *
      * throws 'EXCEPTION_OUT_OF_MEM' exception.
      */
@@ -122,7 +122,7 @@ public:
 
     /*
      * Create array of 'length' elements and copy to it the 'staticArray' array.
-     * The copy is used using memcpy instead of operator =.
+     * The copy is done using memcpy instead of operator =.
      */
     explicit cSArray(const T* staticArray,
                      uint length,
@@ -192,8 +192,8 @@ public:
 
     /*
      * Unlike cArray the cSArray elements have a natural operator ==. The array
-     * is composed from a stream-structed elements, so we can use memcmp to find
-     * whether the arraies are equals, lower etc...
+     * is composed of stream-structured elements, so we can use memcmp to find
+     * whether the arrays are equal, lower etc...
      */
     bool operator == (const cSArray<T>& other) const;
     bool operator <  (const cSArray<T>& other) const;
@@ -222,8 +222,8 @@ public:
      * Write an array: write a 32bit value for array size and then write the
      *                 elements
      *
-     * IMPORTANT NOTE: If the array size is bigger then 32bit value,
-     *                 exception will be thorwn
+     * IMPORTANT NOTE: If the array size is bigger than 32bit value,
+     *                 an exception will be thrown
      */
     virtual void serialize(basicOutput& outputStream) const;
 
@@ -234,12 +234,12 @@ protected:
     virtual void copyFrom(const cArray<T> &other);
 };
 
-// Template implementation must be include inside the header file
+// Template implementation must be included inside the header file
 #include "xStl/data/sarray.inl"
 #endif // DMCOMP
 
 /*
- * Array of uint8 called also cBuffer
+ * Array of uint8, also called cBuffer
  */
 typedef cSArray<uint8> cBuffer;
 
@@ -250,7 +250,7 @@ typedef cSmartPtr<cBuffer> cBufferPtr;
 
 
 #ifdef XSTL_WINDOWS
-    // Return the warnning behaviour back to it's original mode
+    // Return the warning behaviour back to its original mode
     #pragma warning(pop)
 #endif
 

@@ -59,7 +59,7 @@ cSmartPtr<T>::cSmartPtr(T* object, DestructionMethod destructionType /* = SMARTP
 template<class T>
 void cSmartPtr<T>::free()
 {
-    // Decrease the refrence
+    // Decrease the reference
     if (decreaseAndTest())
     {
         if (m_object != NULL)
@@ -85,7 +85,7 @@ void cSmartPtr<T>::free()
 template<class T>
 bool cSmartPtr<T>::decreaseAndTest()
 {
-    // Protected the atomic operation of decreasing and testing
+    // Protect the atomic operation of decreasing and testing
     cLock lock(cSmartPtrLockable::getInstance().globalSmartPtrLock);
     return (m_refrenceCounter->decrease() == 0);
 }
@@ -124,8 +124,8 @@ cSmartPtr<T>& cSmartPtr<T>::operator=(const cSmartPtr<T>& other)
         free();
 
         // Increase reference counter. This operation must be atomic!
-        // The object can delete here (even if we have a reference)
-        // because two thread can decrease without locking and...
+        // The object can be deleted here (even if we have a reference)
+        // because two threads can decrease without locking and...
         cLock lock(cSmartPtrLockable::getInstance().globalSmartPtrLock);
         m_refrenceCounter = other.m_refrenceCounter;
         m_destructionType = other.m_destructionType;

@@ -35,7 +35,7 @@
 /*
  * fileStream.h
  *
- * Platfrom independance file-access interface using basicIO streaming
+ * Platform-independent file-access interface using basicIO streaming
  * capabilities.
  *
  * This file is compiled to both Linux (LIBC) and all Windows platforms.
@@ -73,7 +73,7 @@ public:
     defaultEndianImpl;
 
     /*
-     * Most common constructor. Create a stream according to initialize file
+     * Most common constructor. Create a stream according to an initialized file
      * pointer.
      *
      * filePtr - The file to be used
@@ -88,8 +88,8 @@ public:
      * Construct a file object and open it for the 'filename' file with flags
      * attributes.
      *
-     * filename - A string which represent the file over the disk for the current
-     *            operation-system:
+     * filename - A string which represents the file on the disk for the current
+     *            operating system:
      *              DOS/WINDOWS: c:\\windows\\notepad.exe
      *              LINUX: /bin/ls
      * flags - The open mode, creation mode and access mode for the file.
@@ -112,13 +112,13 @@ public:
 
     /*
      * Open the file name 'filename' using 'flags' as the open mode.
-     * For windows enviorment, CreateFile() syscall is in used the flags are
-     * translating to the coresponed elements.
-     * For linux envirment, open() syscall is in used. The flags are translating
-     * to the coresponed elements.
+     * For the Windows environment, the CreateFile() syscall is used and the flags are
+     * translated to the corresponding elements.
+     * For the Linux environment, the open() syscall is used. The flags are translated
+     * to the corresponding elements.
      *
-     * filename - A string which represent the file over the disk for the current
-     *            operation-system:
+     * filename - A string which represents the file on the disk for the current
+     *            operating system:
      *              DOS/WINDOWS: c:\\windows\\notepad.exe
      *              LINUX: /bin/ls
      * flags - The open mode, creation mode and access mode for the file.
@@ -137,10 +137,10 @@ public:
     bool isOpen() const;
 
 
-    // Driven from the basicIO
+    // Derived from the basicIO
 
     /*
-     * Read a buffer from the file. Implement for both windows and linux platform,
+     * Read a buffer from the file. Implemented for both Windows and Linux platforms,
      * using ReadFile() for Windows version and read() syscall for Linux platform.
      *
      * Return the number of bytes read.
@@ -149,8 +149,8 @@ public:
     virtual uint read(void *buffer, const uint length);
 
     /*
-     * Write a buffer to the file. Implement for both windows and linux platform,
-     * using WriteFile() for Windows version and write() syscall for linux version.
+     * Write a buffer to the file. Implemented for both Windows and Linux platforms,
+     * using WriteFile() for Windows version and write() syscall for the Linux version.
      *
      * Return the number of bytes written.
      * Throws cFileStreamException in case of error.
@@ -158,7 +158,7 @@ public:
     virtual uint write(const void *buffer, const uint length);
 
     /*
-     * Move to a specific position in the file. Throw exception if faild.
+     * Move to a specific position in the file. Throw an exception if failed.
      * See basicInput::seek for more information.
      */
     virtual void seek(const int distance, const basicInput::seekMethod method);
@@ -181,7 +181,7 @@ public:
     uint64 getPointer64() const;
 
     /*
-     * Return true if the file pointer reach the end of the file.
+     * Return true if the file pointer reaches the end of the file.
      */
     virtual bool isEOS();
 
@@ -199,7 +199,7 @@ public:
      * Returns how many bytes should be read for best performance in the
      * pipeRead() function in a single call to the read() function.
      *
-     * This value stand on 4kb which is normal 2 cluster size.
+     * This value stands at 4kb which is the normal size of 2 clusters.
      */
     virtual uint getPipeReadBestRequest() const { return 4096; }
 

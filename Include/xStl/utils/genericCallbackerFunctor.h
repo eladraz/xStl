@@ -35,7 +35,7 @@
 /*
  * genericCallbackerFunctor.h
  *
- * Template functor implementation for all callbacing types.
+ * Template functor implementation for all callback types.
  * See 'xStl/utils/callbacker.h' for examples.
  *
  * Author: Elad Raz <e@eladraz.com>
@@ -45,8 +45,8 @@
 /*
  * This macro generate a unique functor that will invoke the 'function' when
  * it's called.
- * The functor is complicated since it's supports many differents run-time
- * poroto-types
+ * The functor is complicated since it supports many different run-time
+ * prototypes
  */
 #define FUNC_CALLBACKER(function_name, functor_name) \
     functor_name((new cDispatcherClass##function_name(this)))

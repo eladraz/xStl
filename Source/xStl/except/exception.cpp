@@ -52,18 +52,18 @@
 #include "xdk/kernel.h"
 #elif defined(XSTL_16BIT) || defined (XSTL_CE)
 #else
-#error "Unsupoorted platform!";
+#error "Unsupported platform!";
 #endif
 
-const lpString EXCEPTION[] = {XSTL_STRING("Undefiend exception"),
+const lpString EXCEPTION[] = {XSTL_STRING("Undefined exception"),
     XSTL_STRING("Operation failed"),
     XSTL_STRING("Out of range"),
-    XSTL_STRING("Not engouth memory"),
+    XSTL_STRING("Not enough memory"),
     XSTL_STRING("Format error"),
     XSTL_STRING("Error while trying to read from stream"),
     XSTL_STRING("Error while trying to write to stream"),
     XSTL_STRING("Seek error"),
-    XSTL_STRING("Object access violated"),
+    XSTL_STRING("Object access violation"),
     XSTL_STRING("Assertion failed"),
     XSTL_STRING("OS error"),
 };

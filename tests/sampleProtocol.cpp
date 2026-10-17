@@ -53,13 +53,13 @@ const char cSampleProtocol::signature[SIGNATURE_SIZE + 1] =
 void cSampleProtocol::testServerSide(basicIO& stream,
                                      cStringerStream& out)
 {
-    // Wait until a client will connected
+    // Wait until a client connects
     char sig[SIGNATURE_SIZE + 1];
     stream.pipeRead(sig, SIGNATURE_SIZE);
     sig[SIGNATURE_SIZE] = '\0';
     CHECK(strcmp(sig, signature) == 0);
 
-    out << "SERVER: New client was enter..." << endl;
+    out << "SERVER: New client entered..." << endl;
 
     // Start by sending hello
     cMD5 md5;

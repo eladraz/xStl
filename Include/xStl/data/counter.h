@@ -45,14 +45,14 @@
 
 
 /*
- * Forward deceleration for the tests.
+ * Forward declaration for the tests.
  */
 class cTestCounter;
 
 /*
  * cCounter
  *
- * A safe counter. A counter which thread-safe and protect using a mutex.
+ * A safe counter. A counter which is thread-safe and protected by a mutex.
  */
 class cCounter
 {
@@ -100,7 +100,7 @@ private:
     // The value of the counter
     volatile counter_t m_value;
 
-    // Windows NT kernel-mode and user mode contains build-in functions
+    // Windows NT kernel-mode and user mode contain built-in functions
     #if (!(defined(XSTL_NTDDK) || defined(XSTL_WINDOWS) || defined(XSTL_CE)))
         // The lock for the counter
         cXstlLockable m_lock;
@@ -112,7 +112,7 @@ private:
     cCounter(const cCounter& other);
     cCounter& operator =(const cCounter& other);
 
-    // Everybody need some friends.
+    // Everybody needs some friends.
     friend class cTestCounter;
 };
 

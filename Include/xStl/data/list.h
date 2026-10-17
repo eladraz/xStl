@@ -35,7 +35,7 @@
 /*
  * list.h
  *
- * Contains delcaration of link-list module.
+ * Contains declaration of link-list module.
  *
  * Author: Elad Raz <e@eladraz.com>
  */
@@ -47,7 +47,7 @@
 
 #ifdef XSTL_WINDOWS
 // Template classes might not use all the local functions the interface has
-// to ofer. Warning C4505 should be over-written for template functions
+// to offer. Warning C4505 should be disabled for template functions
 #pragma warning(push)
 #pragma warning(disable:4505)
 #endif
@@ -64,29 +64,29 @@
 /*
  * template cList class
  *
- * The declartion of the stl "list" class which include implementation of the
+ * The declaration of the stl "list" class which includes implementation of the
  * abstract layer of the list, and the implementation of the iterator class.
  *
- * The link-list copyies the element into internal data-struct.
+ * The link-list copies the element into internal data-struct.
  *
- * requires from T:
+ * Requirements for T:
  *  T must have an equal == operator
  *  T should have copy constructor.
- *  T must NOT be a pointer because this class calles the destructor of T only,
+ *  T must NOT be a pointer because this class calls the destructor of T only,
  *    and doesn't assume that T is a pointer!
  */
 template <class T>
 class cList
 {
 public:
-    // Forward declation of the iterator class.
+    // Forward declaration of the iterator class.
     class iterator;
 
     /*
-     * This is internal class which store information about the link-list.
-     * The class store pointers to allow terminate entry in the link-list.
+     * This is an internal class which stores information about the link-list.
+     * The class stores pointers to allow a terminating entry in the link-list.
      * The implementation is inside the include file since out-side compilation
-     * is carch the system
+     * crashes the system
      */
     class ListNode
     {
@@ -113,7 +113,7 @@ public:
         ListNode* prev;
     };
 
-    /* Constructor and deconstructor of the list */
+    /* Constructor and destructor of the list */
 
     /*
      * Constructor. Create empty link-list.
@@ -139,22 +139,22 @@ public:
      * Free the link-list memory and create a new list which will be an exact
      * copy of the original link.
      *
-     * assignPointer - Incase the variable is true, the function makes the
+     * assignPointer - In case the variable is true, the function makes the
      *                 internal pointer reference to the pointers of 'other'.
      *
-     * Note: if the "assignPointer" flag will be on, WHICH IS
-     *       NOT RECOMMANDED then a new link-list will be assigned
-     *       to the original data type, and there will be a big probleam
-     *       of memory closion in MTA (Multiple Thread Apartment).
+     * Note: if the "assignPointer" flag is on, WHICH IS
+     *       NOT RECOMMENDED, then a new link-list will be assigned
+     *       to the original data type, and there will be a big problem
+     *       of memory collision in MTA (Multiple Thread Apartment).
      */
     void clone(const cList<T> &other, bool assignPointer = false);
 
 
     // Operators of the list
-    // You can also use the iterator to do this functions
+    // You can also use the iterator to do these functions
 
     /*
-     * Append element to the link-list. The element is copy using copy-
+     * Append an element to the link-list. The element is copied using copy-
      * constructor.
      *
      * node - The object to be added.
@@ -162,8 +162,8 @@ public:
     void append(const T& node);
 
     /*
-     * Insert element to the beginning of the link-list. The element is
-     * copy using copy-constructor.
+     * Insert an element at the beginning of the link-list. The element is
+     * copied using the copy-constructor.
      *
      * node - The object to be added.
      */
@@ -176,12 +176,12 @@ public:
 
     /*
      * Determine whether the list has any items or not.
-     * returns true if list has no items. false if it has item(s).
+     * Returns true if the list has no items, false if it has item(s).
      */
     bool isEmpty() const;
 
     /*
-     * Insert element to the link-list before 'position'
+     * Insert an element into the link-list before 'position'
      */
     void insert(iterator &position, const T& node);
 
@@ -209,16 +209,16 @@ public:
     uint length() const;
 
     /*
-     * Construct a new iterator that will point out to the start of the array.
+     * Construct a new iterator that will point to the start of the list.
      *
      * Note: if the iterator is at the end of the list any attempts to access
-     *       it will cause at exception.
+     *       it will cause an exception.
      *
-     * NOTE: Although the function declare as const, the iterator can be used
-     *       for non const operation.
+     * NOTE: Although the function is declared as const, the iterator can be used
+     *       for non-const operations.
      *
-     * NOTE: Microsoft visual studio .NET version 7.10 cannot compile the
-     *       code of the function if it's found outside the class deceleration.
+     * NOTE: Microsoft Visual Studio .NET version 7.10 cannot compile the
+     *       code of the function if it's found outside the class declaration.
      */
     iterator begin() const
     {
@@ -230,14 +230,14 @@ public:
     }
 
     /*
-     * Construct a new iterator that will point out to the end of the array.
-     * Any attempts to access it will cause at exception.
+     * Construct a new iterator that will point to the end of the list.
+     * Any attempts to access it will cause an exception.
      *
-     * NOTE: Although the function declare as const, the iterator can be used
-     *       for non const operation.
+     * NOTE: Although the function is declared as const, the iterator can be used
+     *       for non-const operations.
      *
-     * NOTE: Microsoft visual studio .NET version 7.10 cannot compile the
-     *       code of the function if it's found outside the class deceleration.
+     * NOTE: Microsoft Visual Studio .NET version 7.10 cannot compile the
+     *       code of the function if it's found outside the class declaration.
      */
     iterator end() const
     {
@@ -251,14 +251,14 @@ public:
     // Operators
 
     /*
-     * Return true if the two link-list are equals, all internal elements
+     * Return true if the two link-list are equal, all internal elements
      * compare with operator == are TRUE.
      * TODO: compare is not ready yet.
      */
     bool operator == (const cList<T> &other);
 
     /*
-     * Return the opposite from operator ==.
+     * Return the opposite of operator ==.
      */
     bool operator != (const cList<T> &other);
 
@@ -272,8 +272,8 @@ public:
 
     // Dumping operator
     /*
-     * Printing the list data into output stream.
-     * Usually it will be to the standart output.
+     * Print the list data to an output stream.
+     * Usually it will be to the standard output.
      *
      * Using:
      *    cout << "My list is: " << cList<T>(1, 2, 3) << endl;
@@ -285,7 +285,7 @@ public:
      * iterator class
      *
      * Inline interface + definition of the iterator
-     * class which access the list as a bidirctional
+     * class which accesses the list as a bidirectional
      * iterator.
      */
     friend class iterator;
@@ -313,7 +313,7 @@ public:
             m_position = other.m_position;
         }
         /*
-         * cList::iterator::~iterator, Deconstructor
+         * cList::iterator::~iterator, Destructor
          */
         ~iterator()
         {
@@ -340,7 +340,7 @@ public:
         }
 
         /*
-         * Return whether two iterator points to the same location.
+         * Return whether two iterators point to the same location.
          */
         bool operator == (const iterator &other) const
         {
@@ -364,12 +364,12 @@ public:
         }
 
         /*
-         * Is iterator is less than other.
+         * Is the iterator less than the other.
          */
         bool operator < (const iterator &other) const
         {
             /*
-             * Scaning the next of the list to see whether the
+             * Scanning the next of the list to see whether the
              * element is there.
              */
             ListNode *index = m_position;
@@ -387,7 +387,7 @@ public:
         /*
          * operator *
          *
-         * Return a refrence to the data.
+         * Return a reference to the data.
          */
         T& operator *()
         {
@@ -397,7 +397,7 @@ public:
         /*
          * const operator *
          *
-         * Return a refrence to the data.
+         * Return a reference to the data.
          */
         const T& operator *() const
         {
@@ -428,7 +428,7 @@ public:
         MAKE_INCREASE_OPERATORS(iterator);
 
         /*
-         * Increase the iterator by number of elements.
+         * Increase the iterator by a number of elements.
          */
         iterator operator+ (const uint count)
         {
@@ -442,7 +442,7 @@ public:
         }
 
         /*
-         * Decrease the iterator by number of elements.
+         * Decrease the iterator by a number of elements.
          */
         iterator operator- (const uint count)
         {
@@ -458,7 +458,7 @@ public:
         /*
          * assertIndex()
          *
-         * Throw exception if the index is invalid.
+         * Throw an exception if the index is invalid.
          */
         inline void assertIndex()
         {
@@ -472,13 +472,13 @@ private:
     /*
      * Private member and function
      *
-     * The following function are used internal in the class and it's not
-     * recommand to use them for something else.
+     * The following functions are used internally in the class and it is not
+     * recommended to use them for anything else.
      */
 
     /*
      * Clear the class memory.
-     * Destory the link-list and free the memory.
+     * Destroy the link-list and free the memory.
      */
     void freeList();
 
@@ -497,11 +497,11 @@ private:
     ListNode *m_last;
 };
 
-// Include implementation. This is nessasary in template classes.
+// Include implementation. This is necessary in template classes.
 #include "xStl/data/list.inl"
 
 #ifdef XSTL_WINDOWS
-    // Return the warnning behaviour back to it's original mode
+    // Return the warning behaviour back to its original mode
     #pragma warning(pop)
 #endif
 

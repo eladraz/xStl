@@ -137,7 +137,7 @@ void cSArray<T>::append(const cArray<T>& array)
 	uint org_size = this->m_size;
 	uint add_size = array.getSize();
 
-	// Change the size to the size of both array.
+	// Change the size to the size of both arrays.
 	changeSize(this->m_size + array.getSize());
 
     // Copy the elements
@@ -161,7 +161,7 @@ cSArray<T>& cSArray<T>::operator = (const cSArray<T>& other)
 	if (this != &other)
 	{
 		// If and only if, the class are DIFFRENT then
-		// preform the assignment.
+		// perform the assignment.
 		copyFrom(other);
 
 		return *this;
@@ -222,9 +222,9 @@ bool cSArray<T>::isValid() const
     return true;
 }
 
-// gcc work around. gcc can't access internal function of declared class
-// in order to overide this behavior we will use global static functions that
-// implemens streamReadUint32/streamWriteUint32 and pipeRead/pipeWrite with interface
+// gcc workaround. gcc can't access internal functions of a declared class
+// in order to override this behavior we will use global static functions that
+// implement streamReadUint32/streamWriteUint32 and pipeRead/pipeWrite with the interface
 #ifdef XSTL_LINUX
 extern "C" void gccLinuxStreamReadUint32(basicInput& inputStream, uint32& dword);
 extern "C" void gccLinuxStreamWriteUint32(basicOutput& outputStream, uint32& dword);

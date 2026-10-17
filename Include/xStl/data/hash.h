@@ -50,7 +50,7 @@
 
 #ifdef XSTL_WINDOWS
 // Template classes might not use all the local functions the interface has
-// to ofer. Warning C4505 should be over-written for template functions
+// to offer. Warning C4505 should be disabled for template functions
 #pragma warning(push)
 #pragma warning(disable:4505)
 #endif
@@ -59,24 +59,24 @@
  * class cHash
  *
  * Implementation of a global hash.
- * The hash using an array at variable length
- * of link-list.
+ * The hash uses an array of variable length
+ * of link-lists.
  *
  * To access the hash use:
  *   hash[IndexType] = FiledType;
  *
  * NOTES:
  *   IndexType must have a complete implementation of operator ==
- *   FiledType must have an hash function.
+ *   FiledType must have a hash function.
  *
  * Hash function:
- *   The hash function work on the IndexType and return a number
+ *   The hash function works on the IndexType and returns a number
  *   from 0 to "range"
  *
  *   Definition:
  *         uint cHash_functoin(const IndexType& index, uint range)
  *
- * In this file there are regular implementation of hash on:
+ * In this file there are regular implementations of hash on:
  *   float, int, char *.
  *   cString, cBuffer is also implemented in the array.h, string.h files.
  *
@@ -88,7 +88,7 @@ class cHash
 public:
     /*
      * The default arrangement of the hash array.
-     * The number of cells that points to the link list.
+     * The number of cells that point to the link list.
      */
     enum {
         DefaultHashSearch = 256
@@ -119,16 +119,16 @@ public:
      * index - The new index for the object. Must be unique
      * data  - The data to put in the cell
      *
-     * Throws exception if the index exist
+     * Throws an exception if the index exists
      */
     void append(const IndexType& index, const FiledType& data);
 
     /*
-     * Remove a item from the hash
+     * Remove an item from the hash
      *
      * index - The element to remove
      *
-     * Throws 'EXCEPTION_OUT_OF_RANGE' exception incase the index is invalid
+     * Throws 'EXCEPTION_OUT_OF_RANGE' exception in case the index is invalid
      */
     void remove(const IndexType& index);
 
@@ -138,21 +138,21 @@ public:
     void removeAll();
 
     /*
-     * Return a list of keys value.
+     * Return a list of key values.
      *
      * ret - Will be filled with the keys
      */
     void keys(cList<IndexType>& ret) const;
 
     /*
-     * Returns a list of keys value in the function return coed
+     * Returns a list of key values as the function return value
      */
     cList<IndexType> keys() const;
 
     /*
      * Return true if there is a key in the hash
      *
-     * index - The index to be query
+     * index - The index to be queried
      */
     bool hasKey(const IndexType &index) const;
 
@@ -164,7 +164,7 @@ public:
     const cHash<IndexType, FiledType>& operator = (const cHash<IndexType, FiledType>& other);
 
     /*
-     * Return true if the hash tables are equals.
+     * Return true if the hash tables are equal.
      */
     bool operator == (const cHash<IndexType, FiledType> &other) const;
 
@@ -196,16 +196,16 @@ private:
     void initHash(uint vectorSize);
 
     /*
-     * Internal function. Free m_hash and all it's data. After a call to
+     * Internal function. Free m_hash and all its data. After a call to
      * this function the hash will be invalid until a call to initHash()
-     * will be make.
+     * will be made.
      */
     void freeHash();
 
-    // The element for a single hash-table. Translates index to filed object
+    // The element for a single hash-table. Translates index to field object
     typedef cDualElement<IndexType,FiledType> ElementType;
 
-    // The link-list which store by each node
+    // The link-list which is stored by each node
     typedef cList<ElementType> ListType;
 
     // The hash table data-struct.
@@ -216,9 +216,9 @@ private:
 };
 
 /*
- * cHashFunction() standart data-types implementation
+ * cHashFunction() standard data-types implementation
  *
- * See comments at the begining of the class interface.
+ * See comments at the beginning of the class interface.
  */
 uint cHashFunction(const int& index, uint range);
 uint cHashFunction(const uint32& index, uint range);
@@ -228,7 +228,7 @@ uint cHashFunction(const cString& index, uint range);
 uint cHashFunction(const cBuffer& index, uint range);
 uint cHashFunction(const addressNumericValue& index, uint range);
 #ifndef XSTL_16BIT
-// 16 bit application doesn't have threads
+// 16 bit applications don't have threads
 uint cHashFunction(const uint64& index, uint range);
 uint cHashFunction(const cOSDef::threadHandle& index, uint range);
 #endif // XSTL_16BIT

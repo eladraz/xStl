@@ -81,6 +81,6 @@ void cPRF::generateRandom(uint length, cBuffer& output)
     m_md5->generateRandom(length, output);
     m_sha1->generateRandom(length, temp);
 
-    // XOR two stream
+    // XOR two streams
     cEncryptionUtils::_xor(output.getBuffer(), temp.getBuffer(), length);
 }

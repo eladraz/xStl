@@ -35,7 +35,7 @@
 /*
  * random.h
  *
- * The random-generated class interface declartion. Doesn't define the
+ * The random-generated class interface declaration. Doesn't define the
  * using seed.
  *
  * Author: Elad Raz <e@eladraz.com>
@@ -47,7 +47,7 @@
 /*
  * class cRandom
  *
- * The psedu random generation interface. Generate required random.
+ * The pseudo random generation interface. Generate required random.
  */
 class cRandom
 {
@@ -60,10 +60,10 @@ public:
     /*
      * Generate 'length' bytes of random and put it in 'output'. The 'output'
      * size is changed to 'length' and step over pure random. This function
-     * increase the internal random mechanizm.
+     * advances the internal random mechanism.
      *
-     * length - The amount of random to be generate.
-     * output - Will be filled with the required psedu-random generation code.
+     * length - The amount of random to be generated.
+     * output - Will be filled with the required pseudo-random generation code.
      */
     virtual void generateRandom(uint length, cBuffer& output) = 0;
 };

@@ -44,10 +44,10 @@
 #include "xStl/os/osdef.h"
 
 /*
- * Event is operating system object which has two states: Reset and set.
- * The operating system was internal mechanism related to context-switch which
- * allow freezing objects until one or more events will be set.
- * Using this interface and 'setEvent/wait' to accomplish that functionality.
+ * An event is an operating system object which has two states: reset and set.
+ * The operating system has an internal mechanism related to context switching which
+ * allows freezing objects until one or more events are set.
+ * Use this interface and 'setEvent/wait' to accomplish that functionality.
  */
 class cEvent {
 public:
@@ -55,7 +55,7 @@ public:
      * Construct a new event object.
      * The new event state is reset.
      *
-     * Throw exception if there aren't enough resources
+     * Throw an exception if there aren't enough resources
      */
     cEvent();
 
@@ -66,7 +66,7 @@ public:
      * shouldCreate - Set to true if the event should be generated.
      *                Set to false if the event should be opened
      *
-     * Throw exception if there aren't enough resources
+     * Throw an exception if there aren't enough resources
      */
     cEvent(const cString& eventName, bool shouldCreate);
 
@@ -92,12 +92,12 @@ public:
     bool isEventSet() const;
 
     /*
-     * Freeze the current thread until the event will be set. If the event
+     * Freeze the current thread until the event is set. If the event
      * was in reset state, the function returns immediately.
-     * After the function returns, the event continue to be set until
-     * 'resetEvent' will be called.
+     * After the function returns, the event continues to be set until
+     * 'resetEvent' is called.
      *
-     * NOTE: For DDK developming, IRQL must be PASSIVE_LEVEL
+     * NOTE: For DDK development, IRQL must be PASSIVE_LEVEL
      */
     void wait() const;
 

@@ -11,18 +11,18 @@ Requirements
 ============
 Windows
 -------
-Need [Visual Studio](http://www.visualstudio.com/en-us/products/visual-studio-express-vs.aspx) Express 2010 or higher, or Visual Studio 2010 or higher.
+Requires [Visual Studio](http://www.visualstudio.com/en-us/products/visual-studio-express-vs.aspx) Express 2010 or newer, or Visual Studio 2010 or newer.
 
 Ubuntu (Debian)
 ---------------
 `sudo apt-get install automake autoconf libtool build-essential git-core`
 
-CentOS/Fedora/Redhat
+CentOS/Fedora/Red Hat
 --------------------
 * Building tools
     `sudo yum install autoconf automake gcc-c++`
     `sudo dnf install autoconf automake gcc-c++`
-> ***Some distributions of CentOS have a problem with libstd++ (need to check). For some reason the symbol __cxa_get_exception_ptr is not defined.***
+> ***Some distributions of CentOS have a problem with libstdc++ (to be verified). For some reason the symbol __cxa_get_exception_ptr is not defined.***
 
 ArchLinux
 ---------
@@ -40,7 +40,7 @@ Tested on macOS 26 (Apple Silicon/arm64) with Apple clang 21.
 
 Cygwin
 ------
-Install [cygwin](http://www.cygwin.com/) with the following packages:
+Install [Cygwin](http://www.cygwin.com/) with the following packages:
 * gcc
 * g++
 * automake
@@ -59,8 +59,8 @@ How to Build
 ============
 CMake
 -----
-CMake is cross-compile system for many platform and many system.
-You can read about it more [here](https://cmake.org/install/)
+CMake is a cross-platform build system for many platforms and systems.
+You can read more about it [here](https://cmake.org/install/)
 
 The library and the tests are two separate CMake projects. Build the library
 first; it is written to `out/lib` (static `libxStlcm_static.a` and shared `libxStlcm.so`/`.dylib`).
@@ -84,20 +84,20 @@ To use Ninja instead of Make, add `-G Ninja` to the configure commands.
 
 Windows
 -------
-In order to pass variable arguments to [Visual Studio](http://www.visualstudio.com/en-us/products/visual-studio-express-vs.aspx), you need to declare the following system argument:
+In order to pass variables to [Visual Studio](http://www.visualstudio.com/en-us/products/visual-studio-express-vs.aspx), you need to declare the following environment variable:
 * XSTL_PATH (for example: `C:\WORK\github\xStl`)
 
-> To add system variables you should:
+> To add environment variables:
 >> * Right-click **My Computer**, and then click **Properties**.
 >> * Click the **Advanced** tab.
 >> * Click **Environment variables**.
->> * Click one the following options, for either a user or a system variable:
+>> * Click one of the following options, for either a user or a system variable:
 >>    * Click *New* to add a new variable name (e.g. `XSTL_PATH`) and value (e.g. `C:\WORK\github\xStl`).
 >>    * Click an existing variable, and then click *Edit* to change its name or value.
 >>    * Click an existing variable, and then click *Delete* to remove it.
 
-In order to build the xStl library, open `xStl.sln` solution project with [Visual Studio](http://www.visualstudio.com/en-us/products/visual-studio-express-vs.aspx).
-In Visual Studio's configuration manager, choose the desired build configuration (Win32/x64/Debug/Release) and build `xStl` or `xStl_test`.
+In order to build the xStl library, open the `xStl.sln` solution with [Visual Studio](http://www.visualstudio.com/en-us/products/visual-studio-express-vs.aspx).
+In Visual Studio's configuration manager, choose the desired build configuration (Win32/x64/Debug/Release) and build `xStl` or `xStlTests`.
 
 Linux / macOS
 -------------
@@ -110,11 +110,11 @@ PWD=`pwd`
 ```
 
 ### Compile
-1. Run `./autogen.sh` in order to generate `Makefile` configure script.
-2. Run `./configure` to generate `Makefile` (see **Configure Argument** section, below).
+1. Run `./autogen.sh` in order to generate the `configure` script.
+2. Run `./configure` to generate `Makefile` (see the **Configure Arguments** section, below).
 3. Run `make` and `make install`.
 
-#### Configure Argument
+#### Configure Arguments
 * --enable-debug      Compile with debugging flags
 * --enable-unicode    Compile with UNICODE support
 * --enable-tests      Compile xStl_tests
@@ -125,8 +125,8 @@ In order to cross-compile (ARM, for example):
 ./autogen.sh
 ./configure --build= --host=arm-none-linux-gnueabi
 ```
-Please note that it is important to have a PATH to the cross-compiler bin folder (e.g. `arm-none-linux-gnueabi-g++`).
+Please note that the cross-compiler `bin` folder must be in your PATH (e.g. `arm-none-linux-gnueabi-g++`).
 
 License
 =======
-Please see LICENSE file
+Please see the LICENSE file

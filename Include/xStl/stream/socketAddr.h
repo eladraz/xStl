@@ -54,11 +54,11 @@
 
 
 #if defined(XSTL_WINDOWS) || defined (XSTL_CE)
-    /* Windows sokcet include files */
+    /* Windows socket include files */
     #include <Winsock.h>
 #else
 #ifdef XSTL_LINUX
-    /* UINX socket include files */
+    /* UNIX socket include files */
     #undef __USE_MISC
     #include <sys/types.h>
     #include <sys/socket.h>
@@ -84,7 +84,7 @@ typedef sockaddr * LPSOCKADDR;
  * Implement operator SOCKADDR, LPSOCKADDR for using the class inside normal
  * operations.
  *
- * Recommanded functions that should be implemented for any driven class:
+ * Recommended functions that should be implemented for any derived class:
  *   - cSockAddr() - Default constructor.
  *   - cSockAddr(const cSockAddr& other) - Copy constructor
  *   - cSockAddr(const SOCKADDR&  other) - Copy constructor from struct
@@ -120,7 +120,7 @@ public:
 /*
  * class cSockAddrIn
  *
- * Provide simple TCP/IP addresing name. Implement the SOCKADDR_IN struct and
+ * Provide simple TCP/IP addressing name. Implement the SOCKADDR_IN struct and
  * the cSockAddr interface.
  */
 class cSockAddrIn : public SOCKADDR_IN,
@@ -142,10 +142,10 @@ public:
     /*
      * Create a new socket according to a dotted IP string.
      *
-     * name - Dotted IP address. 4 decimal numbers seperated by '.'
+     * name - Dotted IP address. 4 decimal numbers separated by '.'
      * port - The port for the connection.
      *
-     * Thorws SOCKETEXCEPTION_ADDRESS_ERROR exception if the address is invalid
+     * Throws SOCKETEXCEPTION_ADDRESS_ERROR exception if the address is invalid
      */
     cSockAddrIn(const cString & name, WORD port = 0);
 
@@ -195,9 +195,9 @@ public:
     void setIPPort(const WORD port);
 
     /*
-     * Preform a DNS query for internet address and return a constructed address
-     * to it. The function locking the call to the "gethostbyname" sys-call with
-     * a mutex, so it is save to call to this class from multi-thread process.
+     * Perform a DNS query for internet address and return a constructed address
+     * to it. The function locks the call to the "gethostbyname" sys-call with
+     * a mutex, so it is safe to call this class from a multi-threaded process.
      *
      * name - DNS name of the connection destination.
      * port - The port to be attached to the address object.
@@ -208,13 +208,13 @@ public:
                                      WORD port = 0);
 
    /*
-    * Preform a DNS query for internet address and return a constructed address
-    * objects for all queryed translated address. The function locking the call
-    * to the "gethostbyname" sys-call with a mutex, so it is save to call to
-    * this class from multi-thread process.
+    * Perform a DNS query for internet address and return a constructed address
+    * objects for all queried translated addresses. The function locks the call
+    * to the "gethostbyname" sys-call with a mutex, so it is safe to call
+    * this class from a multi-threaded process.
     *
     * name - DNS name of the connection destination.
-    * lists - Will be filled with a list of all translated address objectes.
+    * lists - Will be filled with a list of all translated address objects.
     *         The list will be cleared before using it.
     * port - The port to be attached to the address object.
     */

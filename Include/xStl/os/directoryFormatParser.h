@@ -35,7 +35,7 @@
 /*
  * directoryFormatParser.h
  *
- * This file is an helper library function set for the cFilename class.
+ * This file is a helper library function set for the cFilename class.
  * Please see xStl/os/filename for more information
  *
  * Author: Elad Raz <e@eladraz.com>
@@ -44,7 +44,7 @@
 #include "xStl/data/string.h"
 #include "xStl/data/smartptr.h"
 
-// Forward deceleration
+// Forward declaration
 class cFilename;
 class cDirectoryFormatParser;
 typedef cSmartPtr<cDirectoryFormatParser> cDirectoryFormatParserPtr;
@@ -66,7 +66,7 @@ protected:
      */
     virtual cString translateAbsolutePath(const cString& absolutePath) = 0;
 
-    // Forward deceleration
+    // Forward declaration
     class FilenameParser;
     typedef cSmartPtr<FilenameParser> FilenameParserPtr;
 

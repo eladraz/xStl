@@ -61,7 +61,7 @@ cFilename::cFilename(const cFilename& basePath,
                      bool enforceDirectory) :
     m_directoryParser(basePath.m_directoryParser)
 {
-    // Seperate between two cases:
+    // Separate between two cases:
     //  1. Absolute path
     //  2. Relative path
 
@@ -87,14 +87,14 @@ cFilename::cFilename(const cFilename& basePath,
         }
     }
 
-    // Append relative path to basePath. Seperate between two factors:
-    // New database is included. or not.
+    // Append relative path to basePath. Separate between two cases:
+    // A new database is included or not.
     for (i = 0; i < OS_DIRECTORY_FORMAT_PARSER_COUNT; i++)
     {
         // TODO!
     }
 
-    // Test that the nasePath is really a directory
+    // Test that the basePath is really a directory
     ASSERT(basePath.getFullPath().length() > 0);
     m_filename = basePath.m_filename + relativeFilenamePath;
     m_filename = m_directoryParser->getParent()->translateAbsolutePath(m_filename);
@@ -173,8 +173,8 @@ bool cFilename::checkRelativeNameValidation(const cString& relativeName)
               cChar::isBraces(ch) ||
               cChar::isSeperator(ch) ||
               isDirectorySeperator(ch) ||
-              // All digits except ?, *, |, ", \t and of-course '.'!
-              (ch == XSTL_CHAR('~')) || // Long names extention
+              // All characters except ?, *, |, ", \t and of course '.'!
+              (ch == XSTL_CHAR('~')) || // Long names extension
               (ch == XSTL_CHAR('!')) ||
               (ch == XSTL_CHAR('@')) ||
               (ch == XSTL_CHAR('#')) ||

@@ -55,7 +55,7 @@ cQueueFifo::cQueueFifo(uint size) :
 uint cQueueFifo::getFreespace()
 {
     //
-    // There is two states, when the write pointer is before the read pointer
+    // There are two states: when the write pointer is before the read pointer
     // or otherwise:
     //             size
     // ---------------------------------
@@ -86,7 +86,7 @@ uint cQueueFifo::getFreespace()
 
 uint cQueueFifo::getOccupyspace()
 {
-    // Consulte the diagram in the 'getQueueFreespace'
+    // Consult the diagram in the 'getQueueFreespace'
     // This is just 'm_queueSize - X'
     // return (m_readPointer <= m_writePointer) ? m_writePointer - m_readPointer :
     //                                            m_queueSize - m_readPointer + m_writePointer;

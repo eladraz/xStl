@@ -31,7 +31,7 @@
 
 #include "xStl/xStlPrecompiled.h"
 // For this files, the WIN32 or the _WIN32_WCE macro must be defined.
-// Only Windows operating system or Windows CE can compile with this API
+// Only the Windows operating system or Windows CE can compile with this API
 #if defined(WIN32) || defined(_WIN32_WCE)
 
 /*

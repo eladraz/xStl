@@ -80,7 +80,7 @@ cArray<T>::cArray(const T* staticArray,
         }
 
 		// Copy the static array into the created array
-        // Notice that operator = is in used...
+        // Notice that operator = is used...
 		for (uint i = 0; i < length; i++)
 		{
 			m_array[i] = staticArray[i];
@@ -144,8 +144,8 @@ cArray<T>& cArray<T>::operator = (const cArray<T>& other)
 {
 	if (this != &other)
 	{
-		// If and only if, the class are DIFFRENT then
-		// preform the assignment.
+		// If and only if the classes are DIFFERENT then
+		// perform the assignment.
 		copyFrom(other);
 
 		return *this;
@@ -255,7 +255,7 @@ void cArray<T>::changeSize(uint newSize,
                            bool preserveMemory /*= true*/)
 {
     // Optimization. When freeing a memory and preserving the memory, the array
-    // will remain untouched, until a second allocation will be made
+    // will remain untouched, until a second allocation is made
     if ((newSize == 0) && preserveMemory)
     {
         m_size = newSize;
@@ -331,7 +331,7 @@ void cArray<T>::append(const T& object)
 	// First we will increase the array by one.
 	changeSize(m_size + 1);
 
-	// Now we will copt the element to end of the array
+	// Now we will copy the element to end of the array
 	m_array[m_size - 1] = object;
 }
 
@@ -342,7 +342,7 @@ void cArray<T>::append(const cArray<T>& array)
 	uint org_size = this->m_size;
 	uint add_size = array.m_size;
 
-	// Change the size to the size of both array.
+	// Change the size to the size of both arrays.
 	changeSize(m_size + array.m_size);
 
 	// Copy the rest of the data
@@ -370,12 +370,12 @@ void cArray<T>::copyRange(const cArray<T>& other,
 /*
  * ostream & operator << (ostream &out, const cArray& object)
  *
- * Covert the array into printrable array characters.
+ * Convert the array into printable array characters.
  * This function will be used in the cout function
  * As an example: cout << cArray<int>(5, 10, 1) << endl;
  *
- * Note the cascading will work only if the class T have
- * and basic_ostream warpper.
+ * Note the cascading will work only if the class T has
+ * a basic_ostream wrapper.
  */
 template <class S, class OSTREAM>
 OSTREAM& operator << (OSTREAM &out, const cArray<S>& object)

@@ -35,9 +35,9 @@
 /*
  * pmacRnd.h
  *
- * The psedu-random-generated class for P function as descibes in the RFC2246
- * which is  the TLS protocol spesification. The RFC descibe the PRF function
- * which uses the P function for a single psedu random-generated HMAC fucntion
+ * The pseudo-random-generated class for P function as described in RFC 2246
+ * which is the TLS protocol specification. The RFC describes the PRF function
+ * which uses the P function for a single pseudo random-generated HMAC function
  *
  * Author: Elad Raz <e@eladraz.com>
  */
@@ -52,21 +52,21 @@
 /*
  * class cPMacRandom
  *
- * Defines the P function. The P function defines as follows:
+ * Defines the P function. The P function is defined as follows:
  *
  *      P_hash(secret, seed) = HMAC_hash(secret, A(1) + seed) +
  *                             HMAC_hash(secret, A(2) + seed) +
  *                             HMAC_hash(secret, A(3) + seed) + ...
  *
  * Where cPMacRandom gets a pointer to a constructed HMAC object (which has
- * a secret initilaize) and a seed.
+ * been initialized with a secret) and a seed.
  */
 class cPMacRandom : public cRandom
 {
 public:
     /*
-     * Init the random mechanizm according to 'seed' and hmac object which
-     * is used to digest secrect+seed and generate random.
+     * Init the random mechanism according to 'seed' and hmac object which
+     * is used to digest secret+seed and generate random.
      */
     cPMacRandom(cSmartPtr<cHMAC> hmac,
                 const cBuffer& seed);
@@ -74,11 +74,11 @@ public:
     /*
      * Generate 'length' bytes of random and put it in 'output'. The 'output'
      * size is changed to 'length' and step over pure random. This function
-     * increase the internal random mechanizm.
+     * advances the internal random mechanism.
      * The generated random
      *
      * length - The amount of random to be generate.
-     * output - Will be filled with the required psedu-random generation code.
+     * output - Will be filled with the required pseudo-random generation code.
      */
     virtual void generateRandom(uint length, cBuffer& output);
 

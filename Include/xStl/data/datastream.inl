@@ -42,7 +42,7 @@ OSTREAM & hexDumpObject(OSTREAM &out, DUMP<FW_ITR, DT>& object)
     addressNumericValue address = object.m_startAddress; /* The start address */
 	FW_ITR index = object.m_begin;                /* The position in the scan */
 	unsigned int element = 0;               /* The element position in a line */
-	unsigned int objectLocation = 0;/* The position in the object that dumped */
+	unsigned int objectLocation = 0;/* The position in the object that was dumped */
 	const unsigned int objectSize = sizeof(DT);       /* size of each element */
 	cBuffer data(object.m_elementsInRow);  /* The char display of data at end */
 
@@ -85,7 +85,7 @@ OSTREAM & hexDumpObject(OSTREAM &out, DUMP<FW_ITR, DT>& object)
 		/* Test for new line */
 		if (element == 0)
 		{
-			/* Flash data */
+			/* Flush data */
 			for (unsigned int i = 0; i < object.m_elementsInRow; i++)
 			{
 				out << (char)(data[i]);
@@ -94,7 +94,7 @@ OSTREAM & hexDumpObject(OSTREAM &out, DUMP<FW_ITR, DT>& object)
 		}
 	}
 
-	/* Flash data if needed */
+	/* Flush data if needed */
 	if (element != 0)
 	{
 		unsigned int i;

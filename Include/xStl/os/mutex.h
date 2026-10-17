@@ -35,13 +35,13 @@
 /*
  * mutex.h
  *
- * Declare the cMutex class, which is a warrper to the mutex POSIX and windows
- * OS in one independence class.
+ * Declare the cMutex class, which is a wrapper for the POSIX and Windows mutex
+ * OS in one platform-independent class.
  *
- * In the compliation for linux platform you must compile with the "-lpthread"
- * macro.
+ * When compiling for the Linux platform you must compile with the "-lpthread"
+ * flag.
  *
- * This file supports the following platfroms:
+ * This file supports the following platforms:
  *  - Win32 API
  *  - POSIX library (Unix based OS)
  *  - XDK (Windows NT device-driver)
@@ -55,7 +55,7 @@
 /*
  * class cMutex
  *
- * An implementation to the lockable class with the 'FastMutex' interface. The
+ * An implementation of the lockable class with the 'FastMutex' interface. The
  * FastMutex is a mutex without any safety from deadlocks.
  *
  * The usage of the mutex class should be with the 'Lock' object.
@@ -86,22 +86,22 @@ public:
     virtual ~cMutex();
 
     /*
-     * Try to accuire the mutex
+     * Try to acquire the mutex
      *
-     * Throws exception incase of faliure
+     * Throws an exception in case of failure
      */
     virtual void lock();
 
     /*
      * Free the mutex.
      *
-     * Throws exception incase of faliure
+     * Throws an exception in case of failure
      */
     virtual void unlock();
 
 private:
     /*
-     * Deney copy-constructor and operator =
+     * Deny copy-constructor and operator =
      */
     cMutex(const cMutex& other);
     cMutex& operator = (const cMutex& other);

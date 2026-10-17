@@ -35,15 +35,15 @@
 /*
  * exceptions.h
  *
- * Defines the TRY-CATCH basic blocks which supports exceptions handling.
- * The exceptions handling should be compiled for all platforms.
+ * Defines the basic TRY-CATCH blocks which support exception handling.
+ * Exception handling should be compiled for all platforms.
  *
  * Author: Elad Raz <e@eladraz.com>
  */
 
 /*
- * All platfrom will are using the compiler exception-mechanizm.
- * For kernel driver, see EHlib which operate the exception hadnling.
+ * All platforms use the compiler exception mechanism.
+ * For kernel driver, see EHlib which operate the exception handling.
  */
 
 #include "xStl/except/exception.h"
@@ -53,7 +53,7 @@
 #define XSTL_RETHROW            throw
 
 #ifdef XSTL_LINUX
-    // GCC has issues with varisadic marcos and c++, plase see http://gcc.gnu.org/onlinedocs/cpp/Variadic-Macros.html
+    // GCC has issues with variadic macros and c++, please see http://gcc.gnu.org/onlinedocs/cpp/Variadic-Macros.html
     #define XSTL_THROW(klass, ...)  throw klass(__FILE__, __LINE__, ##__VA_ARGS__)
 #else
     #define XSTL_THROW(klass, ...)  throw klass(__FILE__, __LINE__, __VA_ARGS__)

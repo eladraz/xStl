@@ -75,9 +75,9 @@ cThreadedClass::~cThreadedClass()
 {
     // Terminate the thread if started
     if ((m_isStarted) && (!isDone())) {
-        // Notify developer for premature thread-death.
+        // Notify the developer of premature thread death.
         ASSERT_MSG(m_isStarted1, XSTL_STRING("Premature thread death"));
-        // Wait until the thread will truely executed
+        // Wait until the thread has truly executed
         while (!m_isStarted1);
         // Destroy the thread
         m_theInstance.kill();
@@ -112,20 +112,20 @@ void* cThreadedClass::threadedClassThreadFunction(void* context)
     {
         // An exception during thread execution...
         traceHigh("ThreadClass: Exception " << e.getMessage() << "(" <<
-                                               e.getID() << ")" << " throwed "
+                                               e.getID() << ")" << " thrown "
                                             << endl);
     }
-    // In Linux pthreads uses force_unwined to cancel threads
-    // Catch all exception will causes immediate abortion of the entire program
+    // In Linux pthreads use force_unwind to cancel threads
+    // Catching all exceptions will cause immediate abortion of the entire program
     // Waiting for a normal fix
     //    - See: http://gcc.gnu.org/ml/gcc/2003-12/msg00743.html
 #ifndef XSTL_LINUX
     XSTL_CATCH_ALL
     {
         // An exception during thread execution...
-        traceHigh("ThreadClass: Unknown exception throwed 1" << endl);
+        traceHigh("ThreadClass: Unknown exception thrown 1" << endl);
         cThread::terminate();
-        traceHigh("ThreadClass: Unknown exception throwed 2" << endl);
+        traceHigh("ThreadClass: Unknown exception thrown 2" << endl);
     }
 #endif
 

@@ -29,7 +29,7 @@
  * POSSIBILITY OF SUCH DAMAGE
  */
 
-// For this files, the WIN32 macro must be defined...
+// For these files, the WIN32 macro must be defined...
 #ifdef WIN32
 
 #ifndef __TBA_STL_OS_WINOS_H
@@ -38,7 +38,7 @@
 /*
  * winOSdef.h
  *
- * Types, structs definitions and consts needed for the windows operating system
+ * Types, struct definitions and constants needed for the Windows operating system
  *
  * Author: Elad Raz <e@eladraz.com>
  */

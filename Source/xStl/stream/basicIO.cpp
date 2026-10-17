@@ -69,8 +69,8 @@ basicInput::~basicInput()
 uint basicInput::pipeRead(void *buffer, const uint length)
 {
     uint8 *array = (uint8 *)buffer;      // The array buffer
-    uint readed = 0;             // Total readed
-    uint readedAtOnce = 0;     // How many uint8 readed in order.
+    uint readed = 0;             // Total read
+    uint readedAtOnce = 0;     // How many uint8 read in order.
     uint leftSize = length;     // How many bytes to read more.
 
     /* Reading loop */
@@ -97,7 +97,7 @@ uint basicInput::pipeRead(void *buffer, const uint length)
 uint basicInput::pipeRead(cBuffer& buffer, const uint length)
 {
     uint oldSize  = buffer.getSize(); // Old size of the buffer
-    uint readed   = 0;                // The readed bytes.
+    uint readed   = 0;                // The read bytes.
 
     /* Prepare the output buffer */
     buffer.changeSize(oldSize + length);
@@ -105,7 +105,7 @@ uint basicInput::pipeRead(cBuffer& buffer, const uint length)
     /* Read the data */
     readed = pipeRead((buffer.getBuffer() + oldSize), length);
 
-    /* Chope the data */
+    /* Chop the data */
     if (readed < length)
     {
         buffer.changeSize(oldSize + readed);
@@ -163,13 +163,13 @@ void basicInput::readAsciiString(cString& ret,
         uint read = pipeRead((void *)(&ch), sizeof(ch));
         if (read == 0)
         {
-            // EOF reached and the NULL terminate couldn't be found.
+            // EOF is reached and the NULL terminator couldn't be found.
             XSTL_THROW(cException, EXCEPTION_READ_ERROR);
         }
 
         left--;
 
-        // Remove the terminate character
+        // Remove the terminating character
         if (ch != terminate)
             ret+= (char)(ch);
     }
@@ -195,13 +195,13 @@ void basicInput::readUnicodeString(cString& ret,
         uint read = pipeRead((void *)(&ch), sizeof(ch));
         if (read == 0)
         {
-            // EOF reached and the NULL terminate couldn't be found.
+            // EOF is reached and the NULL terminator couldn't be found.
             XSTL_THROW(cException, EXCEPTION_READ_ERROR);
         }
 
         left--;
 
-        // Remove the terminate character
+        // Remove the terminating character
         if (ch != terminate)
         {
             #ifndef XSTL_UNICODE
@@ -375,7 +375,7 @@ void basicInput::readAllStream(cBuffer& rawData)
                 rawData.changeSize(total);
             }
 
-        } while (readed == getPipeReadBestRequest()); // Until there isn't error
+        } while (readed == getPipeReadBestRequest()); // Until there is an error
     }
 }
 
@@ -616,12 +616,12 @@ void basicOutput::writeAsciiNullString(const cString& string,
         }
         if (shouldPutZeroTerminator)
         {
-            // Write the null terminated character
+            // Write the null terminating character
             ch = 0;
             pipeWrite(&ch, sizeof(ch));
         }
     #else
-        // ASCII version, just put it throw
+        // ASCII version, just put it through
         uint length = string.length();
         if (shouldPutZeroTerminator)
             length++;
@@ -633,7 +633,7 @@ void basicOutput::writeUnicodeNullString(const cString& string,
                                          bool shouldPutZeroTerminator)
 {
     #ifdef XSTL_UNICODE
-        // UNICODE version, just put it throw
+        // UNICODE version, just put it through
         uint length = string.length();
         if (shouldPutZeroTerminator)
             length++;
@@ -647,7 +647,7 @@ void basicOutput::writeUnicodeNullString(const cString& string,
         }
         if (shouldPutZeroTerminator)
         {
-            // Write the null terminated character
+            // Write the null terminating character
             ch = 0;
             pipeWrite(&ch, sizeof(ch));
         }
@@ -708,9 +708,9 @@ void basicIO::copyStream(basicOutput& destination, basicInput& source)
     } while ((read > 0) && (!source.isEOS()));
 }
 
-// gcc work around. gcc can't access internal function of declared class
-// in order to overide this behavior we will use global static functions that
-// implemens streamReadUint32/streamWriteUint32 and pipeRead/pipeWrite with interface
+// gcc workaround. gcc can't access internal functions of a declared class
+// in order to override this behavior we will use global static functions that
+// implement streamReadUint32/streamWriteUint32 and pipeRead/pipeWrite with the interface
 #ifdef XSTL_LINUX
 extern "C" void gccLinuxStreamReadUint32(basicInput& inputStream, uint32& dword)
 {

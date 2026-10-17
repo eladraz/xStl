@@ -50,11 +50,11 @@
  * The queue has the following properties:
  *   - Template over the client-ID.
  *   - Template over group-ID
- *   - Saves the queue inside the repository. Can be used for presistance.
+ *   - Saves the queue inside the repository. Can be used for persistence.
  *   - Stores a message for one or more clients.
  *   - Poll a message for a client.
  *   - Set a queue quota for a client (In memory bytes)
- *   - A watch-dog timmer allowing.
+ *   - A watch-dog timer is supported.
  *
  * The messages are stream of bytes.
  *
@@ -62,17 +62,17 @@
  * for the client. The template must implement the following operator:
  *   bool operator == (const cClientID& other) const;
  *   copy-constructor
- * This operator is in used in order to distinguish different clients.
+ * This operator is used to distinguish between different clients.
  *
- * The client-id can be a number coressponding to the user, can be a process-ID
- * which seperates difference process which want to poll message from a shared
- * device. It can be even more complex struct which contain process-ID and a
- * client-ID for allowing multiple instance of device-objects inside a single
+ * The client-id can be a number corresponding to the user, can be a process-ID
+ * which separates different processes which want to poll messages from a shared
+ * device. It can be an even more complex struct which contains a process-ID and a
+ * client-ID, allowing multiple instances of device-objects inside a single
  * process...
  *
  * The group-ID has the following operator:
  *   bool isMine(const cClientID& id);
- * This function is in used to seprated clients to
+ * This function is used to separate clients into groups.
  */
 template <cClientID, cGroupID>
 class cMessageQueue
@@ -95,9 +95,9 @@ public:
      * message - The message to be stored.
      *
      * Throws cMessageQueueException:
-     *    ClientNotFound - One or more of the clients is not exist. The other
+     *    ClientNotFound - One or more of the clients do not exist. The other
      *                     clients will contain the message in the queue.
-     *    ClientQutaLimit - One or more of the clients has a quta-limit. Other
+     *    ClientQutaLimit - One or more of the clients has a quota-limit. Other
      *                      clients will contain the message in the queue.
      */
     void storeMessage(const cList<cClientID>& clientsID,
@@ -111,7 +111,7 @@ public:
      * Return a stream reference count for the message.
      *
      * Throws cMessageQueueException:
-     *    ClientNotFound - The client cannot be found, or it's queue is empty.
+     *    ClientNotFound - The client cannot be found, or its queue is empty.
      */
     cBufferPtr pollMessage(const cClientID& clientID);
 
@@ -131,9 +131,9 @@ private:
 
 
 /*
- * MessageQueue which the group are irrelevant, use the cNullGroup as the
+ * MessageQueue for which the group is irrelevant, use the cNullGroup as the
  * second argument for the cMessageQueue template argument.
- * The cNullGroup doesn't contains any clients.
+ * The cNullGroup doesn't contain any clients.
  */
 template <cClientID>
 class cNullGroup

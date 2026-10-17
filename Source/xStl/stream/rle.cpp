@@ -96,8 +96,8 @@ void cRLEcompression::flush()
     m_stream->flush();
 /*
  * NOTE
- * We don't need to call the rel_read_flush() becuase the user may be asking
- * for more byte later on, and the reading flush will ignore some bytes in
+ * We don't need to call the rel_read_flush() because the user may be asking
+ * for more bytes later on, and the reading flush will ignore some bytes in
  * the file.
  */
 }
@@ -109,7 +109,7 @@ void cRLEcompression::rleWriteFlush()
         if (m_w_compression_byte == m_flag)
         {
             /* Encode the special character  */
-            /* Each character become 2 bytes */
+            /* Each character becomes 2 bytes */
             for (unsigned char i = 0; i < m_w_count; i++)
             {
                 m_stream->pipeWrite(&m_flag, sizeof(BYTE));
@@ -127,7 +127,7 @@ void cRLEcompression::rleWriteFlush()
         }
     } else
     {
-        /* We have 3 or more character to store */
+        /* We have 3 or more characters to store */
         /* Compression will do some compression */
         /*
          * Encode compression
@@ -141,7 +141,7 @@ void cRLEcompression::rleWriteFlush()
         if (m_w_count == m_flag)
         {
             /* In case it does equal    */
-            /* Write less then the real */
+            /* Write less than the real */
             /* Compression              */
             unsigned char m_count_minus_1 = m_w_count - 1;
             m_stream->pipeWrite(&m_count_minus_1, sizeof(BYTE));
@@ -153,7 +153,7 @@ void cRLEcompression::rleWriteFlush()
 
         if (m_w_count == m_flag)
         {
-            /* Write down the left character */
+            /* Write down the remaining characters */
             m_stream->pipeWrite(&m_w_compression_byte, sizeof(BYTE));
             if (m_w_compression_byte == m_flag)
             {
@@ -173,14 +173,14 @@ uint cRLEcompression::write(const void *buffer, const uint length)
 
     while (rLen != 0)
     {
-        /* Test wheter we can compress */
+        /* Test whether we can compress */
         if (*data == m_w_compression_byte)
         {
             /* Save the information */
             m_w_count++;
             if (m_w_count == 255)
             {
-                /* Rich compression maximum */
+                /* Reached the compression maximum */
                 rleWriteFlush();
             }
         } else
@@ -202,7 +202,7 @@ uint cRLEcompression::write(const void *buffer, const uint length)
     /* Flush the last bytes */
     // rleWriteFlush();
 
-    /* This function handle all the informaion*/
+    /* This function handles all the information*/
     return length;
 }
 
@@ -218,7 +218,7 @@ uint cRLEcompression::read(void *buffer, const uint length)
 
     while (len != length)
     {
-        /* Test wheter we are in compression section */
+        /* Test whether we are in compression section */
         if (m_r_is_compress)
         {
             /* Signal that we read a character */
@@ -254,7 +254,7 @@ uint cRLEcompression::read(void *buffer, const uint length)
                 /* Test whether this is a flag or not */
                 if (length == m_flag)
                 {
-                    /* It's was only the flag */
+                    /* It was only the flag */
                     *data = m_flag;
                 } else
                 {
@@ -265,7 +265,7 @@ uint cRLEcompression::read(void *buffer, const uint length)
                         XSTL_THROW(cException, XSTL_STRING("Compression error: end of pipe"));
                     }
                     *data = m_r_compression_byte;
-                    m_r_count       = length - 1; /* We just read character */
+                    m_r_count       = length - 1; /* We just read a character */
                     m_r_is_compress = true;
                 }
             } else
@@ -281,7 +281,7 @@ uint cRLEcompression::read(void *buffer, const uint length)
         data++;
     }
 
-    /* This function handle all the informaion*/
+    /* This function handles all the information*/
     return len;
 }
 
@@ -292,14 +292,14 @@ void cRLEcompression::seek(const int distance, const basicInput::seekMethod meth
         XSTL_THROW(cException, EXCEPTION_SEEK_ERROR);
     }
 
-    /* Test whether the method is from the begining of the file */
+    /* Test whether the method is from the beginning of the file */
     if (method == IO_SEEK_SET)
     {
-        /* Start from begining of the file */
+        /* Start from beginning of the file */
         cBuffer temp_array;
 
         flush();
-        m_stream->seek(0, IO_SEEK_SET);  // Go to the begining of the file
+        m_stream->seek(0, IO_SEEK_SET);  // Go to the beginning of the file
 
         // Temporary reading of data
         if (basicInput::pipeRead(temp_array, distance) != (unsigned int)(distance))

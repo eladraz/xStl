@@ -38,7 +38,7 @@
  * Declare an abstract class for all the input/output classes, for example files,
  * sockets, memory files, screen devices, keyboard devices and so on...
  *
- * This file define two important classes: basicInput and basicOutput. All
+ * This file defines two important classes: basicInput and basicOutput. All
  * streaming and filtering in the system should use these interfaces.
  *
  * Author: Elad Raz <e@eladraz.com>
@@ -50,12 +50,12 @@
 #include "xStl/data/endian.h"
 #include "xStl/data/smartptr.h"
 
-// Forward decleration for xStl::data serialized objects
+// Forward declaration for xStl::data serialized objects
 class cString;
-// Forward decleration for xStl::data::cArray serialized objects
+// Forward declaration for xStl::data::cArray serialized objects
 template <class T>
 class cArray;
-// Forward decleration for xStl::data::cSArray serialized objects
+// Forward declaration for xStl::data::cSArray serialized objects
 template <class T>
 class cSArray;
 typedef cSArray<uint8> cBuffer;
@@ -65,19 +65,19 @@ typedef cSArray<uint8> cBuffer;
  *
  * Define the interface for input streams. Input stream can support random access
  * medium (file-memory) or read-once stream (network/devices).  The main function
- * for the class is the 'read' function which the inherit class should implement.
- * The read function read bytes from the stream and can read part from the reque-
- * stead  bytes. This class  implemet 'pipeRead'  function which  repeat the read
- * quest and should return all the quested bytes from the stream.
- * The class also support deserialization for all standard types in the compilers.
- * Deserialization is made using 'cEndian' class. There are default implementation
+ * for the class is the 'read' function which the inheriting class should implement.
+ * The read function reads bytes from the stream and can read part of the reque-
+ * sted  bytes. This class  implements the 'pipeRead'  function which  repeats the read
+ * request and should return all the requested bytes from the stream.
+ * The class also supports deserialization for all standard types in the compilers.
+ * Deserialization is made using the 'cEndian' class. There are default implementations
  * for both little endian and big endian: basicLEInput and basicBEInput.
  *
- * For streams which support some kind of seeking, retriving the stream length or
- * geting the position inside the stream, there are three functions interfaces of
- * them: getPointer(), length(), seek(). Streams which does/doesn't support this
- * function should update the public 'can*' variables. The interface implementat-
- * ion of function which doesn't supported by a stream is to throw an exception.
+ * For streams which support some kind of seeking, retrieving the stream length or
+ * getting the position inside the stream, there are three interface functions:
+ * getPointer(), length() and seek(). Streams which do/don't support these
+ * functions should update the public 'can*' variables. The interface implementat-
+ * ion of function which isn't supported by a stream is to throw an exception.
  */
 class basicInput : public cEndian
 {
@@ -98,27 +98,27 @@ public:
     virtual ~basicInput();
 
 
-    // Normaly functions
+    // Normal functions
 
     /*
      * Read raw block of data from the stream. The function shouldn't be blocking
      * for infinite time. The function should return the number of bytes read.
      * The number of bytes read can be different from the requested bytes to read.
      * NOTE:
-     *  This function can return 0 bytes read and it will consider as normal
-     *  behaivor. Only exception indicate error. (Zero can indicate timeout)
+     *  This function can return 0 bytes read and it will be considered normal
+     *  behavior. Only an exception indicates an error. (Zero can indicate timeout)
      *
      * buffer - Buffer to be filled with the raw data
      * length - The size for the read request.
      *
      * Return the number of bytes read.
-     * Throws exception in case of failure.
+     * Throws an exception in case of failure.
      */
     virtual uint read(void *buffer, const uint length) = 0;
 
     /*
-     * Return true incase the input stream reached the end and there aren't any
-     * data left in the queue. False means that the are more bytes waiting to
+     * Return true in case the input stream reached the end and there aren't any
+     * data left in the queue. False means that there are more bytes waiting to
      * be read.
      *
      * NOTE: EOS stands for End-Of-Stream
@@ -128,14 +128,14 @@ public:
     /*
      * If supported, return a number of bytes from the beginning of the stream.
      *
-     * NOTE: This function is implement only if 'canGetPointer' variable is set
-     *       to true. Otherwise this function raise exception.
+     * NOTE: This function is implemented only if the 'canGetPointer' variable is set
+     *       to true. Otherwise this function raises an exception.
      * Throws 'UNSUPPORT' exception.
      */
     virtual uint getPointer() const = 0;
 
     /*
-     * Seek inside the stream forward/backward. The function has four mode of
+     * Seek inside the stream forward/backward. The function has four modes of
      * operations:
      *  - Seeking forward (just reading bytes)
      *  - Seeking backward (Minus relative the current position)
@@ -145,7 +145,7 @@ public:
      * distance - Number of bytes to move relative to the 'method' variable.
      * method - The relative operation to move inside the stream.
      *
-     * Throws 'UNSUPPORT'/error exception depending to the stream
+     * Throws 'UNSUPPORT'/error exception depending on the stream
      */
     virtual void seek(const int distance, const seekMethod method) = 0;
 
@@ -153,9 +153,9 @@ public:
      * If supported, return the total number of bytes of stream (from the
      * beginning to the end).
      *
-     * NOTE: This function is implement only if 'canGetPointer' variable is set
-     *       to true. Otherwise this function raise exception.
-     * Throws 'UNSUPPORT/error exception depending to the stream
+     * NOTE: This function is implemented only if the 'canGetPointer' variable is set
+     *       to true. Otherwise this function raises an exception.
+     * Throws 'UNSUPPORT/error exception depending on the stream
      */
     virtual uint length() const = 0;
 
@@ -167,26 +167,26 @@ public:
 
 
     // Implemented functions.
-    // The following function are implement and can be used in all
+    // The following functions are implemented and can be used in all
 
     /*
      * Try to  read 'length' bytes from the stream into the buffer. The reading
-     * should success. Incase EOS reached the function return normally with the
+     * should succeed. In case EOS is reached the function returns normally with the
      * number of bytes read until the EOS.
      *
-     * buffer - The data to be store the reading bytes to. If the buffer is
-     *          cBuffer& than the readed bytes will be APPENDED to the end
+     * buffer - The buffer to store the read bytes in. If the buffer is
+     *          a cBuffer& then the read bytes will be APPENDED to the end
      *          of the buffer.
      * length - The amount of bytes for the reading.
      *
-     * Throws error exception if the read faild
+     * Throws error exception if the read failed
      * Return the number of read bytes.
      */
     uint pipeRead(void *buffer, const uint length);
     uint pipeRead(cBuffer& buffer, const uint length);
 
     /*
-     * Read 'length' bytes and verfiy all bytes actually read.
+     * Read 'length' bytes and verify all bytes actually read.
      * This function is a shortcut to the following functions:
      *    CHECK(pipeRead(buffer, length) == length);
      *
@@ -197,31 +197,31 @@ public:
 
     /*
      * The default value for the number of character to be read from a stream.
-     * For different compliation modules this value can be change by a define
+     * For different compilation modules this value can be changed by a define
      */
     #ifndef MAX_CHAR
     enum { MAX_CHAR = 0xFFFFFFFFL };
     #endif
 
     /*
-     * Global function which read a string in a different storage modes from a
+     * Global function which reads a string in different storage modes from a
      * stream.
      *
      * Return a string in the requested format. The function can limit the number
-     * of bytes of the string. All the function throws exception incase there are
-     * more  character than 'numberOfCharacter'  variables or when read error has
-     * occured.
+     * of bytes of the string. All the functions throw an exception in case there are
+     * more  characters than 'numberOfCharacter'  variables or when a read error has
+     * occurred.
      *
      * ASCII formats
      * =============
-     * readDosString - Read until '$' character is founded.
-     * readNullString - Read until \000 character is founded.
+     * readDosString - Read until '$' character is found.
+     * readNullString - Read until \000 character is found.
      * readPascal8String - Read length uint8 and then read the string.
      * readPascal8String - Read length uint16 and then read the string.
      *
      * Unicode formats
      * ===============
-     * readNullString - Read until \000 character is founded.
+     * readNullString - Read until \000 character is found.
      */
     cString readAsciiDosString(const uint numberOfCharacter = MAX_CHAR);
     cString readAsciiNullString(const uint numberOfCharacter = MAX_CHAR);
@@ -235,11 +235,11 @@ public:
      * Read a string from the stream where the string is encoded in a fixed
      * size of characters. The format can be either unicode or ascii strings.
      *
-     * numberOfCharacter - The fixed size of the string avaliable space
+     * numberOfCharacter - The fixed size of the string available space
      * unicodeSize       - Number of bytes per unicode string (1 for ASCII, 2 for windows wchar_t, 4 for linux wchar_t)
      *
      * Return the read string.
-     * Throw any exception that can be occurred as a 'write' result.
+     * Throw any exception that can occur as a 'write' result.
      * See basicInput::readFixedSizeString
      */
     cString readFixedSizeString(uint numberOfCharacters,
@@ -252,7 +252,7 @@ public:
                                 );
 
     /*
-     * Deserialization functions. Deserialize the different type using a call
+     * Deserialization functions. Deserialize the different types using a call
      * to the 'pipeRead()' function and cEndian interface function for parsing
      * the data as needed.
      */
@@ -271,11 +271,11 @@ public:
      * Change the remote address decoding type. Used for optimization.
      *
      * shouldEncodeType - The default value is true. This means that the remote-
-     *                    address value are encoded as 'type' & 'address'.
+     *                    address values are encoded as 'type' & 'address'.
      *                    When this value is false, the optimization mode is
      *                    taking place.
      * enforceType      - If and only if the 'shouldEncodeType' is false, this
-     *                    argument what is the casting format of the encoding
+     *                    argument is the casting format of the encoding
      *
      * NOTE: The default encoding is to read the addressing mode and then to
      *       read a 16/32/64-bit address according to the 'type'
@@ -284,7 +284,7 @@ public:
                                   RemoteAddressEncodingTypes enforceType);
 
     /*
-     * Reads from the stream an encoded address and returned it's value.
+     * Reads from the stream an encoded address and returns its value.
      * NOTE: This function will not compile for 16 bit application
      *
      * See changeDecodedAddressType() for more information
@@ -294,7 +294,7 @@ public:
     #endif // XSTL_16BIT
 
     /*
-     * Try to read until the end of stream and appends the data into 'rawData'.
+     * Try to read until the end of the stream and append the data into 'rawData'.
      * The function works better on streams with 'canLength' and 'canGetPointer'
      * capabilities.
      */
@@ -312,13 +312,13 @@ public:
 
 protected:
     /*
-     * Checks whether a class can do seeking, according to the seek paramerts.
+     * Checks whether a class can do seeking, according to the seek parameters.
      */
     bool __canSeek(const int distance, const basicInput::seekMethod method);
 
     /*
-     * The deceleration of this function was to make sure that the programmer
-     * which implement an input stream wan't forget to call to it's initSeek
+     * The declaration of this function was to make sure that the programmer
+     * who implements an input stream won't forget to call its initSeek
      * function at the constructor (YES, HE SHOULD DO IT!) and fill all the
      * 'can*' variables.
      */
@@ -338,8 +338,8 @@ private:
      * The function has two forms for both ASCII and unicode strings
      *
      * ret - Will be filled with the returned string.
-     * terminate - The ASCII character which terminate the reading.
-     * numberOfCharacter - The maximum number of character to attempt in the
+     * terminate - The ASCII character which terminates the reading.
+     * numberOfCharacter - The maximum number of characters to attempt in the
      *                     reading. Prevents freeze.
      */
     void readAsciiString(cString& ret,
@@ -352,7 +352,7 @@ private:
     #ifndef XSTL_16BIT
     // The remote-address encoding protocol
     RemoteAddressEncodingTypes m_addressDecodingType;
-    // Determine if the remote-address type should be decode
+    // Determine if the remote-address type should be decoded
     bool m_shouldEncodeType;
     #endif // XSTL_16BIT
 };
@@ -375,20 +375,20 @@ public:
     virtual ~basicOutput();
 
     /*
-     * Writes raw block of data from the stream.  The function shouldn't be
+     * Writes a raw block of data to the stream.  The function shouldn't be
      * blocking for infinite time. The function should return the number of
      * bytes written. The number of bytes written can be different from the
-     *  requested bytes to ne write.
+     *  requested bytes to write.
      *
      * NOTE:
-     *  This function can return 0 bytes write and it will consider as normal
-     *  behaivor.  Only exception indicate error. (Zero can indicate timeout)
+     *  This function can return 0 bytes written and it will be considered normal
+     *  behavior.  Only an exception indicates an error. (Zero can indicate timeout)
      *
      * buffer - Buffer to be written
      * length - The size for the write request
      *
      * Return the number of bytes written
-     * Throws exception in case of failure
+     * Throws an exception in case of failure
      */
     virtual uint write(const void* buffer, const uint length) = 0;
 
@@ -403,10 +403,10 @@ public:
 
     /*
      * Try to write 'length' bytes from the buffer into the stream. The writing
-     * should success.
+     * should succeed.
      *
      * buffer - The data to be written
-     * length - The amount of bytes for the written operation
+     * length - The amount of bytes for the write operation
      *
      * Throws error exception if the write failed or not all bytes written.
      */
@@ -414,7 +414,7 @@ public:
     virtual void pipeWrite(const cBuffer& buffer, const uint length);
 
     /*
-     * Serialization functions. Serialize the different type using a call to the
+     * Serialization functions. Serialize the different types using a call to the
      * 'pipeWrite()' function and cEndian interface  function for writing in the
      * right alignment.
      */
@@ -433,11 +433,11 @@ public:
      * Change the remote address encoding type. Used for optimization.
      *
      * shouldEncodeType - The default value is true. This means that the remote-
-     *                    address value are encoded as 'type' & 'address'.
+     *                    address values are encoded as 'type' & 'address'.
      *                    When this value is false, the optimization mode is
      *                    taking place.
      * enforceType      - If and only if the 'shouldEncodeType' is false, this
-     *                    argument what is the casting format of the encoding
+     *                    argument is the casting format of the encoding
      *
      * NOTE: The default encoding is to read the addressing mode and then to
      *       read a 16/32/64-bit address according to the 'type'
@@ -454,13 +454,13 @@ public:
     #endif // XSTL_16BIT
 
     /*
-     * Write a unicode/ascii strings to the stream.
+     * Write unicode/ascii strings to the stream.
      *
      * string - The text to be sent.
-     * shouldPutZeroTerminator - Should the terminating NULL character should be
+     * shouldPutZeroTerminator - Whether the terminating NULL character should be
      *                           written
      *
-     * Throw any exception that can be occurred as a 'write' result.
+     * Throw any exception that can occur as a 'write' result.
      */
     void writeAsciiNullString(const cString& string,
                               bool shouldPutZeroTerminator = true);
@@ -473,11 +473,11 @@ public:
      *
      * string            - The string to be written, If the length of this
      *                     string is bigger than 'numberOfCharacter', the string
-     *                     will be trimed.
-     * numberOfCharacter - The fixed size of the string avaliable space
+     *                     will be trimmed.
+     * numberOfCharacter - The fixed size of the string available space
      * unicodeSize       - Number of bytes per unicode string (1 for ASCII, 2 for windows wchar_t, 4 for linux wchar_t)
      *
-     * Throw any exception that can be occurred as a 'write' result.
+     * Throw any exception that can occur as a 'write' result.
      * See basicInput::readFixedSizeString
      */
     void writeFixedSizeString(const cString& string,
@@ -503,7 +503,7 @@ private:
     #ifndef XSTL_16BIT
     // The remote-address encoding protocol
     RemoteAddressEncodingTypes m_addressEncodingType;
-    // Determine if the remote-address type should be decode
+    // Determine if the remote-address type should be decoded
     bool m_shouldEncodeType;
     #endif
 };
@@ -525,9 +525,9 @@ public:
      * Perform a soft stream copy. The remaining source stream information will
      * be copied to the destination stream.
      *
-     * The method of doing so is as follow: As long as there are information at
-     * source the method read them (In the default reading buffer) and channel
-     * them to destination.
+     * The method of doing so is as follows: As long as there is information at
+     * the source, the method reads it (using the default reading buffer) and channels
+     * it to the destination.
      */
     static void copyStream(basicOutput& destination,
                            basicInput& source);

@@ -35,7 +35,7 @@
 /*
  * refCountObject.h
  *
- * Contains code which make classes into reference-count modules.
+ * Contains code which makes classes into reference-count modules.
  *
  * Author: Elad Raz <e@eladraz.com>
  */
@@ -49,12 +49,12 @@
 #define REFCOUNTABLE_INIT m_referenceCounter(NULL)
 
 /*
- * This macro makes a class top be reference-countable over a data-type.
+ * This macro makes a class reference-countable over a data-type.
  *
  * Parameters:
  *   DataType   - The type-name of the data which is reference-countable, this
  *                value can be a typedef, struct-name, class-name or pointer to
- *                for sharble-objects
+ *                for sharable-objects
  *
  * The usage is inside the class .H file:
  *  class MyClass {
@@ -66,20 +66,20 @@
  *
  *  REFCOUNTABLE_CPP(MyClass);
  *
- * This single line will generated all functions and members needed to makes
+ * This single line will generate all functions and members needed to make
  * the class a reference-countable object.
- * But there is still a few works to do in order to link the operation
+ * But there are still a few things to do in order to link the operation
  * properly.
  *
  * IMPORTANT NOTE: Notice the pointer! For sharable objects the data-type is
  *                 a pointer!
  *
  *
- * The macro generate and handle the following members:
+ * The macro generates and handles the following members:
  *    m_object           - Pointer to the reference-countable member
  *    m_referenceCounter - The count of all opened references
  *
- * The macro generate the following functions:
+ * The macro generates the following functions:
  *   public:
  *     getObject()  - Return const/non-const object
  *
@@ -136,18 +136,18 @@
 
 
 /*
- * This macro generate copy-constructor and operator = for a reference-
+ * This macro generates a copy-constructor and operator = for a reference-
  * countable class. There are two ways to generate this copy methods:
- *  - For class which have only the reference-count object is the
+ *  - For a class which has only the reference-count object, use the
  *    'REFCOUNTABLE_COPY' definitions
- *  - For class which have several of members use the
+ *  - For a class which has several members, use the
  *    'REFCOUNTABLE_COPY_MORE' definitions. This definition adds a call
  *    to 'void copy(const ClassName& other)' method
  *
  * Parameters:
- *   ClassName  - The name of the class which the operation is taken place
+ *   ClassName  - The name of the class in which the operation takes place
  *
- * In case the REFCOUNTABLE_COPY_MORE is in used the class should also
+ * In case the REFCOUNTABLE_COPY_MORE is used the class should also
  * implement the 'copy()' method:
  *   class MyClass {
  *   private:
@@ -206,7 +206,7 @@
 
 
 /*
- * For sharable objects, used this prefix macro in order to generate
+ * For sharable objects, use this prefix macro in order to generate
  * the operators: (cast), *, ->
  */
 #define REFCOUNT_SHARABLE_APPENDIX(DataType)                         \

@@ -51,7 +51,7 @@ void cEncryptionUtils::_xor(void* source,
     uint l1 = length / sizeof(uint);
     uint l2 = length % sizeof(uint);
 
-    // Mechine alignment xor
+    // Machine alignment xor
     uint i;
     for (i = 0; i < l1; i++)
     {

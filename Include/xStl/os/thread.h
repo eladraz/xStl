@@ -35,7 +35,7 @@
 /*
  * thread.h
  *
- * Declare virtual class for thread creation. Implement the POSIX interface for
+ * Declare a virtual class for thread creation. Implement the POSIX interface for
  * UNIX platforms and the Windows Threads command for Windows threads.
  *
  * Author: Elad Raz <e@eladraz.com>
@@ -44,11 +44,11 @@
 #include "xStl/os/osdef.h"
 
 /*
- * The thread function receives a single pointer as an argument and return
+ * The thread function receives a single pointer as an argument and returns
  * a pointer.
  *
- * NOTE: For some operating system, this function shouldn't be returned. It must
- *       be terminate using operating system calls.
+ * NOTE: For some operating systems, this function shouldn't return. It must
+ *       be terminated using operating system calls.
  *       For example the XDK (Windows driver kit) thread must be terminated
  *       using a call to 'PsTerminateSystemThread' function.
  *
@@ -61,7 +61,7 @@
 typedef void*(*ThreadRoutine)(void*);
 
 /*
- * Wraper class for thread's API. Allow creating, waiting and killing a thread.
+ * Wrapper class for the thread API. Allows creating, waiting for and killing a thread.
  *
  * NOTE: Don't use this class for threads in your applications. Use the
  *       cThreadedClass instead.
@@ -103,7 +103,7 @@ public:
     void execute(ThreadRoutine lpStartAddress, void* args);
 
     /*
-     * Wait until the thread will finish it's execution.
+     * Wait until the thread finishes its execution.
      */
     void wait();
 
@@ -123,7 +123,7 @@ public:
     static cOSDef::threadHandle getCurrentThreadHandle();
 
     /*
-     * Called in order to notify the operating system for thread termination.
+     * Called in order to notify the operating system of thread termination.
      *
      * This function is implemented per operating system.
      */

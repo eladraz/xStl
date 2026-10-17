@@ -36,8 +36,8 @@
 /*
  * digest.h
  *
- * Declare the abstract class cDigest used for one way hash function -
- * digital signature the information.
+ * Declare the abstract class cDigest used for one-way hash functions -
+ * digital signature of the information.
  *
  * Author: Elad Raz <e@eladraz.com>
  */
@@ -49,9 +49,9 @@
 /*
  * class cDigest
  *
- * Hash a number of bytes. For using the class you should create the class or call
- * to 'reset()'. Update the hash using one or more calls to 'update()' function
- * giving the hash bytes. At any priod of time a call to 'digest()' return the
+ * Hash a number of bytes. To use the class you should create the class or call
+ * 'reset()'. Update the hash using one or more calls to the 'update()' function
+ * giving the hash bytes. At any period of time a call to 'digest()' returns the
  * signature for the hash.
  */
 class cDigest
@@ -63,21 +63,21 @@ public:
     virtual ~cDigest();
 
     /*
-     * Reset the hash setting as this class just constructed.
+     * Reset the hash settings as if this class was just constructed.
      */
     virtual void reset() = 0;
 
     /*
-     * Update the hash using a 'buffer' and it's length.
+     * Update the hash using a 'buffer' and its length.
      *
-     * buffer - The bytes to be digest.
+     * buffer - The bytes to be digested.
      * length - The length of the buffer.
      */
     virtual void update(const void* buffer, const uint32 length) = 0;
 
     /*
-     * Return the current digest of the hash using for all previous call to
-     * 'update' from the last 'reset()'/construction call.
+     * Return the current digest of the hash computed from all previous calls to
+     * 'update' since the last 'reset()'/construction call.
      *
      * Return CONST amount of bytes.
      */
@@ -86,7 +86,7 @@ public:
     /*
      * Clone the hash object.
      *
-     * Return new constructed object equal to my object.
+     * Return a newly constructed object equal to this object.
      */
     virtual cSmartPtr<cDigest> clone() = 0;
 
@@ -97,9 +97,9 @@ public:
 
     /*
      * Update the hash using a stream. The implementation of this function is
-     * to call to the virtual 'update(uint8*, uint32)' function.
+     * to call the virtual 'update(uint8*, uint32)' function.
      *
-     * data - The data to be digest in cBuffer format.
+     * data - The data to be digested in cBuffer format.
      */
     virtual void updateStream(const cBuffer& data);
 };

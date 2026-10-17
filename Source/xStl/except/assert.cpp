@@ -97,4 +97,4 @@ void assertFunction(bool condition, unsigned int line,
     }
 }
 #endif // DOT_NET
-#endif // _DEUBG
+#endif // _DEBUG

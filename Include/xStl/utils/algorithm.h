@@ -35,7 +35,7 @@
 /*
  * algorithm.h
  *
- * Provide a set of templates algorithm.
+ * Provide a set of template algorithms.
  *
  * Author: Elad Raz <e@eladraz.com>
  */
@@ -48,10 +48,10 @@
  * T& t_max (a,b)
  *
  * Returns the lower/greater between two variables.
- * T must have operator < or >. Copy constructor is not requierd.
+ * T must have operator < or >. Copy constructor is not required.
  *
- * Since the compiler of the Visual C++ use the functions names "min", "max"
- * as reserved words, I used the name t_min, t_max.
+ * Since the Visual C++ compiler uses the function names "min", "max"
+ * as reserved words, I used the names t_min, t_max.
  */
 template <class T>
 const T& t_min(const T& a, const T& b)
@@ -82,7 +82,7 @@ void t_swap(T& a, T& b)
 /*
  * T t_abs(const T& a)
  *
- * Covert a number to it's positive value. T must operator <, operator - and
+ * Convert a number to its positive value. T must have operator <, operator - and
  * copy constructor.
  */
 template <class T>
@@ -95,8 +95,8 @@ T t_abs(const T& a)
 /*
  * iterator find(begin, end, object)
  *
- * Template function for iterator and data object. Binary scan a range and
- * finds an elemnet and return the iterator index. If the element is not found
+ * Template function for iterator and data object. Binary scan a range,
+ * finds an element and returns the iterator index. If the element is not found
  * then find return "end" iterator.
  * The scan range is from "begin" to "end" not including "end".
  *
@@ -139,8 +139,8 @@ void fill(ITR_FW begin, ITR_FW end, DATA object)
 /*
  * bool compare(b1,e1, b2,e2)
  *
- * Compare between two data struct. It compare section b1..e1 to b2..e2.
- * Returns true if two data-lists are equals.
+ * Compare two data structs. It compares section b1..e1 to b2..e2.
+ * Returns true if two data-lists are equal.
  *
  * The number of elements and their order must be the same.
  */
@@ -163,7 +163,7 @@ bool compare(ITR_FW b1, ITR_FW e1, ITR_FW b2, ITR_FW e2)
     {
         if (!(src_data->information == dst_data->information))
         {
-            // Both fileds are not equal, return false
+            // Both fields are not equal, return false
             return false;
         }
         // Carry on to the next data link
@@ -171,7 +171,7 @@ bool compare(ITR_FW b1, ITR_FW e1, ITR_FW b2, ITR_FW e2)
         dst_data = dst_data->next;
     }
 
-    // In case that the list are not the same in the orders
+    // In case the lists are not in the same order
     if ((src_data == NULL) && (dst_data == NULL))
     {
         return true;
@@ -183,8 +183,8 @@ bool compare(ITR_FW b1, ITR_FW e1, ITR_FW b2, ITR_FW e2)
 /*
  * boubbleSort(begin, end)
  *
- * Sort a struct using bidirectonal iterator. Later implementation on other
- * iterator will be welcome.
+ * Sort a struct using a bidirectional iterator. Later implementations on other
+ * iterators will be welcome.
  */
 template <class ITR_BD>
 void boubbleSort(ITR_BD begin, ITR_BD end)

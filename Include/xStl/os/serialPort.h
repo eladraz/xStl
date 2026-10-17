@@ -66,7 +66,7 @@ public:
     };
 
     /*
-     * The different method for parity bit
+     * The different methods for the parity bit
      */
     enum ParityBit {
         NoParity    = 0,
@@ -77,7 +77,7 @@ public:
     };
 
     /*
-     * The different method for stop bit
+     * The different methods for the stop bit
      */
     enum StopBit {
         SingleStopBit     = 0,

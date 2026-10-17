@@ -35,9 +35,9 @@
 /*
  * virtualMemoryAccesser.h
  *
- * Analyzer classes needs to access to complete virtual memory mapping of an
+ * Analyzer classes need to access the complete virtual memory mapping of an
  * object. The problem is that most of the times the virtual format sits inside
- * a page-file or a file or other process memory. This interface allow accessing
+ * a page-file or a file or other process memory. This interface allows accessing
  * virtual memory without knowing any information.
  *
  * Author: Elad Raz <e@eladraz.com>
@@ -48,8 +48,8 @@
 #include "xStl/os/fragmentsDescriptor.h"
 
 /*
- * Interface for accessing virtual memory-map. The interface allow accessing the
- * bus with default bit size operations. The interface is inused by the stack
+ * Interface for accessing virtual memory-map. The interface allows accessing the
+ * bus with default bit size operations. The interface is used by the stack
  * analyzer, so only default stack bit size (=uint) operations are allowed.
  */
 class cVirtualMemoryAccesser : public cEndian {
@@ -57,7 +57,7 @@ public:
     // Memory accessor
 
     /*
-     * Read a block of memory. The memory can be fragment.
+     * Read a block of memory. The memory can be fragmented.
      * NOTE: This function is a synchronized operation.
      *
      * address   - The virtual address to be read
@@ -68,13 +68,13 @@ public:
      *             If this argument is NULL than the fragmentation information
      *             will not be generated.
      *
-     * Return true if the entire memory was read. False is one or more bytes
-     * in the memory are missing and being fragment. In this case the
-     * 'fragments' argument will be filled with the which parts of the data is
+     * Return true if the entire memory was read. False if one or more bytes
+     * in the memory are missing and it is fragmented. In this case the
+     * 'fragments' argument will be filled with which parts of the data are
      * valid and which parts aren't.
      *
-     * The function shouldn't throw any exception. However implementation to
-     * this interface may throw exception. See cThreadUnsafeMemoryAccesser.
+     * The function shouldn't throw any exception. However, an implementation of
+     * this interface may throw an exception. See cThreadUnsafeMemoryAccesser.
      */
     virtual bool memread(addressNumericValue address,
                          void* buffer,
@@ -88,7 +88,7 @@ public:
      * buffer    - The data to write
      * length    - The length in bytes of 'buffer'
      *
-     * Throw exception if the interface is a read-only interface.
+     * Throw an exception if the interface is a read-only interface.
      * Return true if the memory was written completely.
      * Return false if one or more bytes within the memory-range couldn't be
      * written.
@@ -98,19 +98,19 @@ public:
                        uint length) = 0;
 
     /*
-     * Return true if the interface supports the writables functions.
+     * Return true if the interface supports the writable functions.
      */
     virtual bool isWritableInterface() const = 0;
 
-    // Numeric accessor. Implements by a call to 'memread' and 'write'
+    // Numeric accessor. Implemented by a call to 'memread' and 'write'
 
     /*
      * Deserialize uint (Stack sized variable) from virtual memory map.
      *
      * address - The location inside the virtual process memory.
      *
-     * This function cannot be failed. If the memory doesn't exist, this
-     * function throw exception.
+     * This function cannot fail. If the memory doesn't exist, this
+     * function throws an exception.
      */
     uint readUint(addressNumericValue address) const;
 
@@ -120,11 +120,11 @@ public:
      * address - The location inside the virtual process memory.
      * value - The data to be written to.
      *
-     * Some platform doesn't supports the writable interface. In this case,
+     * Some platforms don't support the writable interface. In this case,
      * the function may throw a FAILED exception. See isWritableInterface()
      *
-     * This function cannot be failed. If the memory doesn't exist, this
-     * function throw exception.
+     * This function cannot fail. If the memory doesn't exist, this
+     * function throws an exception.
      */
     void writeUint(addressNumericValue address,
                    uint value);

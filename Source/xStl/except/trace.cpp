@@ -100,8 +100,8 @@
  * Global locking Mutex class
  *
  * In order to avoid atexit destructor routine from accessing the 'TRACE'
- * facility, and since there aren't any way to geruntee execuation time,
- * there will be here a small memory lost and resource leak.
+ * facility, and since there isn't any way to guarantee execution time,
+ * there will be a small memory loss and resource leak here.
  */
 class traceLockMutex {
 public:
@@ -161,15 +161,15 @@ void traceMessage(int traceLevel, const cString& message)
             #endif
         #endif
         #if (TRACE_METHOD == TRACE_LOG)
-            // TODO! This code hasn't compiled for a while, it's need to be
-            //       upgarded
+            // TODO! This code hasn't compiled for a while, it needs to be
+            //       upgraded
             // Write trace log into file
             if (!logFile.isOpenForWrite())
             {
-                // Open file for writing and opened to append data
+                // Open the file for writing and for appending data
                 XSTL_TRY
                 {
-                    // Try to open an exsist file
+                    // Try to open an existing file
                     logFile.open(TRACE_logFileNAME, cFile::cFile_READ | cFile::cFile_WRITE);
                     logFile.seek(0, IO_SEEK_END);
                 }

@@ -35,12 +35,12 @@
 /*
  * char.h
  *
- * The default character handler for the operation system. The OS can provides
- * support in normal 'char*' character which is the ANSI 8bit character  or it
- * can support some other type of character, most likly it will be 16bit chars
+ * The default character handler for the operating system. The OS can provide
+ * support for the normal 'char*' character which is the ANSI 8bit character  or it
+ * can support some other type of character, most likely it will be 16bit chars
  * which provides access to all characters in almost all languages.
- * The char file defines the character set to be use and compile with the xStl
- * package and all application written to it.
+ * The char file defines the character set to be used when compiling the xStl
+ * package and all applications written for it.
  *
  * Author: Elad Raz <e@eladraz.com>
  */
@@ -55,11 +55,11 @@
     typedef uint16 unichar;
 #endif
 #ifndef XSTL_UNICODE
-    // The character in the system are normal char*
+    // The characters in the system are normal char*
     typedef char character;
 #else
     // UNICODE
-    // The character in the system are wide-char
+    // The characters in the system are wide-char
     typedef unichar character;
 #endif // XSTL_UNICODE
 
@@ -70,7 +70,7 @@ typedef character* lpString;
 extern character* endl;
 
 /*
- * The XSTL_STRING macro coverst ASCII strings into the string format declare
+ * The XSTL_STRING macro converts ASCII strings into the string format declared
  * in the application
  */
 #ifndef XSTL_UNICODE
@@ -83,8 +83,8 @@ extern character* endl;
 #endif
 
 /*
- * The OS_CSTRING convert XSTL strings into operating system const strings.
- * Used for compilers who are sensetive for typedef decelerations.
+ * The OS_CSTRING converts XSTL strings into operating system const strings.
+ * Used for compilers which are sensitive to typedef declarations.
  */
 #define XSTL_NUM2STR2(x) #x
 #define XSTL_NUM2STR(x) XSTL_NUM2STR2(x)
@@ -106,13 +106,13 @@ extern character* endl;
 /*
  * class cChar
  *
- * Static function for handling characters
+ * Static functions for handling characters
  */
 class cChar
 {
 public:
     /*
-     * Returns the null-terminate characters for strings.
+     * Returns the null-terminating character for strings.
      */
     static character getNullCharacter();
 
@@ -128,9 +128,9 @@ public:
      *
      * ch - The character to be uppercase
      *
-     * The most important thing about this function is that two character with
-     * the same meaning in the language (Such as 'a' and 'A' or in the hebrew
-     * language 'Meam' and 'Meam sofit' has the same meaning) will be equal
+     * The most important thing about this function is that two characters with
+     * the same meaning in the language (Such as 'a' and 'A' or in the Hebrew
+     * language 'Mem' and the final 'Mem' have the same meaning) will be equal
      * with operator == after a call to this function.
      */
     static character getUppercase(character ch);
@@ -150,8 +150,8 @@ public:
     static bool isPrintable(character ch);
 
     /*
-     * Returns true if the character is blanket character. Blanket is space
-     * character ' ', tab character '\t' or any space at all languages.
+     * Returns true if the character is a blank character. Blank is the space
+     * character ' ', the tab character '\t' or any space in all languages.
      */
     static bool isBlanket(character ch);
 
@@ -161,7 +161,7 @@ public:
     static bool isNewLine(character ch);
 
     /*
-     * Returns true if the character is digit character (0..9 or other languages)
+     * Returns true if the character is a digit character (0..9 or other languages)
      */
     static bool isDigit(character ch);
 
@@ -172,15 +172,15 @@ public:
     static bool isBraces(character ch);
 
     /*
-     * Returns true if the character is one of the line seperator marks, such
-     * dot('.') comma(,) or semi-comma(';')
+     * Returns true if the character is one of the line separator marks, such as:
+     * dot('.') comma(,) or semicolon(';')
      */
     static bool isSeperator(character ch);
 
     /**
-     * Try to covert a digit into a number.
+     * Try to convert a digit into a number.
      *
-     * Throws exception if the character is not a digit only in debug mode!
+     * Throws an exception, only in debug mode, if the character is not a digit!
      */
     static uint getDigit(character ch);
 
@@ -209,7 +209,7 @@ public:
      * The libC 'stricmp' function with the 'character' string. The function
      * acts exactly as the libC function.
      *
-     * Compare incasesetive strings. (Perform a uppercase comparison of strings)
+     * Compare case-insensitive strings. (Perform an uppercase comparison of strings)
      *
      * string1 - Null-terminated strings to compare
      * string2 - Null-terminated strings to compare
@@ -235,7 +235,7 @@ public:
      *   strncpy is undefined if the source and destination strings overlap.
      *
      * IMPORTANT NOTE:
-     *   This version of strncpy put NULL terminate character at 'count'
+     *   This version of strncpy puts a NULL terminating character at the 'count'
      *   position to avoid buffer-overflows.
      *
      * strDest   - Destination string
@@ -249,13 +249,13 @@ public:
     /*
      * Appends one string to the other. The function, similar to 'strncat'
      * appends the 'source' string to the 'destination' string. But this
-     * function prevents overflow by taking in account the size of the
+     * function prevents overflow by taking into account the size of the
      * destination string.
      *
      * strDest   - Destination string
      * strSource - Source string
      * count     - The number of characters of 'strDest'.
-     *             NOTE: This is the number of character and not the number of
+     *             NOTE: This is the number of characters and not the number of
      *                   bytes!
      */
     static void strappend(character* strDest,
@@ -263,23 +263,23 @@ public:
                           uint count);
 
     /*
-     * Translate a character to ASCII character.
+     * Translate a character to an ASCII character.
      *
      * ch - The xStl character.
      *
-     * Return the ASCII value for the character or '?' for non-american
+     * Return the ASCII value for the character or '?' for non-American
      * characters
      */
     static char covert2Ascii(const unichar ch);
 
     /*
-     * Covert string into normal ASCII (7-bit per character) string.
-     * The convertion may lose non-american characters.
+     * Convert string into normal ASCII (7-bit per character) string.
+     * The conversion may lose non-American characters.
      *
      * output - Will be filled with the new ASCII string. The length of the
-     *          string is limited by 'outputLength'. Incase the string is
-     *          bigger than the length of output, the string will be choped.
-     * outputLength - The length in bytes that can be written for 'output'
+     *          string is limited by 'outputLength'. In case the string is
+     *          bigger than the length of output, the string will be chopped.
+     * outputLength - The length in bytes that can be written to 'output'
      * string - The original string
      */
     static void covert2Ascii(char* output,
@@ -287,7 +287,7 @@ public:
                              const unichar* string);
 
     /*
-     * Covert a unicode string to a format which is used by this xStl
+     * Convert a unicode string to a format which is used by this xStl
      * compilation.
      *
      * output - Will be filled with unicode string content.

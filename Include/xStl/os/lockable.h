@@ -36,8 +36,8 @@
  * lockable.h
  *
  * Defines the cLockableObject interface. This interface is used to declare all
- * lockable objects. Lockable object is an object which accuire a resource or
- * holds down the thread (or code execution) accuring the resource.
+ * lockable objects. A lockable object is an object which acquires a resource or
+ * holds down the thread (or code execution) while acquiring the resource.
  *
  * Author: Elad Raz <e@eladraz.com>
  */
@@ -46,31 +46,31 @@
 /*
  * class cLockableObject
  *
- * The lock object has two function which used for locking: lock() and unlock()
- * These function throws exception in case of faliure, which terminate the code
+ * The lock object has two functions which are used for locking: lock() and unlock()
+ * These functions throw an exception in case of failure, which terminates the code
  * execution.
- * The implementation of thoses function depends over the driven class
+ * The implementation of those functions depends on the derived class
  * implementation code.
  */
 class cLockableObject
 {
 public:
     /*
-     * Default destructor. Allows dynamic memory allocaiton.
+     * Default destructor. Allows dynamic memory allocation.
      */
     virtual ~cLockableObject();
 
     /*
      * Try to acquire the resource
      *
-     * Throws exception incase of failure
+     * Throws an exception in case of failure
      */
     virtual void lock() = 0;
 
     /*
      * Free the resource.
      *
-     * Throws exception incase of failure
+     * Throws an exception in case of failure
      */
     virtual void unlock() = 0;
 };

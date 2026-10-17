@@ -65,7 +65,7 @@ void cMutex::lock()
 {
     if (pthread_mutex_lock(&m_handle.m_mutex) != 0)
     {
-        // Mutex locking faild
+        // Mutex locking failed
         XSTL_THROW(cException, EXCEPTION_VIOLATION);
     }
 }
@@ -74,7 +74,7 @@ void cMutex::unlock()
 {
     if (pthread_mutex_unlock(&m_handle.m_mutex) != 0)
     {
-        // The mutex handle was faild
+        // The mutex handle was failed
         XSTL_THROW(cException, EXCEPTION_VIOLATION);
     }
 }

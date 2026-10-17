@@ -51,8 +51,8 @@
 
 
 /*
- * The default flag character to be used. Over statics the character '\253' is
- * not shown in text files and few times in binary data.
+ * The default flag character to be used. According to statistics the character '\253' is
+ * not found in text files and rarely found in binary data.
  */
 #ifndef RLE_FLAG_CHARACTER
 #define RLE_FLAG_CHARACTER  (253)
@@ -63,11 +63,11 @@
 /*
  * cRLEcompression
  *
- * Run-Length-Encoding. The filter-stream find out blocks of the same bytes
- * and encode them as one unit. The encoding is made by puting inside the
- * string a flag. After the flag there are the byte to be written and how
- * many times should it repeat. Incase the character itself should be encoded
- * the compression write out the flag twice.
+ * Run-Length-Encoding. The filter-stream finds blocks of the same bytes
+ * and encodes them as one unit. The encoding is made by putting inside the
+ * string a flag. After the flag come the byte to be written and how
+ * many times it should repeat. In case the character itself should be encoded
+ * the compression writes out the flag twice.
  *
  * Encoding scheme:
  *  <FLAG> <LENGTH> <BYTE>
@@ -76,12 +76,12 @@ class cRLEcompression : public filterStream
 {
 public:
     /*
-     * Constructor. Create RLE filter stream base on the 'stream' stream. The
+     * Constructor. Create an RLE filter stream based on the 'stream' stream. The
      * flag used in the compression is stored in the 'flag' variable.
      *
      * stream - The decorated stream class to be used for reading/written.
      * flag - The 8 bit flag for the RLE compression information. This
-     *        character should be the most unshown character in the
+     *        character should be the least frequent character in the
      *        stream.
      */
     cRLEcompression(const cSmartPtr<basicIO>& stream,
@@ -98,7 +98,7 @@ public:
     filterStreamEndianImpl;
 
 
-    // Driven from the basicIO
+    // Derived from the basicIO
 
     /*
      * Decompress data from the lower stream.
@@ -124,20 +124,20 @@ public:
 
     /*
      * Can seek forward 'distance' amount of bytes. All other seeking methods
-     * throws exception.
-     * If the down stream can seek to the beginng this function will be valid
+     * throw an exception.
+     * If the down stream can seek to the beginning this function will be valid
      * from the beginning of the stream.
      */
     virtual void seek(const int distance, const basicInput::seekMethod method);
 
     /*
-     * Return true if we have reached to the end of the compression.
+     * Return true if we have reached the end of the compression.
      */
     virtual bool isEOS();
 
     /*
      * Length, getPointer are invalid in the RLE compression since I don't
-     * have any way to know what is the size of the compressed data.
+     * have any way to know the size of the compressed data.
      */
     virtual uint length() const;
     virtual uint getPointer() const;
@@ -157,13 +157,13 @@ private:
     /*
      * Flush the compression for a single element
      * This is where the real compression is
-     * accomplish at.
+     * accomplished.
      */
     void rleWriteFlush();
 
     /*
      * Flush the information for reading operation
-     * Descreate reading.
+     * Discrete reading.
      */
     void rleReadFlush();
 

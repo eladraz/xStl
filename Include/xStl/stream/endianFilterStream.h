@@ -49,7 +49,7 @@
 /*
  * Usage:
  *
- * This example show how we can use a "baseStream" as a big-endian. The sample wrap the baseStream as a non-destructable smart-pointer.
+ * This example shows how we can use a "baseStream" as big-endian. The sample wraps the baseStream as a non-destructible smart-pointer.
  *
  *   basicIO& baseStream;
  *   cSmartPtr<cEndianFilterStream> endianStream(new cEndianFilterStream(
@@ -75,7 +75,7 @@ public:
     virtual ~cEndianFilterStream();
 
     /*
-     * Driven from the basicIO. A direct call to the decorated stream implementation
+     * Derived from the basicIO. A direct call to the decorated stream implementation
      */
     virtual uint read(void *buffer, const uint length);
     virtual uint write(const void *buffer, const uint length);
@@ -87,7 +87,7 @@ public:
     virtual uint getPipeReadBestRequest() const;
 
     /*
-     * Driven from cEndian
+     * Derived from cEndian
      */
     virtual uint64 readUint64(const uint8* buffer) const;
     virtual uint32 readUint32(const uint8* buffer) const;

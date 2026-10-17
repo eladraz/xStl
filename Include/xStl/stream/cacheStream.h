@@ -36,8 +36,8 @@
 /*
  * cacheStream.h
  *
- * Defincation of the caching to streams, which provides read-ahead cache and
- * lazy-write chaches for streams. The cCacheStream is the cache interface for
+ * Definition of caching for streams, which provides read-ahead cache and
+ * lazy-write caches for streams. The cCacheStream is the cache interface for
  * both input and output streams.
  *
  * Author: Elad Raz <e@eladraz.com>
@@ -50,9 +50,9 @@
 
 
 /*
- * The default caching stream sizes. Define what is the default queues sizes
+ * The default caching stream sizes. Define the default queue sizes
  * for the cCacheStream class.
- * 16kb queue size seems as the most logic value size it's small in memory and
+ * A 16kb queue size seems to be the most logical value: it's small in memory and
  * saves 16*1024 calls to read() from the decorated stream.
  */
 #ifndef DEFAULT_READ_CACHING
@@ -93,12 +93,12 @@ public:
     filterStreamEndianImpl;
 
 
-    // Driven from the basicIO
+    // Derived from the basicIO
 
     /*
-     * Read from the downstream 'length' amount of bytes. The function return
-     * the bytes from read-ahead queue. In case the queue is empty the function
-     * call to read() in order to fill it.
+     * Read from the downstream 'length' amount of bytes. The function returns
+     * the bytes from the read-ahead queue. In case the queue is empty the function
+     * calls read() in order to fill it.
      */
     virtual uint read(void *buffer, const uint length);
 
@@ -121,13 +121,13 @@ public:
     virtual uint getPointer() const;
 
     /*
-     * Flush out read-ahead cache and write to the storage all laze-write buffer
+     * Flush out read-ahead cache and write to the storage all lazy-write buffer
      */
     virtual void flush();
 
     /*
      * Seek inside the stream. See basicInput for more information.
-     * This method depend on the decorate class for seeking methods.
+     * This method depends on the decorated class for seeking methods.
      */
     virtual void seek(const int distance, const basicInput::seekMethod method);
 

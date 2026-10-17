@@ -36,7 +36,7 @@
 /*
  * LZW.h
  *
- * Implementation of the Lempel-Ziv-Welch compression as defines in the GIF
+ * Implementation of the Lempel-Ziv-Welch compression as defined in the GIF
  * image specification.
  *
  * Author: Elad Raz <e@eladraz.com>
@@ -77,14 +77,14 @@ struct LZW_STRING
  *
  * The device can encode stream with bit size of 1,2,3,4,5,6,7,8 bits only.
  *
- * If you want to compress 9bit of information, I presonly think that you are
+ * If you want to compress 9bit of information, I personally think that you are
  * wasting your time since the pattern which will be found and the pattern of
  * the memory will enlarge the file.
  *
- * The method of the compression is to build over run-time table containing
- * string of previous strings found out on the string. Instead of coding the
- * string itself, the class write out the index inside the table. The table
- * size is dynamic and increase during run-time.
+ * The method of the compression is to build a run-time table containing
+ * strings of previous strings found in the string. Instead of coding the
+ * string itself, the class writes out the index inside the table. The table
+ * size is dynamic and increases during run-time.
  * For more information see GIF compression.
  */
 class cLZWcompression : public filterStream
@@ -97,7 +97,7 @@ public:
      *
      * stream - The decorated stream class to be used for the compression or
      *          the decompression process.
-     * bitSize - Number of bits to seek patterns over them.
+     * bitSize - Number of bits in which to seek patterns.
      */
     cLZWcompression(cSmartPtr<basicIO> stream,
                     uint8 bitSize = DEFALUT_BIT_COUNT);
@@ -112,7 +112,7 @@ public:
     filterStreamEndianImpl;
 
 
-    // Driven from the basicIO
+    // Derived from the basicIO
 
     /*
      * Decompress data from the lower stream.
@@ -138,20 +138,20 @@ public:
 
     /*
      * Can seek forward 'distance' amount of bytes. All other seeking methods
-     * throws exception.
-     * If the down stream can seek to the beginng this function will be valid
+     * throw an exception.
+     * If the down stream can seek to the beginning this function will be valid
      * from the beginning of the stream.
      */
     virtual void seek(const int distance, const basicInput::seekMethod method);
 
     /*
-     * Return true if we have reached to the end of the compression.
+     * Return true if we have reached the end of the compression.
      */
     virtual bool isEOS();
 
     /*
      * Length, getPointer are invalid in the LZW compression since I don't
-     * have any way to know what is the size of the compressed data.
+     * have any way to know the size of the compressed data.
      */
     virtual uint length() const;
     virtual uint getPointer() const;
@@ -160,9 +160,9 @@ public:
     // LZW functions
 
     /*
-     * Call this function at the beginng of the write-out-compression process.
-     * The function write out the 'CLEAR' signal to the stream.
-     * The decompressor is excepting to find this signal.
+     * Call this function at the beginning of the write-out-compression process.
+     * The function writes out the 'CLEAR' signal to the stream.
+     * The decompressor expects to find this signal.
      */
     void initNewStream();
 
@@ -211,7 +211,7 @@ private:
 
     /*
      * Write a single string into the pipe.
-     * Uses recursine to retrieve the string from the 'pcode'.
+     * Uses recursion to retrieve the string from the 'pcode'.
      */
     bool writeString(unsigned int pcode, cBitStream & stream);
 

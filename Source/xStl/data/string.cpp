@@ -51,8 +51,8 @@
 #ifndef XSTL_UNIQUE_STRIP
     // The string "-" which indicate that the number is negative
     const character* cString::m_stringNegativeInteger = XSTL_STRING("-");
-    // The strip for different bases. Uses the 10 digits characters 26 digits of
-    // the alpha-beit in the english language and 12 character for Indian character
+    // The strip for different bases. Uses the 10 digit characters, 26 letters of
+    // the alphabet in the English language and 12 characters for Indian characters
     const character* cString::m_baseStrip = XSTL_STRING("0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ!@#$%^&*()-+");
 #endif
 
@@ -112,13 +112,13 @@ cSArray<char> cString::getASCIIstring() const
     return ret;
 }
 #else
-// XSTL_UNICODE is not defined, Not unicode version of xStl
+// XSTL_UNICODE is not defined, not the unicode version of xStl
 
 cSArray<char> cString::getASCIIstring() const
 {
     uint newLen = length() + 1;
     cSArray<char> ret(newLen);
-    // Copy all data including the null-terminate character
+    // Copy all data including the null-terminating character
     cOS::memcpy(ret.getBuffer(), getBuffer(), newLen);
     return ret;
 }
@@ -166,7 +166,7 @@ cString::cString(const char ch,
     m_buffer(NULL),
     m_stringLength(0)
 {
-    // This could cause a serious damage
+    // This could cause serious damage
     ASSERT(ch != cChar::getNullCharacter());
 
     // Init the object
@@ -188,7 +188,7 @@ cString::cString(const int32 number,
     // Init the object
     createEmptyString(optMem);
 
-    // Covert the number into positive value
+    // Convert the number into positive value
     uint32 nm = t_abs(number);
 
     /* Check sign */
@@ -197,7 +197,7 @@ cString::cString(const int32 number,
         concat(m_stringNegativeInteger);
     }
 
-    /* Covert the number into a string */
+    /* Convert the number into a string */
     cString positiveString(nm, base);
     concat(positiveString);
 }
@@ -209,7 +209,7 @@ cString::cString(const uint32 number,
     m_stringLength(0)
 {
     ASSERT_MSG(base < cChar::getStrlen(m_baseStrip),
-               XSTL_STRING("cString: There isn't engouth strip for conversion operation."));
+               XSTL_STRING("cString: There isn't enough strip for the conversion operation."));
 
     // Init members
     createEmptyString(optMem);
@@ -243,7 +243,7 @@ cString::cString(const int64 number,
     // Init the object
     createEmptyString(optMem);
 
-    // Covert the number into positive value
+    // Convert the number into positive value
     uint64 nm = t_abs(number);
 
     /* Check sign */
@@ -252,7 +252,7 @@ cString::cString(const int64 number,
         concat(m_stringNegativeInteger);
     }
 
-    /* Covert the number into a string */
+    /* Convert the number into a string */
     cString positiveString(nm, base);
     concat(positiveString);
 }
@@ -264,7 +264,7 @@ cString::cString(const uint64 number,
     m_stringLength(0)
 {
     ASSERT_MSG(base < cChar::getStrlen(m_baseStrip),
-               XSTL_STRING("cString: There isn't engouth strip for conversion operation."));
+               XSTL_STRING("cString: There isn't enough strip for the conversion operation."));
 
     // Init members
     createEmptyString(optMem);
@@ -303,13 +303,13 @@ cString::cString(const cString& other) :
 
 void cString::createEmptyString(uint optMem)
 {
-    // Assert memory lost
+    // Assert memory loss
     ASSERT(m_buffer == NULL);
     // Reset string length
     m_stringLength = 0;
-    // Create a buffer to hold the null-terminate character
+    // Create a buffer to hold the null-terminating character
     m_buffer = new cSArray<character>(1, optMem);
-    // Puts the null-terminate character
+    // Puts the null-terminating character
     (*m_buffer)[0] = cChar::getNullCharacter();
 }
 
@@ -319,7 +319,7 @@ cString::~cString()
     ASSERT(m_buffer != NULL);
     ASSERT(cChar::getStrlen(m_buffer->getBuffer()) == m_stringLength);
 
-    // Destory the memory allocated.
+    // Destroy the memory allocated.
     delete m_buffer;
 }
 
@@ -327,7 +327,7 @@ uint cString::length() const
 {
     // Do some assertion
     ASSERT_MSG((*m_buffer)[m_stringLength] == cChar::getNullCharacter(),
-               XSTL_STRING("cString: Null-terminate character couldn't be founded."));
+               XSTL_STRING("cString: Null-terminating character couldn't be found."));
     ASSERT_MSG(cChar::getStrlen(m_buffer->getBuffer()) == m_stringLength,
                XSTL_STRING("cString: String length is invalid"));
 
@@ -337,7 +337,7 @@ uint cString::length() const
 
 cString cString::mid(uint index, int size) const
 {
-    // Incase the size is negative...
+    // In case the size is negative...
     if (size <= 0) return cString();
 
     return part(index, index + size);
@@ -371,7 +371,7 @@ cString cString::left(int size) const
 {
     cString ret;
 
-    /* Take care to egde */
+    /* Take care of the edge case */
     if (size > (int)length())
     {
         size = (int)length();
@@ -411,7 +411,7 @@ cString cString::right(int size) const
 
 void cString::concat(const cString& other)
 {
-    // Delete all unnessesry output, including NULL terminate character.
+    // Delete all unnecessary output, including NULL terminating character.
     m_buffer->changeSize(length());
 
     // Expand the string buffer to the right size
@@ -515,10 +515,10 @@ cString& cString::trim()
 
 cString& cString::trimAllSpaces()
 {
-    // Remove beginng and ending characters.
+    // Remove beginning and ending characters.
     trim();
 
-    bool firstSpace = true; // Is this is the first space character
+    bool firstSpace = true; // Is this the first space character
     uint len = length(); // The length of this string
     cString ret;         // A temporary object
 
@@ -549,14 +549,14 @@ uint cString::find(const cString& string, uint startIndex /* = 0 */) const
     uint on = string.length();
     uint len = (ln - on) + 1;
 
-    // Incase of empty string. Always match
+    // In case of empty string. Always match
     if (on == 0)
     {
         return startIndex;
     }
 
     // If this string doesn't have at least the number of characters 'string'
-    // has, the search will probably failed. Returns the length of this string.
+    // has, the search will probably fail. Returns the length of this string.
     if (ln < on)
         return ln;
 
@@ -589,7 +589,7 @@ uint cString::rfind(const cString& string,
     uint ln = length();
     uint on = string.length();
 
-    // Incase of empty string. Always match
+    // In case of empty string. Always match
     if (on == 0)
     {
         return startIndex;
@@ -600,11 +600,11 @@ uint cString::rfind(const cString& string,
         return 0;
 
     // If this string doesn't have at least the number of characters 'string'
-    // has, the search will probably failed. Returns the length of this string.
+    // has, the search will probably fail. Returns the length of this string.
     if (ln < on)
         return ln;
 
-    // Set the postion to the end of the string
+    // Set the position to the end of the string
     if (i >= ln - on)
         i = ln - on;
 
@@ -614,7 +614,7 @@ uint cString::rfind(const cString& string,
         /* Try to find a match */
         if (m_buffer->getBuffer()[i] == string.m_buffer->getBuffer()[0])
         {
-            /* Scan the reset of the string */
+            /* Scan the rest of the string */
             uint j;
             for (j = i + 1;
                  ((j < ln) && (j < i + on) && (string.m_buffer->getBuffer()[j - i] == m_buffer->getBuffer()[j]));
@@ -690,7 +690,7 @@ void cString::rearrangeStringVector()
 {
     // Calculate the length of the new string.
     m_stringLength = cChar::getStrlen(m_buffer->getBuffer());
-    // Delete all unnessecry space
+    // Delete all unnecessary space
     m_buffer->changeSize(m_stringLength + 1);
 }
 
@@ -764,7 +764,7 @@ cString & cString::operator += (const character ch)
     if (ch == cChar::getNullCharacter())
     {
         // Are you sure?!
-        // This could cause a serious damage
+        // This could cause serious damage
         ASSERT_FAIL(XSTL_STRING("cString+\\0 are you sure?!"));
         // Safety for release versions
         return *this;
@@ -796,7 +796,7 @@ cString cString::operator + (const character ch) const
     if (ch == cChar::getNullCharacter())
     {
         // Are you sure?!
-        // This could cause a serious damage
+        // This could cause serious damage
         ASSERT_FAIL(XSTL_STRING("cString+\\0 are you sure?!"));
         // Safety for release versions
         return *this;

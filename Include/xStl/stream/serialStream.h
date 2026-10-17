@@ -46,10 +46,10 @@
 #include "xStl/stream/fileStream.h"
 
 /*
- * The serial port have a connection attribute:
- *     - Buadrate       The number of bits per second which the line supported
- *     - Transition     Indicate when and how the parity bit is transmits, how
- *                      many stop bit should be used, and how many bits should
+ * The serial port has connection attributes:
+ *     - Baud rate      The number of bits per second which the line supports
+ *     - Transition     Indicates when and how the parity bit is transmitted, how
+ *                      many stop bits should be used, and how many bits should
  *                      be transmitted for each session.
  */
 class cSerialStream : public basicIO {
@@ -58,12 +58,12 @@ public:
      * Default constructor. Open a serial port.
      *
      * comport  - The port to be opened
-     * buadRate - The buadrate for com port.
+     * buadRate - The baud rate for the COM port.
      * bitSize  - The number of bits for a single byte (4-8)
      * parity   - The type for the parity check
      * stopBits - Terminator between transmission.
      *
-     * Throw exception if the serial-stream cannot be instances
+     * Throw an exception if the serial-stream cannot be instantiated
      */
     cSerialStream(uint comport,
                   cSerialPort::BaudRate baudRate = cSerialPort::BaudRate_115200,
@@ -76,10 +76,10 @@ public:
      */
     defaultEndianImpl;
 
-    // Driven from the basicIO
+    // Derived from the basicIO
 
     /*
-     * Retrive the position of the write/read head
+     * Retrieve the position of the write/read head
      */
     virtual uint getPointer() const;
 
@@ -99,21 +99,21 @@ public:
     virtual void flush();
 
     /*
-     * Read from the memory array into a buffer. If the reading reach the end
-     * of the array then the function return the number of bytes readed until
-     * EOF reached.
+     * Read from the memory array into a buffer. If the reading reaches the end
+     * of the array then the function returns the number of bytes read until
+     * EOF is reached.
      */
     virtual uint read(void *buffer, const uint length);
 
     /*
      * Write bytes to the stream.
-     * Change the bytes of the array. If the file postion reached the end of the
+     * Change the bytes of the array. If the file position reached the end of the
      * array, and m_fixedSize is false then the array size will increase.
      */
     virtual uint write(const void *buffer, const uint length);
 
     /*
-     * Move to a specific position in the file. Throw exception if failed.
+     * Move to a specific position in the file. Throw an exception if failed.
      * See basicInput::seek for more information.
      */
     virtual void seek(const int distance, const basicInput::seekMethod method);
@@ -122,14 +122,14 @@ public:
      * Returns how many bytes should be read for best performance in the
      * pipeRead() function in a single call to the read() function.
      *
-     * This value stand on 1kb which is the responsible value
+     * This value stands at 1kb which is the responsible value
      */
     virtual uint getPipeReadBestRequest() const { return 1024; }
 
     /*
      * Return true if the line is ringing
      *
-     * Throw exception if the serial-stream cannot acquire the UART status
+     * Throw an exception if the serial-stream cannot acquire the UART status
      * register
     */
     bool isRinging();

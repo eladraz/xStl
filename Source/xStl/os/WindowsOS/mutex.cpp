@@ -68,7 +68,7 @@ void cMutex::lock()
     DWORD dw = WaitForSingleObject(m_handle, INFINITE);
     if (dw != WAIT_OBJECT_0)
     {
-        // The mutex handle was faild
+        // The mutex handle was failed
         XSTL_THROW(cException, EXCEPTION_VIOLATION);
     }
 }
@@ -77,7 +77,7 @@ void cMutex::unlock()
 {
     if (!ReleaseMutex(m_handle))
     {
-        // The mutex handle was faild
+        // The mutex handle was failed
         XSTL_THROW(cException, EXCEPTION_VIOLATION);
     }
 }

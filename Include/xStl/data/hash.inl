@@ -100,14 +100,14 @@ bool cHash<IndexType, FiledType>::hasKey(const IndexType& index) const
 	// Compute the position of the element in the array
 	uint arrayPosition = cHashFunction(index, m_hash->getSize());
 
-	// Start searching in the currect link_list
-	// Recieve the begining iterator of the list and scan it until the end
+	// Start searching in the current link_list
+	// Receive the beginning iterator of the list and scan it until the end
 	typename cList<ElementType>::iterator i = (*m_hash)[arrayPosition].begin();
 	for (;i != (*m_hash)[arrayPosition].end(); i++)
 	{
 			 if ((*i).m_a == index)
 			 {
-				 // We found our elemenet, exit the searching
+				 // We found our element, exit the searching
 				 break;
 			 }
 	}
@@ -129,14 +129,14 @@ void cHash<IndexType, FiledType>::remove(const IndexType &index)
 	// Compute the position of the element in the array
 	uint arrayPosition = cHashFunction(index, m_hash->getSize());
 
-	// Start searching in the currect link_list
-	// Recieve the begining iterator of the list and scan it until the end
+	// Start searching in the current link_list
+	// Receive the beginning iterator of the list and scan it until the end
 	typename cList<ElementType>::iterator i = (*m_hash)[arrayPosition].begin();
 	for (; i != (*m_hash)[arrayPosition].end(); i++)
 	{
 			 if ((*i).m_a == index)
 			 {
-				 // We found our elemenet, exit the searching
+				 // We found our element, exit the searching
 				 break;
 			 }
 	}
@@ -214,14 +214,14 @@ const FiledType & cHash<IndexType, FiledType>::operator [] (const IndexType &ind
     // Compute the position of the element in the array
     uint arrayPosition = cHashFunction(index, m_hash->getSize());
 
-    // Start searching in the currect link_list
-    // Recieve the begining iterator of the list and scan it until the end
+    // Start searching in the current link_list
+    // Receive the beginning iterator of the list and scan it until the end
     typename cList<ElementType>::iterator i = (*m_hash)[arrayPosition].begin();
     for (; i != (*m_hash)[arrayPosition].end(); i++)
     {
         if ((*i).m_a == index)
         {
-            // We found our elemenet, exit the searching
+            // We found our element, exit the searching
             break;
         }
     }
@@ -234,6 +234,6 @@ const FiledType & cHash<IndexType, FiledType>::operator [] (const IndexType &ind
         XSTL_THROW(cException, EXCEPTION_OUT_OF_RANGE);
     }
 
-    // Return the refrence in the list
+    // Return the reference in the list
     return (*i).m_b;
 }

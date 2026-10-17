@@ -30,9 +30,9 @@
  */
 
 /*
- * test_sha1.cpp
+ * test_endian.cpp
  *
- * Test the SHA1 digest according to pre-known values.
+ * Test the endian classes.
  *
  * Author: Elad Raz <e@eladraz.com>
  */

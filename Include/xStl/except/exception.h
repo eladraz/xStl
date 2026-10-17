@@ -36,7 +36,7 @@
  * exception.h
  *
  * Define basic exception types and implement some of them.
- * This code is good for all operation system platfrom, both Windows and Linux
+ * This code is good for all operating system platforms, both Windows and Linux
  *
  * Author: Elad Raz <e@eladraz.com>
  */
@@ -45,7 +45,7 @@
 #include "xStl/data/char.h"
 
 /*
- * Here is a list of important exception and there ID.
+ * Here is a list of important exceptions and their IDs.
  */
 #define EXCEPTION_UNKWON           (0)
 #define EXCEPTION_FAILED           (1)
@@ -66,11 +66,11 @@ class cString;
 /*
  * cException class
  *
- * Exception handling in the system. When XSTL or modules from it throws
- * exception, the exception is driven or cException exception. XSTL exception
+ * Exception handling in the system. When XSTL or modules from it throw
+ * an exception, the exception is derived from cException. An XSTL exception
  * contains error-code and a message describing it.
- * Use for exception identifier. Allow to add a single message to the exception
- * This class will be extended to combine severel of strings using cString, so
+ * Used as an exception identifier. Allows adding a single message to the exception.
+ * This class will be extended to combine several strings using cString, so
  * we can add the file name, line number and the function name.
  */
 class cException
@@ -88,7 +88,7 @@ public:
     cException(const cException& other);
 
     /*
-     * Virtual deconstructor. Allow virtual inheritance.
+     * Virtual destructor. Allow virtual inheritance.
      */
     virtual ~cException();
 
@@ -105,8 +105,8 @@ public:
     /*
      * Show the exception on the screen.
      *
-     * For Windows application, using the "MessageBoxA" function
-     * For non-windows application use "cout" command
+     * For Windows applications, the "MessageBoxA" function is used.
+     * For non-Windows applications, the "cout" command is used.
      */
     virtual void print();
 
@@ -124,7 +124,7 @@ protected:
     // Functions
 
     /*
-     * Change the message to be pointed another string.
+     * Change the message to point to another string.
      *
      * msg - The new string that the exception contains.
      */
@@ -132,7 +132,7 @@ protected:
 
     // Members
 
-    // The content of the error message. This cannot be string becuase the
+    // The content of the error message. This cannot be string because the
     // cString object uses exceptions.
     character* m_message;
     // Should use operator delete over m_message

@@ -36,7 +36,7 @@
  * smartptr.h
  *
  * Implement the smart-pointer, auto-pointer and smart-array-pointer and a
- * refernce object.
+ * reference object.
  *
  * Author: Elad Raz <e@eladraz.com>
  */
@@ -58,7 +58,7 @@ enum DestructionMethod
 
 #ifdef XSTL_WINDOWS
     // Template classes might not use all the local functions the interface has
-    // to ofer. Warning C4505 should be over-written for template functions
+    // to offer. Warning C4505 should be disabled for template functions
     #pragma warning(push)
     #pragma warning(disable:4505)
 #endif
@@ -67,11 +67,11 @@ enum DestructionMethod
 /*
  * cSmartPtr
  *
- * A global implemetation for all smarts pointers and auto-pointers.
+ * A global implementation for all smart pointers and auto-pointers.
  * The constructor gets destruction method for the object.
  *
  * Operator = (T* other) is the most dangerous function to be used because
- * the destruction method is save as the previous setting. So far this
+ * the destruction method is saved as the previous setting. So far this
  * method will be private until CR results.
  *
  * This class is multi-threaded and multi-processor enabled.
@@ -88,23 +88,23 @@ public:
     cSmartPtr();
 
     /*
-     * Constructor. Wrap a pointer which a smart-pointer reference count object.
+     * Constructor. Wrap a pointer with a smart-pointer reference count object.
      * The default destruction method is 'operator delete'.
      * The object can be NULL.
      *
-     * object - The object to be wrap.
+     * object - The object to be wrapped.
      * destructionType - The method of destruction.
      */
     explicit cSmartPtr(T* object,
                        DestructionMethod destructionType = SMARTPTR_DESTRUCT_DELETE);
 
     /*
-     * Copy-constructor. (with refrence increasment)
+     * Copy-constructor. (with reference increment)
      */
     cSmartPtr(const cSmartPtr<T>& other);
 
     /*
-     * Destructor. Derefrence the pointer and delete it when 0 reaches.
+     * Destructor. Dereference the pointer and delete it when the count reaches 0.
      */
     ~cSmartPtr();
 
@@ -149,7 +149,7 @@ public:
     void setDestructMethod(DestructionMethod destructionType);
 
     /*
-     * Return whether the refrence object is NULL which indicate that the object
+     * Return whether the reference object is NULL which indicates that the object
      * is empty
      */
     bool isEmpty() const;
@@ -166,9 +166,9 @@ public:
 
     /*
      * Return the counter object for this class. Used for copy-on-write objects
-     * implementations which want to know how many objects are reference to.
+     * implementations which want to know how many objects reference it.
      *
-     * Throw exception if the object is NULL.
+     * Throw an exception if the object is NULL.
      */
     const cCounter& getCounter() const;
 
@@ -182,18 +182,18 @@ private:
     // Release
 
     /*
-     * Decrease refrence by one and release the object according to the
+     * Decrease reference by one and release the object according to the
      * destruction method.
      */
     void free();
 
     /*
-     * Decrease the refernce counter and test whether the object should be deleted.
+     * Decrease the reference counter and test whether the object should be deleted.
      * Return true if the object should be deleted.
      */
     bool decreaseAndTest();
 
-    // Refrence counter object
+    // Reference counter object
     T*                m_object;
     cCounter*         m_refrenceCounter;
     DestructionMethod m_destructionType;
@@ -201,12 +201,12 @@ private:
 
 
 /*
- * In order that the cSmartPtr class can be in used in multi-threaded and multi
- * processor safely a global lockable should be in used.
+ * In order that the cSmartPtr class can be used in multi-threaded and multi
+ * processor environments safely, a global lockable should be used.
  *
- * Note that this lockable should be destruct at the end of all atexit dtors.
- * Win32 ring3 application not free this memory.
- * The XDK calls to this destructor.
+ * Note that this lockable should be destructed at the end of all atexit dtors.
+ * Win32 ring3 applications do not free this memory.
+ * The XDK calls this destructor.
  */
 class cSmartPtrLockable {
 public:
@@ -225,7 +225,7 @@ private:
     cSmartPtrLockable(const cSmartPtrLockable& other);
     cSmartPtrLockable& operator = (const cSmartPtrLockable& other);
 
-    // The XDK must now how to destructor this class
+    // The XDK must know how to destruct this class
     friend class cXDKLibCPP;
 
     /*
@@ -248,7 +248,7 @@ private:
 #include "xStl/data/smartptr.inl"
 
 #ifdef XSTL_WINDOWS
-    // Return the warnning behaviour back to it's original mode
+    // Return the warning behaviour back to its original mode
     #pragma warning(pop)
 #endif
 

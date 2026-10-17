@@ -32,7 +32,7 @@
 /*
  * test_alignment.cpp
  *
- * Tests the
+ * Tests the alignment functions.
  *
  * Author: Elad Raz <e@eladraz.com>
  */

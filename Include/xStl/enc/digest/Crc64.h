@@ -77,7 +77,7 @@ private:
         static CRC64Tables& getInstance();
 
         /*
-         * Return the precalculate tables
+         * Return the precalculated tables
          */
         const uint64** getTables();
 

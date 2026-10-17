@@ -88,6 +88,6 @@ cSmartPtr<cRandom> cOSRand::getRandom()
     return g_globalRandom;
 }
 
-// Init the random mechanizm to empty
+// Init the random mechanism to empty
 cSmartPtr<cRandom> cOSRand::g_globalRandom(NULL);
 

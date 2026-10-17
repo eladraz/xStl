@@ -51,24 +51,24 @@
  * A stream memory accesser is a manageable reference-countable memory stream.
  *
  * NOTE: It's safer to never change the size or the content of the cBuffer data,
- *       however, this option is exist. After protect change at the 'data'
+ *       however, this option exists. After a change at the 'data'
  *       pointer, the 'updateStreamBoundries' function must be invoked.
  */
 class cStreamMemoryAccesser : public cThreadUnsafeMemoryAccesser {
 public:
     /*
-     * Constructor. Create a thread memory accesser that point out to the
+     * Constructor. Create a thread memory accesser that points to the
      * content of the 'data'. If the data stream is changed, there must be a
      * notification. See updateStreamBoundries.
      *
-     * data - The stream which the thread memory is pointed at.
+     * data - The stream which the thread memory points at.
      */
     cStreamMemoryAccesser(const cBufferPtr& data);
 
     /*
      * Called when the 'data' cBuffer object was modified outside the content
      * of the cVirtualMemoryAccesser.
-     * This function recalibrates the boundries of the stream.
+     * This function recalibrates the boundaries of the stream.
      */
     void updateStreamBoundries();
 

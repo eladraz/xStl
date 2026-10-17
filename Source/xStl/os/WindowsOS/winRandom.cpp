@@ -51,8 +51,8 @@
 #include "xStl/os/osrand.h"
 
 /*
- * The defualt random class for global system random. This class is using
- * hardware time-stamp counter which count the clocks of the cpu and compute
+ * The default random class for global system random. This class is using
+ * the hardware time-stamp counter which counts the clocks of the CPU and computes
  * from it a random.
  */
 class cDefaultWindowsTimestampRandom : public cRandom
@@ -69,10 +69,10 @@ public:
     /*
      * Generate 'length' bytes of random and put it in 'output'. The 'output'
      * size is changed to 'length' and step over pure random. This function
-     * increase the internal random mechanizm.
+     * advances the internal random mechanism.
      *
      * length - The amount of random to be generate.
-     * output - Will be filled with the required psedu-random generation code.
+     * output - Will be filled with the required pseudo-random generation code.
      */
     virtual void generateRandom(uint length, cBuffer& output)
     {
@@ -131,11 +131,11 @@ private:
     uint32 readCounter()
     {
         #ifndef I386
-            // Windows CE can compile on several of platforms
+            // Windows CE can compile on several platforms
             return (uint32)cOS::getSystemTime();
         #else
-            // x86 machine can be optimize with the RDTSC instruction which
-            // return the CPU internal clock
+            // x86 machines can be optimized with the RDTSC instruction which
+            // returns the CPU internal clock
             register uint32 retd;
             _asm {
                 rdtsc
@@ -146,9 +146,9 @@ private:
     }
 
     /*
-     * Returns the number of tick-count since the windows-operation system was first
-     * started. The tick-count in windows is the number of internal context-switch
-     * ticks. For all windows version this constant stand over 1000Hz.
+     * Returns the tick count since the Windows operating system was first
+     * started. The tick count in Windows is the number of internal context-switch
+     * ticks. For all Windows versions this constant stands at 1000Hz.
      */
     uint32 readCounter1()
     {
@@ -172,12 +172,12 @@ private:
         {
             // Increase lcg
             lcg = lcg*214013L + 2531011L;
-            // Evalute from the lower high nibble.
+            // Evaluate from the lower high nibble.
             buf[i] = (uint8)(((lcg >> 16) % 512) & 0xFF);
         }
     }
 
-    // The older loading for the mechanizm
+    // The older loading for the mechanism
     uint32 m_loading;
 };
 
@@ -191,7 +191,7 @@ cSmartPtr<cRandom> cOSRand::getRandom()
     return g_globalRandom;
 }
 
-// Init the random mechanizm to empty
+// Init the random mechanism to empty
 cSmartPtr<cRandom> cOSRand::g_globalRandom(NULL);
 
 #endif // WIN32
