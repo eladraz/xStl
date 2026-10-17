@@ -155,8 +155,8 @@ cStringerStream& operator << (cStringerStream& out,
     if (memory.m_shouldReadMemory)
     {
         addressNumericValue pos = memory.m_startAddress;
-        uint lines = (memory.m_endAddress - memory.m_startAddress) /
-                      memory.m_elementsCount;
+        uint lines = (uint)((memory.m_endAddress - memory.m_startAddress) /
+                            memory.m_elementsCount);
 
         cBuffer data(memory.m_elementsCount);
         for (uint i = 0; i < lines; i++)
@@ -168,7 +168,7 @@ cStringerStream& operator << (cStringerStream& out,
             pos+= memory.m_elementsCount;
         }
 
-        uint left = memory.m_endAddress - pos;
+        uint left = (uint)(memory.m_endAddress - pos);
         if (left != 0)
             memory.dumpLine(pos,
                             left,
@@ -191,9 +191,9 @@ cStringerStream& operator << (cStringerStream& out,
             NR_ADDRESS(addr)+= memory.m_elementsCount;
         }
 
-        uint left = getNumeric(memory.m_buffer->getBuffer());
-        left+= memory.m_buffer->getSize();  // End pointer
-        left-= getNumeric(pos);             // Minus current pointer
+        uint left = (uint)(getNumeric(memory.m_buffer->getBuffer()) +
+                           memory.m_buffer->getSize() - // End pointer
+                           getNumeric(pos));            // Minus current pointer
 
         if (left != 0)
             memory.internalDumpLine(addr,

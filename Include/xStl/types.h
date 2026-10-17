@@ -229,6 +229,9 @@ typedef uint8 byte;
     // 16 bit uses segment:offset address (24 bit according to the following
     // calculatation: addr = offset + segment * 0x10)
     typedef uint32 addressNumericValue;
+#elif defined(_M_X64)
+    // Windows x64 keeps uint as 32 bit, but pointers are 64 bit
+    typedef uint64 addressNumericValue;
 #else
     // 32 bit and 64 bit compilers
     typedef uint addressNumericValue;

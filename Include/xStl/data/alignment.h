@@ -66,12 +66,14 @@ public:
     /*
      * Align a number up into 'base2NumberMinus1'
      */
-    static uint alignUp(uint number, uint base2NumberMinus1);
+    static addressNumericValue alignUp(addressNumericValue number,
+                                       addressNumericValue base2NumberMinus1);
 
     /*
      * Align a number down into 'base2NumberMinus1'
      */
-    static uint alignDown(uint number, uint base2NumberMinus1);
+    static addressNumericValue alignDown(addressNumericValue number,
+                                         addressNumericValue base2NumberMinus1);
 
     /*
      * Read 16 bit word by 32bit bus transaction

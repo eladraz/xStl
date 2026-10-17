@@ -40,12 +40,14 @@
 #include "xStl/types.h"
 #include "xStl/data/alignment.h"
 
-uint Alignment::alignUp(uint number, uint base)
+addressNumericValue Alignment::alignUp(addressNumericValue number,
+                                       addressNumericValue base)
 {
     return  (number + base) & ~base;
 }
 
-uint Alignment::alignDown(uint number, uint base)
+addressNumericValue Alignment::alignDown(addressNumericValue number,
+                                         addressNumericValue base)
 {
     return number & ~base;
 }
@@ -55,6 +57,6 @@ uint16 Alignment::readAlignedWord(const uint16* ptr /*, uint busSize = 4*/)
     addressNumericValue ptrAddr = getNumeric(ptr);
     addressNumericValue baseAddress = alignDownToDword(ptrAddr);
     uint32 value = *((uint32*)getPtr(baseAddress));
-    uint rotate = ptrAddr - baseAddress;
+    uint rotate = (uint)(ptrAddr - baseAddress);
     return (uint16)((value >> (rotate * 8)) & 0xFFFF);
 }
