@@ -1,4 +1,4 @@
-![unmaintained](http://img.shields.io/badge/status-unmaintained-red.png)
+![maintained](http://img.shields.io/badge/status-maintained-brightgreen.png)
 [![CI](https://github.com/eladraz/xStl/actions/workflows/ci.yml/badge.svg?branch=master)](https://github.com/eladraz/xStl/actions/workflows/ci.yml)
 [![coverity status](https://scan.coverity.com/projects/10737/badge.svg)](https://scan.coverity.com/projects/eladraz-xstl)
 
