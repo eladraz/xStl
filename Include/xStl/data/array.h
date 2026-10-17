@@ -518,7 +518,7 @@ protected:
     // The number of real elements in the array
     uint m_size;
     // The real allocated items in the array
-    uint m_alocatedArray;
+    uint m_allocatedArray;
     // The page size for the allocation.
     uint m_pageSize;
 };

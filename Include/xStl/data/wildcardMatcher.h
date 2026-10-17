@@ -54,12 +54,12 @@ public:
      *
      * string - The string to be tested
      * wildcardPattern - The pattern to use
-     * isCaseSensetive - True means that the match is case sensitive,
+     * isCaseSensitive - True means that the match is case sensitive,
      *                   otherwise is case insensitive
      */
     static bool match(const cString& string,
                       const cString& wildcardPattern,
-                      bool isCaseSensetive = true);
+                      bool isCaseSensitive = true);
 };
 
 #endif // __TBA_STL_WILDCARDMATCHER_H

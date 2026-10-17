@@ -181,13 +181,13 @@ bool compare(ITR_FW b1, ITR_FW e1, ITR_FW b2, ITR_FW e2)
 */
 
 /*
- * boubbleSort(begin, end)
+ * bubbleSort(begin, end)
  *
  * Sort a struct using a bidirectional iterator. Later implementations on other
  * iterators will be welcome.
  */
 template <class ITR_BD>
-void boubbleSort(ITR_BD begin, ITR_BD end)
+void bubbleSort(ITR_BD begin, ITR_BD end)
 {
     if (begin == end)
         return;

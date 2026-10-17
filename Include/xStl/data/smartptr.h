@@ -195,7 +195,7 @@ private:
 
     // Reference counter object
     T*                m_object;
-    cCounter*         m_refrenceCounter;
+    cCounter*         m_referenceCounter;
     DestructionMethod m_destructionType;
 };
 

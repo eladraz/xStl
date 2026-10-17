@@ -56,7 +56,7 @@
 /*
  * The default bit amount for the compression.
  */
-#define DEFALUT_BIT_COUNT (8)
+#define DEFAULT_BIT_COUNT (8)
 
 
 /*
@@ -100,7 +100,7 @@ public:
      * bitSize - Number of bits in which to seek patterns.
      */
     cLZWcompression(cSmartPtr<basicIO> stream,
-                    uint8 bitSize = DEFALUT_BIT_COUNT);
+                    uint8 bitSize = DEFAULT_BIT_COUNT);
     /*
      * Virtual destructor
      */
@@ -193,7 +193,7 @@ private:
     cBitStream          *m_bit_stream; /* Bit access to the m_stream       */
     unsigned int         m_bitSize;    /* Number of bit in the compression */
     cSArray<LZW_STRING>  m_table;      /* The LZW table                    */
-    cList<unsigned int>  m_readed_codes;              /* Saved information */
+    cList<unsigned int>  m_read_codes;              /* Saved information */
 
     unsigned int start_opcodes;
     unsigned int m_write_prefix;

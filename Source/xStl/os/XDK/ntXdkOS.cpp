@@ -108,9 +108,9 @@ void cOS::sleepSeconds(uint seconds)
     sleepMillisecond(seconds * 1000);
 }
 
-void cOS::sleepMillisecond(uint miliseconds)
+void cOS::sleepMillisecond(uint milliseconds)
 {
-    sleepMicroseconds(miliseconds * 1000);
+    sleepMicroseconds(milliseconds * 1000);
 }
 
 void cOS::sleepMicroseconds(uint microseconds)

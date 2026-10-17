@@ -108,7 +108,7 @@ cSArray<char> cString::getASCIIstring() const
 {
     uint newLen = length() + 1;
     cSArray<char> ret(newLen);
-    cChar::covert2Ascii(ret.getBuffer(), newLen, getBuffer());
+    cChar::convert2Ascii(ret.getBuffer(), newLen, getBuffer());
     return ret;
 }
 #else
@@ -489,7 +489,7 @@ cString& cString::trim()
 
     /* Trim all the spaces at the beginning */
     uint index = 0, i;
-    while ((index < length()) && (cChar::isBlanket(m_buffer->getBuffer()[index])))
+    while ((index < length()) && (cChar::isBlank(m_buffer->getBuffer()[index])))
     {
         index++;
     }
@@ -498,7 +498,7 @@ cString& cString::trim()
 
     /* Find the end position */
     i = length() - 1;
-    while ((i >= index) && (cChar::isBlanket(m_buffer->getBuffer()[i])))
+    while ((i >= index) && (cChar::isBlank(m_buffer->getBuffer()[i])))
     {
         i--;
         size--;
@@ -524,7 +524,7 @@ cString& cString::trimAllSpaces()
 
     for (uint i = 0; i < len; i++)
     {
-        if (cChar::isBlanket((*m_buffer)[i]))
+        if (cChar::isBlank((*m_buffer)[i]))
         {
             if (firstSpace)
             {

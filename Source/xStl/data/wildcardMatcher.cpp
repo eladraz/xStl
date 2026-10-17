@@ -43,7 +43,7 @@
 
 bool cWildcardMatcher::match(const cString& string,
                              const cString& wildcardPattern,
-                             bool isCaseSensetive)
+                             bool isCaseSensitive)
 {
     // Empty pattern is a special case
     if (wildcardPattern.length() == 0)
@@ -91,7 +91,7 @@ bool cWildcardMatcher::match(const cString& string,
             // Must be equal
             if (string.length() <= i)
                 return false;
-            if (isCaseSensetive)
+            if (isCaseSensitive)
             {
                 if (string[i] != ch)
                     return false;

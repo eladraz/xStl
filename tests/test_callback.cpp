@@ -81,7 +81,7 @@ public:
     virtual void test()
     {
         // Reset the dispatcher
-        m_dispather.registerCallback(CALLBACKER(onDispatcherEvent));
+        m_dispatcher.registerCallback(CALLBACKER(onDispatcherEvent));
 
         // Invoke commands
         for (uint i = 0; i < 100; i++)
@@ -91,7 +91,7 @@ public:
             m_number = val;
             m_reset = nvl;
             // Call
-            m_dispather.trigger(getPtr(m_number));
+            m_dispatcher.trigger(getPtr(m_number));
             // Test
             TESTS_ASSERT_EQUAL(m_reset, 0);
             TESTS_ASSERT_EQUAL(m_number, nvl);
@@ -107,7 +107,7 @@ private:
     // The reset value
     uint32 m_reset;
     // The dispatcher class
-    Dispatcher m_dispather;
+    Dispatcher m_dispatcher;
 };
 
 // Instance a test object

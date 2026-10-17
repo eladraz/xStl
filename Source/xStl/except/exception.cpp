@@ -153,7 +153,7 @@ const character* cException::getMessage()
     return m_message;
 }
 
-void cException::whereExceptionOccured(cString& ret)
+void cException::whereExceptionOccurred(cString& ret)
 {
     // XXX: NOT PORTABLE!
     ret = m_atFile;
@@ -170,7 +170,7 @@ void cException::print()
     // Normal Win32 application
     cString whereString;
     cString whatString = cString("Exception: message: ") << getMessage() << endl;
-    whereExceptionOccured(whereString);
+    whereExceptionOccurred(whereString);
     whereString = cString("Exception: origin: ") << whereString << endl;
 
     TRACE(TRACE_VERY_HIGH, whatString);

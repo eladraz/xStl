@@ -119,7 +119,7 @@ private:
      * The secret inner and outer key of the hmac.
      */
     uint8 m_innerKey[KEY_B_LENGTH];
-    uint8 m_outterKey[KEY_B_LENGTH];
+    uint8 m_outerKey[KEY_B_LENGTH];
 
     /*
      * The hash object to be used.

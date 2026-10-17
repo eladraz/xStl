@@ -47,10 +47,10 @@
 cStreamMemoryAccesser::cStreamMemoryAccesser(const cBufferPtr& data) :
     m_data(data)
 {
-    updateStreamBoundries();
+    updateStreamBoundaries();
 }
 
-void cStreamMemoryAccesser::updateStreamBoundries()
+void cStreamMemoryAccesser::updateStreamBoundaries()
 {
     m_startAddress = getNumeric(m_data->getBuffer());
     m_endAddress = getNumeric(m_data->getBuffer() + m_data->getSize());

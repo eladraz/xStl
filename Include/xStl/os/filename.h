@@ -153,7 +153,7 @@ public:
      *
      * Return true if ch is a separator
      */
-    static bool isDirectorySeperator(const character ch);
+    static bool isDirectorySeparator(const character ch);
 
     /*
      * Return a string which start from 'startPosition' and last until the
@@ -187,9 +187,9 @@ public:
     static bool checkRelativeNameValidation(const cString& relativeName);
 
     /// The directory separator used by Microsoft operating system ('\')
-    static const character m_directorySeperatorWindows;
+    static const character m_directorySeparatorWindows;
     /// The directory separator used by Unix based operating system ('/')
-    static const character m_directorySeperatorUnix;
+    static const character m_directorySeparatorUnix;
 private:
     /*
      * Make a filename class using a full-path name. The format of the filename

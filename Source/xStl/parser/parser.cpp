@@ -146,7 +146,7 @@ bool Parser::readBlanksUntilEOL()
         return true;
 
     char ch = peekChar();
-    while (cChar::isBlanket(ch))
+    while (cChar::isBlank(ch))
     {
         readChar();
         if (isEOS())
@@ -169,7 +169,7 @@ cString Parser::getBlanks()
     cString ret;
     char ch = peekChar();
 
-    while (cChar::isBlanket(ch) || cChar::isNewLine(ch))
+    while (cChar::isBlank(ch) || cChar::isNewLine(ch))
     {
         readChar();
         ret+= ch;
@@ -189,9 +189,9 @@ cString Parser::readWord()
         return ret;
     char ch = peekChar();
 
-    PARSER_INTERNAL_CHECK(!cChar::isBlanket(ch), "Letter was expected");
+    PARSER_INTERNAL_CHECK(!cChar::isBlank(ch), "Letter was expected");
 
-    while ((!cChar::isBlanket(ch)) &&
+    while ((!cChar::isBlank(ch)) &&
            (!cChar::isNewLine(ch)))
     {
         readChar();
@@ -231,10 +231,10 @@ cString Parser::readCString(bool isFirstLetter)
     return ret;
 }
 
-cString Parser::readQuateString(bool isCString)
+cString Parser::readQuoteString(bool isCString)
 {
     // The first character must be a quote
-    PARSER_INTERNAL_CHECK(readChar() == '"', "'string' was excpected here");
+    PARSER_INTERNAL_CHECK(readChar() == '"', "'string' was expected here");
 
     // Read the string
     cString ret;
@@ -273,7 +273,7 @@ cString Parser::readQuateString(bool isCString)
     return ret;
 }
 
-cString Parser::readSpeicalString()
+cString Parser::readSpecialString()
 {
     cString ret;
     char ch = readChar();
@@ -482,7 +482,7 @@ void Parser::readBracesBlock()
 
         if (!stop)
         {
-            XSTL_THROW(BracesException, '?', b.getNextCloserCharacer());
+            XSTL_THROW(BracesException, '?', b.getNextCloserCharacter());
         }
 
         if (m_pointer == m_end)
@@ -495,9 +495,9 @@ void Parser::readBracesBlock()
     {
         // Translate exception
         cString exception(XSTL_STRING("Braces error. Found '"));
-        exception+= e.m_founded;
+        exception+= e.m_found;
         exception+= XSTL_STRING("' expected '");
-        exception+= e.m_excpected;
+        exception+= e.m_expected;
         exception+= XSTL_STRING("'.");
 
         PARSER_THROW(*this, exception)
@@ -539,7 +539,7 @@ BasicVariable Parser::readVariable(Types::Type type)
         }
     } else if (Types::isStringType(type))
     {
-        retData.setString(readQuateString());
+        retData.setString(readQuoteString());
     } else
     {
         // Unknown type exception.

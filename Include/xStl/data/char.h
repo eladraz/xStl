@@ -153,7 +153,7 @@ public:
      * Returns true if the character is a blank character. Blank is the space
      * character ' ', the tab character '\t' or any space in all languages.
      */
-    static bool isBlanket(character ch);
+    static bool isBlank(character ch);
 
     /*
      * Returns true if the character is '\r' or '\n' character.
@@ -175,7 +175,7 @@ public:
      * Returns true if the character is one of the line separator marks, such as:
      * dot('.') comma(,) or semicolon(';')
      */
-    static bool isSeperator(character ch);
+    static bool isSeparator(character ch);
 
     /**
      * Try to convert a digit into a number.
@@ -270,7 +270,7 @@ public:
      * Return the ASCII value for the character or '?' for non-American
      * characters
      */
-    static char covert2Ascii(const unichar ch);
+    static char convert2Ascii(const unichar ch);
 
     /*
      * Convert string into normal ASCII (7-bit per character) string.
@@ -282,7 +282,7 @@ public:
      * outputLength - The length in bytes that can be written to 'output'
      * string - The original string
      */
-    static void covert2Ascii(char* output,
+    static void convert2Ascii(char* output,
                              uint  outputLength,
                              const unichar* string);
 
@@ -295,7 +295,7 @@ public:
      * string - The original string
      * stringCharSize - Number of bytes per unicode string (1 for ASCII, 2 for windows wchar_t, 4 for linux wchar_t)
      */
-    static void covert2string(character*  output,
+    static void convert2string(character*  output,
                               uint        count,
                               const void* string,
                               int         stringCharSize);

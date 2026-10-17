@@ -66,7 +66,7 @@ public:
 
 private:
     enum { CRC64_NUMBER_OF_TABLES = 4,
-           CRC64_PREMUTATION_TABLE_LEN = 256 };
+           CRC64_PERMUTATION_TABLE_LEN = 256 };
 
     // Singleton object for CRC 64 tables
     class CRC64Tables {
@@ -85,7 +85,7 @@ private:
         // Constructor and destructor. Allocate/free memory
         CRC64Tables();
         ~CRC64Tables();
-        // 4k table (of CRC64_PREMUTATION_TABLE_LEN)
+        // 4k table (of CRC64_PERMUTATION_TABLE_LEN)
         uint64* m_tables[CRC64_NUMBER_OF_TABLES];
     };
 

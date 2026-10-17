@@ -97,7 +97,7 @@ public:
      * Throws cMessageQueueException:
      *    ClientNotFound - One or more of the clients do not exist. The other
      *                     clients will contain the message in the queue.
-     *    ClientQutaLimit - One or more of the clients has a quota-limit. Other
+     *    ClientQuotaLimit - One or more of the clients has a quota-limit. Other
      *                      clients will contain the message in the queue.
      */
     void storeMessage(const cList<cClientID>& clientsID,

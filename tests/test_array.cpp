@@ -59,13 +59,13 @@ enum ActionList {
 };
 
 static unsigned int lastAction = EMPTY;
-static unsigned int counstructorCounter = 0;
+static unsigned int constructorCounter = 0;
 static unsigned int destructorCounter = 0;
 static unsigned int lastPutValue = 0;
 class TESTARRAY
 {
 public:
-    TESTARRAY()  { lastAction = CONSTRUCTOR; counstructorCounter++; m_global = lastPutValue; }
+    TESTARRAY()  { lastAction = CONSTRUCTOR; constructorCounter++; m_global = lastPutValue; }
     ~TESTARRAY() { lastAction = DESTRUCTOR; destructorCounter++; }
     TESTARRAY(const TESTARRAY&) { lastAction = COPYCONSTRUCTOR; }
     TESTARRAY& operator=(const TESTARRAY&) { lastAction = OPERATOREQUAL; return *this; }
@@ -80,12 +80,12 @@ private:
     void reset_testarray()
     {
         lastAction = EMPTY;
-        counstructorCounter = 0;
+        constructorCounter = 0;
         destructorCounter = 0;
     }
     void test_reset_testarray()
     {
-        TESTS_ASSERT_EQUAL(counstructorCounter, 0);
+        TESTS_ASSERT_EQUAL(constructorCounter, 0);
         TESTS_ASSERT_EQUAL(destructorCounter, 0);
         TESTS_ASSERT_EQUAL(lastAction, EMPTY);
     }
@@ -104,7 +104,7 @@ public:
                 nObjects = (cOSRand::rand() % 200) + 1; // At least one object
                 list.changeSize(nObjects);
                 TESTS_ASSERT_EQUAL(lastAction, CONSTRUCTOR);
-                TESTS_ASSERT_EQUAL(counstructorCounter, nObjects);
+                TESTS_ASSERT_EQUAL(constructorCounter, nObjects);
             } while (false);
             TESTS_ASSERT_EQUAL(lastAction, DESTRUCTOR);
             TESTS_ASSERT_EQUAL(destructorCounter, nObjects);

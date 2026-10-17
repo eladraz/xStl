@@ -49,8 +49,8 @@ cArray<T>::cArray(uint numberOfElements /* = 0*/,
 	if (numberOfElements > 0)
 	{
 		m_size          = numberOfElements;
-		m_alocatedArray = pageRound(m_size);
-		m_array         = new T[m_alocatedArray];
+		m_allocatedArray = pageRound(m_size);
+		m_array         = new T[m_allocatedArray];
         if (m_array == NULL)
         {
             XSTL_THROW(cException, EXCEPTION_OUT_OF_MEM);
@@ -72,8 +72,8 @@ cArray<T>::cArray(const T* staticArray,
 	if (length > 0)
 	{
 		m_size          = length;
-		m_alocatedArray = pageRound(m_size);
-		m_array         = new T[m_alocatedArray];
+		m_allocatedArray = pageRound(m_size);
+		m_array         = new T[m_allocatedArray];
         if (m_array == NULL)
         {
                 XSTL_THROW(cException, EXCEPTION_OUT_OF_MEM);
@@ -120,7 +120,7 @@ void cArray<T>::initArray(uint pageSize)
     m_size = 0;
 	m_array = NULL;
 
-	m_alocatedArray = 0;
+	m_allocatedArray = 0;
 	m_pageSize      = pageSize;
 
 }
@@ -199,7 +199,7 @@ void cArray<T>::freeArray()
 		m_array = NULL;
 	}
 	m_size = 0;
-	m_alocatedArray = 0;
+	m_allocatedArray = 0;
 }
 
 template <class T>
@@ -225,7 +225,7 @@ void cArray<T>::swap(cArray<T>& other)
 {
     t_swap(m_array, other.m_array);
     t_swap(m_size, other.m_size);
-    t_swap(m_alocatedArray, other.m_alocatedArray);
+    t_swap(m_allocatedArray, other.m_allocatedArray);
 }
 
 template <class T>
@@ -274,7 +274,7 @@ void cArray<T>::changeSize(uint newSize,
 			T *buffer;
 
 			/* Create a new buffer and copy the data to it, if needed */
-			if ((uint)t_abs((int)new_alloc - (int)m_alocatedArray) >= m_pageSize)
+			if ((uint)t_abs((int)new_alloc - (int)m_allocatedArray) >= m_pageSize)
 			{
 				/* Need to realloc the buffer */
 				buffer = new T[new_alloc];
@@ -295,7 +295,7 @@ void cArray<T>::changeSize(uint newSize,
 				/* Assign the new array */
 				m_array = buffer;
 				m_size  = newSize;
-				m_alocatedArray = new_alloc;
+				m_allocatedArray = new_alloc;
 			} else
 			{
 				/* Just increase the space needed */
@@ -308,8 +308,8 @@ void cArray<T>::changeSize(uint newSize,
 			{
 				delete [] m_array;
 			}
-			m_alocatedArray = pageRound(newSize);
-			m_array = new T[m_alocatedArray];
+			m_allocatedArray = pageRound(newSize);
+			m_array = new T[m_allocatedArray];
 			m_size  = newSize;
             if (m_array == NULL)
             {

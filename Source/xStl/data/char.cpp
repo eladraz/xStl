@@ -101,7 +101,7 @@ character cChar::getLowercase(character ch)
     return ch;
 }
 
-bool cChar::isBlanket(character ch)
+bool cChar::isBlank(character ch)
 {
     return ((ch == XSTL_CHAR(' ')) || (ch == XSTL_CHAR('\t')));
 }
@@ -123,7 +123,7 @@ bool cChar::isBraces(character ch)
            (ch == XSTL_CHAR('{')) || (ch == XSTL_CHAR('}'));
 }
 
-bool cChar::isSeperator(character ch)
+bool cChar::isSeparator(character ch)
 {
     return (ch == XSTL_CHAR('.')) ||
            (ch == XSTL_CHAR(',')) ||
@@ -237,7 +237,7 @@ void cChar::strappend(character* strDest,
     strDest[count - 1] = cChar::getNullCharacter();
 }
 
-char cChar::covert2Ascii(const unichar ch)
+char cChar::convert2Ascii(const unichar ch)
 {
     // Translate
     if (ch < 0x0080)
@@ -251,7 +251,7 @@ char cChar::covert2Ascii(const unichar ch)
     }
 }
 
-void cChar::covert2Ascii(char* output,
+void cChar::convert2Ascii(char* output,
                          uint  outputLength,
                          const unichar* string)
 {
@@ -263,12 +263,12 @@ void cChar::covert2Ascii(char* output,
     uint len = t_min((uint)alt_wcslen((const unichar*)string) + 1, outputLength);
     for (uint i = 0; i < len; i++)
     {
-        output[i] = covert2Ascii(string[i]);
+        output[i] = convert2Ascii(string[i]);
     }
     output[len - 1] = '\0';
 }
 
-void cChar::covert2string(character*  output,
+void cChar::convert2string(character*  output,
                           uint        count,
                           const void* string,
                           int         stringCharSize)
@@ -291,8 +291,8 @@ void cChar::covert2string(character*  output,
             case 2: output[i] = (character)(((uint16*)string)[i]); break;
             case 4: output[i] = (character)(((uint32*)string)[i]); break;
 #else
-            case 2: output[i] = covert2Ascii((character)(((uint16*)string)[i])); break;
-            case 4: output[i] = covert2Ascii((character)(((uint32*)string)[i])); break;
+            case 2: output[i] = convert2Ascii((character)(((uint16*)string)[i])); break;
+            case 4: output[i] = convert2Ascii((character)(((uint32*)string)[i])); break;
 #endif // XSTL_UNICODE
             default:
                 CHECK_FAIL();

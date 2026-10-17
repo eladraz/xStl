@@ -88,7 +88,7 @@ private:
     uint8 advance();
 
     /* Members */
-    uint8 m_premutation[RC4KEY_LEN];
+    uint8 m_permutation[RC4KEY_LEN];
     uint8 m_i;
     uint8 m_j;
 };

@@ -42,8 +42,8 @@
 #include "xStl/data/string.h"
 #include "xStl/os/filename.h"
 
-const character cFilename::m_directorySeperatorWindows = XSTL_CHAR('\\');
-const character cFilename::m_directorySeperatorUnix = XSTL_CHAR('/');
+const character cFilename::m_directorySeparatorWindows = XSTL_CHAR('\\');
+const character cFilename::m_directorySeparatorUnix = XSTL_CHAR('/');
 const character cFilename::m_directoryCurrentDirectory[] = XSTL_STRING(".");
 const character cFilename::m_directoryPreviousDirectory[] = XSTL_STRING("..");
 
@@ -110,8 +110,8 @@ cFilename::cFilename(const cFilename& basePath,
 void cFilename::enforceDirectory()
 {
     // TODO! Windows and UNIX styles...
-    if (!isDirectorySeperator(m_filename[m_filename.length() - 1]))
-        m_filename+= m_directorySeperatorWindows;
+    if (!isDirectorySeparator(m_filename[m_filename.length() - 1]))
+        m_filename+= m_directorySeparatorWindows;
 }
 
 const cString& cFilename::getFullPath() const
@@ -135,10 +135,10 @@ cString cFilename::getFilename() const
     return m_directoryParser->getFilename(m_filename);
 }
 
-bool cFilename::isDirectorySeperator(const character ch)
+bool cFilename::isDirectorySeparator(const character ch)
 {
-    return (ch == m_directorySeperatorWindows) ||
-           (ch == m_directorySeperatorUnix);
+    return (ch == m_directorySeparatorWindows) ||
+           (ch == m_directorySeparatorUnix);
 }
 
 bool cFilename::isPreviousDirectoryMarker(const cString& directoryName)
@@ -158,7 +158,7 @@ cString cFilename::readDirectory(const cString& filename,
 {
     uint end;
     for (end = startPosition;
-         (end < filename.length()) && (!isDirectorySeperator(filename[end]));
+         (end < filename.length()) && (!isDirectorySeparator(filename[end]));
          end++);
     return filename.part(startPosition, end);
 }
@@ -171,8 +171,8 @@ bool cFilename::checkRelativeNameValidation(const cString& relativeName)
         if (!(cChar::isLetter(ch) ||
               cChar::isDigit(ch) ||
               cChar::isBraces(ch) ||
-              cChar::isSeperator(ch) ||
-              isDirectorySeperator(ch) ||
+              cChar::isSeparator(ch) ||
+              isDirectorySeparator(ch) ||
               // All characters except ?, *, |, ", \t and of course '.'!
               (ch == XSTL_CHAR('~')) || // Long names extension
               (ch == XSTL_CHAR('!')) ||

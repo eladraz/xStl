@@ -41,7 +41,7 @@
 template<class T>
 cSmartPtr<T>::cSmartPtr() :
     m_object(NULL),
-    m_refrenceCounter(new cCounter(1)),
+    m_referenceCounter(new cCounter(1)),
     m_destructionType(SMARTPTR_DESTRUCT_DELETE)
 {
 }
@@ -49,11 +49,11 @@ cSmartPtr<T>::cSmartPtr() :
 template<class T>
 cSmartPtr<T>::cSmartPtr(T* object, DestructionMethod destructionType /* = SMARTPTR_DESTRUCT_DELETE */) :
     m_object(object),
-    m_refrenceCounter(NULL),
+    m_referenceCounter(NULL),
     m_destructionType(destructionType)
 {
-    m_refrenceCounter = new cCounter(1);
-    ASSERT(m_refrenceCounter != NULL);
+    m_referenceCounter = new cCounter(1);
+    ASSERT(m_referenceCounter != NULL);
 }
 
 template<class T>
@@ -76,9 +76,9 @@ void cSmartPtr<T>::free()
             }
         }
 
-        delete m_refrenceCounter;
+        delete m_referenceCounter;
     }
-    m_refrenceCounter = NULL;
+    m_referenceCounter = NULL;
     m_object = NULL;
 }
 
@@ -87,7 +87,7 @@ bool cSmartPtr<T>::decreaseAndTest()
 {
     // Protect the atomic operation of decreasing and testing
     cLock lock(cSmartPtrLockable::getInstance().globalSmartPtrLock);
-    return (m_refrenceCounter->decrease() == 0);
+    return (m_referenceCounter->decrease() == 0);
 }
 
 template<class T>
@@ -101,10 +101,10 @@ cSmartPtr<T>::cSmartPtr(const cSmartPtr<T>& other) :
     m_object(NULL)
 {
     cLock lock(cSmartPtrLockable::getInstance().globalSmartPtrLock);
-    m_refrenceCounter = other.m_refrenceCounter;
+    m_referenceCounter = other.m_referenceCounter;
     m_destructionType = other.m_destructionType;
     m_object = other.m_object;
-    m_refrenceCounter->increase();
+    m_referenceCounter->increase();
 }
 
 template<class T>
@@ -112,7 +112,7 @@ cSmartPtr<T>& cSmartPtr<T>::operator=(T* other)
 {
     free();
     m_object = other;
-    m_refrenceCounter = new cCounter(1);
+    m_referenceCounter = new cCounter(1);
 }
 
 template<class T>
@@ -127,10 +127,10 @@ cSmartPtr<T>& cSmartPtr<T>::operator=(const cSmartPtr<T>& other)
         // The object can be deleted here (even if we have a reference)
         // because two threads can decrease without locking and...
         cLock lock(cSmartPtrLockable::getInstance().globalSmartPtrLock);
-        m_refrenceCounter = other.m_refrenceCounter;
+        m_referenceCounter = other.m_referenceCounter;
         m_destructionType = other.m_destructionType;
         m_object          = other.m_object;
-        m_refrenceCounter->increase();
+        m_referenceCounter->increase();
     }
     return *this;
 }
@@ -140,7 +140,7 @@ bool cSmartPtr<T>::operator == (const cSmartPtr<T>& other)
 {
     if (m_object == other.m_object)
     {
-        ASSERT(m_refrenceCounter == other.m_refrenceCounter);
+        ASSERT(m_referenceCounter == other.m_referenceCounter);
         return true;
     }
     return false;
@@ -187,5 +187,5 @@ inline const T* cSmartPtr<T>::getPointer() const
 template<class T>
 const cCounter& cSmartPtr<T>::getCounter() const
 {
-    return *m_refrenceCounter;
+    return *m_referenceCounter;
 }

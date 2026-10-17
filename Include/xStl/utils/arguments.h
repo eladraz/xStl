@@ -88,7 +88,7 @@ public:
 
 
     // Parser helper function
-    void add_macro (const cString &macro, const cString& desciption);
+    void add_macro (const cString &macro, const cString& description);
     void add_string(const cString &string);
 
 

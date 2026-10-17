@@ -29,8 +29,8 @@
  * POSSIBILITY OF SUCH DAMAGE
  */
 
-#ifndef __TBA_STL_STREAM_SOCKET_SOKCETADDR_H
-#define __TBA_STL_STREAM_SOCKET_SOKCETADDR_H
+#ifndef __TBA_STL_STREAM_SOCKET_SOCKETADDR_H
+#define __TBA_STL_STREAM_SOCKET_SOCKETADDR_H
 
 
 /*
@@ -232,4 +232,4 @@ public:
     cSockAddrIn & operator = (const cSockAddrIn &other);
 };
 
-#endif // __TBA_STL_STREAM_SOCKET_SOKCETADDR_H
+#endif // __TBA_STL_STREAM_SOCKET_SOCKETADDR_H

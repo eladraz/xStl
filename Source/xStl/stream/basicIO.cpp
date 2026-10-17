@@ -69,49 +69,49 @@ basicInput::~basicInput()
 uint basicInput::pipeRead(void *buffer, const uint length)
 {
     uint8 *array = (uint8 *)buffer;      // The array buffer
-    uint readed = 0;             // Total read
-    uint readedAtOnce = 0;     // How many uint8 read in order.
+    uint bytesRead = 0;             // Total read
+    uint bytesReadAtOnce = 0;     // How many uint8 read in order.
     uint leftSize = length;     // How many bytes to read more.
 
     /* Reading loop */
     while (leftSize > 0)
     {
         // Try to read
-        readedAtOnce = read(array, t_min(leftSize, getPipeReadBestRequest()));
+        bytesReadAtOnce = read(array, t_min(leftSize, getPipeReadBestRequest()));
 
         // Increase counters
-        array    += readedAtOnce;
-        leftSize -= readedAtOnce;
-        readed   += readedAtOnce;
+        array    += bytesReadAtOnce;
+        leftSize -= bytesReadAtOnce;
+        bytesRead   += bytesReadAtOnce;
 
         // Test whether we reached the end of the stream
         if (isEOS())
         {
-            return readed;
+            return bytesRead;
         }
     }
 
-    return readed;
+    return bytesRead;
 }
 
 uint basicInput::pipeRead(cBuffer& buffer, const uint length)
 {
     uint oldSize  = buffer.getSize(); // Old size of the buffer
-    uint readed   = 0;                // The read bytes.
+    uint bytesRead   = 0;                // The read bytes.
 
     /* Prepare the output buffer */
     buffer.changeSize(oldSize + length);
 
     /* Read the data */
-    readed = pipeRead((buffer.getBuffer() + oldSize), length);
+    bytesRead = pipeRead((buffer.getBuffer() + oldSize), length);
 
     /* Chop the data */
-    if (readed < length)
+    if (bytesRead < length)
     {
-        buffer.changeSize(oldSize + readed);
+        buffer.changeSize(oldSize + bytesRead);
     }
 
-    return readed;
+    return bytesRead;
 }
 
 void basicInput::pipeReadNotEos(void *buffer, const uint length)
@@ -134,7 +134,7 @@ cString basicInput::readFixedSizeString(uint numberOfCharacters, int unicodeSize
         buf[numberOfCharacters * unicodeSize] = 0;
         cBuffer ret(sizeof(character) * (numberOfCharacters + 1));
         character* retBuf = (character*)ret.getBuffer();
-        cChar::covert2string(retBuf, numberOfCharacters+1, buf, unicodeSize);
+        cChar::convert2string(retBuf, numberOfCharacters+1, buf, unicodeSize);
         return cString(retBuf);
     } else
     {
@@ -205,7 +205,7 @@ void basicInput::readUnicodeString(cString& ret,
         if (ch != terminate)
         {
             #ifndef XSTL_UNICODE
-                ret+= cChar::covert2Ascii(ch);
+                ret+= cChar::convert2Ascii(ch);
             #else
                 ret+= ch;
             #endif
@@ -351,7 +351,7 @@ void basicInput::readAllStream(cBuffer& rawData)
         uint oldBufferSize = rawData.getSize();
         rawData.changeSize(oldBufferSize + getPipeReadBestRequest(), false);
 
-        uint readed = 0;
+        uint bytesRead = 0;
         uint total  = oldBufferSize;
         uint8* buffer = rawData.getBuffer() + total;
 
@@ -359,10 +359,10 @@ void basicInput::readAllStream(cBuffer& rawData)
         do
         {
             // Read a chunk
-            total += (readed = pipeRead(buffer, getPipeReadBestRequest()));
+            total += (bytesRead = pipeRead(buffer, getPipeReadBestRequest()));
 
             // Save space for the next reading operation
-            if (readed == getPipeReadBestRequest())
+            if (bytesRead == getPipeReadBestRequest())
             {
                 rawData.changeSize(total + getPipeReadBestRequest());
                 buffer = rawData.getBuffer() + total;
@@ -375,7 +375,7 @@ void basicInput::readAllStream(cBuffer& rawData)
                 rawData.changeSize(total);
             }
 
-        } while (readed == getPipeReadBestRequest()); // Until there is an error
+        } while (bytesRead == getPipeReadBestRequest()); // Until there is an error
     }
 }
 
@@ -384,8 +384,8 @@ void basicInput::readAllStream(cBuffer& rawData)
 void basicInput::streamReadUint64(uint64& qword)
 {
     uint8 buffer[sizeof(uint64)];
-    uint readed = pipeRead(&buffer, sizeof(uint64));
-    if (readed != sizeof(uint64))
+    uint bytesRead = pipeRead(&buffer, sizeof(uint64));
+    if (bytesRead != sizeof(uint64))
     {
         XSTL_THROW(cException, EXCEPTION_READ_ERROR);
     }
@@ -396,8 +396,8 @@ void basicInput::streamReadUint64(uint64& qword)
 void basicInput::streamReadUint32(uint32& dword)
 {
     uint8 buffer[sizeof(uint32)];
-    uint readed = pipeRead(&buffer, sizeof(uint32));
-    if (readed != sizeof(uint32))
+    uint bytesRead = pipeRead(&buffer, sizeof(uint32));
+    if (bytesRead != sizeof(uint32))
     {
         XSTL_THROW(cException, EXCEPTION_READ_ERROR);
     }
@@ -407,8 +407,8 @@ void basicInput::streamReadUint32(uint32& dword)
 void basicInput::streamReadUint16(uint16& word)
 {
     uint8 buffer[sizeof(uint16)];
-    uint readed = pipeRead(&buffer, sizeof(uint16));
-    if (readed != sizeof(uint16))
+    uint bytesRead = pipeRead(&buffer, sizeof(uint16));
+    if (bytesRead != sizeof(uint16))
     {
         XSTL_THROW(cException, EXCEPTION_READ_ERROR);
     }
@@ -417,8 +417,8 @@ void basicInput::streamReadUint16(uint16& word)
 
 void basicInput::streamReadUint8(uint8& byte)
 {
-    uint readed = pipeRead(&byte, sizeof(uint8));
-    if (readed != sizeof(char))
+    uint bytesRead = pipeRead(&byte, sizeof(uint8));
+    if (bytesRead != sizeof(char))
     {
         XSTL_THROW(cException, EXCEPTION_READ_ERROR);
     }
@@ -593,7 +593,7 @@ void basicOutput::writeFixedSizeString(const cString& string,
     {
         switch (unicodeSize)
         {
-        case 1: buf[i] = cChar::covert2Ascii(string[i]); break;
+        case 1: buf[i] = cChar::convert2Ascii(string[i]); break;
         case 2: ((uint16*)buf)[i] = string[i]; break;
         case 4: ((uint32*)buf)[i] = string[i]; break;
         default:
@@ -611,7 +611,7 @@ void basicOutput::writeAsciiNullString(const cString& string,
         char ch;
         for (uint i = 0; i < string.length(); i++)
         {
-            ch = cChar::covert2Ascii(string[i]);
+            ch = cChar::convert2Ascii(string[i]);
             pipeWrite(&ch, sizeof(ch));
         }
         if (shouldPutZeroTerminator)

@@ -66,8 +66,8 @@ cFilename cFilename::getCurrentDirectory()
         XSTL_THROW(cException, EXCEPTION_FAILED);
     }
     cString name(cdir);
-    if (!isDirectorySeperator(name[name.length() - 1]))
-        name+= m_directorySeperatorWindows;
+    if (!isDirectorySeparator(name[name.length() - 1]))
+        name+= m_directorySeparatorWindows;
 
     return cFilename(name,
         cDosDirectoryParser::FilenameParserPtr(new cDosDirectoryParser::cDosFilenameParser()));
@@ -106,7 +106,7 @@ bool cDosDirectoryParser::isAbsolutePath(const cString& filename)
         return false;
 
     if ((filename[1] != ':') ||
-        (!cFilename::isDirectorySeperator(filename[2])))
+        (!cFilename::isDirectorySeparator(filename[2])))
         return false;
 
     return true;
@@ -152,8 +152,8 @@ cString cDosDirectoryParser::translateAbsolutePath(const cString& absolutePath)
     {
         ret+= (*j);
         if ((j != last) ||
-            (cFilename::isDirectorySeperator(absolutePath[absolutePath.length()-1])))
-            ret+= cFilename::m_directorySeperatorWindows;
+            (cFilename::isDirectorySeparator(absolutePath[absolutePath.length()-1])))
+            ret+= cFilename::m_directorySeparatorWindows;
     }
 
     return ret;
@@ -198,7 +198,7 @@ uint cDosDirectoryParser::cDosFilenameParser::getLastDirectorySeparator(
 {
     for (uint i = filename.length() - 1; i >= 2; --i)
     {
-        if (cFilename::isDirectorySeperator(filename[i]))
+        if (cFilename::isDirectorySeparator(filename[i]))
             return i;
     }
 

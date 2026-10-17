@@ -91,7 +91,7 @@ void cSArray<T>::changeSize(uint newSize,
 	    T* buffer;
 
 	    /* Create a new buffer and copy the data to it, if needed */
-	    if ((uint)t_abs((int)new_alloc - (int)this->m_alocatedArray) >=
+	    if ((uint)t_abs((int)new_alloc - (int)this->m_allocatedArray) >=
                                                              this->m_pageSize)
 	    {
 		    /* Need to realloc the buffer */
@@ -111,7 +111,7 @@ void cSArray<T>::changeSize(uint newSize,
 		    /* Assign the new array */
 		    this->m_array = buffer;
 		    this->m_size  = newSize;
-		    this->m_alocatedArray = new_alloc;
+		    this->m_allocatedArray = new_alloc;
 	    } else
 	    {
 		    /* Just increase the space needed */

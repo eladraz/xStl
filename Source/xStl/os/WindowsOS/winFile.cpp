@@ -178,14 +178,14 @@ uint cFile::read(void *buffer, const uint length)
     ASSERT(isOpen());
     CHECK(m_isReadable);
 
-    DWORD readed;
-    if (!ReadFile(m_handle, buffer, length, &readed, NULL))
+    DWORD bytesRead;
+    if (!ReadFile(m_handle, buffer, length, &bytesRead, NULL))
     {
         /* There was an error */
         XSTL_THROW(cFileException, cOS::getLastErrorString().getBuffer());
     }
 
-    return readed;
+    return bytesRead;
 }
 
 uint cFile::write(const void *buffer, const uint length)

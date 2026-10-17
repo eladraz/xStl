@@ -105,7 +105,7 @@
         /*
          * Return the address clipped according to the bits settings of m_type
          */
-        maxRemoteUint getClipedAddress() const;
+        maxRemoteUint getClippedAddress() const;
 
         /*
          * Convert the remote address into the machine address number.

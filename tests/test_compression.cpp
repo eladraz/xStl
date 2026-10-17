@@ -84,7 +84,7 @@ public:
         }
     }
 
-    void test_integraty()
+    void test_integrity()
     {
         for (unsigned int i = 0; i < 50; i++)
         {
@@ -145,7 +145,7 @@ public:
         for (uint i = 0; i < 100; i++) cOSRand::rand();
 
         // Start tests
-        test_integraty();
+        test_integrity();
     }
 
     // Return the name of the module

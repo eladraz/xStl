@@ -66,7 +66,7 @@ public:
     /*
      * Return the month of the year
      */
-    uint getMounth();
+    uint getMonth();
 
     /*
      * Return the day of the month
@@ -79,14 +79,14 @@ public:
      * Change the date. Change the year and the month and the day.
      *
      * newYear   - The new year for the date
-     * newMounth - The new month for the date
+     * newMonth - The new month for the date
      * newDay    - The new day for the date
      *
      * Return true if the change completed. False is the date is invalid (such as
      * 29 feb. for 3 out of 4 years).
      */
     bool setDate(uint newYear,
-                 uint newMounth,
+                 uint newMonth,
                  uint newDay);
 
     /*

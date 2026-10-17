@@ -145,7 +145,7 @@ public:
      * Return a pointer to the newly allocated block. This pointer should be
      * freed with the 'smallMemoryRealloc()' function.
      *
-     * Throws EXCEPTION_FALID in case of failure.
+     * Throws EXCEPTION_FAILED in case of failure.
      */
     static void* smallMemoryAllocation(uint size);
 
@@ -165,7 +165,7 @@ public:
      *                  Set to false for optimizations.
      *
      * Return a pointer into the new block.
-     * Throws EXCEPTION_FALID in case of failure or if 'mem' points into an
+     * Throws EXCEPTION_FAILED in case of failure or if 'mem' points into an
      * invalid location.
      */
     static void* smallMemoryRealloc(void* mem, uint newSize,
@@ -177,7 +177,7 @@ public:
      * mem            - Pointer to the allocated block (by the smallMemAlloc
      *                  function).
      *
-     * Throws EXCEPTION_FALID in case of failure or if 'mem' points into an
+     * Throws EXCEPTION_FAILED in case of failure or if 'mem' points into an
      * invalid location.
      */
     static void smallMemoryFree(void* mem);
@@ -206,12 +206,12 @@ public:
      * is only an approximate time. Context-switch or other events can stall the
      * thread wake-up call.
      *
-     * miliseconds - The number of milli-seconds to stall.
+     * milliseconds - The number of milli-seconds to stall.
      *               1000 milliseconds equals one second.
      *
      * Throws an exception in case of thread/system failure.
      */
-    static void sleepMillisecond(uint miliseconds);
+    static void sleepMillisecond(uint milliseconds);
 
     /*
      * Puts the thread in a sleeping mode. During this time the thread context

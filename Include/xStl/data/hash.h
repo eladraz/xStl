@@ -63,18 +63,18 @@
  * of link-lists.
  *
  * To access the hash use:
- *   hash[IndexType] = FiledType;
+ *   hash[IndexType] = FieldType;
  *
  * NOTES:
  *   IndexType must have a complete implementation of operator ==
- *   FiledType must have a hash function.
+ *   FieldType must have a hash function.
  *
  * Hash function:
  *   The hash function works on the IndexType and returns a number
  *   from 0 to "range"
  *
  *   Definition:
- *         uint cHash_functoin(const IndexType& index, uint range)
+ *         uint cHashFunction(const IndexType& index, uint range)
  *
  * In this file there are regular implementations of hash on:
  *   float, int, char *.
@@ -82,7 +82,7 @@
  *
  * TODO: Add copy-on-write feature.
  */
-template <class IndexType, class FiledType>
+template <class IndexType, class FieldType>
 class cHash
 {
 public:
@@ -102,7 +102,7 @@ public:
     /*
      * Copy-constructor. Duplicate the handles from 'other'
      */
-    cHash(const cHash<IndexType, FiledType>& other);
+    cHash(const cHash<IndexType, FieldType>& other);
 
     /*
      * Destructor, free up the memory allocated by the hash
@@ -121,7 +121,7 @@ public:
      *
      * Throws an exception if the index exists
      */
-    void append(const IndexType& index, const FiledType& data);
+    void append(const IndexType& index, const FieldType& data);
 
     /*
      * Remove an item from the hash
@@ -161,12 +161,12 @@ public:
     /*
      * Operator =. Copies the other hash table to this hash table.
      */
-    const cHash<IndexType, FiledType>& operator = (const cHash<IndexType, FiledType>& other);
+    const cHash<IndexType, FieldType>& operator = (const cHash<IndexType, FieldType>& other);
 
     /*
      * Return true if the hash tables are equal.
      */
-    bool operator == (const cHash<IndexType, FiledType> &other) const;
+    bool operator == (const cHash<IndexType, FieldType> &other) const;
 
     /*
      * The map operator. Retrieve index-type and return a reference to the object
@@ -176,7 +176,7 @@ public:
      * Throws 'EXCEPTION_OUT_OF_RANGE' exception when the index is invalid
      * Return a reference to the object
      */
-    FiledType& operator [] (const IndexType &index);
+    FieldType& operator [] (const IndexType &index);
 
     /*
      * The map operator. Retrieve index-type and return a const reference to the
@@ -187,7 +187,7 @@ public:
      * Throws 'EXCEPTION_OUT_OF_RANGE' exception when the index is invalid
      * Return a const reference to the object.
      */
-    const FiledType& operator [] (const IndexType &index) const;
+    const FieldType& operator [] (const IndexType &index) const;
 
 private:
     /*
@@ -203,7 +203,7 @@ private:
     void freeHash();
 
     // The element for a single hash-table. Translates index to field object
-    typedef cDualElement<IndexType,FiledType> ElementType;
+    typedef cDualElement<IndexType,FieldType> ElementType;
 
     // The link-list which is stored by each node
     typedef cList<ElementType> ListType;

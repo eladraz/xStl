@@ -29,8 +29,8 @@
  * POSSIBILITY OF SUCH DAMAGE
  */
 
-#ifndef __TBA_STL_OS_LOCAKABLE_H
-#define __TBA_STL_OS_LOCAKABLE_H
+#ifndef __TBA_STL_OS_LOCKABLE_H
+#define __TBA_STL_OS_LOCKABLE_H
 
 /*
  * lockable.h
@@ -75,4 +75,4 @@ public:
     virtual void unlock() = 0;
 };
 
-#endif //__TBA_STL_OS_LOCAKABLE_H
+#endif //__TBA_STL_OS_LOCKABLE_H

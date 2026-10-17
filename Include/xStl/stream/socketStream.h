@@ -136,7 +136,7 @@ private:
 /*
  * Default time-out definitions.
  */
-extern const TIMEVAL INFINITIE_TIMEOUT;       // 0xFFFFFFFF seconds
+extern const TIMEVAL INFINITE_TIMEOUT;       // 0xFFFFFFFF seconds
 extern const TIMEVAL DEFAULT_READ_TIMEOUT;    // 1 second timeout
 extern const TIMEVAL DEFAULT_WRITE_TIMEOUT;   // 1 second timeout
 
@@ -156,7 +156,7 @@ public:
      * Constructor. Construct an empty socket object with initialize timeout
      * as arguments.
      *
-     * readTimout - How many seconds/usec to wait until the reading operation
+     * readTimeout - How many seconds/usec to wait until the reading operation
      *              will return.
      * writeTimeout - How many seconds/usec to wait until the writing
      *                operation will return.

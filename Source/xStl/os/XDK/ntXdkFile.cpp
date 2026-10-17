@@ -319,9 +319,9 @@ void cFile::seek(const int distance, const basicInput::seekMethod method)
     {
         // TODO!, Fix common programming bug.
         ASSERT(distance <= 0);
-        uint mesaure = (uint)t_abs(distance);
+        uint measure = (uint)t_abs(distance);
         // Seek from end.
-        newPosition.QuadPart = length() - mesaure;
+        newPosition.QuadPart = length() - measure;
     }
 
     positionInformation.CurrentByteOffset = newPosition;

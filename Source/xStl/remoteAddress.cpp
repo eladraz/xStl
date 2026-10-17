@@ -55,7 +55,7 @@ remoteAddressNumericValue::remoteAddressNumericValue(
     m_union.m_64bitAddress = address;
 }
 
-maxRemoteUint remoteAddressNumericValue::getClipedAddress() const
+maxRemoteUint remoteAddressNumericValue::getClippedAddress() const
 {
     maxRemoteUint ret = m_union.m_64bitAddress;
     switch (m_type)
@@ -79,13 +79,13 @@ bool remoteAddressNumericValue::isInsideRange(
 bool remoteAddressNumericValue::operator == (
     const remoteAddressNumericValue& other) const
 {
-    return getClipedAddress() == other.getClipedAddress();
+    return getClippedAddress() == other.getClippedAddress();
 }
 
 bool remoteAddressNumericValue::operator < (
     const remoteAddressNumericValue& other) const
 {
-    return getClipedAddress() < other.getClipedAddress();
+    return getClippedAddress() < other.getClippedAddress();
 }
 
 addressNumericValue remoteAddressNumericValue::getAddressValue() const

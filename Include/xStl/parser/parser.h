@@ -185,7 +185,7 @@ public:
      *
      * Throws an exception if EOS is reached or the first digit is not a quote (").
      */
-    cString readQuateString(bool isCString = true);
+    cString readQuoteString(bool isCString = true);
 
     /*
      * Reads a string which contains BLABLA$(VariableName)BLABLA.bla names.
@@ -193,7 +193,7 @@ public:
      *
      * Throws an exception if EOS is reached or the string is not formatted.
      */
-    cString readSpeicalString();
+    cString readSpecialString();
 
     /*
      * Try to read an integer from the stream. The integer can be formatted as

@@ -57,7 +57,7 @@ cHMAC::cHMAC(cSmartPtr<cDigest> hashObj, const cBuffer& key) :
     // Reset the keys
     for (i = 0; i < KEY_B_LENGTH; i++)
     {
-        m_outterKey[i] = m_innerKey[i] = 0;
+        m_outerKey[i] = m_innerKey[i] = 0;
     }
 
     // If the key is larger than 64 bytes reset it by the hash function.
@@ -68,12 +68,12 @@ cHMAC::cHMAC(cSmartPtr<cDigest> hashObj, const cBuffer& key) :
         cBuffer key = m_hashObj->digest();
 
         // Copy the keys
-        cOS::memcpy(m_outterKey, key.getBuffer(), key.getSize());
+        cOS::memcpy(m_outerKey, key.getBuffer(), key.getSize());
         cOS::memcpy(m_innerKey,  key.getBuffer(), key.getSize());
     } else
     {
         // Copy the keys
-        cOS::memcpy(m_outterKey, key.getBuffer(), key.getSize());
+        cOS::memcpy(m_outerKey, key.getBuffer(), key.getSize());
         cOS::memcpy(m_innerKey,  key.getBuffer(), key.getSize());
     }
 
@@ -81,7 +81,7 @@ cHMAC::cHMAC(cSmartPtr<cDigest> hashObj, const cBuffer& key) :
     for (i = 0; i < KEY_B_LENGTH; i++)
     {
         m_innerKey[i]  ^= 0x36;
-        m_outterKey[i] ^= 0x5c;
+        m_outerKey[i] ^= 0x5c;
     }
 }
 
@@ -113,7 +113,7 @@ cBuffer cHMAC::digest()
 
     // perform outer MD5
     m_hashObj->reset();
-    m_hashObj->update(m_outterKey, KEY_B_LENGTH);
+    m_hashObj->update(m_outerKey, KEY_B_LENGTH);
     m_hashObj->updateStream(inner);
     return m_hashObj->digest();
 }

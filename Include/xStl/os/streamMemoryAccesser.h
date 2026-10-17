@@ -52,14 +52,14 @@
  *
  * NOTE: It's safer to never change the size or the content of the cBuffer data,
  *       however, this option exists. After a change at the 'data'
- *       pointer, the 'updateStreamBoundries' function must be invoked.
+ *       pointer, the 'updateStreamBoundaries' function must be invoked.
  */
 class cStreamMemoryAccesser : public cThreadUnsafeMemoryAccesser {
 public:
     /*
      * Constructor. Create a thread memory accesser that points to the
      * content of the 'data'. If the data stream is changed, there must be a
-     * notification. See updateStreamBoundries.
+     * notification. See updateStreamBoundaries.
      *
      * data - The stream which the thread memory points at.
      */
@@ -70,7 +70,7 @@ public:
      * of the cVirtualMemoryAccesser.
      * This function recalibrates the boundaries of the stream.
      */
-    void updateStreamBoundries();
+    void updateStreamBoundaries();
 
 private:
     // Copy-constructor and operator = are denied by the cThreadUnsafeMemoryAccesser

@@ -66,7 +66,7 @@
 /*
  * The default dump of non-printable character.
  */
-#define DB_DEFUALT_CHAR '.'
+#define DB_DEFAULT_CHAR '.'
 
 /*
  * Return a printable character representing the character.
@@ -77,7 +77,7 @@
  * Return a printable value of the character.
  */
 uint8 DB(const uint8& ch,
-         const uint8 nonPrintable = DB_DEFUALT_CHAR);
+         const uint8 nonPrintable = DB_DEFAULT_CHAR);
 
 /*
  * Return the high/low nibble of a character as a hex char.

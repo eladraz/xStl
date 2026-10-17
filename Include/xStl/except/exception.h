@@ -47,7 +47,7 @@
 /*
  * Here is a list of important exceptions and their IDs.
  */
-#define EXCEPTION_UNKWON           (0)
+#define EXCEPTION_UNKNOWN           (0)
 #define EXCEPTION_FAILED           (1)
 #define EXCEPTION_OUT_OF_RANGE     (2)
 #define EXCEPTION_OUT_OF_MEM       (3)
@@ -118,7 +118,7 @@ public:
     /*
      * Generate exception
      */
-    void whereExceptionOccured(cString& ret);
+    void whereExceptionOccurred(cString& ret);
 
 protected:
     // Functions

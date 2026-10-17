@@ -53,15 +53,15 @@ public:
     /*
      * Exception constructor.
      *
-     * founded - The character which was found
-     * excpected - The character which was expected to be found
+     * found - The character which was found
+     * expected - The character which was expected to be found
      */
-    BracesException(char * file, uint32 line, character founded, character excpected);
+    BracesException(char * file, uint32 line, character found, character expected);
 
     // The character which was found
-    character m_founded;
+    character m_found;
     // The character which was expected to be found
-    character m_excpected;
+    character m_expected;
 };
 
 /*
@@ -119,7 +119,7 @@ public:
     /*
      * Returns the cached expected closer character
      */
-    character getNextCloserCharacer();
+    character getNextCloserCharacter();
 
 private:
     // Link list of the current braces state.

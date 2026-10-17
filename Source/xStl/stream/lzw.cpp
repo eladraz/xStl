@@ -51,7 +51,7 @@
 
 
 cLZWcompression::cLZWcompression(cSmartPtr<basicIO> stream,
-                                 uint8 bitSize /*= DEFALUT_BIT_COUNT*/) :
+                                 uint8 bitSize /*= DEFAULT_BIT_COUNT*/) :
     filterStream(stream),
     m_bit_stream(NULL),
     m_bitSize(bitSize),
@@ -274,7 +274,7 @@ bool cLZWcompression::writeString(unsigned int pcode, cBitStream & stream)
         }
         XSTL_CATCH(cException e)
         {
-            m_readed_codes.append(m_table[pcode - start_opcodes].value);
+            m_read_codes.append(m_table[pcode - start_opcodes].value);
             return FALSE;
         }
     } else
@@ -285,7 +285,7 @@ bool cLZWcompression::writeString(unsigned int pcode, cBitStream & stream)
         }
         XSTL_CATCH (cException e)
         {
-            m_readed_codes.append(pcode);
+            m_read_codes.append(pcode);
             return FALSE;
         }
     }
@@ -320,9 +320,9 @@ uint cLZWcompression::read(void *buffer, const uint length)
     unsigned int  retv = 0;
 
     /* Write out all old information */
-    while (m_readed_codes.begin() != m_readed_codes.end())
+    while (m_read_codes.begin() != m_read_codes.end())
     {
-        unsigned int resolved = *(m_readed_codes.begin());
+        unsigned int resolved = *(m_read_codes.begin());
         XSTL_TRY
         {
             bits_pipe.writeBits(resolved, (uint8)m_bitSize);
@@ -332,8 +332,8 @@ uint cLZWcompression::read(void *buffer, const uint length)
             /* End of length */
             return copyStream(bits_pipe, mem, buffer);
         }
-        cList<unsigned int>::iterator start = m_readed_codes.begin();
-        m_readed_codes.remove(start);
+        cList<unsigned int>::iterator start = m_read_codes.begin();
+        m_read_codes.remove(start);
     }
 
     /* EOF reached */

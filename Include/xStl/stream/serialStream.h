@@ -58,7 +58,7 @@ public:
      * Default constructor. Open a serial port.
      *
      * comport  - The port to be opened
-     * buadRate - The baud rate for the COM port.
+     * baudRate - The baud rate for the COM port.
      * bitSize  - The number of bits for a single byte (4-8)
      * parity   - The type for the parity check
      * stopBits - Terminator between transmission.

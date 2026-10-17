@@ -51,7 +51,7 @@ void cRC4::loadKey(const cBuffer& key)
 
     // Reset the permutation entries.
     for (i = 0; i < RC4KEY_LEN; i++)
-        m_premutation[i] = i;
+        m_permutation[i] = i;
 
     m_i = 0;
     m_j = 0;
@@ -60,8 +60,8 @@ void cRC4::loadKey(const cBuffer& key)
     for (i = 0; i < RC4KEY_LEN; i++)
     {
         index1 = i;
-        index2 = (uint8)((key[i % key.getSize()] + m_premutation[index1] + index2) & 0xFF);
-        t_swap(m_premutation[index1], m_premutation[index2]);
+        index2 = (uint8)((key[i % key.getSize()] + m_permutation[index1] + index2) & 0xFF);
+        t_swap(m_permutation[index1], m_permutation[index2]);
     }
 }
 
@@ -97,8 +97,8 @@ void cRC4::strip(cBuffer& data)
 uint8 cRC4::advance()
 {
     m_i++;
-    m_j = m_premutation[m_i] + m_j;
-    t_swap(m_premutation[m_i], m_premutation[m_j]);
+    m_j = m_permutation[m_i] + m_j;
+    t_swap(m_permutation[m_i], m_permutation[m_j]);
 
-    return m_premutation[(m_premutation[m_i] + m_premutation[m_j]) & 0xFF];
+    return m_permutation[(m_permutation[m_i] + m_permutation[m_j]) & 0xFF];
 }

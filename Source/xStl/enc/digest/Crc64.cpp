@@ -58,13 +58,13 @@ CRC64::CRC64Tables::CRC64Tables()
 {
     // Allocate heap memory
     for (uint i = 0; i < CRC64_NUMBER_OF_TABLES; i++)
-        m_tables[i] = new uint64[CRC64_PREMUTATION_TABLE_LEN];
+        m_tables[i] = new uint64[CRC64_PERMUTATION_TABLE_LEN];
     // Calculate tables
     const uint64 poly64 = UINT64_C(0xC96C5795D7870F42);
 
     for (uint s = 0; s < CRC64_NUMBER_OF_TABLES; ++s)
     {
-        for (size_t b = 0; b < CRC64_PREMUTATION_TABLE_LEN; ++b)
+        for (size_t b = 0; b < CRC64_PERMUTATION_TABLE_LEN; ++b)
         {
             uint64 r = (s == 0) ? b : m_tables[s - 1][b];
             for (uint i = 0; i < 8; ++i)
@@ -80,7 +80,7 @@ CRC64::CRC64Tables::CRC64Tables()
 
 #ifdef XSTL_BIG_ENDIAN
     for (uint s = 0; s < CRC64_NUMBER_OF_TABLES; ++s)
-        for (uint b = 0; b < CRC64_PREMUTATION_TABLE_LEN; ++b)
+        for (uint b = 0; b < CRC64_PERMUTATION_TABLE_LEN; ++b)
             m_tables[s][b] = swap64(lzma_crc64_table[s][b]); // TODO! Implement swap
 #endif
 }

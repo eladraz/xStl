@@ -42,10 +42,10 @@
 
 Braces::BracesData Braces::m_braces[BRACES_COUNT];
 
-BracesException::BracesException(char * file, uint32 line, character founded, character excpected) :
+BracesException::BracesException(char * file, uint32 line, character found, character expected) :
     cException(file, line, NULL, 0),
-    m_founded(founded),
-    m_excpected(excpected)
+    m_found(found),
+    m_expected(expected)
 {
 }
 
@@ -84,7 +84,7 @@ bool Braces::eatCharacter(character data)
         if (!isMatch(m_stateCache, data))
         {
             // Error at braces!
-            XSTL_THROW(BracesException, data, getNextCloserCharacer());
+            XSTL_THROW(BracesException, data, getNextCloserCharacter());
         }
 
         // Pop the last braces
@@ -172,7 +172,7 @@ character Braces::getCloseCharacter(character open)
     return 0;
 }
 
-character Braces::getNextCloserCharacer()
+character Braces::getNextCloserCharacter()
 {
     // Tests that the list isn't empty
     ASSERT(m_state.begin() != m_state.end());

@@ -160,10 +160,10 @@ uint cBitStream::read(void *buffer, const uint length)
     {
         if (m_read_bit_position == 8)
         {
-            uint readed = m_stream->pipeRead(&m_read_byte, 1);
+            uint bytesRead = m_stream->pipeRead(&m_read_byte, 1);
 
             /* EOS reached */
-            if (readed == 0)
+            if (bytesRead == 0)
                 return i;
 
             m_read_bit_position = 0;
@@ -181,7 +181,7 @@ uint32 cBitStream::readBits(BYTE numberOfBits)
     ASSERT(numberOfBits <= 32);
 
     /* Read the bits */
-    uint32 readed = 0;
+    uint32 bytesRead = 0;
     BYTE         bit;
 
     for (BYTE i = 0; i < numberOfBits; i++)
@@ -191,10 +191,10 @@ uint32 cBitStream::readBits(BYTE numberOfBits)
         if (lread != 1)
             XSTL_THROW(cException, EXCEPTION_READ_ERROR);
 
-        readed|= bit << i;
+        bytesRead|= bit << i;
     }
 
-    return readed;
+    return bytesRead;
 }
 
 void cBitStream::writeBits(uint32 number, BYTE numberOfBits)

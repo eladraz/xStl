@@ -201,15 +201,15 @@ uint cFile::read(void *buffer, const uint length)
     ASSERT(isOpen());
     CHECK(m_isReadable);
 
-    DWORD readed = ::read(m_handle, buffer, length);
+    DWORD bytesRead = ::read(m_handle, buffer, length);
 
     // Test for errors
-    if (readed == ((DWORD)-1))
+    if (bytesRead == ((DWORD)-1))
     {
         XSTL_THROW(cFileException, XSTL_STRING("Reading from file failed."));
     }
 
-    return readed;
+    return bytesRead;
 }
 
 uint cFile::write(const void *buffer, const uint length)

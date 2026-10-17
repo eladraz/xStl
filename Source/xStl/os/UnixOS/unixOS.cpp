@@ -85,9 +85,9 @@ void cOS::smallMemoryFree(void* mem)
     free(mem);
 }
 
-void cOS::sleepMillisecond(uint milisecond)
+void cOS::sleepMillisecond(uint millisecond)
 {
-    sleepMicroseconds(milisecond * 1000);
+    sleepMicroseconds(millisecond * 1000);
 }
 void cOS::sleepSeconds(uint seconds)
 {

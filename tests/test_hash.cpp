@@ -54,13 +54,13 @@ enum ActionList {
 };
 
 static unsigned int lastAction = EMPTY;
-static unsigned int counstructorCounter = 0;
+static unsigned int constructorCounter = 0;
 static unsigned int destructorCounter = 0;
 static unsigned int lastPutValue = 0;
 class TESTOBJECT
 {
 public:
-    TESTOBJECT()  { lastAction = CONSTRUCTOR; counstructorCounter++; m_global = lastPutValue; }
+    TESTOBJECT()  { lastAction = CONSTRUCTOR; constructorCounter++; m_global = lastPutValue; }
     ~TESTOBJECT() { lastAction = DESTRUCTOR; destructorCounter++; }
     TESTOBJECT(const TESTOBJECT& other) { UNUSED_PARAM(other); lastAction = COPYCONSTRUCTOR; }
     TESTOBJECT& operator=(const TESTOBJECT& other) { UNUSED_PARAM(other); lastAction = OPERATOREQUAL; return *this; }
@@ -75,12 +75,12 @@ private:
     void reset_testhash()
     {
         lastAction = EMPTY;
-        counstructorCounter = 0;
+        constructorCounter = 0;
         destructorCounter = 0;
     }
     void test_reset_testhash()
     {
-        TESTS_ASSERT_EQUAL(counstructorCounter, 0);
+        TESTS_ASSERT_EQUAL(constructorCounter, 0);
         TESTS_ASSERT_EQUAL(destructorCounter, 0);
         TESTS_ASSERT_EQUAL(lastAction, EMPTY);
     }

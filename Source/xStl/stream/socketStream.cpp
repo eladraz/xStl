@@ -55,7 +55,7 @@
 /*
 * The default timeout values.
 */
-const TIMEVAL INFINITIE_TIMEOUT = {-1, -1};   // 0xFFFFFFFF seconds
+const TIMEVAL INFINITE_TIMEOUT = {-1, -1};   // 0xFFFFFFFF seconds
 const TIMEVAL DEFAULT_READ_TIMEOUT = {1,0};   // 1 second timeout
 const TIMEVAL DEFAULT_WRITE_TIMEOUT = {1,0};  // 1 second timeout
 
@@ -140,7 +140,7 @@ void cSocketStream::create(int protocol, /* = IPPROTO_TCP, */
 
     if (m_handle == INVALID_SOCKET)
     {
-        XSTL_THROW(cSocketException, SOCKETEXCEPTION_CREATION_FAILD);
+        XSTL_THROW(cSocketException, SOCKETEXCEPTION_CREATION_FAILED);
     }
 
     if (disableNagle)
@@ -299,7 +299,7 @@ uint cSocketStream::length() const
         }
     } else
     {
-        XSTL_THROW(cSocketException, SOKCETEXCEPRION_NOT_INIT);
+        XSTL_THROW(cSocketException, SOCKETEXCEPTION_NOT_INIT);
         return 0;
     }
 }
@@ -332,7 +332,7 @@ uint cSocketStream::write(const void *buffer, const uint length)
         if (m_isClosed || FD_ISSET(m_handle, &errorfd))
         {
             // An error occurred or the socket closed
-            XSTL_THROW(cSocketException, SOCKETEXCEPTION_WRITE_FAILD);
+            XSTL_THROW(cSocketException, SOCKETEXCEPTION_WRITE_FAILED);
         }
 
         // Check for write permissions
@@ -344,23 +344,23 @@ uint cSocketStream::write(const void *buffer, const uint length)
 
         if((written = send(m_handle, (const char *)buffer, length, 0)) == (unsigned int)SOCKET_ERROR)
         {
-            XSTL_THROW(cSocketException, SOCKETEXCEPTION_WRITE_FAILD);
+            XSTL_THROW(cSocketException, SOCKETEXCEPTION_WRITE_FAILED);
         }
         return written;
     } else
     {
-        XSTL_THROW(cSocketException, SOKCETEXCEPRION_NOT_INIT);
+        XSTL_THROW(cSocketException, SOCKETEXCEPTION_NOT_INIT);
         return 0;
     }
 }
 
 uint cSocketStream::read(void *buffer, const uint length)
 {
-    unsigned int readed = 0;
+    unsigned int bytesRead = 0;
 
     if (!m_isInit)
     {
-        XSTL_THROW(cSocketException, SOKCETEXCEPRION_NOT_INIT);
+        XSTL_THROW(cSocketException, SOCKETEXCEPTION_NOT_INIT);
     }
 
     fd_set readfd ;
@@ -377,7 +377,7 @@ uint cSocketStream::read(void *buffer, const uint length)
     if (m_isClosed || FD_ISSET(m_handle, &errorfd))
     {
         // An error occurred or the socket closed
-        XSTL_THROW(cSocketException, SOCKETEXCEPTION_READ_FAILD);
+        XSTL_THROW(cSocketException, SOCKETEXCEPTION_READ_FAILED);
     }
 
     if (!FD_ISSET(m_handle, &readfd))
@@ -385,12 +385,12 @@ uint cSocketStream::read(void *buffer, const uint length)
         return 0;
     }
 
-    if ((readed = recv(m_handle, (char *)buffer, length, 0)) == (unsigned int)SOCKET_ERROR)
+    if ((bytesRead = recv(m_handle, (char *)buffer, length, 0)) == (unsigned int)SOCKET_ERROR)
     {
-        XSTL_THROW(cSocketException, SOCKETEXCEPTION_READ_FAILD);
+        XSTL_THROW(cSocketException, SOCKETEXCEPTION_READ_FAILED);
     }
 
-    return readed;
+    return bytesRead;
 }
 
 void cSocketStream::seek(const int distance, const basicInput::seekMethod method)
