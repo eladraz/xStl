@@ -32,11 +32,17 @@
 #ifndef __STL_ENCRYPTION_DIGEST_CRC16_H
 #define __STL_ENCRYPTION_DIGEST_CRC16_H
 
+/**
+ * @addtogroup xstl_enc_digest
+ * @{
+ */
+
 #include "xStl/types.h"
 
 /**
- * Used to calculate a CCITT 16bit CRC checksum over a data stream.
- * The current implementation favors memory over execution speed (it is
+ * @brief Calculate a CCITT 16 bit CRC checksum over a data stream.
+ *
+ * @details The current implementation favors memory over execution speed (it is
  * slower).
  *
  * The algorithm code itself was found on the Internet. Note that there are
@@ -58,20 +64,24 @@ public:
     void reset();
 
     /**
-     * Update the CRC with one more byte.
-     * data        the input byte.
+     * @brief Update the CRC with one more byte.
+     *
+     * @param data The input byte.
      */
     void update(byte data);
 
     /**
-     * Updates the CRC with array of bytes.
-     * data        array contents.
-     * length    array length.
+     * @brief Update the CRC with an array of bytes.
+     *
+     * @param data The array contents.
+     * @param length The array length in bytes.
      */
     void update(const byte* data, uint length);
 
     /**
-     * Returns the CRC value for the processed stream.
+     * @brief Return the CRC value for the processed stream.
+     *
+     * @return The 16 bit CRC value.
      */
     uint16 getValue();
 
@@ -82,4 +92,6 @@ private:
 };
 
 
+
+/** @} */
 #endif // __STL_ENCRYPTION_DIGEST_CRC16_H

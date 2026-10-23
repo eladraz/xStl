@@ -32,111 +32,138 @@
 #ifndef __TBA_STL_OS_THREAD_H
 #define __TBA_STL_OS_THREAD_H
 
-/*
- * thread.h
+/**
+ * @addtogroup xstl_os
+ * @{
+ */
+
+/**
+ * @file thread.h
+ * @brief Declare a virtual class for thread creation.
  *
- * Declare a virtual class for thread creation. Implement the POSIX interface for
- * UNIX platforms and the Windows Threads command for Windows threads.
+ * @details Implement the POSIX interface for UNIX platforms and the Windows
+ *    Threads command for Windows threads.
  *
- * Author: Elad Raz <e@eladraz.com>
+ * @author Elad Raz
  */
 #include "xStl/types.h"
 #include "xStl/os/osdef.h"
 
-/*
- * The thread function receives a single pointer as an argument and returns
- * a pointer.
+/**
+ * @brief The thread function receives a single pointer as an argument and
+ *    returns a
+ *   pointer.
  *
- * NOTE: For some operating systems, this function shouldn't return. It must
- *       be terminated using operating system calls.
- *       For example the XDK (Windows driver kit) thread must be terminated
- *       using a call to 'PsTerminateSystemThread' function.
- *
- * NOTE: This interface doesn't contain any interface for getting the return
- *       code.
- *
- * NOTE: The routine must invoke a call to cThread::terminate in order to
- *       destroy all threads resources. See cThreadedClass implementation
+ * @note For some operating systems, this function shouldn't return. It must be
+ *    terminated using operating system calls. For example the XDK (Windows
+ *    driver kit) thread must be terminated using a call to
+ *    'PsTerminateSystemThread' function.
+ * @note This interface doesn't contain any interface for getting the return
+ *    code.
+ * @note The routine must invoke a call to cThread::terminate in order to
+ *    destroy all threads resources. See cThreadedClass implementation
  */
 typedef void*(*ThreadRoutine)(void*);
 
-/*
- * Wrapper class for the thread API. Allows creating, waiting for and killing a thread.
+/**
+ * @brief Wrapper class for the thread API.
  *
- * NOTE: Don't use this class for threads in your applications. Use the
- *       cThreadedClass instead.
- *
- *       See cThreadedClass.
- *
- * NOTE: The newly constructed thread doesn't close at the destruction
- *       of this class.
+ * @details Allows creating, waiting for and killing a thread.
  *
  * Using this class:
- *   cThread newThread;
- *   newThread.execute(func, argc);
- *   // Do some things...
- *   newThread.wait();
+ *
+ * @code
+ * cThread newThread;
+ * newThread.execute(func, argc);
+ * // Do some things...
+ * newThread.wait();
+ * @endcode
  *
  * Implemented over:
- *     Win32 API, Windows NT DDK, POSIX (Unix based applications).
+ *
+ * @code
+ * Win32 API, Windows NT DDK, POSIX (Unix based applications).
+ * @endcode
+ *
+ * @note Don't use this class for threads in your applications. Use the
+ *    cThreadedClass instead.
+ * @see cThreadedClass
+ * @note The newly constructed thread doesn't close at the destruction of this
+ *    class.
  */
 class cThread
 {
 public:
-    /*
-     * Default constructor. Create empty thread object.
+    /**
+     * @brief Default constructor. Create empty thread object.
      */
     cThread();
 
-    /*
-     * Destructor. The destructor doesn't free any resources.
-     * Notice, that the thread can be running without any wrapper class.
+    /**
+     * @brief Destructor. The destructor doesn't free any resources.
+     *
+     * @details Notice, that the thread can be running without any wrapper
+     *    class.
      */
     ~cThread();
 
 
     // Main function
 
-    /*
-     * Create the new thread
+    /**
+     * @brief Create the new thread
+     *
+     * @param lpStartAddress The routine which the new thread executes.
+     * @param args The argument which is passed to the routine.
      */
     void execute(ThreadRoutine lpStartAddress, void* args);
 
-    /*
-     * Wait until the thread finishes its execution.
+    /**
+     * @brief Wait until the thread finishes its execution.
      */
     void wait();
 
-    /*
-     * Stop the execution of the thread in the middle
+    /**
+     * @brief Stop the execution of the thread in the middle
      */
     void kill();
 
-    /*
-     * Return the handler of the thread
+    /**
+     * @brief Return the handler of the thread
+     *
+     * @return The handler of the thread.
      */
     cOSDef::threadHandle getHandle() const;
 
-    /*
-     * Returns the current thread handle
+    /**
+     * @brief Returns the current thread handle
+     *
+     * @return The current thread handle.
      */
     static cOSDef::threadHandle getCurrentThreadHandle();
 
-    /*
-     * Called in order to notify the operating system of thread termination.
+    /**
+     * @brief Called in order to notify the operating system of thread
+     *    termination.
      *
-     * This function is implemented per operating system.
+     * @details This function is implemented per operating system.
      */
     static void terminate();
 
 private:
-    // Deny copy-constructor and operator =
+    /**
+     * @brief Deny copy-constructor and operator =
+     */
     cThread(const cThread& other);
     cThread & operator = (const cThread & other);
 
-    // The handle for the thread
+    /**
+     * @brief The handle for the thread
+     */
     cOSDef::threadHandle m_thread;
 };
 
+
+/** @} */
 #endif // __TBA_STL_OS_THREAD_H
 

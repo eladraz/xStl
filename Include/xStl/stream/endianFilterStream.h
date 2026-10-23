@@ -32,11 +32,14 @@
 #ifndef __TBA_STL_STREAMS_ENDIAN_FILTER_STREAM_H
 #define __TBA_STL_STREAMS_ENDIAN_FILTER_STREAM_H
 
-/*
- * endianFilterStream.h
- *
- * Define a filter stream which changes a stream endians.
- *
+/**
+ * @addtogroup xstl_stream
+ * @{
+ */
+
+/**
+ * @file endianFilterStream.h
+ * @brief Define a filter stream which changes a stream endians.
  */
 
 #include "xStl/types.h"
@@ -46,48 +49,72 @@
 #include "xStl/stream/basicIO.h"
 #include "xStl/stream/filterStream.h"
 
-/*
- * Usage:
+/**
+ * @brief A filter stream which converts the byte order of the numbers read from
+ *    or written to the decorated stream.
  *
- * This example shows how we can use a "baseStream" as big-endian. The sample wraps the baseStream as a non-destructible smart-pointer.
+ * @details Usage:
  *
- *   basicIO& baseStream;
- *   cSmartPtr<cEndianFilterStream> endianStream(new cEndianFilterStream(
- *                         cSmartPtr<basicIO>(&baseStream, SMARTPTR_DESTRUCT_NONE), false));
+ * This example shows how we can use a "baseStream" as big-endian. The sample
+ * wraps the baseStream as a non-destructible smart-pointer.
  *
- * Author: Elad Raz <e@eladraz.com>
+ * @code
+ * basicIO& baseStream;
+ * cSmartPtr<cEndianFilterStream> endianStream(new cEndianFilterStream(
+ *     cSmartPtr<basicIO>(&baseStream, SMARTPTR_DESTRUCT_NONE), false));
+ * @endcode
+ *
+ * Author: Elad Raz \<e\@eladraz.com\>
  */
 class cEndianFilterStream : public filterStream
 {
 public:
-    /*
-     * Constructor. Create an endian filter stream based on the 'stream' stream.
+    /**
+     * @brief Constructor. Create an endian filter stream based on the 'stream'
+     *    stream.
      *
-     * stream - The decorated stream class to be used for reading/written.
-     * isLittleEndian - Set to TRUE if little-endian encoding should be used.
+     * @param stream The decorated stream class to be used for reading/written.
+     * @param isLittleEndian Set to TRUE if little-endian encoding should be
+     *    used.
      */
     cEndianFilterStream(const cSmartPtr<basicIO>& stream,
                         bool isLittleEndian);
 
-    /*
-     * Virtual destructor.
+    /**
+     * @brief Virtual destructor.
      */
     virtual ~cEndianFilterStream();
 
-    /*
-     * Derived from the basicIO. A direct call to the decorated stream implementation
+    /**
+     * @brief Derived from the basicIO.
+     *
+     * @details A direct call to the decorated stream implementation
+     *
+     * @param buffer The buffer which receives the data.
+     * @param length The number of bytes to read.
+     * @return The number of bytes actually read.
      */
     virtual uint read(void *buffer, const uint length);
     virtual uint write(const void *buffer, const uint length);
     virtual void flush();
     virtual void seek(const int distance, const basicInput::seekMethod method);
     virtual bool isEOS();
+    /**
+     * @return The total length of the stream in bytes.
+     */
     virtual uint length() const;
+    /**
+     * @return The position of the read/write head, in bytes from the beginning
+     *    of the stream.
+     */
     virtual uint getPointer() const;
     virtual uint getPipeReadBestRequest() const;
 
-    /*
-     * Derived from cEndian
+    /**
+     * @brief Derived from cEndian
+     *
+     * @param buffer The buffer to read the number from.
+     * @return The deserialized number.
      */
     virtual uint64 readUint64(const uint8* buffer) const;
     virtual uint32 readUint32(const uint8* buffer) const;
@@ -98,18 +125,26 @@ public:
     virtual bool isLittleEndian() const;
 
 protected:
-    // Init the seeking methods.
+    /**
+     * @brief Init the seeking methods.
+     */
     virtual void initSeek();
 
 private:
-    /* Deny copy-constructor */
+    /**
+     * @brief Deny copy-constructor
+     */
     cEndianFilterStream();
     cEndianFilterStream(const cEndianFilterStream& other);
     cEndianFilterStream & operator = (const cEndianFilterStream& other);
 
-    /* Compression variable for writing */
+    /**
+     * @brief Compression variable for writing
+     */
     bool m_isLittleEndian;
 };
 
+
+/** @} */
 #endif // __TBA_STL_STREAMS_ENDIAN_FILTER_STREAM_H
 

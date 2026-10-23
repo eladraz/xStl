@@ -77,7 +77,8 @@ uint basicInput::pipeRead(void *buffer, const uint length)
     while (leftSize > 0)
     {
         // Try to read
-        bytesReadAtOnce = read(array, t_min(leftSize, getPipeReadBestRequest()));
+        bytesReadAtOnce = read(array,
+                                   t_min(leftSize, getPipeReadBestRequest()));
 
         // Increase counters
         array    += bytesReadAtOnce;
@@ -375,7 +376,8 @@ void basicInput::readAllStream(cBuffer& rawData)
                 rawData.changeSize(total);
             }
 
-        } while (bytesRead == getPipeReadBestRequest()); // Until there is an error
+        // Until there is an error
+        } while (bytesRead == getPipeReadBestRequest());
     }
 }
 
@@ -710,7 +712,8 @@ void basicIO::copyStream(basicOutput& destination, basicInput& source)
 
 // gcc workaround. gcc can't access internal functions of a declared class
 // in order to override this behavior we will use global static functions that
-// implement streamReadUint32/streamWriteUint32 and pipeRead/pipeWrite with the interface
+// implement streamReadUint32/streamWriteUint32 and pipeRead/pipeWrite with the
+// interface
 #ifdef XSTL_LINUX
 extern "C" void gccLinuxStreamReadUint32(basicInput& inputStream, uint32& dword)
 {

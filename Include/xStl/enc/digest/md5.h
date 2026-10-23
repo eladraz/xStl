@@ -32,13 +32,17 @@
 #ifndef __TBA_STL_ENCRYPTION_DIGEST_MD5_H
 #define __TBA_STL_ENCRYPTION_DIGEST_MD5_H
 
+/**
+ * @addtogroup xstl_enc_digest
+ * @{
+ */
 
-/*
- * md5.h
+
+/**
+ * @file md5.h
+ * @brief Declare the cMD5 class which implements the MD5 one-way hash function.
  *
- * Declare the cMD5 class which implements the MD5 one-way hash function.
- *
- * Author: Elad Raz <e@eladraz.com>
+ * @author Elad Raz
  */
 
 #include "xStl/types.h"
@@ -48,69 +52,102 @@
 #include "xStl/enc/digest/HashDigest.h"
 
 
-/*
- * class cMD5
+/**
+ * @brief The MD5 message digest.
  *
- * MD5 implementation class.
- *
- * Most of the code was taken from C code on the Internet:
- * Part of the Python Cryptography Toolkit, version 1.0.1
- * Colin Plumb's original code modified by A.M. Kuchling
- * Further hacked and adapted to pike by Niels Möller
+ * @details Most of the code was taken from C code on the Internet:
+ *   Part of the Python Cryptography Toolkit, version 1.0.1
+ *   Colin Plumb's original code modified by A.M. Kuchling
+ *   Further hacked and adapted to pike by Niels MÃ¶ller
  *
  * The original code was changed for C++ usage:
- *  - Creating base-class (cHashDigest)
- *  - Wrap the function in cDigest format.
+ * - Creating base-class (cHashDigest)
+ * - Wrap the function in cDigest format.
  */
 class cMD5 : public cHashDigest
 {
 public:
-    /*
-     * Constructor, copy-constructor and operator =.
+    /**
+     * @brief Constructor, copy-constructor and operator =.
      */
     cMD5();
+    /**
+     * @brief Copy-constructor.
+     *
+     * @param other The object to copy.
+     */
     cMD5(const cMD5& other);
+    /**
+     * @brief Assignment operator.
+     *
+     * @param other The object to copy from.
+     * @return A reference to this object.
+     */
     cMD5& operator = (const cMD5& other);
 
 
-    /* Virtual destructor */
+    /**
+     * @brief Virtual destructor
+     */
     virtual ~cMD5() {};
 
-    /*
-     * Reset the hash setting as this class just constructed.
+    /**
+     * @brief Reset the hash setting as this class just constructed.
      */
     virtual void reset();
 
-    /*
-     * Clone the hash object.
+    /**
+     * @brief Clone the hash object.
      *
-     * Return new constructed object equal to my object.
+     * @return New constructed object equal to my object.
      */
     virtual cSmartPtr<cDigest> clone();
 
-    /*
-     * Constants for the MD5 algorithm
+    /**
+     * @brief Constants for the MD5 algorithm
      */
     enum {
+        /**
+         * @brief The size of a data block in 32 bit words.
+         */
+        /**
+         * @brief The size of the digest in 32 bit words.
+         */
         MD5_DATALEN    = 16,
+        /** @brief The size of the digest in 32 bit words. */
         MD5_DIGESTLEN  = 4
     };
+    /**
+     * @brief Return the digest length in 32 bit words.
+     *
+     * @return MD5_DIGESTLEN.
+     */
     virtual unsigned int getDigestLen() { return MD5_DIGESTLEN; };
+    /**
+     * @brief Return the data block length in 32 bit words.
+     *
+     * @return MD5_DATALEN.
+     */
     virtual unsigned int getDataLen() { return MD5_DATALEN; };
 
-    // Little endian
+    /**
+     * @brief Little endian
+     */
     littleEndianImpl;
 
 private:
-    /*
-     * MD5 core digest.
-     * Perform the transformation over one full block of 16 32-bit words.
+    /**
+     * @brief MD5 core digest. Perform the transformation over one full block of
+     *    16
+     *   32-bit words.
      *
-     * data - 16 32bit words.
+     * @param data 16 32bit words.
      */
     virtual void HASHTransform(uint32 *data);
 };
 
 
+
+/** @} */
 #endif // __TBA_STL_ENCRYPTION_DIGEST_MD5_H
 

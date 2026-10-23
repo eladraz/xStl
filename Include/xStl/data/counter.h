@@ -32,12 +32,16 @@
 #ifndef __TBA_STL_COUNTER_H
 #define __TBA_STL_COUNTER_H
 
-/*
- * counter.h
+/**
+ * @addtogroup xstl_data_pointers
+ * @{
+ */
+
+/**
+ * @file counter.h
+ * @brief Multiprocess counting unit. Manage reference counting mainly.
  *
- * Multiprocess counting unit. Manage reference counting mainly.
- *
- * Author: Elad Raz <e@eladraz.com>
+ * @author Elad Raz
  */
 
 #include "xStl/types.h"
@@ -49,65 +53,78 @@
  */
 class cTestCounter;
 
-/*
- * cCounter
- *
- * A safe counter. A counter which is thread-safe and protected by a mutex.
+/**
+ * @brief A safe counter. A counter which is thread-safe and protected by a
+ *    mutex.
  */
 class cCounter
 {
 public:
-    /*
-     * Constructor. Create a counter object.
+    /**
+     * @brief Constructor. Create a counter object.
      *
-     * initValue - The value for the counter.
+     * @param initValue The value for the counter.
      */
     cCounter(counter_t initValue);
 
-    /*
-     * Increase the counter reference. Return the elements count.
+    /**
+     * @brief Increase the counter reference.
+     *
+     * @return The elements count.
      */
     counter_t increase();
 
-    /*
-     * Decrease the counter reference. Return the elements count.
+    /**
+     * @brief Decrease the counter reference.
+     *
+     * @return The elements count.
      */
     counter_t decrease();
 
-    /*
-     * Return the current value of the counter
+    /**
+     * @brief Return the current value of the counter
+     *
+     * @return The current value of the counter.
      */
     counter_t getValue() const;
 
-    /*
-     * Changes the value of the counter
+    /**
+     * @brief Changes the value of the counter
      *
-     * newValue - The new value of the counter
+     * @param newValue The new value of the counter
      */
     void setValue(const counter_t& newValue);
 
-    /*
-     * Call to increase
+    /**
+     * @brief Call to increase
+     *
+     * @return A reference to this counter.
      */
     cCounter& operator++();
 
-    /*
-     * Call to decrease
+    /**
+     * @brief Call to decrease
+     *
+     * @return A reference to this counter.
      */
     cCounter& operator--();
 
 private:
-    // The value of the counter
+    /**
+     * @brief The value of the counter
+     */
     volatile counter_t m_value;
 
     // Windows NT kernel-mode and user mode contain built-in functions
     #if (!(defined(XSTL_NTDDK) || defined(XSTL_WINDOWS) || defined(XSTL_CE)))
-        // The lock for the counter
+        /**
+         * @brief The lock for the counter
+         */
         cXstlLockable m_lock;
     #endif
 
-    /*
-     * Prevent copy-constructor and operator =.
+    /**
+     * @brief Prevent copy-constructor and operator =.
      */
     cCounter(const cCounter& other);
     cCounter& operator =(const cCounter& other);
@@ -117,5 +134,7 @@ private:
 };
 
 
+
+/** @} */
 #endif //  __TBA_STL_COUNTER_H
 

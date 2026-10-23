@@ -32,122 +32,203 @@
 #ifndef __TBA_STL_EXCEPTION_H
 #define __TBA_STL_EXCEPTION_H
 
-/*
- * exception.h
+/**
+ * @addtogroup xstl_except
+ * @{
+ */
+
+/**
+ * @file exception.h
+ * @brief Define basic exception types and implement some of them.
  *
- * Define basic exception types and implement some of them.
- * This code is good for all operating system platforms, both Windows and Linux
+ * @details This code is good for all operating system platforms, both Windows
+ *    and Linux
  *
- * Author: Elad Raz <e@eladraz.com>
+ * @author Elad Raz
  */
 
 #include "xStl/types.h"
 #include "xStl/data/char.h"
 
-/*
- * Here is a list of important exceptions and their IDs.
+/**
+ * @brief Here is a list of important exceptions and their IDs.
  */
 #define EXCEPTION_UNKNOWN           (0)
+/**
+ * @brief General failure.
+ */
 #define EXCEPTION_FAILED           (1)
+/**
+ * @brief A value or an index is out of range.
+ */
 #define EXCEPTION_OUT_OF_RANGE     (2)
+/**
+ * @brief Memory allocation failed.
+ */
 #define EXCEPTION_OUT_OF_MEM       (3)
+/**
+ * @brief Invalid format.
+ */
 #define EXCEPTION_FORMAT_ERROR     (4)
+/**
+ * @brief A read operation failed.
+ */
 #define EXCEPTION_READ_ERROR       (5)
+/**
+ * @brief A write operation failed.
+ */
 #define EXCEPTION_WRITE_ERROR      (6)
+/**
+ * @brief A seek operation failed.
+ */
 #define EXCEPTION_SEEK_ERROR       (7)
+/**
+ * @brief A violation (for example of a precondition or of an access rule).
+ */
 #define EXCEPTION_VIOLATION        (8)
+/**
+ * @brief An assertion failed.
+ */
 #define EXCEPTION_ASSERTION        (9)
+/**
+ * @brief An invalid iterator.
+ */
 #define EXCEPTION_ITERATOR_ERROR  (10)
+/**
+ * @brief An operating system error.
+ */
 #define EXCEPTION_OS_ERROR        (11)
 
 // Extern definition
 class cString;
 
-/*
- * cException class
+/**
+ * @brief The base class of the xStl exceptions.
  *
- * Exception handling in the system. When XSTL or modules from it throw
- * an exception, the exception is derived from cException. An XSTL exception
- * contains error-code and a message describing it.
- * Used as an exception identifier. Allows adding a single message to the exception.
- * This class will be extended to combine several strings using cString, so
- * we can add the file name, line number and the function name.
+ * @details Exception handling in the system. When XSTL or modules from it throw
+ *   an exception, the exception is derived from cException. An XSTL exception
+ *   contains error-code and a message describing it.
+ *   Used as an exception identifier. Allows adding a single message to the
+ *   exception.
+ *   This class will be extended to combine several strings using cString, so
+ *   we can add the file name, line number and the function name.
  */
 class cException
 {
 public:
-    /*
-     * Constructor, create a new exception with an error message.
+    /**
+     * @brief Constructor. Create a new exception with an error ID.
+     *
+     * @param file The source file where the exception is thrown.
+     * @param line The line in the source file where the exception is thrown.
+     * @param msgID The error ID of the exception. See the EXCEPTION_*
+     *    definitions.
      */
     cException(char * file, uint32 line, const uint32 msgID = 0);
+    /**
+     * @brief Constructor. Create a new exception with an error message.
+     *
+     * @param file The source file where the exception is thrown.
+     * @param line The line in the source file where the exception is thrown.
+     * @param msg The message describing the exception.
+     * @param msgID The error ID of the exception. See the EXCEPTION_*
+     *    definitions.
+     */
     cException(char * file, uint32 line, const character* msg = NULL, uint32 msgID = 0);
 
-    /*
-     * Copy-constructor
+    /**
+     * @brief Copy-constructor
+     *
+     * @param other The exception to copy.
      */
     cException(const cException& other);
 
-    /*
-     * Virtual destructor. Allow virtual inheritance.
+    /**
+     * @brief Virtual destructor. Allow virtual inheritance.
      */
     virtual ~cException();
 
-    /*
-     * Return the error ID of the exception.
+    /**
+     * @brief Return the error ID of the exception.
+     *
+     * @return The error ID of the exception.
      */
     virtual uint32 getID();
 
-    /*
-     * Return string describing the exception.
+    /**
+     * @brief Return string describing the exception.
+     *
+     * @return String describing the exception.
      */
     virtual const character* getMessage();
 
-    /*
-     * Show the exception on the screen.
+    /**
+     * @brief Show the exception on the screen.
      *
-     * For Windows applications, the "MessageBoxA" function is used.
-     * For non-Windows applications, the "cout" command is used.
+     * @details For Windows applications, the "MessageBoxA" function is used.
+     *   For non-Windows applications, the "cout" command is used.
      */
     virtual void print();
 
-    /*
-     * Clone the current exception. Please note, that you must free the returned pointer, so please pay extra care
+    /**
+     * @brief Clone the current exception.
+     *
+     * @details Please note, that you must free the returned pointer, so please
+     *    pay extra care
+     *
+     * @return A newly allocated copy of this exception. The caller must free
+     *    it.
      */
     virtual cException* clone() const;
 
-    /*
-     * Generate exception
+    /**
+     * @brief Format the place where the exception was thrown as `file:line`.
+     *
+     * @param ret Will be filled with the location string.
      */
     void whereExceptionOccurred(cString& ret);
 
 protected:
     // Functions
 
-    /*
-     * Change the message to point to another string.
+    /**
+     * @brief Change the message to point to another string.
      *
-     * msg - The new string that the exception contains.
+     * @param msg The new string that the exception contains.
      */
     void changeMessageString(const character* msg);
 
     // Members
 
-    // The content of the error message. This cannot be string because the
-    // cString object uses exceptions.
+    /**
+     * @brief The content of the error message.
+     *
+     * @details This cannot be string because the cString object uses
+     *    exceptions.
+     */
     character* m_message;
-    // Should use operator delete over m_message
+    /**
+     * @brief Should use operator delete over m_message
+     */
     bool m_shouldDelete;
-    // The INDEX of the message
+    /**
+     * @brief The INDEX of the message
+     */
     uint32 m_messageNumber;
 
-    char * m_atFile;
+    char * m_atFile;    ///< The source file where the exception was thrown.
+    /**
+     * @brief The line in the source file where the exception was thrown.
+     */
     uint32 m_atLine;
 
 private:
-    /*
-     * Free the memory of the exception
+    /**
+     * @brief Free the memory of the exception
      */
     void free();
 };
 
+
+/** @} */
 #endif // __TBA_STL_EXCEPTION_H

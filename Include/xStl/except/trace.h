@@ -32,13 +32,19 @@
 #ifndef __TBA_STL_TRACE_H
 #define __TBA_STL_TRACE_H
 
-/*
- * trace.h
+/**
+ * @addtogroup xstl_except
+ * @{
+ */
+
+/**
+ * @file trace.h
+ * @brief Definition of a trace command in the program.
  *
- * Definition of a trace command in the program. The TRACE macro will be shown in
- * the compiled code only if the _DEBUG macro is defined.
+ * @details The TRACE macro will be shown in the compiled code only if the
+ *    _DEBUG macro is defined.
  *
- * Author: Elad Raz <e@eladraz.com>
+ * @author Elad Raz
  */
 #include "xStl/types.h"
 #include "xStl/data/string.h"
@@ -49,31 +55,39 @@
  * Control whether the message is important or not.
  */
 #ifndef TRACE_LEVEL
+    /**
+     * @brief The trace level of the TRACE macro, used to control whether a
+     *    message is important or not. It can be overridden before including the
+     *    header.
+     */
     #define TRACE_LEVEL (0)
 #endif
 
 
 
-/*
- * TRACE_METHOD
- *
- * Which implementation will be used for the output messages:
+/**
+ * @brief Which implementation will be used for the output messages:
  */
-#define TRACE_CERR    (0) // - using the cerr object
-#define TRACE_MSG     (1) // - message box, cross platform
-#define TRACE_LOG     (2) // - into a log file.
+#define TRACE_CERR    (0) ///< - using the cerr object
+#define TRACE_MSG     (1) ///< - message box, cross platform
+#define TRACE_LOG     (2) ///< - into a log file.
 
 
 
 /*
  * TRACE_LOG_FILENAME
  *
- * When the user wants to send the traces into a file, the filename should be stored
+ * When the user wants to send the traces into a file, the filename should be
+ * stored
  * here.
  *
  * The default filename value is "log.txt"
  */
 #ifndef TRACE_LOG_FILENAME
+    /**
+     * @brief The file name of the trace log when traces are sent into a file.
+     *    The default is "log.txt".
+     */
     #define TRACE_LOG_FILENAME "log.txt"
 #endif
 
@@ -82,20 +96,39 @@
  * Declare the standard output of the trace.
  */
 #ifndef TRACE_METHOD
+    /**
+     * @brief The implementation used for the output of the traces. The default
+     *    is TRACE_CERR.
+     */
     #define TRACE_METHOD (TRACE_CERR)
 #endif
 
-/*
- * Priorities
+/**
+ * @brief Priorities
  */
 #define TRACE_VERY_LOW   (0)
+/**
+ * @brief Trace priority: low.
+ */
 #define TRACE_LOW        (3)
+/**
+ * @brief Trace priority: medium.
+ */
 #define TRACE_MEDIUM     (5)
+/**
+ * @brief Trace priority: high.
+ */
 #define TRACE_HIGH       (8)
+/**
+ * @brief Trace priority: very high.
+ */
 #define TRACE_VERY_HIGH (10)
 
 
 #ifndef TRACE_ENTER
+/**
+ * @brief The end of line sequence used by the traces.
+ */
 #define TRACE_ENTER "\r\n"
 #endif
 
@@ -123,11 +156,30 @@
  * that will handle the tracing message.
  */
 #ifdef _DEBUG
+    /**
+     * @brief Trace a message (debug builds only; empty in release builds).
+     *
+     * The macro calls traceMessage(), which prints the message if the level is
+     * high enough.
+     *
+     * @param trace_level The importance of the message. See TRACE_VERY_LOW to
+     *    TRACE_VERY_HIGH.
+     * @param message The message to print (a cString).
+     */
     #define TRACE(trace_level, message)    traceMessage(trace_level, message);
 #else
+    /**
+     * @brief Trace a message (debug builds only; empty in release builds).
+     *
+     * @param trace_level The importance of the message. See TRACE_VERY_LOW to
+     *    TRACE_VERY_HIGH.
+     * @param message The message to print (a cString).
+     */
     #define TRACE(trace_level, message)
 #endif
 
 
+
+/** @} */
 #endif
 

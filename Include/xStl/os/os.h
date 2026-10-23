@@ -32,60 +32,67 @@
 #ifndef __TBA_STL_OS_OS_H
 #define __TBA_STL_OS_OS_H
 
-/*
- * os.h
+/**
+ * @addtogroup xstl_os
+ * @{
+ */
+
+/**
+ * @file os.h
+ * @brief Declare operating-system-independent functions.
  *
- * Declare operating-system-independent functions. The operating system
- * should provide support for the following functions:
- *   - Thread functions.
- *      The sleep function. Puts the thread into sleep mode. Only interruptible
- *      function can be called from the thread context.
+ * @details The operating system should provide support for the following
+ * functions:
  *
- *   - Global random for the system.
- *      Allow changing the system global random, or acquire random from the system
- *      The random for the system can be a hardware random device and doesn't
- *      guarantee the same result in any way (like a pseudo-random-function).
- *      When the system is loaded, the global random object is initialized into a strong
- *      random and can be left untouched (Using the srand() function)
+ * - Thread functions.<br>
+ *   The sleep function. Puts the thread into sleep mode. Only interruptible
+ *   function can be called from the thread context.
  *
- *   - Time functions
- *      Getting the right time
- *      Getting the date of the year
+ * - Global random for the system.<br>
+ *   Allow changing the system global random, or acquire random from the system.
+ *   The random for the system can be a hardware random device and doesn't
+ *   guarantee the same result in any way (like a pseudo-random-function).
+ *   When the system is loaded, the global random object is initialized into a
+ *   strong
+ *   random and can be left untouched (Using the srand() function).
  *
- *   - Memory operation.
- *      Yes. The 'memcpy()' function. The implementation of the operating system
- *      can use a hardware accelerator and avoid overloading the CPU. The OS can
- *      notify the application when the copying has completed or block the thread.
- *      Also define the memset() function which init memory.
+ * - Time functions.<br>
+ *   Getting the right time and getting the date of the year.
  *
- *   - Memory allocation and deallocation for a small amount of memory (heap)
- *      The global operators new and delete should use these functions. The
- *      memory is very fast, usually it is cached in the hardware. Also OS
- *      can provide some kind of security by allocating zero-page memory.
- *      NOTE: this kind of memory is NOT sharable and usually it's not paged
+ * - Memory operation.<br>
+ *   The 'memcpy()' function. The implementation of the operating system
+ *   can use a hardware accelerator and avoid overloading the CPU. The OS can
+ *   notify the application when the copying has completed or block the thread.
+ *   Also define the memset() function which init memory.
  *
- * TODO:
+ * - Memory allocation and deallocation for a small amount of memory (heap).<br>
+ *   The global operators new and delete should use these functions. The
+ *   memory is very fast, usually it is cached in the hardware. Also OS
+ *   can provide some kind of security by allocating zero-page memory.
+ *   NOTE: this kind of memory is NOT sharable and usually it's not paged.
  *
- *   - Memory allocation and deallocation of a large amount of memory (pages)
- *      Programs which want to allocate big memory should use these functions
- *      instead of using operator new/delete.
- *      NOTE: this kind of memory is NOT sharable.
+ * The following functions are marked as TODO in the original source:
  *
- *   - Far memory allocation.
- *      Try to allocate memory which can be shared with a number of processors or
- *      computers. Usually this memory can be found in the memory of a number of
- *      processors or even on different computers, so this memory is very slow but
- *      can contain a large amount of memory.
- *      NOTE: this kind of memory is sharable and slow.
+ * - Memory allocation and deallocation of a large amount of memory (pages).<br>
+ *   Programs which want to allocate big memory should use these functions
+ *   instead of using operator new/delete.
+ *   NOTE: this kind of memory is NOT sharable.
  *
- *   - Files access.
- *      Simple interface for opening files, reading/writing, etc...
+ * - Far memory allocation.<br>
+ *   Try to allocate memory which can be shared with a number of processors or
+ *   computers. Usually this memory can be found in the memory of a number of
+ *   processors or even on different computers, so this memory is very slow but
+ *   can contain a large amount of memory.
+ *   NOTE: this kind of memory is sharable and slow.
  *
- *   - Files enumeration
+ * - Files access.<br>
+ *   Simple interface for opening files, reading/writing, etc...
  *
- *   - Network access
+ * - Files enumeration.
  *
- * Author: Elad Raz <e@eladraz.com>
+ * - Network access.
+ *
+ * @author Elad Raz
  */
 #include "xStl/types.h"
 #include "xStl/os/osdef.h"
@@ -93,15 +100,14 @@
 // Forward declaration of cString
 class cString;
 
-/*
- * class cOS
+/**
+ * @brief The operating-system-dependent code. The class allows using the
+ *   operating-system implementation for the previous functions.
  *
- * The operating-system-dependent code. The class allows using the operating-system
- * implementation for the previous functions.
+ * @details These are very powerful functions.
  *
- * These are very powerful functions.
- *
- * All of these functions are thread-safe and can be invoked from several threads
+ * All of these functions are thread-safe and can be invoked from several
+ * threads
  * without worrying about data loss.
  */
 class cOS
@@ -111,18 +117,19 @@ public:
     // Memory operations
     //
 
-    /*
-     * Copy a chunk of memory 'src' with size of 'size' bytes into 'dest'.
-     * The copy can be synchronous or asynchronous. See the cWaitable for more
-     * information about asynchronous calls.
-     * NOTE:
-     *   The function doesn't have any protection regarding the buffer sizes.
-     *   The operating system or the compiler may pad the buffers with magic
-     *   and throw an exception in case of overflows...
+    /**
+     * @brief Copy a chunk of memory 'src' with size of 'size' bytes into
+     *    'dest'.
      *
-     * dest - The buffer to copy the memory to.
-     * src  - The source buffer where the data will be copied from.
-     * size - The number of bytes of the buffers.
+     * @details The copy can be synchronous or asynchronous. See the cWaitable
+     *    for more information about asynchronous calls.
+     *
+     * @param dest The buffer to copy the memory to.
+     * @param src The source buffer where the data will be copied from.
+     * @param size The number of bytes of the buffers.
+     * @note The function doesn't have any protection regarding the buffer
+     *    sizes. The operating system or the compiler may pad the buffers with
+     *    magic and throw an exception in case of overflows...
      */
     static void memcpy(void* dest,
                        const void* src,
@@ -133,52 +140,54 @@ public:
     // Memory allocation
     //
 
-    /*
-     * Try to allocate a small memory block of 'size' bytes. The
-     * allocated memory is returned as a valid pointer in the PROCESS
-     * virtual memory range. The allocated heap is valid and maps to the
-     * physical memory.
-     * In case of failure this function throws an exception.
+    /**
+     * @brief Try to allocate a small memory block of 'size' bytes.
      *
-     * size - Number of bytes to allocate
-     *
-     * Return a pointer to the newly allocated block. This pointer should be
-     * freed with the 'smallMemoryRealloc()' function.
+     * @details The allocated memory is returned as a valid pointer in the
+     *    PROCESS virtual memory range. The allocated heap is valid and maps to
+     *    the physical memory. In case of failure this function throws an
+     *    exception.
      *
      * Throws EXCEPTION_FAILED in case of failure.
+     *
+     * @param size Number of bytes to allocate
+     * @return A pointer to the newly allocated block. This pointer should be
+     *    freed with the 'smallMemoryRealloc()' function.
      */
     static void* smallMemoryAllocation(uint size);
 
-    /*
-     * Try to change the amount of memory allocated by the function
-     * 'smallMemoryAllocation()' to a new size. The function tries to expand
-     * or shrink the number of bytes acquired by the 'mem' block. In case the
-     * next block is occupied reallocation may occur.
-     * In case of failure the old block doesn't change but an exception occurs.
-     * The function also copies the old block memory if the preserveMemory is
-     * 'true'
+    /**
+     * @brief Try to change the amount of memory allocated by the function
+     *   'smallMemoryAllocation()' to a new size.
      *
-     * mem            - Pointer to the old allocated block (by the smallMemAloc
-     *                  function).
-     * newSize        - Number of bytes to allocate
-     * preserveMemory - Set to true if the memory block should be preserved.
-     *                  Set to false for optimizations.
+     * @details The function tries to expand or shrink the number of bytes
+     *    acquired by the 'mem' block. In case the next block is occupied
+     *    reallocation may occur. In case of failure the old block doesn't
+     *    change but an exception occurs. The function also copies the old block
+     *    memory if the preserveMemory is 'true'
      *
-     * Return a pointer into the new block.
      * Throws EXCEPTION_FAILED in case of failure or if 'mem' points into an
      * invalid location.
+     *
+     * @param mem Pointer to the old allocated block (by the smallMemAloc
+     *    function).
+     * @param newSize Number of bytes to allocate
+     * @param preserveMemory Set to true if the memory block should be
+     *    preserved. Set to false for optimizations.
+     * @return A pointer into the new block.
      */
     static void* smallMemoryRealloc(void* mem, uint newSize,
                                     bool preserveMemory = true);
 
-    /*
-     * Free the memory allocated by the small-memory allocation functions.
+    /**
+     * @brief Free the memory allocated by the small-memory allocation
+     *    functions.
      *
-     * mem            - Pointer to the allocated block (by the smallMemAlloc
-     *                  function).
+     * @details Throws EXCEPTION_FAILED in case of failure or if 'mem' points
+     *    into an invalid location.
      *
-     * Throws EXCEPTION_FAILED in case of failure or if 'mem' points into an
-     * invalid location.
+     * @param mem Pointer to the allocated block (by the smallMemAlloc
+     *    function).
      */
     static void smallMemoryFree(void* mem);
 
@@ -187,44 +196,47 @@ public:
     // Threads functions
     //
 
-    /*
-     * Puts the thread in a sleeping mode. During this time the thread context
-     * is blocked but interrupts can be invoked in the context of the thread (for
-     * example Windows' APC calls or Linux's Signal functions)
+    /**
+     * @brief Puts the thread in a sleeping mode.
      *
-     * seconds - The number of seconds to stall
+     * @details During this time the thread context is blocked but interrupts
+     *    can be invoked in the context of the thread (for example Windows' APC
+     *    calls or Linux's Signal functions)
      *
-     * Throws an exception in case of thread/system failure.
+     * @param seconds The number of seconds to stall
+     * @throws cException in case of thread/system failure.
      */
     static void sleepSeconds(uint seconds);
 
-    /*
-     * Puts the thread in a sleeping mode. During this time the thread context
-     * is blocked but interrupts can be invoked in the context of the thread (for
-     * example Windows' APC calls or Linux's Signal functions)
-     * Note the function doesn't guarantee real-time wake-up. The time given
-     * is only an approximate time. Context-switch or other events can stall the
-     * thread wake-up call.
+    /**
+     * @brief Puts the thread in a sleeping mode.
      *
-     * milliseconds - The number of milli-seconds to stall.
-     *               1000 milliseconds equals one second.
+     * @details During this time the thread context is blocked but interrupts
+     *    can be invoked in the context of the thread (for example Windows' APC
+     *    calls or Linux's Signal functions)
      *
-     * Throws an exception in case of thread/system failure.
+     * @param milliseconds The number of milli-seconds to stall. 1000
+     *    milliseconds equals one second.
+     * @throws cException in case of thread/system failure.
+     * @note the function doesn't guarantee real-time wake-up. The time given is
+     *    only an approximate time. Context-switch or other events can stall the
+     *    thread wake-up call.
      */
     static void sleepMillisecond(uint milliseconds);
 
-    /*
-     * Puts the thread in a sleeping mode. During this time the thread context
-     * is blocked but interrupts can be invoked in the context of the thread (for
-     * example Windows' APC calls or Linux's Signal functions)
-     * Note the function doesn't guarantee real-time wake-up. The time given
-     * is only an approximate time. Context-switch or other events can stall the
-     * thread wake-up call.
+    /**
+     * @brief Puts the thread in a sleeping mode.
      *
-     * microseconds - The number of micro-seconds to stall.
-     *                1,000,000 microseconds equals one second.
+     * @details During this time the thread context is blocked but interrupts
+     *    can be invoked in the context of the thread (for example Windows' APC
+     *    calls or Linux's Signal functions)
      *
-     * Throws an exception in case of thread/system failure.
+     * @param microseconds The number of micro-seconds to stall. 1,000,000
+     *    microseconds equals one second.
+     * @throws cException in case of thread/system failure.
+     * @note the function doesn't guarantee real-time wake-up. The time given is
+     *    only an approximate time. Context-switch or other events can stall the
+     *    thread wake-up call.
      */
     static void sleepMicroseconds(uint microseconds);
 
@@ -232,11 +244,16 @@ public:
     // OS functions
     //
 
-    /*
-     * Returns a string which describes the last error code that happened in
-     * the system.
-     * For example, for a Win32 API application, the function will invoke a call
-     * to GetLastError and FormatMessage to build that string.
+    /**
+     * @brief Returns a string which describes the last error code that happened
+     *    in the
+     *   system.
+     *
+     * @details For example, for a Win32 API application, the function will
+     *    invoke a call to GetLastError and FormatMessage to build that string.
+     *
+     * @return A string which describes the last error code that happened in the
+     *    system.
      */
     static cString getLastErrorString();
 
@@ -244,15 +261,24 @@ public:
     // Times functions
     //
 
-    /*
-     * Return a number describing the current system time. It can be either a
-     * time or the number of ticks from the beginning of the operating system
+    /**
+     * @brief Return a number describing the current system time.
+     *
+     * @details It can be either a time or the number of ticks from the
+     *    beginning of the operating system
+     *
+     * @return A number describing the current system time.
      */
     static cOSDef::systemTime getSystemTime();
 
-    /*
-     * Calculate the interval between two system times and format it into
-     * a milliseconds difference
+    /**
+     * @brief Calculate the interval between two system times and format it into
+     *    a
+     *   milliseconds difference
+     *
+     * @param currentTime The later system time.
+     * @param startTime The earlier system time.
+     * @return The interval between the two times in milliseconds.
      */
     static uint calculateTimesDiffMilli(cOSDef::systemTime currentTime,
                                         cOSDef::systemTime startTime);
@@ -261,11 +287,13 @@ public:
     // Debug
     //
 
-    /*
-     * This function traps the debugger if connected, otherwise it continues
-     * execution.
-     * NOTE: This function will trap the debugger if and only if the program
-     *       is compiled with the _DEBUG macro
+    /**
+     * @brief This function traps the debugger if connected, otherwise it
+     *    continues
+     *   execution.
+     *
+     * @note This function will trap the debugger if and only if the program is
+     *    compiled with the _DEBUG macro
      */
     static void debuggerBreak();
 
@@ -274,5 +302,7 @@ public:
     //
 };
 
+
+/** @} */
 #endif // __TBA_STL_OS_OS_H
 

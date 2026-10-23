@@ -45,7 +45,8 @@
 #include "xStl/stream/basicIO.h"
 
 /*
- * Assume that both streams have a data-link layer and a protocol/transfer layer,
+ * Assume that both streams have a data-link layer and a protocol/transfer
+ * layer,
  * which means that all bytes will be sent in the right order and get correctly
  * to the end.
  * Test the stream bytes sending packets across the streams

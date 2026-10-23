@@ -32,27 +32,42 @@
 #ifndef __TBA_XSTL_UTILS_GENERICCALLBACKERFUNCTOR_H
 #define __TBA_XSTL_UTILS_GENERICCALLBACKERFUNCTOR_H
 
-/*
- * genericCallbackerFunctor.h
+/**
+ * @addtogroup xstl_utils
+ * @{
+ */
+
+/**
+ * @file genericCallbackerFunctor.h
+ * @brief Template functor implementation for all callback types.
  *
- * Template functor implementation for all callback types.
- * See 'xStl/utils/callbacker.h' for examples.
+ * @details See 'xStl/utils/callbacker.h' for examples.
  *
- * Author: Elad Raz <e@eladraz.com>
+ * @author Elad Raz
  */
 #include "xStl/types.h"
 
-/*
- * This macro generate a unique functor that will invoke the 'function' when
- * it's called.
- * The functor is complicated since it supports many different run-time
- * prototypes
+/**
+ * @brief This macro generate a unique functor that will invoke the 'function'
+ *    when
+ *   it's called.
+ *
+ * @details The functor is complicated since it supports many different run-time
+ *    prototypes
+ *
+ * @param function_name The name of the member function to invoke.
+ * @param functor_name The type of the functor reference object.
  */
 #define FUNC_CALLBACKER(function_name, functor_name) \
     functor_name((new cDispatcherClass##function_name(this)))
 
-/*
- * This macro generate functor thunk that will generate a call to a function.
+/**
+ * @brief This macro generate functor thunk that will generate a call to a
+ *    function.
+ *
+ * @param class_name The class which declares the callback.
+ * @param function_name The name of the member function to invoke.
+ * @param functor_name The base class of the functor.
  */
 #define FUNC_DECLARE_CALLBACK_BEGIN(class_name, function_name, functor_name)   \
     class cDispatcherClass##function_name : public functor_name {       \
@@ -63,8 +78,14 @@
         {                                                               \
         }
 
-/*
- * Generate 1 returned parameter block and 1 argument
+/**
+ * @brief Generate 1 returned parameter block and 1 argument
+ *
+ * @param function_name The name of the member function to invoke.
+ * @param functor_function_name The name of the functor function which is
+ *    overridden.
+ * @param returned_variable The returned type.
+ * @param argument_type The type of the argument.
  */
 #define FUNC_DECLARE_CALLBACK_PARAM1(function_name, functor_function_name, returned_variable, argument_type) \
         /* The dispatcher function */                                   \
@@ -73,8 +94,15 @@
             return m_instance->function_name(argument);                 \
         }
 
-/*
- * Generate 1 returned parameter block and 2 argument
+/**
+ * @brief Generate 1 returned parameter block and 2 argument
+ *
+ * @param function_name The name of the member function to invoke.
+ * @param functor_function_name The name of the functor function which is
+ *    overridden.
+ * @param returned_variable The returned type.
+ * @param argument_type1 The type of the first argument.
+ * @param argument_type2 The type of the second argument.
  */
 #define FUNC_DECLARE_CALLBACK_PARAM2(function_name, functor_function_name, returned_variable, argument_type1, argument_type2) \
     /* The dispatcher function */                                                               \
@@ -84,8 +112,17 @@
     }
 
 
-/*
- * Generate 1 returned parameter block and 4 argument
+/**
+ * @brief Generate 1 returned parameter block and 4 argument
+ *
+ * @param function_name The name of the member function to invoke.
+ * @param functor_function_name The name of the functor function which is
+ *    overridden.
+ * @param returned_variable The returned type.
+ * @param at1 The type of the first argument.
+ * @param at2 The type of the second argument.
+ * @param at3 The type of the third argument.
+ * @param at4 The type of the fourth argument.
  */
 #define FUNC_DECLARE_CALLBACK_PARAM4(function_name, functor_function_name, returned_variable, at1, at2, at3, at4) \
     /* The dispatcher function */                                                                                 \
@@ -95,8 +132,11 @@
     }
 
 
-/*
- * The prolog thunk
+/**
+ * @brief The prolog thunk
+ *
+ * @param class_name The class which declares the callback.
+ * @param function_name The name of the member function to invoke.
  */
 #define FUNC_DECLARE_CALLBACK_END(class_name, function_name)            \
     private:                                                            \
@@ -109,9 +149,19 @@
         class_name* m_instance;                                         \
 };
 
-/*
- * This macro generate functor thunk that will generate a call to a function.
- * See class cCallbacker for more information
+/**
+ * @brief This macro generate functor thunk that will generate a call to a
+ *    function.
+ *
+ * @details See class cCallbacker for more information
+ *
+ * @param class_name The class which declares the callback.
+ * @param function_name The name of the member function to invoke.
+ * @param functor_name The base class of the functor.
+ * @param functor_function_name The name of the functor function which is
+ *    overridden.
+ * @param returned_variable The returned type.
+ * @param argument_type The type of the argument.
  */
 #define FUNC_DECLARE_CALLBACK(class_name, function_name, functor_name, functor_function_name, returned_variable, argument_type)                \
         FUNC_DECLARE_CALLBACK_BEGIN(class_name, function_name, functor_name) \
@@ -119,4 +169,6 @@
         FUNC_DECLARE_CALLBACK_END(class_name, function_name)
 
 
+
+/** @} */
 #endif // __TBA_XSTL_UTILS_GENERICCALLBACKERFUNCTOR_H

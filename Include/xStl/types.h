@@ -32,19 +32,24 @@
 #ifndef __TBA_STL_TYPES_H
 #define __TBA_STL_TYPES_H
 
-/*
- * types.h
+/**
+ * @addtogroup xstl_core
+ * @{
+ */
+
+/**
+ * @file types.h
+ * @brief Contains basic blocks of the data-types.
  *
- * Contains basic blocks of the data-types.
- *
- * Supported by g++ (Red Hat Linux) and Visual C++ compiler (Studio 6.0)
- * Also supported by the Digital Mars compiler
- * The xStl code can be compiled to the following platforms:
+ * @details Supported by g++ (Red Hat Linux) and Visual C++ compiler (Studio
+ *    6.0)
+ *   Also supported by the Digital Mars compiler
+ *   The xStl code can be compiled to the following platforms:
  *   - Win32 Ring3 application
  *   - UNIX POSIX-based applications
  *   - NT-DDK driver (NT 4.0, 2000, XP)
  *
- * Author: Elad Raz <e@eladraz.com>
+ * @author Elad Raz
  */
 
 /*
@@ -141,8 +146,16 @@
  */
 #ifndef EXTERNC
     #ifdef __cplusplus
+        /**
+         * @brief @brief Declares C linkage in C++ (`extern "C"`); empty when
+         *   compiled as C.
+         */
         #define EXTERNC extern "C"
     #else
+        /**
+         * @brief @brief Declares C linkage in C++ (`extern "C"`); empty when
+         *   compiled as C.
+         */
         #define EXTERNC
     #endif
 #endif
@@ -157,26 +170,40 @@
     #error "Unknown endian. Contact Elad Raz for more information!\n"
 #endif
 
+/**
+ * @brief Marks a function parameter as intentionally unused.
+ *
+ * Silences the "unreferenced parameter" compiler warning.
+ *
+ * @param x The unused parameter.
+ */
 #define UNUSED_PARAM(x)  ((void)(x))
 
-/*
- * machine types
- */
+/** @brief Unsigned 8 bit integer. */
 typedef unsigned char   uint8;
+/** @brief Unsigned 16 bit integer. */
 typedef unsigned short  uint16;
+/** @brief Signed 16 bit integer. */
 typedef short int16;
+/** @brief Signed 8 bit integer. */
 typedef char  int8;
 
 #ifndef XSTL_16BIT
-    // 32bit compilers
+    /** @brief Unsigned 32 bit integer. */
     typedef unsigned int  uint32;
+    /** @brief Signed 32 bit integer. */
     typedef int           int32;
 #else
-    // 16bit compilers
+    /**
+     * @brief @brief Unsigned 32 bit integer (`unsigned long` for 16 bit
+     *   compilers).
+     */
     typedef unsigned long  uint32;
+    /** @brief Signed 32 bit integer (`long` for 16 bit compilers). */
     typedef long           int32;
 #endif
 
+/** @brief A single byte (same as uint8). */
 typedef uint8 byte;
 
 #ifndef XSTL_16BIT
@@ -184,12 +211,14 @@ typedef uint8 byte;
     // The problem is with compilers which don't support 64bit numbers
     // For instance Turbo C++ compiler
     #ifdef XSTL_LINUX
-        // Linux
+        /** @brief Unsigned 64 bit integer. */
         typedef unsigned long long uint64;
+        /** @brief Signed 64 bit integer. */
         typedef long long int64;
     #else
-        // Windows
+        /** @brief Unsigned 64 bit integer. */
         typedef unsigned __int64 uint64;
+        /** @brief Signed 64 bit integer. */
         typedef __int64 int64;
     #endif
 #endif
@@ -197,8 +226,16 @@ typedef uint8 byte;
 // Make sure NULL is declared
 #ifndef NULL
     #ifdef  __cplusplus
+        /**
+         * @brief @brief The null pointer constant (defined only if the platform
+         *   headers did not define it).
+         */
         #define NULL    0
     #else
+        /**
+         * @brief @brief The null pointer constant (defined only if the platform
+         *   headers did not define it).
+         */
         #define NULL    ((void *)0)
     #endif // __cplusplus
 #endif // NULL
@@ -210,14 +247,30 @@ typedef uint8 byte;
  * This parameter is defined so the compiler can recognize the operator
  * parameters.
  *
- * In Windows x64 int is a 32bit value, so uint stays 32bit (pointers use addressNumericValue).
+ * In Windows x64 int is a 32bit value, so uint stays 32bit (pointers use
+ * addressNumericValue).
  */
 #if defined(XSTL_32BIT) || defined(XSTL_16BIT) || defined(_M_X64)
+    /**
+     * @brief The unsigned integer type used for sizes, counts and array
+     *    indexes.
+     *
+     * A 32 bit `unsigned int` on 32 bit, 16 bit and Windows x64 targets and a
+     * 64 bit integer (`uint64`) on other 64 bit targets.
+     */
     #define uint unsigned int
 #elif defined(XSTL_64BIT)
+    /**
+     * @brief The unsigned integer type used for sizes, counts and array
+     *    indexes.
+     *
+     * A 32 bit `unsigned int` on 32 bit, 16 bit and Windows x64 targets and a
+     * 64 bit integer (`uint64`) on other 64 bit targets.
+     */
     #define uint uint64
 #endif
 
+/** @brief The largest value of #uint. */
 #define MAX_UINT ((uint)-1)
 
 /*
@@ -226,26 +279,48 @@ typedef uint8 byte;
  * See getPtr
  */
 #ifdef XSTL_16BIT
-    // 16 bit uses segment:offset address (24 bit according to the following
-    // calculation: addr = offset + segment * 0x10)
+    /**
+     * @brief 16 bit uses segment:offset address (24 bit according to the
+     *    following
+     *   calculation: addr = offset + segment * 0x10)
+     */
     typedef uint32 addressNumericValue;
 #elif defined(_M_X64)
-    // Windows x64 keeps uint as 32 bit, but pointers are 64 bit
+    /**
+     * @brief Windows x64 keeps uint as 32 bit, but pointers are 64 bit
+     */
     typedef uint64 addressNumericValue;
 #else
-    // 32 bit and 64 bit compilers
+    /**
+     * @brief An unsigned integer wide enough to hold a pointer (a pointer as a
+     *    number).
+     *
+     * Use getNumeric() and getPtr() to convert between pointers and this type.
+     */
     typedef uint addressNumericValue;
 #endif
 
-/*
- * The end of physical/virtual memory
+/**
+ * @brief The end of physical/virtual memory
  */
 #define MAX_PHYSICAL_ADDRESS ((addressNumericValue)(-1))
 
-/*
- * Address translation functions.
+/**
+ * @brief Convert a pointer into its numeric address.
+ *
+ * @param ptr The pointer to convert.
+ * @return The address held by @a ptr, as an addressNumericValue.
+ * @see getPtr
  */
 addressNumericValue getNumeric(const void* ptr);
+
+/**
+ * @brief Convert a numeric address into a pointer.
+ *
+ * @param address The numeric address.
+ * @return The pointer that corresponds to @a address.
+ * @see getNumeric
+ */
 void* getPtr(addressNumericValue address);
 
 // Define the remote-address
@@ -258,58 +333,80 @@ void* getPtr(addressNumericValue address);
  * I will use their declarations.
  */
 #ifndef _WINDEF_        // <windef.h> - ring3 stdafx.h include file
-    typedef int8    CHAR;
-    typedef uint8   BYTE;
-    typedef uint8*  PBYTE;
-    typedef uint16  WCHAR;
-    typedef uint16  WORD;
-    typedef uint16* LPWORD;
-    typedef int16   SHORT;
-    typedef uint16  USHORT;
-    typedef uint32  DWORD;
-    typedef uint32* PDWORD;
-    typedef int32   LONG;
-    typedef uint32  ULONG;
-    typedef void *  LPVOID;
-    typedef void *  PVOID;
-    typedef void    VOID;
-    typedef uint64  ULONGLONG;
+    typedef int8    CHAR;       ///< Windows-compatible signed 8 bit character.
+    typedef uint8   BYTE;       ///< Windows-compatible unsigned 8 bit integer.
+    typedef uint8*  PBYTE;      ///< Pointer to a BYTE.
+    typedef uint16  WCHAR;      ///< Windows-compatible 16 bit wide character.
+    typedef uint16  WORD;       ///< Windows-compatible unsigned 16 bit integer.
+    typedef uint16* LPWORD;     ///< Pointer to a WORD.
+    typedef int16   SHORT;      ///< Windows-compatible signed 16 bit integer.
+    typedef uint16  USHORT;     ///< Windows-compatible unsigned 16 bit integer.
+    typedef uint32  DWORD;      ///< Windows-compatible unsigned 32 bit integer.
+    typedef uint32* PDWORD;     ///< Pointer to a DWORD.
+    typedef int32   LONG;       ///< Windows-compatible signed 32 bit integer.
+    typedef uint32  ULONG;      ///< Windows-compatible unsigned 32 bit integer.
+    typedef void *  LPVOID;     ///< Generic pointer.
+    typedef void *  PVOID;      ///< Generic pointer.
+    typedef void    VOID;       ///< Windows-compatible void.
+    typedef uint64  ULONGLONG;  ///< Windows-compatible unsigned 64 bit integer.
+    /**
+     * @brief Windows-compatible 64 bit integer (declared unsigned here).
+     */
     typedef uint64  LONGLONG;
+    /**
+     * @brief Windows-compatible boolean stored in a BYTE.
+     */
     typedef BYTE    BOOLEAN;
 
     #ifndef GUID_DEFINED    // <ntddk.h>  - ring0 include file
         #ifdef XSTL_LINUX
+            /**
+             * @brief Windows far-pointer qualifier; empty on this platform.
+             */
             #define FAR
         #else
-            #define FAR far
+            #define FAR far ///< Windows far-pointer qualifier.
         #endif
-        typedef int        BOOL;
-        #define TRUE    (0==0)
-        #define FALSE   (1==0)
+        typedef int        BOOL;   ///< Windows-compatible boolean type.
+        #define TRUE    (0==0)     ///< Boolean true.
+        #define FALSE   (1==0)     ///< Boolean false.
     #endif //GUID_DEFINED
 
-    #define UNALIGNED
-    #define NTAPI
+    #define UNALIGNED  ///< Windows unaligned-pointer qualifier; empty here.
+    #define NTAPI      ///< Windows NT calling-convention qualifier; empty here.
 #endif //_WINDEF_
 
 #ifndef XSTL_16BIT
     #if defined(XSTL_64BIT)
-        // 64 bit.
+        /**
+         * @brief @brief The largest value of a signed `int` (64 bit targets:
+         *   2^63 - 1).
+         */
         #define MAX_INT (0x7FFFFFFFFFFFFFFFL)
     #elif defined(XSTL_32BIT)
-        // 32 bit.
+        /**
+         * @brief @brief The largest value of a signed `int` (32 bit targets:
+         *   2^31 - 1).
+         */
         #define MAX_INT (0x7FFFFFFF)
     #endif
 #else
-    // 16 bit
+    /**
+     * @brief @brief The largest value of a signed `int` (16 bit targets: 2^15 -
+     *   1).
+     */
     #define MAX_INT (0x7FFF)
 #endif
 
+/** @brief The largest value of a signed 32 bit integer. */
 #define MAX_INT32  (0x7FFFFFFF)
+/** @brief The largest value of an unsigned 32 bit integer. */
 #define MAX_UINT32 (0xFFFFFFFF)
 
-/*
- * For getting the number of elements inside an array
+/**
+ * @brief Get the number of elements inside a (statically sized) array.
+ *
+ * @param n The array.
  */
 #define arraysize(n) (sizeof(n)/sizeof(n[0]))
 
@@ -317,18 +414,26 @@ void* getPtr(addressNumericValue address);
  * The normal counting size. Used in Counter.h
  */
 #if (!(defined(XSTL_NTDDK) || defined(XSTL_WINDOWS)))
-    // All platforms
+    /**
+     * @brief @brief The counter type used by cCounter (a plain `int` on this
+     *   platform).
+     */
     typedef int counter_t;
 #else
-    // Windows
+    /**
+     * @brief @brief The counter type used by cCounter (a LONG, for the Windows
+     *   interlocked functions).
+     */
     typedef LONG counter_t;
 #endif
 
-/*
- * Remark: you can comment your code by writing:
- *    REMARK Author: Elad Raz
- * instead of:
- *        // Author: Elad Raz
+/**
+ * @brief Remark: you can comment your code by writing: REMARK Author: Elad Raz
+ *   instead of:
+ *
+ * @code
+ * // Author: Elad Raz
+ * @endcode
  */
 #define REMARK    /##/
 
@@ -337,13 +442,13 @@ void* getPtr(addressNumericValue address);
  */
 #include "xStl/exceptions.h"
 
-/*
- * Return codes
+/**
+ * @brief Return code of a successful operation.
  *
- * Definitions of normal return code from function.
- * The return type is: int.
+ * Return codes are of type `int`.
  */
 #define RC_OK    (0)
+/** @brief Return code of a failed operation. */
 #define RC_ERROR (1)
 
 /*
@@ -355,14 +460,51 @@ void* getPtr(addressNumericValue address);
 #ifndef DOT_NET
 // Normal C++ application
 #ifndef _DEBUG
-    // Release version
+    /**
+     * @brief Unconditionally throw an assertion exception (release build).
+     *
+     * @throws cException (EXCEPTION_ASSERTION) always.
+     */
     #define CHECK_FAIL() XSTL_THROW(cException, NULL, EXCEPTION_ASSERTION);
+    /**
+     * @brief Throw an assertion exception if the condition is false (release
+     *    build).
+     *
+     * Active in both release and debug builds. In a release build the message
+     * is not used.
+     *
+     * @param n   The condition that must be true.
+     * @param msg A message describing the failure (reported through TRACE in
+     *    debug builds).
+     * @throws cException (EXCEPTION_ASSERTION) if @a n is false.
+     */
     #define CHECK_MSG(n,msg) if (!(n)) { XSTL_THROW(cException, NULL, EXCEPTION_ASSERTION); }
+    /**
+     * @brief Throw an assertion exception if the condition is false.
+     *
+     * Active in both release and debug builds. In a debug build the failed
+     * expression, file and line are traced before the exception is thrown.
+     *
+     * @param n The condition that must be true.
+     * @throws cException (EXCEPTION_ASSERTION) if @a n is false.
+     */
     #define CHECK(n) if (!(n)) { CHECK_FAIL(); }
 #else
-    // Debug version
+    /**
+     * @brief Unconditionally throw an assertion exception (debug build).
+     *
+     * @throws cException (EXCEPTION_ASSERTION) always.
+     */
     #define CHECK_FAIL() XSTL_THROW(cException, NULL, EXCEPTION_ASSERTION);
+    /**
+     * @brief @brief Throw an assertion exception if the condition is false; the
+     *   message is traced in debug builds.
+     */
     #define CHECK_MSG(n,msg) if (!(n)) { TRACE(TRACE_MEDIUM, msg); XSTL_THROW(cException, EXCEPTION_ASSERTION); }
+    /**
+     * @brief @brief Throw an assertion exception if the condition is false; the
+     *   failed expression, file and line are traced.
+     */
     #define CHECK(n)     if (!(n)) { TRACE(TRACE_VERY_HIGH, XSTL_STRING("CHECK FAILED at ") XSTL_FILE XSTL_STRING("(") XSTL_LINE XSTL_STRING(") : ") XSTL_STRING(#n) XSTL_STRING("\n")); XSTL_THROW(cException, XSTL_STRING(#n), EXCEPTION_ASSERTION); }
 #endif
 #else
@@ -381,14 +523,34 @@ void* getPtr(addressNumericValue address);
 #endif
 
 #ifdef XSTL_LINUX
+    /**
+     * @brief @brief Placed before a packed struct (empty on this platform).
+     *   @see XSTL_PACKED
+     */
     #define XSTL_PACKED_HEADER
+    /**
+     * @brief @brief Placed after a packed struct (empty on this platform). @see
+     *   XSTL_PACKED
+     */
     #define XSTL_PACKED_FOOTER
+    /**
+     * @brief @brief Attribute that removes the padding between struct members
+     *   (GCC `packed`).
+     */
     #define XSTL_PACKED __attribute__((__packed__))
 #else
+    /**
+     * @brief @brief Attribute that removes the padding between struct members
+     *   (empty here; use XSTL_PACKED_HEADER/FOOTER).
+     */
     #define XSTL_PACKED
+    /** @brief Placed before a packed struct (empty here). @see XSTL_PACKED */
     #define XSTL_PACKED_HEADER
+    /** @brief Placed after a packed struct (empty here). @see XSTL_PACKED */
     #define XSTL_PACKED_FOOTER
 #endif
 
 
+
+/** @} */
 #endif //__TBA_STL_TYPES_H

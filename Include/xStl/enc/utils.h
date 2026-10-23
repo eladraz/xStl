@@ -32,35 +32,41 @@
 #ifndef __TBA_STL_ENCRYPTION_UTILS_H
 #define __TBA_STL_ENCRYPTION_UTILS_H
 
-/*
- * random.h
+/**
+ * @addtogroup xstl_enc_random
+ * @{
+ */
+
+/**
+ * @file utils.h
+ * @brief Defines static functions commonly used in encryption.
  *
- * Defines static functions commonly used in encryption.
- *
- * Author: Elad Raz <e@eladraz.com>
+ * @author Elad Raz
  */
 #include "xStl/types.h"
 #include "xStl/data/array.h"
 
 
-/*
- * class cUtils
- *
- * Utilities.
+/**
+ * @brief Static helper functions for encryption algorithms.
  */
 class cEncryptionUtils
 {
 public:
-    /*
-     * Fast xor two buffers. The 'source' buffer xored with the 'dest' buffer
+    /**
+     * @brief Fast xor two buffers.
      *
-     * source - The source buffer to be xored.
-     * dest   - The buffer to xor with.
-     * length - Number of BYTES to xor.
+     * @details The 'source' buffer xored with the 'dest' buffer
+     *
+     * @param source The source buffer to be xored.
+     * @param dest The buffer to xor with.
+     * @param length Number of BYTES to xor.
      */
     static void _xor(void* source,
                     const void* dest,
                     uint length);
 };
 
+
+/** @} */
 #endif // __TBA_STL_ENCRYPTION_UTILS_H

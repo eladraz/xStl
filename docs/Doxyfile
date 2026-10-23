@@ -1,0 +1,97 @@
+# Production Doxygen configuration for the xStl API reference.
+#
+# Run from the repository root:   doxygen docs/Doxyfile
+# (see docs/README.md for the make/PowerShell entry points)
+#
+# Only options that differ from the Doxygen defaults are listed.
+
+#---------------------------------------------------------------------------
+# Project
+#---------------------------------------------------------------------------
+PROJECT_NAME           = "xStl"
+PROJECT_BRIEF          = "Cross-platform C++ library of generic templates with an OS abstraction layer"
+OUTPUT_DIRECTORY       = docs/build
+CREATE_SUBDIRS         = NO
+FULL_PATH_NAMES        = YES
+STRIP_FROM_PATH        = Include
+STRIP_FROM_INC_PATH    = Include
+OUTPUT_LANGUAGE        = English
+
+#---------------------------------------------------------------------------
+# Input
+#---------------------------------------------------------------------------
+INPUT                  = Include/xStl docs/groups.dox README.md
+FILE_PATTERNS          = *.h *.dox *.md
+RECURSIVE              = YES
+EXAMPLE_PATH           = docs/examples tests
+EXAMPLE_PATTERNS       = *.cpp
+USE_MDFILE_AS_MAINPAGE = README.md
+INCLUDE_PATH           = Include
+SEARCH_INCLUDES        = YES
+
+#---------------------------------------------------------------------------
+# Preprocessing. The platform macros are predefined so that the Windows-only
+# headers and the Unicode / 64-bit variants of the API appear in the reference.
+#---------------------------------------------------------------------------
+ENABLE_PREPROCESSING   = YES
+MACRO_EXPANSION        = NO
+PREDEFINED             = WIN32 XSTL_UNICODE XSTL_64BIT DOXYGEN
+
+#---------------------------------------------------------------------------
+# Extraction
+#---------------------------------------------------------------------------
+EXTRACT_ALL            = YES
+EXTRACT_PRIVATE        = NO
+EXTRACT_PACKAGE        = NO
+EXTRACT_STATIC         = YES
+EXTRACT_LOCAL_CLASSES  = YES
+EXTRACT_ANON_NSPACES   = NO
+BRIEF_MEMBER_DESC      = YES
+REPEAT_BRIEF           = YES
+JAVADOC_AUTOBRIEF      = NO
+MARKDOWN_SUPPORT       = YES
+AUTOLINK_SUPPORT       = YES
+SORT_MEMBER_DOCS       = NO
+GENERATE_TODOLIST      = YES
+GENERATE_BUGLIST       = YES
+SHOW_INCLUDE_FILES     = YES
+SHOW_USED_FILES        = YES
+
+#---------------------------------------------------------------------------
+# Messages. The check target (docs/Doxyfile.check) turns EXTRACT_ALL off and
+# promotes warnings to errors.
+#---------------------------------------------------------------------------
+QUIET                  = YES
+WARNINGS               = YES
+WARN_IF_UNDOCUMENTED   = YES
+WARN_IF_DOC_ERROR      = YES
+WARN_IF_INCOMPLETE_DOC = YES
+WARN_NO_PARAMDOC       = YES
+WARN_AS_ERROR          = NO
+WARN_FORMAT            = "$file:$line: $text"
+WARN_LOGFILE           = docs/build/doxygen-warnings.log
+
+#---------------------------------------------------------------------------
+# Output: HTML + XML (XML is the input for Sphinx/Breathe and AI tooling)
+#---------------------------------------------------------------------------
+GENERATE_HTML          = YES
+HTML_OUTPUT            = html
+HTML_DYNAMIC_SECTIONS  = NO
+GENERATE_TREEVIEW      = YES
+SOURCE_BROWSER         = YES
+INLINE_SOURCES         = NO
+REFERENCED_BY_RELATION = YES
+REFERENCES_RELATION    = YES
+VERBATIM_HEADERS       = YES
+ALPHABETICAL_INDEX     = YES
+GENERATE_XML           = YES
+XML_OUTPUT             = xml
+XML_PROGRAMLISTING     = YES
+GENERATE_LATEX         = NO
+GENERATE_RTF           = NO
+GENERATE_MAN           = NO
+
+#---------------------------------------------------------------------------
+# Diagrams (Graphviz is optional; the reference builds without it)
+#---------------------------------------------------------------------------
+HAVE_DOT               = NO

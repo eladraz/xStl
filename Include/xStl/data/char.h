@@ -32,17 +32,22 @@
 #ifndef __TBA_STL_CHAR_H
 #define __TBA_STL_CHAR_H
 
-/*
- * char.h
+/**
+ * @addtogroup xstl_data_strings
+ * @{
+ */
+
+/**
+ * @file char.h
+ * @brief The default character handler for the operating system.
  *
- * The default character handler for the operating system. The OS can provide
- * support for the normal 'char*' character which is the ANSI 8bit character  or it
- * can support some other type of character, most likely it will be 16bit chars
- * which provides access to all characters in almost all languages.
- * The char file defines the character set to be used when compiling the xStl
- * package and all applications written for it.
+ * @details The OS can provide support for the normal 'char*' character which is
+ *    the ANSI 8bit character or it can support some other type of character,
+ *    most likely it will be 16bit chars which provides access to all characters
+ *    in almost all languages. The char file defines the character set to be
+ *    used when compiling the xStl package and all applications written for it.
  *
- * Author: Elad Raz <e@eladraz.com>
+ * @author Elad Raz
  */
 #include "xStl/types.h"
 
@@ -52,21 +57,32 @@
 #if (defined(XSTL_WINDOWS) || defined(XSTL_CE) || defined(XSTL_LINUX) || defined(XSTL_NTDDK))
     #define unichar wchar_t
 #else
+    /**
+     * @brief The unicode character type. Defined as `wchar_t` on Windows, CE,
+     *    Linux and NTDDK, otherwise a 16 bit unsigned integer.
+     */
     typedef uint16 unichar;
 #endif
 #ifndef XSTL_UNICODE
-    // The characters in the system are normal char*
+    /**
+     * @brief The characters in the system are normal char*
+     */
     typedef char character;
 #else
-    // UNICODE
-    // The characters in the system are wide-char
+    /**
+     * @brief UNICODE The characters in the system are wide-char
+     */
     typedef unichar character;
 #endif // XSTL_UNICODE
 
-// The string typedef
+/**
+ * @brief The string typedef
+ */
 typedef character* lpString;
 
-// The endl character string
+/**
+ * @brief The endl character string
+ */
 extern character* endl;
 
 /*
@@ -74,226 +90,324 @@ extern character* endl;
  * in the application
  */
 #ifndef XSTL_UNICODE
+    /**
+     * @brief Convert an ASCII string literal into the string format of the
+     *    application (narrow when XSTL_UNICODE is not defined).
+     *
+     * @param string The string literal.
+     */
     #define XSTL_STRING(string) string
+    /**
+     * @brief Convert an ASCII character literal into the character format of
+     *    the application (narrow when XSTL_UNICODE is not defined).
+     *
+     * @param ch The character literal.
+     */
     #define XSTL_CHAR(ch) ch
 #else
-    // UNICODE
+    /**
+     * @brief UNICODE
+     *
+     * @param string The string literal.
+     */
     #define XSTL_STRING(string) L##string
+    /**
+     * @brief Convert an ASCII character literal into the character format of
+     *    the application (wide when XSTL_UNICODE is defined).
+     *
+     * @param ch The character literal.
+     */
     #define XSTL_CHAR(ch)       L##ch
 #endif
 
-/*
- * The OS_CSTRING converts XSTL strings into operating system const strings.
- * Used for compilers which are sensitive to typedef declarations.
+/**
+ * @brief Helper for XSTL_NUM2STR. Stringify the macro argument without
+ *    expanding it.
+ *
+ * @param x The token to stringify.
  */
 #define XSTL_NUM2STR2(x) #x
+/**
+ * @brief Stringify the macro argument after macro expansion (for example
+ *    `__LINE__`).
+ *
+ * @param x The token to expand and stringify.
+ */
 #define XSTL_NUM2STR(x) XSTL_NUM2STR2(x)
+/**
+ * @brief Helper for XSTL_WIDEN. Prefix the argument with `L`.
+ *
+ * @param x The string literal to widen.
+ */
 #define XSTL_WIDEN2(x) L ## x
+/**
+ * @brief Widen a string literal after macro expansion (for example `__FILE__`).
+ *
+ * @param x The string literal to widen.
+ */
 #define XSTL_WIDEN(x) XSTL_WIDEN2(x)
 
 #ifndef XSTL_UNICODE
-    // ASCII
+    /**
+     * @brief Convert an XSTL string into an operating system constant string
+     *    (narrow build).
+     *
+     * Used for compilers which are sensitive to typedef declarations.
+     *
+     * @param string The string to convert.
+     */
     #define OS_CSTRING(string) (const char*)(string)
+    /**
+     * @brief The current source file name as an XSTL string literal.
+     */
     #define XSTL_FILE __FILE__
+    /**
+     * @brief The current source line number as an XSTL string literal.
+     */
     #define XSTL_LINE XSTL_NUM2STR(__LINE__)
 #else
-    // UNICODE
+    /**
+     * @brief Convert an XSTL string into an operating system constant string
+     *    (wide build).
+     *
+     * Used for compilers which are sensitive to typedef declarations.
+     *
+     * @param string The string to convert.
+     */
     #define OS_CSTRING(string) (const wchar_t*)(string)
+    /**
+     * @brief The current source file name as an XSTL string literal.
+     */
     #define XSTL_FILE XSTL_WIDEN(__FILE__)
+    /**
+     * @brief The current source line number as an XSTL string literal.
+     */
     #define XSTL_LINE XSTL_WIDEN(XSTL_NUM2STR(__LINE__))
 #endif
 
-/*
- * class cChar
- *
- * Static functions for handling characters
+/**
+ * @brief Static functions for handling characters
  */
 class cChar
 {
 public:
-    /*
-     * Returns the null-terminating character for strings.
+    /**
+     * @brief Returns the null-terminating character for strings.
+     *
+     * @return The null-terminating character for strings.
      */
     static character getNullCharacter();
 
-    /*
-     * Returns the string length for 'string'
+    /**
+     * @brief Returns the string length for 'string'
      *
-     * string - The string to calculate the length on
+     * @param string The string to calculate the length on
+     * @return The string length for 'string'.
      */
     static uint getStrlen(const character* string);
 
-    /*
-     * Returns the uppercase character for a single character.
+    /**
+     * @brief Returns the uppercase character for a single character.
      *
-     * ch - The character to be uppercase
+     * @details The most important thing about this function is that two
+     *    characters with
+     *   the same meaning in the language (Such as 'a' and 'A' or in the Hebrew
+     *   language 'Mem' and the final 'Mem' have the same meaning) will be equal
+     *   with operator == after a call to this function.
      *
-     * The most important thing about this function is that two characters with
-     * the same meaning in the language (Such as 'a' and 'A' or in the Hebrew
-     * language 'Mem' and the final 'Mem' have the same meaning) will be equal
-     * with operator == after a call to this function.
+     * @param ch The character to be uppercase
+     * @return The uppercase character for a single character.
      */
     static character getUppercase(character ch);
 
-    /*
-     * Returns the lowercase character for a single character.
+    /**
+     * @brief Returns the lowercase character for a single character.
      *
-     * ch - The character to be uppercase
+     * @details See getUppercase note
      *
-     * See getUppercase note
+     * @param ch The character to be uppercase
+     * @return The lowercase character for a single character.
      */
     static character getLowercase(character ch);
 
-    /*
-     * Return true if the character 'ch' is printable.
+    /**
+     * @brief Return true if the character 'ch' is printable.
+     *
+     * @return True if the character 'ch' is printable.
+     * @param ch The character to test.
      */
     static bool isPrintable(character ch);
 
-    /*
-     * Returns true if the character is a blank character. Blank is the space
-     * character ' ', the tab character '\t' or any space in all languages.
+    /**
+     * @brief Returns true if the character is a blank character.
+     *
+     * @details Blank is the space character ' ', the tab character '\\t' or any
+     *    space in all languages.
+     *
+     * @return True if the character is a blank character.
+     * @param ch The character to test.
      */
     static bool isBlank(character ch);
 
-    /*
-     * Returns true if the character is '\r' or '\n' character.
+    /**
+     * @brief Returns true if the character is '\\r' or '\\n' character.
+     *
+     * @return True if the character is '\\r' or '\\n' character.
+     * @param ch The character to test.
      */
     static bool isNewLine(character ch);
 
-    /*
-     * Returns true if the character is a digit character (0..9 or other languages)
+    /**
+     * @brief Returns true if the character is a digit character (0..9 or other
+     *   languages)
+     *
+     * @return True if the character is a digit character (0..9 or other
+     *    languages).
+     * @param ch The character to test.
      */
     static bool isDigit(character ch);
 
-    /*
-     * Returns true if the character is one of the braces characters, such as:
-     * {, } or [, ] or (,)
+    /**
+     * @brief Returns true if the character is one of the braces characters,
+     *    such as: {,
+     *   } or [, ] or (,)
+     *
+     * @return True if the character is one of the braces characters, such as:
+     *    {, } or [, ] or (,).
+     * @param ch The character to test.
      */
     static bool isBraces(character ch);
 
-    /*
-     * Returns true if the character is one of the line separator marks, such as:
-     * dot('.') comma(,) or semicolon(';')
+    /**
+     * @brief Returns true if the character is one of the line separator marks,
+     *    such as:
+     *   dot('.') comma(,) or semicolon(';')
+     *
+     * @return True if the character is one of the line separator marks, such
+     *    as: dot('.') comma(,) or semicolon(';').
+     * @param ch The character to test.
      */
     static bool isSeparator(character ch);
 
     /**
-     * Try to convert a digit into a number.
+     * @brief Convert a digit character into its numeric value.
      *
-     * Throws an exception, only in debug mode, if the character is not a digit!
+     * @param ch The digit character.
+     * @return The numeric value of the digit.
+     * @throws cException in debug mode only, if the character is not a digit.
      */
     static uint getDigit(character ch);
 
-    /*
-     * Return true if the character is a letter.
+    /**
+     * @brief Return true if the character is a letter.
+     *
+     * @return True if the character is a letter.
+     * @param ch The character to test.
      */
     static bool isLetter(character ch);
 
-    /*
-     * The libC 'strcmp' function with the 'character' string. The function
-     * acts exactly as the libC function.
+    /**
+     * @brief The libC 'strcmp' function with the 'character' string.
+     *
+     * @details The function acts exactly as the libC function.
      *
      * Compare strings.
      *
-     * string1 - Null-terminated strings to compare
-     * string2 - Null-terminated strings to compare
-     *
-     * Returns value:
-     * < 0 string1 less than string2
-     * 0   string1 identical to string2
-     * > 0 string1 greater than string2
+     * @param string1 Null-terminated strings to compare
+     * @param string2 Null-terminated strings to compare
+     * @return Value: \< 0 string1 less than string2 0 string1 identical to
+     *    string2 \> 0 string1 greater than string2.
      */
     static int strcmp(const character* string1, const character* string2);
 
-    /*
-     * The libC 'stricmp' function with the 'character' string. The function
-     * acts exactly as the libC function.
+    /**
+     * @brief The libC 'stricmp' function with the 'character' string.
      *
-     * Compare case-insensitive strings. (Perform an uppercase comparison of strings)
+     * @details The function acts exactly as the libC function.
      *
-     * string1 - Null-terminated strings to compare
-     * string2 - Null-terminated strings to compare
+     * Compare case-insensitive strings. (Perform an uppercase comparison of
+     * strings)
      *
-     * Returns value:
-     * < 0 string1 less than string2
-     * 0   string1 identical to string2
-     * > 0 string1 greater than string2
+     * @param string1 Null-terminated strings to compare
+     * @param string2 Null-terminated strings to compare
+     * @return Value: \< 0 string1 less than string2 0 string1 identical to
+     *    string2 \> 0 string1 greater than string2.
      */
     static int stricmp(const character* string1, const character* string2);
 
-    /*
-     * The libC 'strncpy' function with the 'character' string. The function
-     * acts exactly as the libC function.
+    /**
+     * @brief The libC 'strncpy' function with the 'character' string.
+     *
+     * @details The function acts exactly as the libC function.
      *
      * This is the libC definition:
-     *   Copy characters of one string to another. The strncpy function copies
-     *   the initial count characters of strSource to strDest and returns
-     *   strDest. If count is less than or equal to the length of strSource, a
-     *   null character is not appended automatically to the copied string. If
-     *   count is greater than the length of strSource, the destination string
-     *   is padded with null characters up to length count. The behavior of
-     *   strncpy is undefined if the source and destination strings overlap.
+     * Copy characters of one string to another. The strncpy function copies
+     * the initial count characters of strSource to strDest and returns
+     * strDest. If count is less than or equal to the length of strSource, a
+     * null character is not appended automatically to the copied string. If
+     * count is greater than the length of strSource, the destination string
+     * is padded with null characters up to length count. The behavior of
+     * strncpy is undefined if the source and destination strings overlap.
      *
-     * IMPORTANT NOTE:
-     *   This version of strncpy puts a NULL terminating character at the 'count'
-     *   position to avoid buffer-overflows.
-     *
-     * strDest   - Destination string
-     * strSource - Source string
-     * count     - Number of characters to be copied
+     * @param strDest Destination string
+     * @param strSource Source string
+     * @param count Number of characters to be copied
+     * @warning This version of strncpy puts a NULL terminating character at the
+     *    'count' position to avoid buffer-overflows.
      */
     static void strncpy(character* strDest,
                         const character* strSource,
                         uint count);
 
-    /*
-     * Appends one string to the other. The function, similar to 'strncat'
-     * appends the 'source' string to the 'destination' string. But this
-     * function prevents overflow by taking into account the size of the
-     * destination string.
+    /**
+     * @brief Appends one string to the other.
      *
-     * strDest   - Destination string
-     * strSource - Source string
-     * count     - The number of characters of 'strDest'.
-     *             NOTE: This is the number of characters and not the number of
-     *                   bytes!
+     * @details The function, similar to 'strncat' appends the 'source' string
+     *    to the 'destination' string. But this function prevents overflow by
+     *    taking into account the size of the destination string.
+     *
+     * @param strDest Destination string
+     * @param strSource Source string
+     * @param count The number of characters of 'strDest'. NOTE: This is the
+     *    number of characters and not the number of bytes!
      */
     static void strappend(character* strDest,
                           const character* strSource,
                           uint count);
 
-    /*
-     * Translate a character to an ASCII character.
+    /**
+     * @brief Translate a character to an ASCII character.
      *
-     * ch - The xStl character.
-     *
-     * Return the ASCII value for the character or '?' for non-American
-     * characters
+     * @param ch The xStl character.
+     * @return The ASCII value for the character or '?' for non-American
+     *    characters.
      */
     static char convert2Ascii(const unichar ch);
 
-    /*
-     * Convert string into normal ASCII (7-bit per character) string.
-     * The conversion may lose non-American characters.
+    /**
+     * @brief Convert string into normal ASCII (7-bit per character) string.
      *
-     * output - Will be filled with the new ASCII string. The length of the
-     *          string is limited by 'outputLength'. In case the string is
-     *          bigger than the length of output, the string will be chopped.
-     * outputLength - The length in bytes that can be written to 'output'
-     * string - The original string
+     * @details The conversion may lose non-American characters.
+     *
+     * @param output Will be filled with the new ASCII string. The length of the
+     *    string is limited by 'outputLength'. In case the string is bigger than
+     *    the length of output, the string will be chopped.
+     * @param outputLength The length in bytes that can be written to 'output'
+     * @param string The original string
      */
     static void convert2Ascii(char* output,
                              uint  outputLength,
                              const unichar* string);
 
-    /*
-     * Convert a unicode string to a format which is used by this xStl
-     * compilation.
+    /**
+     * @brief Convert a unicode string to a format which is used by this xStl
+     *   compilation.
      *
-     * output - Will be filled with unicode string content.
-     * count  - Number of characters for 'output'
-     * string - The original string
-     * stringCharSize - Number of bytes per unicode string (1 for ASCII, 2 for windows wchar_t, 4 for linux wchar_t)
+     * @param output Will be filled with unicode string content.
+     * @param count Number of characters for 'output'
+     * @param string The original string
+     * @param stringCharSize Number of bytes per unicode string (1 for ASCII, 2
+     *    for windows wchar_t, 4 for linux wchar_t)
      */
     static void convert2string(character*  output,
                               uint        count,
@@ -301,5 +415,7 @@ public:
                               int         stringCharSize);
 };
 
+
+/** @} */
 #endif // __TBA_STL_CHAR_H
 

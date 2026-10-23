@@ -32,14 +32,20 @@
 #ifndef __TBA_STL_ASSERT_H
 #define __TBA_STL_ASSERT_H
 
-/*
- * assert.h
+/**
+ * @addtogroup xstl_except
+ * @{
+ */
+
+/**
+ * @file assert.h
+ * @brief Define the default ASSERT function for assertions.
  *
- * Define the default ASSERT function for assertions. The ASSERT function is declared
- * to be platform independent, which means it can work on the Windows version,
- * Linux version and other future OS.
+ * @details The ASSERT function is declared to be platform independent, which
+ *    means it can work on the Windows version, Linux version and other future
+ *    OS.
  *
- * Author: Elad Raz <e@eladraz.com>
+ * @author Elad Raz
  */
 #include "xStl/types.h"
 #include "xStl/data/char.h"
@@ -53,12 +59,16 @@
  */
 #ifdef _DEBUG
     #ifdef DOT_NET
-        // The .NOT assert macro
+        /**
+         * @brief The .NOT assert macro
+         */
         void assertFunction(bool condition, unsigned int line,
                             System::String^ file,
                             System::String^ msg);
     #else
-        // Normal C++ application
+        /**
+         * @brief Normal C++ application
+         */
         void assertFunction(bool condition, unsigned int line, const char* file, const character* msg);
     #endif
 #endif
@@ -84,19 +94,41 @@
 
 #ifdef _DEBUG
     #ifdef DOT_NET
-        // The .NOT assert macro
+        /**
+         * @brief The .NOT assert macro
+         */
         #define ASSERT(condition)          assertFunction(condition, __LINE__, __FILE__, XSTL_STRING(#condition) );
         #define ASSERT_MSG(condition, msg) assertFunction(condition, __LINE__, __FILE__, (msg));
         #define ASSERT_FAIL(msg)           assertFunction(false, __LINE__, __FILE__, (msg));
     #else
-        // Normal C++ application
+        /**
+         * @brief Normal C++ application
+         */
         #define ASSERT(condition)          assertFunction(condition, __LINE__, __FILE__, XSTL_STRING(#condition) );
         #define ASSERT_MSG(condition, msg) assertFunction(condition, __LINE__, __FILE__, (msg));
         #define ASSERT_FAIL(msg)           assertFunction(false, __LINE__, __FILE__, (msg));
     #endif // DOT_NET
 #else
+    /**
+     * @brief Assert that the condition is true (debug builds only). In release
+     *    builds the macro is empty.
+     *
+     * @param condition The condition which should be true.
+     */
     #define ASSERT(condition)
+    /**
+     * @brief Assert that the condition is true, with a message (debug builds
+     *    only).
+     *
+     * @param condition The condition which should be true.
+     * @param msg The message to report when the condition is false.
+     */
     #define ASSERT_MSG(condition, msg)
+    /**
+     * @brief Report an assertion failure with a message (debug builds only).
+     *
+     * @param msg The message to report.
+     */
     #define ASSERT_FAIL(msg)
 #endif
 
@@ -104,5 +136,7 @@
     #pragma warning(default: 4005)
 #endif
 
+
+/** @} */
 #endif // __TBA_STL_ASSERT_H
 

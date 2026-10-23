@@ -32,14 +32,19 @@
 #ifndef __TBA_STL_ENCRYPTION_DIGEST_HASH_H
 #define __TBA_STL_ENCRYPTION_DIGEST_HASH_H
 
+/**
+ * @addtogroup xstl_enc_digest
+ * @{
+ */
 
-/*
- * HashDigest.h
+
+/**
+ * @file HashDigest.h
+ * @brief Declare the cHashDigest class which implements all the basic hash
+ *    concepts
+ *   such as update, final, digest etc. (The division by block)
  *
- * Declare the cHashDigest class which implements all the basic hash concepts such
- * as update, final, digest etc. (The division by block)
- *
- * Author: Elad Raz <e@eladraz.com>
+ * @author Elad Raz
  */
 
 #include "xStl/types.h"
@@ -49,109 +54,154 @@
 #include "xStl/enc/digest.h"
 
 
-/*
- * class cMD5
- *
- * MD5 implementation class. Most of the code was taken from C code on the Internet.
+/**
+ * @brief MD5 implementation class. Most of the code was taken from C code on
+ *    the
+ *   Internet.
  */
 class cHashDigest : public cDigest,
                     public cEndian
 {
 public:
-    /*
-     * Constructor, copy-constructor and operator =.
+    /**
+     * @brief Constructor, copy-constructor and operator =.
      */
     cHashDigest();
+    /**
+     * @brief Copy-constructor.
+     *
+     * @param other The object to copy.
+     */
     cHashDigest(const cHashDigest& other);
+    /**
+     * @brief Assignment operator.
+     *
+     * @param other The object to copy from.
+     * @return A reference to this object.
+     */
     cHashDigest& operator = (const cHashDigest& other);
 
 
-    /* Virtual destructor */
+    /**
+     * @brief Virtual destructor
+     */
     virtual ~cHashDigest() {};
 
-    /*
-     * Reset the hash setting as this class just constructed.
-     * The implementation should override this function and reset the defined
-     * hash data.
+    /**
+     * @brief Reset the hash setting as this class just constructed.
      *
-     * IMPORTANT NOTE:
-     * In addition the function calls the base class reset function AT THE
-     * BEGINNING of the implementation.
+     * @details The implementation should override this function and reset the
+     *    defined hash data.
+     *
+     * @warning In addition the function calls the base class reset function AT
+     *    THE BEGINNING of the implementation.
      */
     virtual void reset();
 
-    /*
-     * Update the hash using a 'buffer' and its length.
+    /**
+     * @brief Update the hash using a 'buffer' and its length.
      *
-     * buffer - The bytes to be digest.
-     * length - The length of the buffer.
+     * @param buffer The bytes to be digest.
+     * @param length The length of the buffer.
      */
     virtual void update(const void* buffer, const uint32 length);
 
-    /*
-     * Return the current digest of the hash using for all previous call to
-     * 'update' from the last 'reset()'/construction call.
+    /**
+     * @brief Return the current digest of the hash using for all previous call
+     *    to
+     *   'update' from the last 'reset()'/construction call.
      *
-     * Return CONST amount of bytes.
+     * @return The current digest of the hash using for all previous call to
+     *    'update' from the last 'reset()'/construction call.
      */
     virtual cBuffer digest();
 
-    /*
-     * Return the number of bytes used for the digest.
+    /**
+     * @brief Return the number of bytes used for the digest.
+     *
+     * @return The number of bytes used for the digest.
      */
     virtual uint getDigestLength();
 
-    /*
-     * Clone the hash object.
+    /**
+     * @brief Clone the hash object.
      *
-     * Return new constructed object equal to my object.
+     * @return New constructed object equal to my object.
      */
     virtual cSmartPtr<cDigest> clone() = 0;
 
 protected:
-    // Copy hash data from other class
+    /**
+     * @brief Copy hash data from other class
+     *
+     * @param other The object to copy the hash data from.
+     */
     void copyFrom(const cHashDigest& other);
 
-    /*
-     * Constants for the Hash algorithm
+    /**
+     * @brief Return the length of the digest in 32 bit words.
+     *
+     * @return The length of the digest in 32 bit words.
      */
     virtual unsigned int getDigestLen() = 0;
+    /**
+     * @brief Return the length of a data block in 32 bit words.
+     *
+     * @return The length of a data block in 32 bit words.
+     */
     virtual unsigned int getDataLen() = 0;
 
-    /*
-     * Finalize the MD5 round. Pad the block and sum up the digest.
+    /**
+     * @brief Finalize the MD5 round.
+     *
+     * @details Pad the block and sum up the digest.
      */
     void HASHFinal();
 
-    /*
-     * Finalize one round of the block.
+    /**
+     * @brief Finalize one round of the block.
+     *
+     * @param block The block to process.
      */
     void HASHBlock(const uint8* block);
 
-    /*
-     * Perform the transformation over one full block of DATALEN 32-bit words.
+    /**
+     * @brief Perform the transformation over one full block of DATALEN 32-bit
+     *    words.
      *
-     * data - DATALEN 32bit words.
+     * @param data DATALEN 32bit words.
      */
     virtual void HASHTransform(uint32 *data) = 0;
 
-    // Digest
+    /**
+     * @brief Digest
+     */
     cArray<uint32> m_digest;
-    // Block count
-    uint32 m_count_l;
-    uint32 m_count_h;
-    // One block buffer
+    /**
+     * @brief Block count
+     */
+    uint32 m_count_l;   ///< The low part of the block count.
+    uint32 m_count_h;   ///< The high part of the block count.
+    /**
+     * @brief One block buffer
+     */
     cBuffer m_block;
-    uint32  m_blockSize;
+    uint32  m_blockSize;    ///< The size of a block in bytes.
 
-    // index into buffer
+    /**
+     * @brief index into buffer
+     */
     unsigned int m_index;
 
 private:
-    // Is the object constructed...
+    /**
+     * @brief Is the object constructed...
+     */
     bool m_isValid;
 };
 
 
+
+/** @} */
 #endif // __TBA_STL_ENCRYPTION_DIGEST_HASH_H
 

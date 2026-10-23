@@ -32,13 +32,18 @@
 #ifndef __TBA_XSTL_UTILS_DUMPMEMORY_H
 #define __TBA_XSTL_UTILS_DUMPMEMORY_H
 
-/*
- * dumpMemory.h
+/**
+ * @addtogroup xstl_data_dump
+ * @{
+ */
+
+/**
+ * @file dumpMemory.h
+ * @brief A module which translates a cVirtualMemoryAccesser into a human
+ *    readable
+ *   memory dump.
  *
- * A module which translates a cVirtualMemoryAccesser into a human readable
- * memory dump.
- *
- * Author: Elad Raz <e@eladraz.com>
+ * @author Elad Raz
  */
 #include "xStl/types.h"
 #include "xStl/os/fragmentsDescriptor.h"
@@ -50,28 +55,48 @@
  * See class DumpMemory
  */
 class DumpMemory;
+/**
+ * @brief Print a memory dump to a stringer stream.
+ *
+ * @param out The stream to print to.
+ * @param memory The memory dump object.
+ * @return The stream @a out.
+ */
 cStringerStream& operator << (cStringerStream& out,
                               const DumpMemory& memory);
 
 
-/*
- * Usage:
+/**
+ * @brief Dump a range of memory in a human readable (hexadecimal) format.
+ *
+ * @details Usage:
+ *
+ * @code
  * cout << DumpMemory(*local, 0, 100) << endl;
+ * @endcode
  */
 class DumpMemory {
 public:
-    // The default number of elements in a single output line.
-    enum { DEFAULT_NUMBER_OF_ELEMENTS_IN_LINE = 16 };
+    /**
+     * @brief The default number of elements in a single output line.
+     */
+    enum {
+        /**
+         * @brief The default number of elements in a single output line.
+         */
+        DEFAULT_NUMBER_OF_ELEMENTS_IN_LINE = 16
+    };
 
-    /*
-     * Default constructor. Setup the parameters to be used.
-     * See class intro.
+    /**
+     * @brief Default constructor. Setup the parameters to be used.
      *
-     * memory        - The object to be dumped
-     * startAddress  - The starting address range for the dump
-     * endAddress    - The ending address range for the dump
-     * relocation    - The relative addressing for the display.
-     * elementsCount - The number of elements in a single line
+     * @details See class intro.
+     *
+     * @param memory The object to be dumped
+     * @param startAddress The starting address range for the dump
+     * @param endAddress The ending address range for the dump
+     * @param relocation The relative addressing for the display.
+     * @param elementsCount The number of elements in a single line
      */
     DumpMemory(const cVirtualMemoryAccesser& memory,
                addressNumericValue startAddress,
@@ -79,15 +104,17 @@ public:
                addressNumericValue relocation = 0,
                uint elementsCount = DEFAULT_NUMBER_OF_ELEMENTS_IN_LINE);
 
-    /*
-     * Default constructor for pre-read memory. Setup the parameters to be
-     * used. See class intro.
+    /**
+     * @brief Default constructor for pre-read memory.
      *
-     * buffer       - The read buffer
-     * fragments    - The fragmentation of the same block
-     * startAddress - The address of the buffer
+     * @details Setup the parameters to be used. See class intro.
+     *
      * addressType  - The type of the remote-address
-     * elementsCount - The number of elements in a single line
+     *
+     * @param buffer The read buffer
+     * @param fragments The fragmentation of the same block
+     * @param startAddress The address of the buffer
+     * @param elementsCount The number of elements in a single line
      */
     DumpMemory(const cBuffer& buffer,
                const cFragmentsDescriptor& fragments,
@@ -95,7 +122,9 @@ public:
                uint elementsCount = DEFAULT_NUMBER_OF_ELEMENTS_IN_LINE);
 
 private:
-    // Deny operator = and copy-constructor
+    /**
+     * @brief Deny operator = and copy-constructor
+     */
     DumpMemory(const DumpMemory& other);
     DumpMemory& operator = (const DumpMemory& other);
 
@@ -103,27 +132,28 @@ private:
     friend cStringerStream& operator << (cStringerStream& out,
                                          const DumpMemory& memory);
 
-    /*
-     * This function dumps a single line to the output stream. The format of the
-     * trace is as follows:
-     *   ADDRESS    DATA                                     TEXT
-     *   00000000   496E 7374 616C 6C20-4661 696C 6564 0D0A  Install Failed..
-     * If the data stops before 'lineCount' then the format is
-     *   00000040   726E 616C 2065 7272-6F72 2E             rnal error.
+    /**
+     * @brief This function dumps a single line to the output stream.
      *
-     * pos       - The memory address to read the data
-     * count     - The number of elements to read
-     * data   - A buffer with at least 'count' elements. Used for optimization.
-     *          Avoids allocating and freeing the same buffer size over and over again
-     * out    - The stream to write the data to
+     * @details The format of the trace is as follows: ADDRESS DATA TEXT
+     *    00000000 496E 7374 616C 6C20-4661 696C 6564 0D0A Install Failed.. If
+     *    the data stops before 'lineCount' then the format is 00000040 726E
+     *    616C 2065 7272-6F72 2E rnal error.
+     *
+     * @param pos The memory address to read the data
+     * @param count The number of elements to read
+     * @param data A buffer with at least 'count' elements. Used for
+     *    optimization. Avoids allocating and freeing the same buffer size over
+     *    and over again
+     * @param out The stream to write the data to
      */
     void dumpLine(addressNumericValue pos,
                   uint count,
                   cBuffer& data,
                   cStringerStream& out) const;
 
-    /*
-     * See dumpLine
+    /**
+     * @see dumpLine
      */
     void internalDumpLine(const remoteAddressNumericValue& pos,
                           uint count,
@@ -131,26 +161,46 @@ private:
                           const cFragmentsDescriptor& fragments,
                           cStringerStream& out) const;
 
-    // Set to true to indicate which constructor is called
+    /**
+     * @brief Set to true to indicate which constructor is called
+     */
     bool m_shouldReadMemory;
-    // The number of elements in a line
+    /**
+     * @brief The number of elements in a line
+     */
     uint m_elementsCount;
 
-    // The starting address range
+    /**
+     * @brief The starting address range
+     */
     addressNumericValue m_startAddress;
-    // The ending address range
+    /**
+     * @brief The ending address range
+     */
     addressNumericValue m_endAddress;
-    // The relocation information
+    /**
+     * @brief The relocation information
+     */
     addressNumericValue m_relocation;
-    // The memory object
+    /**
+     * @brief The memory object
+     */
     const cVirtualMemoryAccesser* m_memory;
 
-    // The buffer content
+    /**
+     * @brief The buffer content
+     */
     const cBuffer* m_buffer;
-    // The buffer fragments descriptors
+    /**
+     * @brief The buffer fragments descriptors
+     */
     const cFragmentsDescriptor* m_fragments;
-    // The remote start address
+    /**
+     * @brief The remote start address
+     */
     remoteAddressNumericValue m_remoteAddress;
 };
 
+
+/** @} */
 #endif // __TBA_XSTL_UTILS_DUMPMEMORY_H

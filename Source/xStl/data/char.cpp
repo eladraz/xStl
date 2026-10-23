@@ -291,8 +291,10 @@ void cChar::convert2string(character*  output,
             case 2: output[i] = (character)(((uint16*)string)[i]); break;
             case 4: output[i] = (character)(((uint32*)string)[i]); break;
 #else
-            case 2: output[i] = convert2Ascii((character)(((uint16*)string)[i])); break;
-            case 4: output[i] = convert2Ascii((character)(((uint32*)string)[i])); break;
+            case 2: output[i] = convert2Ascii(
+                (character)(((uint16*)string)[i])); break;
+            case 4: output[i] = convert2Ascii(
+                (character)(((uint32*)string)[i])); break;
 #endif // XSTL_UNICODE
             default:
                 CHECK_FAIL();

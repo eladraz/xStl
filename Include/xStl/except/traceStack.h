@@ -32,19 +32,26 @@
 #ifndef __TBA_STL_EXCEPT_TRACESTACK_H
 #define __TBA_STL_EXCEPT_TRACESTACK_H
 
-/*
- * traceStack.h
+/**
+ * @addtogroup xstl_except
+ * @{
+ */
+
+/**
+ * @file traceStack.h
+ * @brief Defines the stack tracer
  *
- * Defines the stack tracer
- *
- * Author: Elad Raz <e@eladraz.com>
+ * @author Elad Raz
  */
 #include "xStl/types.h"
 
-/*
- * The function dumps the stack of the previous functions.
- * Note: Does not include the calling function
+/**
+ * @brief The function dumps the stack of the previous functions.
+ *
+ * @note Does not include the calling function
  */
 void traceStack();
 
+
+/** @} */
 #endif // __TBA_STL_EXCEPT_TRACESTACK_H

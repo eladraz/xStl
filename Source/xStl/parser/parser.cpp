@@ -210,7 +210,8 @@ cString Parser::readCString(bool isFirstLetter)
     // The first character must be a letter
     if (isFirstLetter)
     {
-        PARSER_INTERNAL_CHECK(cChar::isLetter(ch) || (ch == '_'), "Letter was expected");
+        PARSER_INTERNAL_CHECK(cChar::isLetter(ch) || (ch == '_'),
+                              "Letter was expected");
     }
 
     // Read the string
@@ -284,9 +285,11 @@ cString Parser::readSpecialString()
         if (ch == '$')
         {
             // Read a special mark.
-            PARSER_INTERNAL_CHECK(readChar() == '(', "Open brace was expected here");
+            PARSER_INTERNAL_CHECK(readChar() == '(',
+                                  "Open brace was expected here");
             cString add = readCString();
-            PARSER_INTERNAL_CHECK(readChar() == ')', "Close brace was expected here");
+            PARSER_INTERNAL_CHECK(readChar() == ')',
+                                  "Close brace was expected here");
             ret+= XSTL_CHAR('$'); ret+= XSTL_CHAR('(');
             ret+= add;
             ret+= XSTL_CHAR(')');
@@ -344,7 +347,8 @@ bool Parser::isCUnsignedInteger(uint* retNumber,
         }
         // Base 8 or hex number
         if (number[1] != 'x')
-            return false; // PARSER_INTERNAL_CHECK "Hexadecimal number was expected"
+            // PARSER_INTERNAL_CHECK "Hexadecimal number was expected"
+            return false;
         i = 2;
         isHex = true;
     }
@@ -562,8 +566,10 @@ void Parser::removeComments(char* stream, uint length)
     //   false means that we are outside a comment block
     bool isComment = false;
     // The type of the comment:
-    //   true means that the comment is of type '//' and a newline stops the comment
-    //   false means that the comment is of type '/*' and only '*/' stops the comment
+    //   true means that the comment is of type '//' and a newline stops the
+    // comment
+    //   false means that the comment is of type '/*' and only '*/' stops the
+    // comment
     bool isEndl = false;
     // The internal state, whether a '/' is found
     bool isMagicSlash = false;

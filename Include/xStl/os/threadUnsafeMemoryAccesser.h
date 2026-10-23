@@ -32,12 +32,16 @@
 #ifndef __TBA_STL_OS_THREADUNSAFEMEMORYACCESSER_H
 #define __TBA_STL_OS_THREADUNSAFEMEMORYACCESSER_H
 
-/*
- * threadUnsafeMemoryAccesser.h
+/**
+ * @addtogroup xstl_os
+ * @{
+ */
+
+/**
+ * @file threadUnsafeMemoryAccesser.h
+ * @brief Access virtual memory on the current thread on this machine.
  *
- * Access virtual memory on the current thread on this machine.
- *
- * Author: Elad Raz <e@eladraz.com>
+ * @author Elad Raz
  */
 #include "xStl/types.h"
 #include "xStl/data/endian.h"
@@ -45,77 +49,117 @@
 #include "xStl/os/fragmentsDescriptor.h"
 #include "xStl/os/virtualMemoryAccesser.h"
 
-/*
- * Write/read to/from the current virtual memory map.
+/**
+ * @brief Write/read to/from the current virtual memory map.
  *
- * NOTE: This class doesn't verify pointer validation.
- *       Assumes all calls must succeed.
+ * @note This class doesn't verify pointer validation. Assumes all calls must
+ *    succeed.
  */
 class cThreadUnsafeMemoryAccesser : public cVirtualMemoryAccesser {
 public:
-    // Use the default implementation
+    /**
+     * @brief Use the default implementation
+     */
     defaultEndianImpl;
 
-    /*
-     * Default constructor. Allow the application to block unneeded access to
-     * different memory blocks.
-     * When different values are supplied for 'start'..'end' than the memory location,
-     * 0 will be the 'start' and 'end-start' will be the end memory.
+    /**
+     * @brief Default constructor. Allow the application to block unneeded
+     *    access to
+     *   different memory blocks.
      *
-     * startAddress - The starting physical address that can be accessed
-     * endAddress   - The ending physical address that can be accessed
+     * @details When different values are supplied for 'start'..'end' than the
+     *    memory location, 0 will be the 'start' and 'end-start' will be the end
+     *    memory.
      *
      * An exception will be thrown for any out-of-range access.
+     *
+     * @param startAddress The starting physical address that can be accessed
+     * @param endAddress The ending physical address that can be accessed
      */
     cThreadUnsafeMemoryAccesser(addressNumericValue startAddress = 0,
         addressNumericValue endAddress = MAX_PHYSICAL_ADDRESS);
-    /*
-     * See cThreadUnsafeMemoryAccesser::cThreadUnsafeMemoryAccesser.
+    /**
+     * @brief Change the range [start..end] to [virtual..virtual+size], however
+     *    when
+     *   accessing 'virtual', the address will be translated to 'start'
      *
-     * Change the range [start..end] to [virtual..virtual+size], however
-     * when accessing 'virtual', the address will be translated to 'start'
+     * @see cThreadUnsafeMemoryAccesser::cThreadUnsafeMemoryAccesser
+     * @param startAddress The starting physical address that can be accessed.
+     * @param endAddress The ending physical address that can be accessed.
+     * @param virtualBase The virtual address which is translated to @a
+     *    startAddress.
      */
     cThreadUnsafeMemoryAccesser(addressNumericValue startAddress,
         addressNumericValue endAddress,
         addressNumericValue virtualBase);
 
-    /*
-     * Normal implementation. See VirtualMemoryAccesser::memread
-     * Ignore any fragmentation.
+    /**
+     * @brief Normal implementation. See VirtualMemoryAccesser::memread Ignore
+     *    any
+     *   fragmentation.
+     *
+     * @param address The address to read from.
+     * @param buffer The buffer which receives the data.
+     * @param length The number of bytes to read.
+     * @param fragments Ignored.
+     * @return True if the memory was read.
      */
     virtual bool memread(addressNumericValue address,
                          void* buffer,
                          uint length,
                          cFragmentsDescriptor* fragments = NULL) const;
 
-    /*
-     * Normal implementation. See VirtualMemoryAccesser::write
-     * Use memcpy in order to transfer the memory
+    /**
+     * @brief Normal implementation. See VirtualMemoryAccesser::write Use memcpy
+     *    in
+     *   order to transfer the memory
+     *
+     * @param address The address to write to.
+     * @param buffer The data to write.
+     * @param length The number of bytes to write.
+     * @return True if the memory was written.
      */
     virtual bool write(addressNumericValue address,
                        const void* buffer,
                        uint length);
 
-    /*
-     * Normal implementation. See VirtualMemoryAccesser::isWritableInterface
-     * Return true.
+    /**
+     * @brief Normal implementation. See
+     *    VirtualMemoryAccesser::isWritableInterface
+     *   Return true.
+     *
+     * @return True. The interface is writable.
      */
     virtual bool isWritableInterface() const;
 
 protected:
-    /*
-     * Perform relocation over 'address'.
-     * Throw an exception if the memory address is outside the context
+    /**
+     * @brief Perform relocation over 'address'.
+     *
+     * @param address The address to relocate.
+     * @return The relocated address.
+     * @throws cException if the memory address is outside the context
      */
     addressNumericValue getAddress(addressNumericValue address) const;
 
-    // The starting physical address that can be accessed
+    /**
+     * @brief The starting physical address that can be accessed
+     */
     addressNumericValue m_startAddress;
-    // The ending physical address that can be accessed
+    /**
+     * @brief The ending physical address that can be accessed
+     */
     addressNumericValue m_endAddress;
-    // The virtual name of 'startAddress'
+    /**
+     * @brief The virtual name of 'startAddress'
+     */
     bool m_isVirtualRelocation;
+    /**
+     * @brief The virtual address which is translated to the starting address.
+     */
     addressNumericValue m_virtualBase;
 };
 
+
+/** @} */
 #endif // __TBA_STL_OS_THREADUNSAFEMEMORYACCESSER_H

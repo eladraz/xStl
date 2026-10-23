@@ -81,7 +81,8 @@ void cHash<IndexType, FieldType>::freeHash()
 }
 
 template <class IndexType, class FieldType>
-void cHash<IndexType, FieldType>::append(const IndexType& index, const FieldType& data)
+void cHash<IndexType, FieldType>::append(const IndexType& index,
+                                           const FieldType& data)
 {
     // Test that the object is unique
     CHECK(!hasKey(index));
@@ -91,7 +92,8 @@ void cHash<IndexType, FieldType>::append(const IndexType& index, const FieldType
 
 	// Object doesn't found
 	// Add the element in the end of the list.
-	(*m_hash)[arrayPosition].append(cDualElement<IndexType, FieldType>(index, data));
+	(*m_hash)[arrayPosition].append(
+	    cDualElement<IndexType, FieldType>(index, data));
 }
 
 template <class IndexType, class FieldType>
@@ -209,7 +211,8 @@ FieldType & cHash<IndexType, FieldType>::operator [] (const IndexType &index)
 }
 
 template <class IndexType, class FieldType>
-const FieldType & cHash<IndexType, FieldType>::operator [] (const IndexType &index) const
+const FieldType & cHash<IndexType, FieldType>::operator [] (
+    const IndexType &index) const
 {
     // Compute the position of the element in the array
     uint arrayPosition = cHashFunction(index, m_hash->getSize());

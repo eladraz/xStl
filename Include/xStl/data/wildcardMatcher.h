@@ -32,34 +32,43 @@
 #ifndef __TBA_STL_WILDCARDMATCHER_H
 #define __TBA_STL_WILDCARDMATCHER_H
 
-/*
- * wildcardMatcher.h
+/**
+ * @addtogroup xstl_data_strings
+ * @{
+ */
+
+/**
+ * @file wildcardMatcher.h
+ * @brief Matches a string to a pattern.
  *
- * Matches a string to a pattern. The pattern can contain wildcard characters
- * such as '*' and '?'.
+ * @details The pattern can contain wildcard characters such as '*' and '?'.
  *
- * Author: Elad Raz <e@eladraz.com>
+ * @author Elad Raz
  */
 #include "xStl/types.h"
 #include "xStl/data/string.h"
 
-/*
- * Matches a string to a pattern. The pattern can contain wildcard characters
- * such as '*' and '?'.
+/**
+ * @brief Matches a string to a pattern.
+ *
+ * @details The pattern can contain wildcard characters such as '*' and '?'.
  */
 class cWildcardMatcher {
 public:
-    /*
-     * Return true if 'string' is valid by the 'wildcardPattern'
+    /**
+     * @brief Return true if 'string' is valid by the 'wildcardPattern'
      *
-     * string - The string to be tested
-     * wildcardPattern - The pattern to use
-     * isCaseSensitive - True means that the match is case sensitive,
-     *                   otherwise is case insensitive
+     * @param string The string to be tested
+     * @param wildcardPattern The pattern to use
+     * @param isCaseSensitive True means that the match is case sensitive,
+     *    otherwise is case insensitive
+     * @return True if 'string' is valid by the 'wildcardPattern'.
      */
     static bool match(const cString& string,
                       const cString& wildcardPattern,
                       bool isCaseSensitive = true);
 };
 
+
+/** @} */
 #endif // __TBA_STL_WILDCARDMATCHER_H

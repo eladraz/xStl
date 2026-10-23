@@ -32,47 +32,55 @@
 #ifndef __TBA_STL_OS_LOCKABLE_H
 #define __TBA_STL_OS_LOCKABLE_H
 
-/*
- * lockable.h
+/**
+ * @addtogroup xstl_os
+ * @{
+ */
+
+/**
+ * @file lockable.h
+ * @brief Defines the cLockableObject interface.
  *
- * Defines the cLockableObject interface. This interface is used to declare all
- * lockable objects. A lockable object is an object which acquires a resource or
- * holds down the thread (or code execution) while acquiring the resource.
+ * @details This interface is used to declare all lockable objects. A lockable
+ *    object is an object which acquires a resource or holds down the thread (or
+ *    code execution) while acquiring the resource.
  *
- * Author: Elad Raz <e@eladraz.com>
+ * @author Elad Raz
  */
 #include "xStl/types.h"
 
-/*
- * class cLockableObject
+/**
+ * @brief The lock object has two functions which are used for locking: lock()
+ *    and
+ *   unlock() These functions throw an exception in case of failure, which
+ *   terminates the code execution.
  *
- * The lock object has two functions which are used for locking: lock() and unlock()
- * These functions throw an exception in case of failure, which terminates the code
- * execution.
- * The implementation of those functions depends on the derived class
- * implementation code.
+ * @details The implementation of those functions depends on the derived class
+ *    implementation code.
  */
 class cLockableObject
 {
 public:
-    /*
-     * Default destructor. Allows dynamic memory allocation.
+    /**
+     * @brief Default destructor. Allows dynamic memory allocation.
      */
     virtual ~cLockableObject();
 
-    /*
-     * Try to acquire the resource
+    /**
+     * @brief Try to acquire the resource
      *
-     * Throws an exception in case of failure
+     * @throws cException in case of failure
      */
     virtual void lock() = 0;
 
-    /*
-     * Free the resource.
+    /**
+     * @brief Free the resource.
      *
-     * Throws an exception in case of failure
+     * @throws cException in case of failure
      */
     virtual void unlock() = 0;
 };
 
+
+/** @} */
 #endif //__TBA_STL_OS_LOCKABLE_H

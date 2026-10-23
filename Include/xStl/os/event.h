@@ -32,83 +32,99 @@
 #ifndef __TBA_STL_OS_EVENT_H
 #define __TBA_STL_OS_EVENT_H
 
-/*
- * event.h
+/**
+ * @addtogroup xstl_os
+ * @{
+ */
+
+/**
+ * @file event.h
+ * @brief Wrapper over operating system event objects
  *
- * Wrapper over operating system event objects
- *
- * Author: Elad Raz <e@eladraz.com>
+ * @author Elad Raz
  */
 #include "xStl/types.h"
 #include "xStl/data/string.h"
 #include "xStl/os/osdef.h"
 
-/*
- * An event is an operating system object which has two states: reset and set.
- * The operating system has an internal mechanism related to context switching which
- * allows freezing objects until one or more events are set.
- * Use this interface and 'setEvent/wait' to accomplish that functionality.
+/**
+ * @brief An event is an operating system object which has two states: reset and
+ *   set.
+ *
+ * @details The operating system has an internal mechanism related to context
+ *    switching which allows freezing objects until one or more events are set.
+ *    Use this interface and 'setEvent/wait' to accomplish that functionality.
  */
 class cEvent {
 public:
-    /*
-     * Construct a new event object.
-     * The new event state is reset.
+    /**
+     * @brief Construct a new event object.
      *
-     * Throw an exception if there aren't enough resources
+     * @details The new event state is reset.
+     *
+     * @throws cException if there aren't enough resources
      */
     cEvent();
 
-    /*
-     * Named constructor. Generate new named event or open named event.
+    /**
+     * @brief Named constructor. Generate new named event or open named event.
      *
-     * eventName    - The name of the event
-     * shouldCreate - Set to true if the event should be generated.
-     *                Set to false if the event should be opened
-     *
-     * Throw an exception if there aren't enough resources
+     * @param eventName The name of the event
+     * @param shouldCreate Set to true if the event should be generated. Set to
+     *    false if the event should be opened
+     * @throws cException if there aren't enough resources
      */
     cEvent(const cString& eventName, bool shouldCreate);
 
-    /*
-     * Destructor. Free the resources of the event
+    /**
+     * @brief Destructor. Free the resources of the event
      */
     ~cEvent();
 
-    /*
-     * Set the event
+    /**
+     * @brief Set the event
      */
     void setEvent();
 
-    /*
-     * Reset the event
+    /**
+     * @brief Reset the event
      */
     void resetEvent();
 
-    /*
-     * Return true if the event is set.
-     * Return false otherwise.
+    /**
+     * @brief Return true if the event is set.
+     *
+     * @details Return false otherwise.
+     *
+     * @return True if the event is set.
      */
     bool isEventSet() const;
 
-    /*
-     * Freeze the current thread until the event is set. If the event
-     * was in reset state, the function returns immediately.
-     * After the function returns, the event continues to be set until
-     * 'resetEvent' is called.
+    /**
+     * @brief Freeze the current thread until the event is set.
      *
-     * NOTE: For DDK development, IRQL must be PASSIVE_LEVEL
+     * @details If the event was in reset state, the function returns
+     *    immediately. After the function returns, the event continues to be set
+     *    until 'resetEvent' is called.
+     *
+     * @note For DDK development, IRQL must be PASSIVE_LEVEL
      */
     void wait() const;
 
-    /*
-     * Returns the OS handle of the event.
+    /**
+     * @brief Returns the OS handle of the event.
+     *
+     * @return The OS handle of the event.
      */
     cOSDef::eventHandle getHandle();
 
 private:
-    // The eventHandle
+    /**
+     * @brief The eventHandle
+     */
     cOSDef::eventHandle m_handle;
 };
 
+
+/** @} */
 #endif // __TBA_STL_OS_EVENT_H

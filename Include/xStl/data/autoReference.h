@@ -32,49 +32,83 @@
 #ifndef __TBA_XSTL_DATA_AUTOREFERENCE_H
 #define __TBA_XSTL_DATA_AUTOREFERENCE_H
 
-/*
- * autoReference.h
+/**
+ * @addtogroup xstl_data_pointers
+ * @{
+ */
+
+/**
+ * @file autoReference.h
+ * @brief Used to store reference into a list.
  *
- * Used to store reference into a list.
- * For example:
- *    cList<const ObjectType&> m_referencesList;
+ * @details For example:
+ *
+ * @code
+ * cList<const ObjectType&> m_referencesList;
+ * @endcode
+ *
  * is wrong since cList holds a copy of the object. Instead use the following
- * example:
- *    cList<cAutoReference<const ObjectType> > m_referencesList;
  *
- * Author: Elad Raz <e@eladraz.com>
+ * example:
+ *
+ * @code
+ * cList<cAutoReference<const ObjectType> > m_referencesList;
+ * @endcode
+ *
+ * @author Elad Raz
  */
 #include "xStl/types.h"
 
+/**
+ * @brief A copyable holder of a reference to an object, which can be stored in
+ *    containers.
+ *
+ * @tparam T The type of the referenced object.
+ */
 template <class T>
 class cAutoReference {
 public:
-    /*
-     * Constructor. Holds the object as a reference
+    /**
+     * @brief Constructor. Holds the object as a reference
+     *
+     * @param object The object to hold a reference to. The object must outlive
+     *    the cAutoReference.
      */
     cAutoReference(T& object);
 
-    /*
-     * Copy-constructor.
+    /**
+     * @brief Copy-constructor.
+     *
+     * @param other The cAutoReference to copy. The new instance refers to the
+     *    same object.
      */
     cAutoReference(const cAutoReference& other);
 
-    /*
-     * Operator =
+    /**
+     * @brief Operator =
+     *
+     * @param other The cAutoReference to assign from.
+     * @return A reference to this object.
      */
     cAutoReference& operator = (const cAutoReference& other);
 
-    /*
-     * Return the reference object
+    /**
+     * @brief Return the reference object
+     *
+     * @return The reference object.
      */
     T& getObject();
 
 private:
-    // The reference object
+    /**
+     * @brief The reference object
+     */
     T& m_object;
 };
 
 // Include implementation
 #include "xStl/data/autoReference.inl"
 
+
+/** @} */
 #endif // __TBA_XSTL_DATA_AUTOREFERENCE_H

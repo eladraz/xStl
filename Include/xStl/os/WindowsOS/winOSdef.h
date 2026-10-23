@@ -35,12 +35,18 @@
 #ifndef __TBA_STL_OS_WINOS_H
 #define __TBA_STL_OS_WINOS_H
 
-/*
- * winOSdef.h
+/**
+ * @addtogroup xstl_os_windows
+ * @{
+ */
+
+/**
+ * @file winOSdef.h
+ * @brief Types, struct definitions and constants needed for the Windows
+ *    operating
+ *   system
  *
- * Types, struct definitions and constants needed for the Windows operating system
- *
- * Author: Elad Raz <e@eladraz.com>
+ * @author Elad Raz
  */
 
 
@@ -53,43 +59,63 @@
 #include <winbase.h>
 
 namespace cOSDef {
-    // The mutexHandle
+    /**
+     * @brief The mutexHandle
+     */
     typedef HANDLE mutexHandle;
-    // The eventHandle
+    /**
+     * @brief The eventHandle
+     */
     typedef HANDLE eventHandle;
-    // The fileHandle
+    /**
+     * @brief The fileHandle
+     */
     typedef HANDLE fileHandle;
-    // The systemTime.
+    /**
+     * @brief The systemTime.
+     */
     typedef uint64 systemTime;
-    //The kernel device Handle
+    /**
+     * @brief The kernel device Handle
+     */
     typedef HANDLE deviceHandle;
-    // The OS exception code type
+    /**
+     * @brief The OS exception code type
+     */
     typedef DWORD exceptionCode;
-    // System-thread
+    /**
+     * @brief System-thread
+     */
     typedef HANDLE threadHandle;
 }; // namespace cOSDef
 
 
-// Consts
-#define INVALID_FILE_HANDLE (INVALID_HANDLE_VALUE)  // Invalid fileHandle
-#define INVALID_THREAD_HANDLE (0)                   // Invalid threadHandle
+/**
+ * @brief Consts
+ */
+#define INVALID_FILE_HANDLE (INVALID_HANDLE_VALUE)  ///< Invalid fileHandle
+#define INVALID_THREAD_HANDLE (0)                   ///< Invalid threadHandle
 
-/*
- * Handle reference count object. When the object is
+/**
+ * @brief Handle reference count object.
+ *
+ * @details When the object is
  */
 class cWinHandleStorage
 {
 public:
-    /*
-     * Constructor. Save the handle for the object
+    /**
+     * @brief Constructor. Save the handle for the object
+     *
+     * @param object The handle to store.
      */
     cWinHandleStorage(HANDLE object) :
         m_object(object)
     {
     }
 
-    /*
-     * Destructor. Close the handle.
+    /**
+     * @brief Destructor. Close the handle.
      */
     ~cWinHandleStorage()
     {
@@ -99,16 +125,22 @@ public:
         }
     }
 
-    /*
-     * Return the handle for the object
+    /**
+     * @brief Return the handle for the object
+     *
+     * @return The handle for the object.
      */
     HANDLE getHandle() const { return m_object; }
 
 private:
-    // The handle object.
+    /**
+     * @brief The handle object.
+     */
     HANDLE m_object;
 };
 
+
+/** @} */
 #endif // __TBA_STL_OS_WINOS_H
 
 #endif // WIN32

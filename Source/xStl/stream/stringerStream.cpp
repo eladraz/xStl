@@ -61,7 +61,8 @@ uint cStringerStream::write(const void* buffer, const uint length)
     // TODO! Add uint16 dump and uint32 dump...
     uint8* buf = (uint8*) buffer;
 
-    // Due to EVC compiler and gcc-4.0 compiler, moving the DATA8 as argument causes the compiler to mismatch the template
+    // Due to EVC compiler and gcc-4.0 compiler, moving the DATA8 as argument
+    // causes the compiler to mismatch the template
     // ;(
     DATA8 dump(buf, buf + length);
     hexDumpObject(*this, dump);
@@ -80,7 +81,8 @@ bool cStringerStream::flushBuffer(cString& ret)
 bool cStringerStream::flushEndlBuffer(cString& ret)
 {
     cLock lock(m_lock);
-    const cString els(endl); // was static, removed due to atexit() dependencies...
+    // was static, removed due to atexit() dependencies...
+    const cString els(endl);
     uint index = m_lineRepository.find(els);
     if (index == m_lineRepository.length())
         return false;

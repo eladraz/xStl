@@ -20,3 +20,7 @@ Makefile.in
 /README
 TEMP.TMP
 
+
+# Doxygen output
+/docs/build/
+!/docs/Makefile

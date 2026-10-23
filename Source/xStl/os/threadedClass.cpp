@@ -116,7 +116,8 @@ void* cThreadedClass::threadedClassThreadFunction(void* context)
                                             << endl);
     }
     // In Linux pthreads use force_unwind to cancel threads
-    // Catching all exceptions will cause immediate abortion of the entire program
+    // Catching all exceptions will cause immediate abortion of the entire
+    // program
     // Waiting for a normal fix
     //    - See: http://gcc.gnu.org/ml/gcc/2003-12/msg00743.html
 #ifndef XSTL_LINUX

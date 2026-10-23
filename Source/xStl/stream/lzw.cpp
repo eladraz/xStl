@@ -295,7 +295,8 @@ bool cLZWcompression::writeString(unsigned int pcode, cBitStream & stream)
 
 unsigned int cLZWcompression::copyStream(cBitStream &bits_pipe, cMemoryStream &mem, void *buffer)
 {
-    unsigned int length = bits_pipe.getDownStream()->getPointer(); /* It's a mem stream, and it's possible */
+    /* It's a mem stream, and it's possible */
+    unsigned int length = bits_pipe.getDownStream()->getPointer();
 
     /* Copy the data */
     cOS::memcpy((uint8 *)buffer, mem.getStream()->getBuffer(), length);

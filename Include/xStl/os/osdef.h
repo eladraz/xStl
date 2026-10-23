@@ -32,13 +32,19 @@
 #ifndef __TBA_STL_OS_OSDEF_H
 #define __TBA_STL_OS_OSDEF_H
 
-/*
- * osdef.h
+/**
+ * @addtogroup xstl_os
+ * @{
+ */
+
+/**
+ * @file osdef.h
+ * @brief Defines global data structures for the operating-system handles and
+ *    types.
  *
- * Defines global data structures for the operating-system handles and types.
- * The OS defs should define all types for all platforms.
+ * @details The OS defs should define all types for all platforms.
  *
- * Author: Elad Raz <e@eladraz.com>
+ * @author Elad Raz
  */
 #include "xStl/types.h"
 
@@ -79,5 +85,7 @@
     #error "Unknown platform implementation!!!"
 #endif
 
+
+/** @} */
 #endif // __TBA_STL_OS_OSDEF_H
 

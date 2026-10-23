@@ -1,0 +1,20 @@
+PROJECT_NAME           = "xStl"
+INPUT                  = Include/xStl
+FILE_PATTERNS          = *.h
+RECURSIVE              = YES
+EXTRACT_PRIVATE        = NO
+EXTRACT_STATIC         = YES
+GENERATE_HTML          = YES
+GENERATE_XML           = YES
+GENERATE_LATEX         = NO
+SOURCE_BROWSER         = YES
+HAVE_DOT               = NO
+QUIET                  = YES
+WARNINGS               = YES
+WARN_IF_UNDOCUMENTED   = YES
+WARN_IF_DOC_ERROR      = YES
+WARN_NO_PARAMDOC       = YES
+EXTRACT_ALL = NO
+OUTPUT_DIRECTORY = docs/build/baseline-audit
+WARN_LOGFILE = docs/build/baseline-audit.warnings.log
+

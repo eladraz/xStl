@@ -32,15 +32,20 @@
 #ifndef __TBA_STL_FILESTREAM_H
 #define __TBA_STL_FILESTREAM_H
 
-/*
- * fileStream.h
+/**
+ * @addtogroup xstl_stream
+ * @{
+ */
+
+/**
+ * @file fileStream.h
+ * @brief Platform-independent file-access interface using basicIO streaming
+ *   capabilities.
  *
- * Platform-independent file-access interface using basicIO streaming
- * capabilities.
+ * @details This file is compiled to both Linux (LIBC) and all Windows
+ *    platforms.
  *
- * This file is compiled to both Linux (LIBC) and all Windows platforms.
- *
- * Author: Elad Raz <e@eladraz.com>
+ * @author Elad Raz
  */
 
 #include "xStl/types.h"
@@ -52,174 +57,234 @@
 #include "xStl/stream/basicIO.h"
 #include "xStl/os/file.h"
 
-/*
- * cFileStream class
+/**
+ * @brief A basicIO stream over a file.
  *
- * BasicIO implementation of files. Single interface for reading and writing to
- * files for all platforms.
+ * @details BasicIO implementation of files. Single interface for reading and
+ *    writing to
+ *   files for all platforms.
  */
 class cFileStream : public basicIO
 {
 public:
-    /*
-     * Default constructor. Create a file object which doesn't connect to any
-     * physical file.
+    /**
+     * @brief Default constructor. Create a file object which doesn't connect to
+     *    any
+     *   physical file.
      */
     cFileStream();
 
-    /*
-     * Files will be treated as the default endian in the system
+    /**
+     * @brief Files will be treated as the default endian in the system
      */
     defaultEndianImpl;
 
-    /*
-     * Most common constructor. Create a stream according to an initialized file
-     * pointer.
+    /**
+     * @brief Most common constructor. Create a stream according to an
+     *    initialized file
+     *   pointer.
      *
-     * filePtr - The file to be used
+     * @details If the pointer is a NULL pointer, the function will act as the
+     *    default
+     *   constructor.
      *
-     * If the pointer is a NULL pointer, the function will act as the default
-     * constructor.
+     * @param filePtr The file to be used
      */
     cFileStream(const cFilePtr& filePtr);
 
     // Special function for the file interface
-    /*
-     * Construct a file object and open it for the 'filename' file with flags
-     * attributes.
+    /**
+     * @brief Construct a file object and open it for the 'filename' file with
+     *    flags
+     *   attributes.
      *
-     * filename - A string which represents the file on the disk for the current
-     *            operating system:
-     *              DOS/WINDOWS: c:\\windows\\notepad.exe
-     *              LINUX: /bin/ls
-     * flags - The open mode, creation mode and access mode for the file.
+     * @param filename A string which represents the file on the disk for the
+     *    current operating system: DOS/WINDOWS: c:\\\\windows\\\\notepad.exe
+     *    LINUX: /bin/ls
+     * @param flags The open mode, creation mode and access mode for the file.
      */
     cFileStream(const cString& filename,
                 const uint flags = cFile::READ);
 
 
-    /*
-     * Open a file according to a file-handle. Gets the attribute for accessing
-     * the file-object (Read only/Write only assertion)
+    /**
+     * @brief Open a file according to a file-handle.
      *
-     * handle - The handle for the file, according to the platform.
-     * flags - The open mode, creation mode and access mode for the file.
-     * closeHandle - Is the 'handle' should be close at dtor.
+     * @details Gets the attribute for accessing the file-object (Read
+     *    only/Write only assertion)
+     *
+     * @param handle The handle for the file, according to the platform.
+     * @param flags The open mode, creation mode and access mode for the file.
+     * @param closeHandle Is the 'handle' should be close at dtor.
      */
     void openHandle(const cOSDef::fileHandle& handle,
                     const uint flags = cFile::READ,
                     bool closeHandle = true);
 
-    /*
-     * Open the file name 'filename' using 'flags' as the open mode.
-     * For the Windows environment, the CreateFile() syscall is used and the flags are
-     * translated to the corresponding elements.
-     * For the Linux environment, the open() syscall is used. The flags are translated
-     * to the corresponding elements.
+    /**
+     * @brief Open the file name 'filename' using 'flags' as the open mode.
      *
-     * filename - A string which represents the file on the disk for the current
-     *            operating system:
-     *              DOS/WINDOWS: c:\\windows\\notepad.exe
-     *              LINUX: /bin/ls
-     * flags - The open mode, creation mode and access mode for the file.
+     * @details For the Windows environment, the CreateFile() syscall is used
+     *    and the flags are translated to the corresponding elements. For the
+     *    Linux environment, the open() syscall is used. The flags are
+     *    translated to the corresponding elements.
+     *
+     * @param filename A string which represents the file on the disk for the
+     *    current operating system: DOS/WINDOWS: c:\\\\windows\\\\notepad.exe
+     *    LINUX: /bin/ls
+     * @param flags The open mode, creation mode and access mode for the file.
      */
     void open(const cString& filename,
               const uint flags = cFile::READ);
 
-    /*
-     * Close the file if opened.
+    /**
+     * @brief Close the file if opened.
      */
     void close();
 
-    /*
-     * Return true if the file-handle is valid or false otherwise.
+    /**
+     * @brief Return true if the file-handle is valid or false otherwise.
+     *
+     * @return True if the file-handle is valid or false otherwise.
      */
     bool isOpen() const;
 
 
     // Derived from the basicIO
 
-    /*
-     * Read a buffer from the file. Implemented for both Windows and Linux platforms,
-     * using ReadFile() for Windows version and read() syscall for Linux platform.
+    /**
+     * @brief Read a buffer from the file.
      *
-     * Return the number of bytes read.
+     * @details Implemented for both Windows and Linux platforms, using
+     *    ReadFile() for Windows version and read() syscall for Linux platform.
+     *
      * Throws cFileStreamException in case of error.
+     *
+     * @return The number of bytes read.
+     * @param buffer The buffer which receives the data.
+     * @param length The number of bytes to read.
      */
     virtual uint read(void *buffer, const uint length);
 
-    /*
-     * Write a buffer to the file. Implemented for both Windows and Linux platforms,
-     * using WriteFile() for Windows version and write() syscall for the Linux version.
+    /**
+     * @brief Write a buffer to the file.
      *
-     * Return the number of bytes written.
+     * @details Implemented for both Windows and Linux platforms, using
+     *    WriteFile() for Windows version and write() syscall for the Linux
+     *    version.
+     *
      * Throws cFileStreamException in case of error.
+     *
+     * @return The number of bytes written.
+     * @param buffer The data to write.
+     * @param length The number of bytes to write.
      */
     virtual uint write(const void *buffer, const uint length);
 
-    /*
-     * Move to a specific position in the file. Throw an exception if failed.
-     * See basicInput::seek for more information.
+    /**
+     * @brief Move to a specific position in the file.
+     *
+     * @details Throw an exception if failed. See basicInput::seek for more
+     *    information.
+     *
+     * @param distance The distance to move, relative to @a method.
+     * @param method The reference position of the movement.
      */
     virtual void seek(const int distance, const basicInput::seekMethod method);
+    /**
+     * @brief Move to a specific position, using a 64 bit distance.
+     *
+     * @param distance The distance to move, relative to @a method.
+     * @param method The reference position of the movement.
+     */
     void seek64(const int64 distance, const basicInput::seekMethod method);
 
-    /*
-     * Return the length of the file.
+    /**
+     * @brief Return the length of the file.
+     *
+     * @return The length of the file.
      */
     virtual uint length() const;
 
-    /*
-     * Flush the information of the file.
+    /**
+     * @brief Flush the information of the file.
      */
     virtual void flush();
 
-    /*
-     * Returns the position of the write/read head
+    /**
+     * @brief Returns the position of the write/read head
+     *
+     * @return The position of the write/read head.
      */
     virtual uint getPointer() const;
+    /**
+     * @brief Return the position of the read/write head as a 64 bit number.
+     *
+     * @return The position of the read/write head, in bytes from the beginning
+     *    of the stream.
+     */
     uint64 getPointer64() const;
 
-    /*
-     * Return true if the file pointer reaches the end of the file.
+    /**
+     * @brief Return true if the file pointer reaches the end of the file.
+     *
+     * @return True if the file pointer reaches the end of the file.
      */
     virtual bool isEOS();
 
-    /*
-     * Return true if the file is open for write
+    /**
+     * @brief Return true if the file is open for write
+     *
+     * @return True if the file is open for write.
      */
     bool isOpenForWrite();
 
-    /*
-     * Return true if the file is open for read
+    /**
+     * @brief Return true if the file is open for read
+     *
+     * @return True if the file is open for read.
      */
     bool isOpenForRead();
 
-    /*
-     * Returns how many bytes should be read for best performance in the
-     * pipeRead() function in a single call to the read() function.
+    /**
+     * @brief Returns how many bytes should be read for best performance in the
+     *   pipeRead() function in a single call to the read() function.
      *
-     * This value stands at 4kb which is the normal size of 2 clusters.
+     * @details This value stands at 4kb which is the normal size of 2 clusters.
+     *
+     * @return How many bytes should be read for best performance in the
+     *    pipeRead() function in a single call to the read() function.
      */
     virtual uint getPipeReadBestRequest() const { return 4096; }
 
-    /*
-     * Return the handle to the file-pointer
+    /**
+     * @brief Return the handle to the file-pointer
+     *
+     * @return The handle to the file-pointer.
      */
     const cFilePtr& getHandle() const;
 
 protected:
-    // Init the seeking methods.
-    // All seeking methods are allowed
+    /**
+     * @brief Init the seeking methods.
+     *
+     * @details All seeking methods are allowed
+     */
     virtual void initSeek();
 
 private:
-    // The open mode of the file
+    /**
+     * @brief The open mode of the file
+     */
     cFilePtr m_file;
 
-    // Deny copy-constructor and operator =
+    /**
+     * @brief Deny copy-constructor and operator =
+     */
     cFileStream(const cFileStream& other);
     cFileStream operator = (const cFileStream& other);
 };
 
+
+/** @} */
 #endif // __TBA_STL_FILESTREAM_H

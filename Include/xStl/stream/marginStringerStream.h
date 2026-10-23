@@ -32,84 +32,109 @@
 #ifndef __TBA_XSTL_STREAM_MARGINSTRINGERSTREAM_H
 #define __TBA_XSTL_STREAM_MARGINSTRINGERSTREAM_H
 
-/*
- * marginStringerStream.h
+/**
+ * @addtogroup xstl_stream
+ * @{
+ */
+
+/**
+ * @file marginStringerStream.h
+ * @brief Delegate a stringer stream and add margin attributes
  *
- * Delegate a stringer stream and add margin attributes
- *
- * Author: Elad Raz <e@eladraz.com>
+ * @author Elad Raz
  */
 #include "xStl/types.h"
 #include "xStl/stream/stringerStream.h"
 
-/*
- * Delegate a stringer stream and add margin attributes
+/**
+ * @brief Delegate a stringer stream and add margin attributes
  *
- * Usage:
- *    void printComplexStruct(Object& object,
- *                            cMarginStringerStream& output)
+ * @details Usage:
+ *
+ * @code
+ * void printComplexStruct(Object& object,
+ *                         cMarginStringerStream& output)
+ * {
+ *    output << "FieldA: " << blabla... << endl;
+ *    output << "FieldC: " << packapacka... << endl;
+ *    if (object.hasInnerObject)
  *    {
- *       output << "FieldA: " << blabla... << endl;
- *       output << "FieldC: " << packapacka... << endl;
- *       if (object.hasInnerObject)
- *       {
- *           output.setMargin(output.getMargin() + 4);
- *           printComplexStruct(object.getInnerObject(), output);
- *           output.setMargin(output.getMargin() - 4);
- *       }
+ *        output.setMargin(output.getMargin() + 4);
+ *        printComplexStruct(object.getInnerObject(), output);
+ *        output.setMargin(output.getMargin() - 4);
  *    }
+ * }
+ * @endcode
  *
- * NOTE: This class is not thread-safe
+ * @note This class is not thread-safe
  */
 class cMarginStringerStream : public cStringerStream {
 public:
-    /*
-     * Constructor. Delegate a stringer stream and add margin attributes
+    /**
+     * @brief Constructor. Delegate a stringer stream and add margin attributes
      *
-     * output - The delegated stringer stream
-     * margin - The margin settings
-     * marginChar - The space character
+     * @param output The delegated stringer stream
+     * @param margin The margin settings
+     * @param marginChar The space character
      */
     cMarginStringerStream(cStringerStream& output,
                           uint margin = 0,
                           character marginChar = XSTL_CHAR(' '));
 
-    /*
-     * Return the current margin settings
+    /**
+     * @brief Return the current margin settings
+     *
+     * @return The current margin settings.
      */
     uint getMargin() const;
 
-    /*
-     * Change the margin settings
+    /**
+     * @brief Change the margin settings
+     *
+     * @param newMargin The new margin.
      */
     void setMargin(uint newMargin);
 
-    /*
-     * Equals setMargin(getMargin() + marginInc)
+    /**
+     * @brief Equals setMargin(getMargin() + marginInc)
+     *
+     * @param marginInc The amount to add to the margin.
      */
     void increase(uint marginInc);
 
-    /*
-     * Equals setMargin(getMargin() - marginDec)
+    /**
+     * @brief Equals setMargin(getMargin() - marginDec)
+     *
+     * @param marginDec The amount to subtract from the margin.
      */
     void decrease(uint marginDec);
 
 private:
-    // Deny copy-constructor and operator =
+    /**
+     * @brief Deny copy-constructor and operator =
+     */
     cMarginStringerStream(const cMarginStringerStream& other);
     cMarginStringerStream& operator = (const cMarginStringerStream& other);
 
-    /*
-     * Add a margin to the output string
+    /**
+     * @brief Add a margin to the output string
      */
     virtual void outputString(const cString& string);
 
-    // The delegated stringer stream
+    /**
+     * @brief The delegated stringer stream
+     */
     cStringerStream& m_output;
-    // The margin settings
+    /**
+     * @brief The margin settings
+     */
     uint m_margin;
-    // The space character
+    /**
+     * @brief The space character
+     */
     cString m_marginChar;
 };
 
+
+/** @} */
 #endif // __TBA_XSTL_STREAM_MARGINSTRINGERSTREAM_H

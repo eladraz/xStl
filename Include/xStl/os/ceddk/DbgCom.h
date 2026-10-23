@@ -32,23 +32,37 @@
 #ifndef __TBA_XSTL_OS_CEDDK_DBGCOM_H
 #define __TBA_XSTL_OS_CEDDK_DBGCOM_H
 
-/*
- * DbgCom.h
+/**
+ * @addtogroup xstl_os_xdk
+ * @{
+ */
+
+/**
+ * @file DbgCom.h
+ * @brief Send all output messages into the debug-view window
  *
- * Send all output messages into the debug-view window
- *
- * Author: Elad Raz <e@eladraz.com>
+ * @author Elad Raz
  */
 #include "xStl/types.h"
 #include "xStl/data/string.h"
 
-// The prototype
+/**
+ * @brief The prototype
+ */
 typedef void (__stdcall *DBGMSG)(const cString& msg);
-// The prefix index
+/**
+ * @brief The prefix index
+ */
 #define DBGMSG_PREFIX_NAME XSTL_STRING("TBA")
-// The export name
+/**
+ * @brief The export name
+ */
 #define DBGMSG_EXPORT_NAME XSTL_STRING("DbgMsg")
-// The DLL name
+/**
+ * @brief The DLL name
+ */
 #define DBGMSG_DLL_NAME XSTL_STRING("DbgViewDriver.DLL")
 
+
+/** @} */
 #endif // __TBA_XSTL_OS_CEDDK_DBGCOM_H

@@ -32,25 +32,42 @@
 #ifndef __TBA_STL_OS_UNIXOS_H
 #define __TBA_STL_OS_UNIXOS_H
 
-/*
- * unixOSdef.h
+/**
+ * @addtogroup xstl_os_unix
+ * @{
+ */
+
+/**
+ * @file unixOSdef.h
+ * @brief Types, struct definitions and constants needed for the UNIX type based
+ *   operating systems
  *
- * Types, struct definitions and constants needed for the UNIX type based
- * operating systems
- *
- * Author: Elad Raz <e@eladraz.com>
+ * @author Elad Raz
  */
 #include "xStl/types.h"
 #include "pthread.h"
 
+/**
+ * @brief The state of an event object on UNIX platforms.
+ */
 typedef struct {
-    pthread_mutex_t mutex;
+    pthread_mutex_t mutex;  ///< The mutex which protects the event state.
+    /**
+     * @brief The condition variable which is signaled when the event is
+     *   triggered.
+     */
     pthread_cond_t cond;
-    bool triggered;
+    bool triggered;         ///< True if the event was triggered.
 } pthread_unix_event_t;
 
+/**
+ * @brief A pthread mutex with its attributes.
+ */
 typedef struct {
-    pthread_mutex_t m_mutex;
+    pthread_mutex_t m_mutex;            ///< The mutex.
+    /**
+     * @brief The attributes the mutex was created with.
+     */
     pthread_mutexattr_t m_mutexAttr;
 } pthread_unix_mutex_wrap_t;
 
@@ -60,25 +77,42 @@ typedef struct {
  *    - Fedora 6
  */
 namespace cOSDef {
-    // The threadHandle
+    /**
+     * @brief The threadHandle
+     */
     typedef pthread_t threadHandle;
-    // The mutexHandle
+    /**
+     * @brief The mutexHandle
+     */
     typedef pthread_unix_mutex_wrap_t mutexHandle;
-    // The eventHandle
+    /**
+     * @brief The eventHandle
+     */
     typedef pthread_unix_event_t eventHandle;
-    // The systemTime.
+    /**
+     * @brief The systemTime.
+     */
     typedef uint32 systemTime;
-    // The fileHandle
+    /**
+     * @brief The fileHandle
+     */
     typedef int fileHandle;
     // Consts
 }; // namespace cOSDef
 
-// Invalid file handle
+/**
+ * @brief Invalid file handle
+ */
 #define INVALID_FILE_HANDLE   (-1)
+/**
+ * @brief Invalid thread handle. `(pthread_t)(-1)`, or NULL on Mac OS X.
+ */
 #ifndef XSTL_MACOSX
     #define INVALID_THREAD_HANDLE ((pthread_t)(-1))
 #else
     #define INVALID_THREAD_HANDLE (NULL)
 #endif // XSTL_MACOSX
 
+
+/** @} */
 #endif // __TBA_STL_OS_UNIXOS_H

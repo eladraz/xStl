@@ -32,67 +32,86 @@
 #ifndef __TBA_STL_OS_WAITABLE_H
 #define __TBA_STL_OS_WAITABLE_H
 
-/*
- * waitable.h
+/**
+ * @addtogroup xstl_os
+ * @{
+ */
+
+/**
+ * @file waitable.h
+ * @brief Defines the "waitable" objects.
  *
- * Defines the "waitable" objects. Waitable objects are objects which signal
- * a completion of operation.
- * When an operation is made in the "background" (which can be hardware, or another
- * thread), a waitable object is generated. When the operation completes the
- * waitable object signals, and the blocking operation can progress.
- * The waitable object is shared across all platforms and can be simulated for non-
- * preemptive operating systems.
+ * @details Waitable objects are objects which signal a completion of operation.
+ *    When an operation is made in the "background" (which can be hardware, or
+ *    another thread), a waitable object is generated. When the operation
+ *    completes the waitable object signals, and the blocking operation can
+ *    progress. The waitable object is shared across all platforms and can be
+ *    simulated for non- preemptive operating systems.
  *
- * Author: Elad Raz <e@eladraz.com>
+ * @author Elad Raz
  */
 #include "xStl/types.h"
 #include "xStl/os/osdef.h"
 
-/*
- * class cWaitable
+/**
+ * @brief An interface of an operation which can be waited for, queried and
+ *    canceled.
  */
 class cWaitable {
 public:
-    /*
-     * Return true if the operation completed.
+    /**
+     * @brief Return true if the operation completed.
+     *
+     * @return True if the operation completed.
      */
     bool isSucceeded() const;
 
-    /*
-     * Return true if the operation is active in the system and wasn't
-     * completed by:
-     *   - Normal behaviour (Operation completed, successfully or not)
-     *   - Soft cancel (Abnormal termination)
-     *   - Timeout reached.
+    /**
+     * @brief Return true if the operation is active in the system and wasn't
+     *    completed
+     *   by: - Normal behaviour (Operation completed, successfully or not) -
+     *   Soft
+     *   cancel (Abnormal termination) - Timeout reached.
+     *
+     * @return True if the operation is active in the system and wasn't
+     *    completed by: - Normal behaviour (Operation completed, successfully or
+     *    not) - Soft cancel (Abnormal termination) - Timeout reached.
      */
     bool isValid() const;
 
-    /*
-     * Return true if the operation timeout was reached, and the operation was
-     * canceled.
+    /**
+     * @brief Return true if the operation timeout was reached, and the
+     *    operation was
+     *   canceled.
+     *
+     * @return True if the operation timeout was reached, and the operation was
+     *    canceled.
      */
     bool isTimeout() const;
 
-    /*
-     * Returns the number of system ticks (CurrentTime-StartTime) that the
-     * operation took to complete.
+    /**
+     * @brief Returns the number of system ticks (CurrentTime-StartTime) that
+     *    the
+     *   operation took to complete.
+     *
+     * @return The number of system ticks (CurrentTime-StartTime) that the
+     *    operation took to complete.
      */
     cOSDef::systemTime getOperationTime();
 
-    /*
-     * Cancel the running operation.
+    /**
+     * @brief Cancel the running operation.
      *
-     * Return true if the cancel request succeeded.
-     * Return false if:
-     *    - The operation already completed
-     *    - The operation cannot be canceled.
+     * @return True if the cancel request succeeded.
      */
     bool cancel();
 
-    /*
-     * Holds the thread until the operation is complete or being aborted.
+    /**
+     * @brief Holds the thread until the operation is complete or being aborted.
      */
     void wait();
 };
 
+
+/** @} */
 #endif // __TBA_STL_OS_WAITABLE_H

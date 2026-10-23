@@ -32,75 +32,100 @@
 #ifndef __TBA_STL_OS_LOCK_H
 #define __TBA_STL_OS_LOCK_H
 
-/*
- * lock.h
+/**
+ * @addtogroup xstl_os
+ * @{
+ */
+
+/**
+ * @file lock.h
+ * @brief Implement the lockable-objects locking class.
  *
- * Implement the lockable-objects locking class. The locking class provides easy
- * access to the resource and some safety from exceptions during the locking
- * code.
+ * @details The locking class provides easy access to the resource and some
+ *    safety from exceptions during the locking code.
  *
- * Author: Elad Raz <e@eladraz.com>
+ * @author Elad Raz
  */
 
 #include "xStl/types.h"
 #include "xStl/os/lockable.h"
 
-/*
- * class cLock
+/**
+ * @brief This class allows safety during locking of execution code.
  *
- * This class allows safety during locking of execution code. Instead of using
- * the lockable-object in the following way:
+ * @details Instead of using the lockable-object in the following way:
  *
- *    // (Global) variable
- *    cLockableObject& mutex;
+ * // (Global) variable
+ * cLockableObject\& mutex;
  *
- *    // Execution code
- *    {
- *      mutex.lock()
- *      // Critical section
+ * // Execution code
+ * {
  *
- *      // Error, exception throws here and the mutex remains acquired.
+ * @code
+ * mutex.lock()
+ * // Critical section
+ * @endcode
  *
- *      mutex.unlock()
- *    }
+ * @code
+ * // Error, exception throws here and the mutex remains acquired.
+ * @endcode
+ *
+ * @code
+ * mutex.unlock()
+ * @endcode
+ *
+ * }
  *
  * Use the cLock object, so even if an exception is thrown the exception handler
  * will call the destructor of the class and the lock will be released:
  *
- *    // (Global) variable
- *    cLockableObject& mutex;
+ * // (Global) variable
+ * cLockableObject\& mutex;
  *
- *    // Execution code
- *    {
- *      cLock lock(mutex)
- *      // Critical section
- *    }
+ * // Execution code
+ * {
+ *
+ * @code
+ * cLock lock(mutex)
+ * // Critical section
+ * @endcode
+ *
+ * }
  */
 class cLock
 {
 public:
-    /*
-     * Constructor. Acquire the resource.
+    /**
+     * @brief Constructor. Acquire the resource.
      *
-     * An exception can be thrown during the lockable-object resource lock()
-     * function.
+     * @details An exception can be thrown during the lockable-object resource
+     *    lock()
+     *   function.
+     *
+     * @param lockable The object to lock. It is unlocked when the cLock is
+     *    destroyed.
      */
     cLock(cLockableObject& lockable);
 
-    /*
-     * Destructor. Release the lock over the resource.
+    /**
+     * @brief Destructor. Release the lock over the resource.
      *
-     * An exception can be thrown during the lockable-object resource unlock()
-     * function.
+     * @details An exception can be thrown during the lockable-object resource
+     *    unlock()
+     *   function.
      */
     ~cLock();
 
-    /*
-     * This function releases the lock over the resource. Many times the
-     * application wants to lock the object for a part of the code, this
-     * function allows improving performance by releasing the lock.
+    /**
+     * @brief This function releases the lock over the resource.
+     *
+     * @details Many times the application wants to lock the object for a part
+     *    of the code, this function allows improving performance by releasing
+     *    the lock.
+     *
      * Usage:
      *
+     * @code
      *  cLockableObject& lockable;
      *
      *  void func()
@@ -113,19 +138,28 @@ public:
      *      lock.unlock();
      *      // Some non-protected operations.
      *  }
+     * @endcode
      */
     void unlock();
 
 private:
-    // The lockable object which is acquired
+    /**
+     * @brief The lockable object which is acquired
+     */
     cLockableObject& m_lockable;
 
-    // Deny operator = and copy-constructor
+    /**
+     * @brief Deny operator = and copy-constructor
+     */
     cLock(const cLock& other);
     cLock& operator=(const cLock& other);
 
-    // Whether the lockable is locked and should be released at dtor
+    /**
+     * @brief Whether the lockable is locked and should be released at dtor
+     */
     bool m_isLock;
 };
 
+
+/** @} */
 #endif // __TBA_STL_OS_LOCK_H

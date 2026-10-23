@@ -52,7 +52,8 @@
 
 /*
  * The default random class for global system random. This class is using
- * the hardware time-stamp counter which counts the clocks of the CPU and computes
+ * the hardware time-stamp counter which counts the clocks of the CPU and
+ * computes
  * from it a random.
  */
 class cDefaultWindowsTimestampRandom : public cRandom
@@ -147,7 +148,8 @@ private:
 
     /*
      * Returns the tick count since the Windows operating system was first
-     * started. The tick count in Windows is the number of internal context-switch
+     * started. The tick count in Windows is the number of internal
+     * context-switch
      * ticks. For all Windows versions this constant stands at 1000Hz.
      */
     uint32 readCounter1()

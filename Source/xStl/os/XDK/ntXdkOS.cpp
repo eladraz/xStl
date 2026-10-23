@@ -123,7 +123,8 @@ void cOS::sleepMicroseconds(uint microseconds)
     {
         LARGE_INTEGER waitTime;
         waitTime.QuadPart = microseconds;
-        waitTime.QuadPart*= (-10L); // 100 nanoseconds, nano is 1/1,000,000. micro is 1/1,000.
+        // 100 nanoseconds, nano is 1/1,000,000. micro is 1/1,000.
+        waitTime.QuadPart*= (-10L);
         NTSTATUS ret = KeDelayExecutionThread(KernelMode, // Prevents recursive behaviour
                                               false, // And cannot be alertable
                                               &waitTime);

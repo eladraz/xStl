@@ -385,7 +385,8 @@ uint cSocketStream::read(void *buffer, const uint length)
         return 0;
     }
 
-    if ((bytesRead = recv(m_handle, (char *)buffer, length, 0)) == (unsigned int)SOCKET_ERROR)
+    if ((bytesRead = recv(m_handle, (char *)buffer, length, 0)) ==
+            (unsigned int)SOCKET_ERROR)
     {
         XSTL_THROW(cSocketException, SOCKETEXCEPTION_READ_FAILED);
     }

@@ -32,12 +32,17 @@
 #ifndef __XSTL_UTILS_TIMEOUTMONITOR_H
 #define __XSTL_UTILS_TIMEOUTMONITOR_H
 
+/**
+ * @addtogroup xstl_utils
+ * @{
+ */
+
 #include "xStl/os/os.h"
 
 /**
- * Utility class used to set and monitor a timeout period.
+ * @brief Utility class used to set and monitor a timeout period.
  *
- * For timeout implementation, the monitor uses time support routines
+ * @details For timeout implementation, the monitor uses time support routines
  * provided by xStl's cOS class (getSystemTime and calculateTimesDiffMilli).
  *
  * Author: Sergei Chernov.
@@ -48,13 +53,12 @@ public:
     static const uint INFINITE_TIMEOUT;
 
     /**
-     * Initializes the timeout monitor and starts the timeout period.
-     * timeoutMilliseconds    Timeout period, in milliseconds.
-     *                        Can be INFINITE_TIMEOUT, in which case
-     *                        the timeout will never expire.
+     * @brief Initialize the timeout monitor and start the timeout period.
      *
-     * TODO: timeoutMilliseconds is uint as in cOS::calculateTimesDiffMilli.
-     *         Should it be fixed together with calculateTimesDiffMilli?
+     * @param timeoutMilliseconds The timeout period in milliseconds. It can be
+     *    INFINITE_TIMEOUT, in which case the timeout never expires.
+     * @todo timeoutMilliseconds is uint as in cOS::calculateTimesDiffMilli.
+     *    Should it be fixed together with calculateTimesDiffMilli?
      */
     TimeoutMonitor(uint timeoutMilliseconds);
 
@@ -64,14 +68,19 @@ public:
     void restart();
 
     /**
-     * Tests whether the timeout has expired.
-     * return    'true' if the timeout expired, 'false' otherwise.
+     * @brief Test whether the timeout has expired.
+     *
+     * @return True if the timeout expired, false otherwise.
      */
     bool isExpired();
 
-    /*
-     * Return the number of milliseconds elapsed from the 'restart()' time or
-     * constructor time
+    /**
+     * @brief Return the number of milliseconds elapsed from the 'restart()'
+     *    time or
+     *   constructor time
+     *
+     * @return The number of milliseconds elapsed from the 'restart()' time or
+     *    constructor time.
      */
     uint getElapsedMilliseconds();
 
@@ -84,4 +93,6 @@ private:
     uint m_timeoutMilliseconds;
 };
 
+
+/** @} */
 #endif // __XSTL_UTILS_TIMEOUTMONITOR_H

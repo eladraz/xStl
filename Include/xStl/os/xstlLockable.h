@@ -32,15 +32,17 @@
 #ifndef __TBA_XSTL_OS_XSTLLOCKABLE_H
 #define __TBA_XSTL_OS_XSTLLOCKABLE_H
 
-/*
- * xstlLockable.h
+/**
+ * @addtogroup xstl_os
+ * @{
+ */
+
+/**
+ * @file xstlLockable.h
+ * @brief Define the cXstlLockable class which defines the default lockable
+ *   implementation for: - StringerStream - SmartPtr
  *
- * Define the cXstlLockable class which defines the default lockable
- * implementation for:
- *    - StringerStream
- *    - SmartPtr
- *
- * Author: Elad Raz <e@eladraz.com>
+ * @author Elad Raz
  */
 #include "xStl/types.h"
 
@@ -53,13 +55,19 @@
 #endif
 
 #ifdef XSTL_NTDDK
-    // cXstlLockable is cInterruptSpinLock
+    /**
+     * @brief cXstlLockable is cInterruptSpinLock
+     */
     #define cXstlLockable cInterruptSpinLock
 #else
-    // cXstlLockable is cMutex
+    /**
+     * @brief cXstlLockable is cMutex
+     */
     #define cXstlLockable cMutex
 
 #endif
 
 
+
+/** @} */
 #endif // __TBA_XSTL_OS_XSTLLOCKABLE_H

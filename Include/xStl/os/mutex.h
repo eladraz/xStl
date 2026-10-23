@@ -32,35 +32,42 @@
 #ifndef __TBA_STL_OS_MUTEX_H
 #define __TBA_STL_OS_MUTEX_H
 
-/*
- * mutex.h
+/**
+ * @addtogroup xstl_os
+ * @{
+ */
+
+/**
+ * @file mutex.h
+ * @brief Declare the cMutex class, which is a wrapper for the POSIX and Windows
+ *   mutex OS in one platform-independent class.
  *
- * Declare the cMutex class, which is a wrapper for the POSIX and Windows mutex
- * OS in one platform-independent class.
- *
- * When compiling for the Linux platform you must compile with the "-lpthread"
- * flag.
+ * @details When compiling for the Linux platform you must compile with the
+ *    "-lpthread"
+ *   flag.
  *
  * This file supports the following platforms:
- *  - Win32 API
- *  - POSIX library (Unix based OS)
- *  - XDK (Windows NT device-driver)
+ * - Win32 API
+ * - POSIX library (Unix based OS)
+ * - XDK (Windows NT device-driver)
  *
- * Author: Elad Raz <e@eladraz.com>
+ * @author Elad Raz
  */
 #include "xStl/types.h"
 #include "xStl/os/lockable.h"
 #include "xStl/os/osdef.h"
 
-/*
- * class cMutex
+/**
+ * @brief An implementation of the lockable class with the 'FastMutex'
+ *    interface.
  *
- * An implementation of the lockable class with the 'FastMutex' interface. The
- * FastMutex is a mutex without any safety from deadlocks.
+ * @details The FastMutex is a mutex without any safety from deadlocks.
  *
  * The usage of the mutex class should be with the 'Lock' object.
  *
  * Usage:
+ *
+ * @code
  *     // The global sync object
  *     cMutex myThreadMutex;
  *
@@ -71,43 +78,48 @@
  *
  *          // The code is locked from exceptions and return codes.
  *     }
+ * @endcode
  */
 class cMutex : public cLockableObject
 {
 public:
-    /*
-     * Constructor. Create the mutex object.
+    /**
+     * @brief Constructor. Create the mutex object.
      */
     cMutex();
 
-    /*
-     * Destructor. Free the mutex lockable.
+    /**
+     * @brief Destructor. Free the mutex lockable.
      */
     virtual ~cMutex();
 
-    /*
-     * Try to acquire the mutex
+    /**
+     * @brief Try to acquire the mutex
      *
-     * Throws an exception in case of failure
+     * @throws cException in case of failure
      */
     virtual void lock();
 
-    /*
-     * Free the mutex.
+    /**
+     * @brief Free the mutex.
      *
-     * Throws an exception in case of failure
+     * @throws cException in case of failure
      */
     virtual void unlock();
 
 private:
-    /*
-     * Deny copy-constructor and operator =
+    /**
+     * @brief Deny copy-constructor and operator =
      */
     cMutex(const cMutex& other);
     cMutex& operator = (const cMutex& other);
 
-    // The handle for the mutex
+    /**
+     * @brief The handle for the mutex
+     */
     cOSDef::mutexHandle m_handle;
 };
 
+
+/** @} */
 #endif // __TBA_STL_OS_MUTEX_H

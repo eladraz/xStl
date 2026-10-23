@@ -32,13 +32,19 @@
 #ifndef __TBA_STL_HASH_H
 #define __TBA_STL_HASH_H
 
-/*
- * hash.h
+/**
+ * @addtogroup xstl_data_containers
+ * @{
+ */
+
+/**
+ * @file hash.h
+ * @brief Interface and implementation of the template "hash" class, which also
+ *   calls "directory".
  *
- * Interface and implementation of the template "hash" class, which also calls
- * "directory". The class is template for the key value and the data values.
+ * @details The class is template for the key value and the data values.
  *
- * Author: Elad Raz <e@eladraz.com>
+ * @author Elad Raz
  */
 
 #include "xStl/types.h"
@@ -55,181 +61,286 @@
 #pragma warning(disable:4505)
 #endif
 
-/*
- * class cHash
+/**
+ * @brief Implementation of a global hash.
  *
- * Implementation of a global hash.
- * The hash uses an array of variable length
- * of link-lists.
+ * @details The hash uses an array of variable length of link-lists.
  *
  * To access the hash use:
- *   hash[IndexType] = FieldType;
- *
- * NOTES:
- *   IndexType must have a complete implementation of operator ==
- *   FieldType must have a hash function.
+ * hash[IndexType] = FieldType;
  *
  * Hash function:
- *   The hash function works on the IndexType and returns a number
- *   from 0 to "range"
+ * The hash function works on the IndexType and returns a number
+ * from 0 to "range"
  *
- *   Definition:
- *         uint cHashFunction(const IndexType& index, uint range)
+ * Definition:
+ *
+ * @code
+ * uint cHashFunction(const IndexType& index, uint range)
+ * @endcode
  *
  * In this file there are regular implementations of hash on:
- *   float, int, char *.
- *   cString, cBuffer is also implemented in the array.h, string.h files.
+ * float, int, char *.
+ * cString, cBuffer is also implemented in the array.h, string.h files.
  *
- * TODO: Add copy-on-write feature.
+ * @note IndexType must have a complete implementation of operator ==. FieldType
+ *    must have a hash function.
+ * @todo Add copy-on-write feature.
+ * @tparam IndexType The type of the keys. It must have a cHashFunction()
+ *    overload and operator ==.
+ * @tparam FieldType The type of the stored values.
  */
 template <class IndexType, class FieldType>
 class cHash
 {
 public:
-    /*
-     * The default arrangement of the hash array.
-     * The number of cells that point to the link list.
+    /**
+     * @brief The default arrangement of the hash array.
+     *
+     * @details The number of cells that point to the link list.
      */
     enum {
+        /**
+         * @brief The default number of cells of the hash vector.
+         */
         DefaultHashSearch = 256
     };
 
-    /*
-     * Constructor. Init the hash to be constructed with
+    /**
+     * @brief Constructor. Init the hash to be constructed with
+     *
+     * @param vectorSize The number of cells of the hash vector. Each cell
+     *    points to a link-list of the elements which are mapped to it.
      */
     explicit cHash(uint vectorSize = DefaultHashSearch);
 
-    /*
-     * Copy-constructor. Duplicate the handles from 'other'
+    /**
+     * @brief Copy-constructor. Duplicate the handles from 'other'
+     *
+     * @param other The hash to copy.
      */
     cHash(const cHash<IndexType, FieldType>& other);
 
-    /*
-     * Destructor, free up the memory allocated by the hash
+    /**
+     * @brief Destructor, free up the memory allocated by the hash
      */
     ~cHash();
 
     /* Hash functions */
 
-    /*
-     * Add an element to the hash. The element is copied into the link list.
-     * If you want to use the same data, you can use the cSmartPtr as a
-     * reference counter object
+    /**
+     * @brief Add an element to the hash.
      *
-     * index - The new index for the object. Must be unique
-     * data  - The data to put in the cell
+     * @details The element is copied into the link list. If you want to use the
+     *    same data, you can use the cSmartPtr as a reference counter object
      *
-     * Throws an exception if the index exists
+     * @param index The new index for the object. Must be unique
+     * @param data The data to put in the cell
+     * @throws cException if the index exists
      */
     void append(const IndexType& index, const FieldType& data);
 
-    /*
-     * Remove an item from the hash
+    /**
+     * @brief Remove an item from the hash
      *
-     * index - The element to remove
-     *
-     * Throws 'EXCEPTION_OUT_OF_RANGE' exception in case the index is invalid
+     * @param index The element to remove
+     * @throws cException (EXCEPTION_OUT_OF_RANGE) in case the index is invalid
      */
     void remove(const IndexType& index);
 
-    /*
-     * Free the hash-data struct, create a new hash.
+    /**
+     * @brief Free the hash-data struct, create a new hash.
      */
     void removeAll();
 
-    /*
-     * Return a list of key values.
+    /**
+     * @brief Return a list of key values.
      *
-     * ret - Will be filled with the keys
+     * @param ret Will be filled with the keys
      */
     void keys(cList<IndexType>& ret) const;
 
-    /*
-     * Returns a list of key values as the function return value
+    /**
+     * @brief Returns a list of key values as the function return value
+     *
+     * @return A list of key values as the function return value.
      */
     cList<IndexType> keys() const;
 
-    /*
-     * Return true if there is a key in the hash
+    /**
+     * @brief Return true if there is a key in the hash
      *
-     * index - The index to be queried
+     * @param index The index to be queried
+     * @return True if there is a key in the hash.
      */
     bool hasKey(const IndexType &index) const;
 
     // Operators
 
-    /*
-     * Operator =. Copies the other hash table to this hash table.
+    /**
+     * @brief Operator =. Copies the other hash table to this hash table.
+     *
+     * @param other The hash to copy from.
+     * @return A reference to this hash.
      */
-    const cHash<IndexType, FieldType>& operator = (const cHash<IndexType, FieldType>& other);
+    const cHash<IndexType, FieldType>&
+        operator = (const cHash<IndexType, FieldType>& other);
 
-    /*
-     * Return true if the hash tables are equal.
+    /**
+     * @brief Return true if the hash tables are equal.
+     *
+     * @param other The hash to compare with.
+     * @return True if the hash tables are equal.
      */
     bool operator == (const cHash<IndexType, FieldType> &other) const;
 
-    /*
-     * The map operator. Retrieve index-type and return a reference to the object
+    /**
+     * @brief The map operator. Retrieve index-type and return a reference to
+     *    the object
      *
-     * index - The index for the hash table
-     *
-     * Throws 'EXCEPTION_OUT_OF_RANGE' exception when the index is invalid
-     * Return a reference to the object
+     * @param index The index for the hash table
+     * @return A reference to the object.
+     * @throws cException (EXCEPTION_OUT_OF_RANGE) when the index is invalid
      */
     FieldType& operator [] (const IndexType &index);
 
-    /*
-     * The map operator. Retrieve index-type and return a const reference to the
-     * object. This function is the const operator for the previous function.
+    /**
+     * @brief The map operator. Retrieve index-type and return a const reference
+     *    to the
+     *   object.
      *
-     * index - The index for the hash table
+     * @details This function is the const operator for the previous function.
      *
-     * Throws 'EXCEPTION_OUT_OF_RANGE' exception when the index is invalid
-     * Return a const reference to the object.
+     * @param index The index for the hash table
+     * @return A const reference to the object.
+     * @throws cException (EXCEPTION_OUT_OF_RANGE) when the index is invalid
      */
     const FieldType& operator [] (const IndexType &index) const;
 
 private:
-    /*
-     * Internal function. Construct the m_hash object.
+    /**
+     * @brief Internal function. Construct the m_hash object.
      */
     void initHash(uint vectorSize);
 
-    /*
-     * Internal function. Free m_hash and all its data. After a call to
-     * this function the hash will be invalid until a call to initHash()
-     * will be made.
+    /**
+     * @brief Internal function. Free m_hash and all its data.
+     *
+     * @details After a call to this function the hash will be invalid until a
+     *    call to initHash() will be made.
      */
     void freeHash();
 
-    // The element for a single hash-table. Translates index to field object
+    /**
+     * @brief The element for a single hash-table.
+     *
+     * @details Translates index to field object
+     */
     typedef cDualElement<IndexType,FieldType> ElementType;
 
-    // The link-list which is stored by each node
+    /**
+     * @brief The link-list which is stored by each node
+     */
     typedef cList<ElementType> ListType;
 
-    // The hash table data-struct.
+    /**
+     * @brief The hash table data-struct.
+     */
     cArray<ListType>* m_hash;
 
-    // The old vector-size
+    /**
+     * @brief The old vector-size
+     */
     uint m_vectorSize;
 };
 
-/*
- * cHashFunction() standard data-types implementation
+/**
+ * @brief Hash function overloads for the standard data types.
  *
- * See comments at the beginning of the class interface.
+ * The functions map an index into a cell number inside `[0, range)`. The
+ * integer overloads use `index % range`; the float overload applies the same
+ * operation to the bits of the number; the string, buffer and C-string
+ * overloads sum the characters (bytes) and apply the modulo operation. See the
+ * cHash class for how the hash functions are used. Add an overload of this
+ * function to use another type as the index of a cHash.
+ *
+ * @param index The index to hash.
+ * @param range The number of cells in the hash vector.
+ * @return The cell number for the index.
  */
 uint cHashFunction(const int& index, uint range);
+/**
+ * @brief Hash function for a 32 bit unsigned number. See cHashFunction(const
+ *    int&, uint).
+ *
+ * @param index The index to hash.
+ * @param range The number of cells in the hash vector.
+ * @return The cell number for the index.
+ */
 uint cHashFunction(const uint32& index, uint range);
+/**
+ * @brief Hash function for a floating point number. See cHashFunction(const
+ *    int&, uint).
+ *
+ * @param index The index to hash.
+ * @param range The number of cells in the hash vector.
+ * @return The cell number for the index.
+ */
 uint cHashFunction(const float& index, uint range);
+/**
+ * @brief Hash function for a null-terminated ASCII string. See
+ *    cHashFunction(const int&, uint).
+ *
+ * @param index The index to hash.
+ * @param range The number of cells in the hash vector.
+ * @return The cell number for the index.
+ */
 uint cHashFunction(const char* index, uint range);
+/**
+ * @brief Hash function for a string. See cHashFunction(const int&, uint).
+ *
+ * @param index The index to hash.
+ * @param range The number of cells in the hash vector.
+ * @return The cell number for the index.
+ */
 uint cHashFunction(const cString& index, uint range);
+/**
+ * @brief Hash function for a buffer. See cHashFunction(const int&, uint).
+ *
+ * @param index The index to hash.
+ * @param range The number of cells in the hash vector.
+ * @return The cell number for the index.
+ */
 uint cHashFunction(const cBuffer& index, uint range);
+/**
+ * @brief Hash function for an address. See cHashFunction(const int&, uint).
+ *
+ * @param index The index to hash.
+ * @param range The number of cells in the hash vector.
+ * @return The cell number for the index.
+ */
 uint cHashFunction(const addressNumericValue& index, uint range);
 #ifndef XSTL_16BIT
-// 16 bit applications don't have threads
+/**
+ * @brief Hash function for a 64 bit unsigned number. See cHashFunction(const
+ *    int&, uint).
+ *
+ * The 64 bit and the thread handle overloads are not available for 16 bit
+ * applications (XSTL_16BIT).
+ *
+ * @param index The index to hash.
+ * @param range The number of cells in the hash vector.
+ * @return The cell number for the index.
+ */
 uint cHashFunction(const uint64& index, uint range);
+/**
+ * @brief Hash function for a thread handle. See cHashFunction(const int&,
+ *    uint).
+ *
+ * @param index The index to hash.
+ * @param range The number of cells in the hash vector.
+ * @return The cell number for the index.
+ */
 uint cHashFunction(const cOSDef::threadHandle& index, uint range);
 #endif // XSTL_16BIT
 
@@ -241,4 +352,6 @@ uint cHashFunction(const cOSDef::threadHandle& index, uint range);
     #pragma warning(pop)
 #endif
 
+
+/** @} */
 #endif // __TBA_STL_HASH_H

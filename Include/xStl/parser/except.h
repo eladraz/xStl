@@ -32,36 +32,53 @@
 #ifndef __TBA_XSTL_PARSER_EXCEPT_H
 #define __TBA_XSTL_PARSER_EXCEPT_H
 
-/*
- * except.h
+/**
+ * @addtogroup xstl_parser
+ * @{
+ */
+
+/**
+ * @file except.h
+ * @brief The exception module for the IDL compiler.
  *
- * The exception module for the IDL compiler.
- *
- * Author: Elad Raz <e@eladraz.com>
+ * @author Elad Raz
  */
 #include "xStl/types.h"
 #include "xStl/data/string.h"
 #include "xStl/exceptions.h"
 
-/*
- * The exception members needed
+/**
+ * @brief The exception which is thrown on parsing errors, with the file name
+ *    and the line number.
  */
 class ParserException : public cException
 {
 public:
-    /*
-     * Constructor of the IDL exception.
+    /**
+     * @brief Constructor of the IDL exception.
+     *
+     * @param file The source file where the exception is thrown.
+     * @param line The line in the source file where the exception is thrown.
+     * @param filename The name of the file which is being parsed.
+     * @param lineNumber The line number in the parsed file.
+     * @param message The description of the parsing error.
      */
     ParserException(char * file, uint32 line, const cString& filename, uint lineNumber, const cString& message);
 
-    /*
-     * Return the message which describes the exception
+    /**
+     * @brief Return the message which describes the exception
+     *
+     * @return The message which describes the exception.
      */
     virtual const character* getMessage();
 
 private:
-    // The exception message
+    /**
+     * @brief The exception message
+     */
     cString m_message;
 };
 
+
+/** @} */
 #endif // __TBA_XSTL_PARSER_EXCEPT_H

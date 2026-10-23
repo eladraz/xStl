@@ -65,7 +65,9 @@ static unsigned int lastPutValue = 0;
 class TESTARRAY
 {
 public:
-    TESTARRAY()  { lastAction = CONSTRUCTOR; constructorCounter++; m_global = lastPutValue; }
+    TESTARRAY()  {
+        lastAction = CONSTRUCTOR; constructorCounter++; m_global = lastPutValue;
+    }
     ~TESTARRAY() { lastAction = DESTRUCTOR; destructorCounter++; }
     TESTARRAY(const TESTARRAY&) { lastAction = COPYCONSTRUCTOR; }
     TESTARRAY& operator=(const TESTARRAY&) { lastAction = OPERATOREQUAL; return *this; }

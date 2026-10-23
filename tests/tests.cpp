@@ -49,7 +49,8 @@
 
 
 /*
- * All the constructed classes are registered inside a link-list which executes them.
+ * All the constructed classes are registered inside a link-list which executes
+ * them.
  */
 class tests_container{
 public:
@@ -155,8 +156,10 @@ int main(const int, const char**)
                 cout << "FAILED!" << endl;
                 #endif
 
-                cout << endl << "Exception: " << e.getMessage() << " (" << e.getID() << ')' << endl;
-                cout << "Exception: Thrown at module " << (*i)->getName() << endl;
+                cout << endl << "Exception: " << e.getMessage() << " ("
+                     << e.getID() << ')' << endl;
+                cout << "Exception: Thrown at module "
+                     << (*i)->getName() << endl;
             }
             XSTL_CATCH (...)
             {
@@ -165,7 +168,8 @@ int main(const int, const char**)
                 #endif
 
                 cout << endl << "Exception: Unknown exception thrown..." << endl;
-                cout << "Exception: Thrown at module " << (*i)->getName() << endl;
+                cout << "Exception: Thrown at module "
+                     << (*i)->getName() << endl;
             }
             #if !(defined(XSTL_CE) || defined(XSTL_LINUX))
             cout << '.';

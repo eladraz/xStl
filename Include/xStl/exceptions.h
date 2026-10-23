@@ -32,13 +32,18 @@
 #ifndef __TBA_STL_EXCEPTIONS_H
 #define __TBA_STL_EXCEPTIONS_H
 
-/*
- * exceptions.h
+/**
+ * @addtogroup xstl_core
+ * @{
+ */
+
+/**
+ * @file exceptions.h
+ * @brief Defines the basic TRY-CATCH blocks which support exception handling.
  *
- * Defines the basic TRY-CATCH blocks which support exception handling.
- * Exception handling should be compiled for all platforms.
+ * @details Exception handling should be compiled for all platforms.
  *
- * Author: Elad Raz <e@eladraz.com>
+ * @author Elad Raz
  */
 
 /*
@@ -48,17 +53,55 @@
 
 #include "xStl/except/exception.h"
 
+/**
+ * @brief Begin a protected block (expands to `try`).
+ */
 #define XSTL_TRY                try
+/**
+ * @brief Catch an exception (expands to `catch(n)`).
+ *
+ * @param n The exception declaration to catch, for example `cException& e`.
+ */
 #define XSTL_CATCH(n)           catch(n)
+/**
+ * @brief Rethrow the exception that is currently being handled (expands to
+ *    `throw`).
+ */
 #define XSTL_RETHROW            throw
 
 #ifdef XSTL_LINUX
-    // GCC has issues with variadic macros and c++, please see http://gcc.gnu.org/onlinedocs/cpp/Variadic-Macros.html
+    /**
+     * @brief Throw an exception of class @a klass (GCC/Linux variant).
+     *
+     * Same as the generic variant below, but uses the GCC `##__VA_ARGS__`
+     * extension so that the macro can also be used without additional
+     * arguments.
+     *
+     * @param klass The exception class to throw.
+     * @param ... Additional constructor arguments of @a klass.
+     */
     #define XSTL_THROW(klass, ...)  throw klass(__FILE__, __LINE__, ##__VA_ARGS__)
 #else
+    /**
+     * @brief Throw an exception of class @a klass.
+     *
+     * The exception object is constructed with the current source file name
+     * (`__FILE__`) and line number (`__LINE__`) followed by the extra
+     * arguments. The exception classes of the library take these two values as
+     * their first two constructor arguments.
+     *
+     * @param klass The exception class to throw, for example cException.
+     * @param ... Additional constructor arguments of @a klass (message and/or
+     *    error id).
+     */
     #define XSTL_THROW(klass, ...)  throw klass(__FILE__, __LINE__, __VA_ARGS__)
 #endif
 
+/**
+ * @brief Catch any exception (expands to `catch(...)`).
+ */
 #define XSTL_CATCH_ALL          catch(...)
 
+
+/** @} */
 #endif // __TBA_STL_EXCEPTIONS_H

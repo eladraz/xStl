@@ -60,7 +60,8 @@ void cRC4::loadKey(const cBuffer& key)
     for (i = 0; i < RC4KEY_LEN; i++)
     {
         index1 = i;
-        index2 = (uint8)((key[i % key.getSize()] + m_permutation[index1] + index2) & 0xFF);
+        index2 = (uint8)((key[i % key.getSize()] + m_permutation[index1] +
+                          index2) & 0xFF);
         t_swap(m_permutation[index1], m_permutation[index2]);
     }
 }

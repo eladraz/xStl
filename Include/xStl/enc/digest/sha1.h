@@ -32,14 +32,19 @@
 #ifndef __TBA_STL_ENCRYPTION_DIGEST_SHA1_H
 #define __TBA_STL_ENCRYPTION_DIGEST_SHA1_H
 
+/**
+ * @addtogroup xstl_enc_digest
+ * @{
+ */
 
-/*
- * sha1.h
+
+/**
+ * @file sha1.h
+ * @brief Declare the cSHA1 class which implements the SHA-1 (Secure Hash
+ *    Algorithm)
+ *   one- way hash function.
  *
- * Declare the cSHA1 class which implements the SHA-1 (Secure Hash Algorithm) one-
- * way hash function.
- *
- * Author: Elad Raz <e@eladraz.com>
+ * @author Elad Raz
  */
 
 #include "xStl/types.h"
@@ -49,16 +54,14 @@
 #include "xStl/enc/digest/HashDigest.h"
 
 
-/*
- * class cSHA1
+/**
+ * @brief The SHA-1 message digest.
  *
- * SHA1 implementation class.
- *
- * Based on SHA code originally posted to sci.crypt by Peter Gutmann
- * in message <30ajo5$oe8@ccu2.auckland.ac.nz>.
- * Modified to test for endianness on creation of SHA objects by AMK.
- * Also, the original specification of SHA was found to have a weakness
- * by NSA/NIST.  This code implements the fixed version of SHA.
+ * @details Based on SHA code originally posted to sci.crypt by Peter Gutmann
+ *   in message \<30ajo5$oe8\@ccu2.auckland.ac.nz\>.
+ *   Modified to test for endianness on creation of SHA objects by AMK.
+ *   Also, the original specification of SHA was found to have a weakness
+ *   by NSA/NIST.  This code implements the fixed version of SHA.
  *
  * Here's the first paragraph of Peter Gutmann's posting:
  *
@@ -70,60 +73,94 @@
  * SHA or whether it's simply a bandaid which fixes the problem with a minimum of
  * effort (for example the reengineering of a great many Capstone chips).
  *
- *
  * The original code was change for C++ usage:
- *  - Creating base-class (cHashDigest)
- *  - Warp the function in cDigest format.
+ * - Creating base-class (cHashDigest)
+ * - Warp the function in cDigest format.
  */
 class cSHA1 : public cHashDigest
 {
 public:
-    /*
-     * Constructor, copy-constructor and operator =.
+    /**
+     * @brief Constructor, copy-constructor and operator =.
      */
     cSHA1();
+    /**
+     * @brief Copy-constructor.
+     *
+     * @param other The object to copy.
+     */
     cSHA1(const cSHA1& other);
+    /**
+     * @brief Assignment operator.
+     *
+     * @param other The object to copy from.
+     * @return A reference to this object.
+     */
     cSHA1& operator = (const cSHA1& other);
 
 
-    /* Virtual destructor */
+    /**
+     * @brief Virtual destructor
+     */
     virtual ~cSHA1() {};
 
-    /*
-     * Reset the hash setting as this class just constructed.
+    /**
+     * @brief Reset the hash setting as this class just constructed.
      */
     virtual void reset();
 
-    /*
-     * Clone the hash object.
+    /**
+     * @brief Clone the hash object.
      *
-     * Return new constructed object equal to my object.
+     * @return New constructed object equal to my object.
      */
     virtual cSmartPtr<cDigest> clone();
 
-    /*
-     * Constants for the MD5 algorithm
+    /**
+     * @brief Constants for the MD5 algorithm
      */
     enum {
+        /**
+         * @brief The size of a data block in 32 bit words.
+         */
+        /**
+         * @brief The size of the digest in 32 bit words.
+         */
         SHA1_DATALEN    = 16,
+        /** @brief The size of the digest in 32 bit words. */
         SHA1_DIGESTLEN  = 5
     };
+    /**
+     * @brief Return the data block length in 32 bit words.
+     *
+     * @return SHA1_DATALEN.
+     */
     virtual unsigned int getDataLen() { return SHA1_DATALEN; };
+    /**
+     * @brief Return the digest length in 32 bit words.
+     *
+     * @return SHA1_DIGESTLEN.
+     */
     virtual unsigned int getDigestLen() { return SHA1_DIGESTLEN; };
 
-    // Big endian implementation
+    /**
+     * @brief Big endian implementation
+     */
     bigEndianImpl;
 
 private:
-    /*
-     * MD5 core digest.
-     * Perform the transformation over one full block of 16 32-bit words.
+    /**
+     * @brief MD5 core digest. Perform the transformation over one full block of
+     *    16
+     *   32-bit words.
      *
-     * data - 16 32bit words.
+     * @param data 16 32bit words.
      */
     virtual void HASHTransform(uint32 *data);
 };
 
 
+
+/** @} */
 #endif // __TBA_STL_ENCRYPTION_DIGEST_SHA1_H
 

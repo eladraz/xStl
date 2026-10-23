@@ -1,0 +1,87 @@
+﻿/**
+ * @defgroup xstl_core Core
+ * @brief Basic types, return codes, operator helpers, reference counting
+ *        support and the remote-address type.
+ *
+ * @defgroup xstl_data Data structures and strings
+ * @brief Containers, strings, smart pointers, counters, and data helpers.
+ *
+ * @defgroup xstl_data_containers Containers
+ * @ingroup xstl_data
+ * @brief Arrays, linked lists, hash tables, queues, graphs and other
+ *        generic containers.
+ *
+ * @par Example
+ * @include containers_example.cpp
+ *
+ * @defgroup xstl_data_strings Strings and characters
+ * @ingroup xstl_data
+ * @brief The character type, the string class and wildcard matching.
+ *
+ * @defgroup xstl_data_pointers Smart pointers and counters
+ * @ingroup xstl_data
+ * @brief Reference counting, smart pointers and thread-safe counters.
+ *
+ * @defgroup xstl_data_serialization Serialization and endianness
+ * @ingroup xstl_data
+ * @brief Interfaces and helpers for serializing objects to byte streams.
+ *
+ * @par Example
+ * @include endian_example.cpp
+ *
+ * @defgroup xstl_data_dump Memory dump helpers
+ * @ingroup xstl_data
+ * @brief Hexadecimal dump of memory and containers.
+ *
+ * @defgroup xstl_enc Encryption, hashing and random
+ * @brief Digests, HMAC, RC4 and random generators.
+ *
+ * @defgroup xstl_enc_digest Digests
+ * @ingroup xstl_enc
+ * @brief CRC, MD5, SHA-1 and HMAC message digests.
+ *
+ * @par Example
+ * @include digest_example.cpp
+ *
+ * @defgroup xstl_enc_cipher Ciphers
+ * @ingroup xstl_enc
+ * @brief The encryption interface and the RC4 cipher.
+ *
+ * @defgroup xstl_enc_random Random generators
+ * @ingroup xstl_enc
+ * @brief Pseudo-random generators (PRF, P_hash, RC4) and the random interface.
+ *
+ * @defgroup xstl_except Exceptions, assertions and tracing
+ * @brief Exception classes, ASSERT/CHECK macros and the TRACE facility.
+ *
+ * @par Example
+ * @include exceptions_example.cpp
+ *
+ * @defgroup xstl_os Operating-system abstraction
+ * @brief Files, threads, locks, events, memory and time, behind a common
+ *        interface.
+ *
+ * @defgroup xstl_os_windows Windows backend
+ * @ingroup xstl_os
+ * @brief Windows-specific definitions.
+ *
+ * @defgroup xstl_os_unix UNIX backend
+ * @ingroup xstl_os
+ * @brief UNIX/POSIX-specific definitions.
+ *
+ * @defgroup xstl_os_xdk Windows driver (XDK) and CE backends
+ * @ingroup xstl_os
+ * @brief Definitions for the Windows kernel-driver and Windows CE targets.
+ *
+ * @defgroup xstl_parser Text parser
+ * @brief Tokenizer and type/variable model for textual C-like data.
+ *
+ * @defgroup xstl_stream Streams
+ * @brief The basicIO stream interfaces and the file, memory, socket, pipe,
+ *        serial, compression and filter streams built on them.
+ *
+ * @defgroup xstl_utils Utilities
+ * @brief Algorithms, callbacks, command-line arguments, timeouts and memory
+ *        dumping.
+ */
+

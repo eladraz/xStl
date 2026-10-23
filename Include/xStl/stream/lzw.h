@@ -32,14 +32,19 @@
 #ifndef __TBA_STL_LZWCOMPRESSION_H
 #define __TBA_STL_LZWCOMPRESSION_H
 
+/**
+ * @addtogroup xstl_stream
+ * @{
+ */
 
-/*
- * LZW.h
+
+/**
+ * @file lzw.h
+ * @brief Implementation of the Lempel-Ziv-Welch compression as defined in the
+ *    GIF
+ *   image specification.
  *
- * Implementation of the Lempel-Ziv-Welch compression as defined in the GIF
- * image specification.
- *
- * Author: Elad Raz <e@eladraz.com>
+ * @author Elad Raz
  */
 #include "xStl/types.h"
 #include "xStl/data/array.h"
@@ -53,33 +58,39 @@
 #include "xStl/stream/memoryStream.h"
 
 
-/*
- * The default bit amount for the compression.
+/**
+ * @brief The default bit amount for the compression.
  */
 #define DEFAULT_BIT_COUNT (8)
 
 
-/*
- * struct LZW_STRING
+/**
+ * @brief An entry of the LZW compression table.
  *
- * Data struct of the compression table in the memory.
+ * @details Data struct of the compression table in the memory.
  */
 struct LZW_STRING
 {
+    /**
+     * @brief The index of the prefix string in the compression table.
+     */
     unsigned int prefix;
+    /**
+     * @brief The value (code) which is appended to the prefix.
+     */
     unsigned int value;
 };
 
 
 
-/*
- * cLZWcompression
+/**
+ * @brief The device can encode stream with bit size of 1,2,3,4,5,6,7,8 bits
+ *    only.
  *
- * The device can encode stream with bit size of 1,2,3,4,5,6,7,8 bits only.
- *
- * If you want to compress 9bit of information, I personally think that you are
- * wasting your time since the pattern which will be found and the pattern of
- * the memory will enlarge the file.
+ * @details If you want to compress 9bit of information, I personally think that
+ *    you are
+ *   wasting your time since the pattern which will be found and the pattern of
+ *   the memory will enlarge the file.
  *
  * The method of the compression is to build a run-time table containing
  * strings of previous strings found in the string. Instead of coding the
@@ -91,100 +102,133 @@ class cLZWcompression : public filterStream
 {
 public:
 
-    /*
-     * Constructor. Create LZW stream with default bit-encoding of
-     * 'bitSize' parameter.
+    /**
+     * @brief Constructor. Create LZW stream with default bit-encoding of
+     *    'bitSize'
+     *   parameter.
      *
-     * stream - The decorated stream class to be used for the compression or
-     *          the decompression process.
-     * bitSize - Number of bits in which to seek patterns.
+     * @param stream The decorated stream class to be used for the compression
+     *    or the decompression process.
+     * @param bitSize Number of bits in which to seek patterns.
      */
     cLZWcompression(cSmartPtr<basicIO> stream,
                     uint8 bitSize = DEFAULT_BIT_COUNT);
-    /*
-     * Virtual destructor
+    /**
+     * @brief Virtual destructor
      */
     virtual ~cLZWcompression();
 
-    /*
-     * The endian for the bit stream is the same as the down stream.
+    /**
+     * @brief The endian for the bit stream is the same as the down stream.
      */
     filterStreamEndianImpl;
 
 
     // Derived from the basicIO
 
-    /*
-     * Decompress data from the lower stream.
+    /**
+     * @brief Decompress data from the lower stream.
+     *
+     * @param buffer The buffer which receives the data.
+     * @param length The number of bytes to read.
+     * @return The number of bytes actually read.
      */
     virtual uint read(void *buffer, const uint length);
 
-    /*
-     * Encoding the buffer into the compressor.
+    /**
+     * @brief Encoding the buffer into the compressor.
      *
-     * W A R N I N G
+     * @details W A R N I N G
      *   This function cannot work with the read() instruction
      *   in the same time.
      *
      * Throws "EXCEPTION_WRITE_EXCEPTION" exception.
+     *
+     * @param buffer The data to write.
+     * @param length The number of bytes to write.
+     * @return The number of bytes actually written.
      */
     virtual uint write(const void *buffer, const uint length);
 
-    /*
-     * Flush out read buffer and write-buffers. Init the compression to
-     * new stream.
+    /**
+     * @brief Flush out read buffer and write-buffers.
+     *
+     * @details Init the compression to new stream.
      */
     virtual void flush();
 
-    /*
-     * Can seek forward 'distance' amount of bytes. All other seeking methods
-     * throw an exception.
-     * If the down stream can seek to the beginning this function will be valid
-     * from the beginning of the stream.
+    /**
+     * @brief Can seek forward 'distance' amount of bytes.
+     *
+     * @details All other seeking methods
+     *
+     * @throws cException . If the down stream can seek to the beginning this
+     *    function will be valid from the beginning of the stream.
+     * @param distance The distance to move, relative to @a method.
+     * @param method The reference position of the movement.
      */
     virtual void seek(const int distance, const basicInput::seekMethod method);
 
-    /*
-     * Return true if we have reached the end of the compression.
+    /**
+     * @brief Return true if we have reached the end of the compression.
+     *
+     * @return True if we have reached the end of the compression.
      */
     virtual bool isEOS();
 
-    /*
-     * Length, getPointer are invalid in the LZW compression since I don't
-     * have any way to know the size of the compressed data.
+    /**
+     * @brief Length, getPointer are invalid in the LZW compression since I
+     *    don't have
+     *   any way to know the size of the compressed data.
+     *
+     * @return The total length of the stream in bytes.
      */
     virtual uint length() const;
+    /**
+     * @return The position of the read/write head, in bytes from the beginning
+     *    of the stream.
+     */
     virtual uint getPointer() const;
 
 
     // LZW functions
 
-    /*
-     * Call this function at the beginning of the write-out-compression process.
-     * The function writes out the 'CLEAR' signal to the stream.
-     * The decompressor expects to find this signal.
+    /**
+     * @brief Call this function at the beginning of the write-out-compression
+     *    process.
+     *
+     * @details The function writes out the 'CLEAR' signal to the stream. The
+     *    decompressor expects to find this signal.
      */
     void initNewStream();
 
-    /*
-     * Call this function at the end of the compression.
-     * Write the 'EOI' signal. After the call to this function flush the data
-     * and close all streams.
+    /**
+     * @brief Call this function at the end of the compression.
+     *
+     * @details Write the 'EOI' signal. After the call to this function flush
+     *    the data and close all streams.
      */
     void closeNewStream();
 
-    /*
-     * Returns how many bytes should be read for best performance in the
-     * pipeRead() function in a single call to the read() function.
+    /**
+     * @brief Returns how many bytes should be read for best performance in the
+     *   pipeRead() function in a single call to the read() function.
+     *
+     * @return How many bytes should be read for best performance in the
+     *    pipeRead() function in a single call to the read() function.
      */
     virtual uint getPipeReadBestRequest() const { return m_stream->getPipeReadBestRequest(); }
 
 protected:
-    // Init the seeking methods.
+    /**
+     * @brief Init the seeking methods.
+     */
     virtual void initSeek();
 
 private:
-    /* Prevent copying objects */
+    /**
+     * @brief Prevent copying objects
+     */
     cLZWcompression();
     cLZWcompression(const cLZWcompression& other);
     cLZWcompression & operator = (const cLZWcompression& other);
@@ -209,18 +253,21 @@ private:
 
     /* String operation */
 
-    /*
-     * Write a single string into the pipe.
-     * Uses recursion to retrieve the string from the 'pcode'.
+    /**
+     * @brief Write a single string into the pipe.
+     *
+     * @details Uses recursion to retrieve the string from the 'pcode'.
      */
     bool writeString(unsigned int pcode, cBitStream & stream);
 
-    /*
-     * Copy data directly to the memory stream from the bitstream.
+    /**
+     * @brief Copy data directly to the memory stream from the bitstream.
      */
     unsigned int copyStream(cBitStream &bits_pipe, cMemoryStream &mem, void *buffer);
 };
 
 
+
+/** @} */
 #endif //__TBA_STL_LZWCOMPRESSION_H
 

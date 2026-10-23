@@ -32,12 +32,16 @@
 #ifndef __TBA_STL_STREAM_MEMORYACCESSERSTREAM_H
 #define __TBA_STL_STREAM_MEMORYACCESSERSTREAM_H
 
-/*
- * memoryAccesserStream.h
+/**
+ * @addtogroup xstl_stream
+ * @{
+ */
+
+/**
+ * @file memoryAccesserStream.h
+ * @brief Wrap a 'cVirtualMemoryAccesserPtr' with a stream interface.
  *
- * Wrap a 'cVirtualMemoryAccesserPtr' with a stream interface.
- *
- * Author: Elad Raz <e@eladraz.com>
+ * @author Elad Raz
  */
 #include "xStl/types.h"
 #include "xStl/data/smartptr.h"
@@ -46,32 +50,34 @@
 
 // Forward declaration
 class cMemoryAccesserStream;
-// The memory-accesser stream reference counter object
+/**
+ * @brief The memory-accesser stream reference counter object
+ */
 typedef cSmartPtr<cMemoryAccesserStream> cMemoryAccesserStreamPtr;
 
-/*
- * Wrap a 'cVirtualMemoryAccesserPtr' with a stream interface.
- * See cVirtualMemoryAccesserPtr
- * See cForkStream
+/**
+ * @brief Wrap a 'cVirtualMemoryAccesserPtr' with a stream interface.
+ *
+ * @see cVirtualMemoryAccesserPtr
+ * @see cForkStream
  */
 class cMemoryAccesserStream : public cForkStream {
 public:
-    /*
-     * Constructor, creates a memory stream around a 'virtual-memory-accesser'
-     * object.
+    /**
+     * @brief Constructor, creates a memory stream around a
+     *    'virtual-memory-accesser'
+     *   object.
      *
-     * memory          - The virtual memory accesser for the stream
-     * startAddress    - The start-address for the 'memory' accesser
-     * endAddress      - The end-address for the 'memory' accesser. Also known
-     *                   as the size of the stream.
-     * ignoreFragments - When read() encounters a fragmented memory region it
-     *                   usually throws an exception. When set to true read()
-     *                   will ignore any fragmented memory and will fill them
-     *                   with 0.
-     * isFix           - When the stream grew more than expected, the endAddress
-     *                   can be enlarged.
-     *                   TODO! THIS VARIABLE MUST BE TRUE. THE FUNCTION IS NOT
-     *                         IMPLEMENTED YET
+     * @param memory The virtual memory accesser for the stream
+     * @param startAddress The start-address for the 'memory' accesser
+     * @param endAddress The end-address for the 'memory' accesser. Also known
+     *    as the size of the stream.
+     * @param ignoreFragments When read() encounters a fragmented memory region
+     *    it usually throws an exception. When set to true read() will ignore
+     *    any fragmented memory and will fill them with 0.
+     * @param isFix When the stream grew more than expected, the endAddress can
+     *    be enlarged. TODO! THIS VARIABLE MUST BE TRUE. THE FUNCTION IS NOT
+     *    IMPLEMENTED YET
      */
     cMemoryAccesserStream(const cVirtualMemoryAccesserPtr& memory,
                           uint startAddress,
@@ -79,120 +85,185 @@ public:
                           bool ignoreFragments = false,
                           bool isFix = true);
 
-    /*
-     * Memory-files will be treated as the default endian in the system
+    /**
+     * @brief Memory-files will be treated as the default endian in the system
      */
     defaultEndianImpl;
 
     // Derived from the basicIO
 
-    /*
-     * Retrieve the position of the write/read head
+    /**
+     * @brief Retrieve the position of the write/read head
+     *
+     * @return The position of the read/write head, in bytes from the beginning
+     *    of the stream.
      */
     virtual uint getPointer() const;
 
-    /*
-     * Return the length of the memory-file.
+    /**
+     * @brief Return the length of the memory-file.
+     *
+     * @return The length of the memory-file.
      */
     virtual uint length() const;
 
-    /*
-     * Return true if the file pointer reach the end of the file.
+    /**
+     * @brief Return true if the file pointer reach the end of the file.
+     *
+     * @return True if the file pointer reach the end of the file.
      */
     virtual bool isEOS();
 
-    /*
-     * Flush the information of the file. Shouldn't do anything.
+    /**
+     * @brief Flush the information of the file.
+     *
+     * @details Shouldn't do anything.
      */
     virtual void flush();
 
-    /*
-     * Read from the memory array into a buffer. If the reading reaches the end
-     * of the array then the function returns the number of bytes read until
-     * EOF is reached.
+    /**
+     * @brief Read from the memory array into a buffer.
      *
-     * NOTE: The fragments region will be filled with zero. There isn't any
-     *       notification that the user can get using the streams interface.
+     * @details If the reading reaches the end of the array then the function
+     *    returns the number of bytes read until EOF is reached.
+     *
+     * @note The fragments region will be filled with zero. There isn't any
+     *    notification that the user can get using the streams interface.
+     * @param buffer The buffer which receives the data.
+     * @param length The number of bytes to read.
+     * @return The number of bytes actually read.
      */
     virtual uint read(void *buffer, const uint length);
 
-    /*
-     * Write bytes to the stream.
+    /**
+     * @brief Write bytes to the stream.
+     *
+     * @param buffer The data to write.
+     * @param length The number of bytes to write.
+     * @return The number of bytes actually written.
      */
     virtual uint write(const void *buffer, const uint length);
 
-    /*
-     * Move to a specific position in the stream. Throw an exception if failed.
-     * See basicInput::seek for more information.
+    /**
+     * @brief Move to a specific position in the stream.
+     *
+     * @details Throw an exception if failed. See basicInput::seek for more
+     *    information.
+     *
+     * @param distance The distance to move, relative to @a method.
+     * @param method The reference position of the movement.
      */
     virtual void seek(const int distance, const basicInput::seekMethod method);
 
-    /*
-     * Returns how many bytes should be read for best performance in the
-     * pipeRead() function in a single call to the read() function.
+    /**
+     * @brief Returns how many bytes should be read for best performance in the
+     *   pipeRead() function in a single call to the read() function.
      *
-     * This value stands at 4kb which is the pageSize in most platforms.
+     * @details This value stands at 4kb which is the pageSize in most
+     *    platforms.
+     *
+     * @return How many bytes should be read for best performance in the
+     *    pipeRead() function in a single call to the read() function.
      */
     virtual uint getPipeReadBestRequest() const { return 4096; }
 
-    // The cForkStream API
+    /**
+     * @brief The cForkStream API
+     *
+     * @return A new instance of the same stream.
+     */
     virtual cForkStreamPtr fork() const;
 
     // cMemoryAccesserStream functions.
 
-    /*
-     * Return pointer to the memory stream.
+    /**
+     * @brief Return pointer to the memory stream.
+     *
+     * @return Pointer to the memory stream.
      */
     bool isStreamWriteable() const;
 
-    /*
-     * Returns the memory accesser object
+    /**
+     * @brief Returns the memory accesser object
+     *
+     * @return The memory accesser object.
      */
     const cVirtualMemoryAccesserPtr& getMemoryAccesser() const;
 
-    /*
-     * Return the number of bytes relative to 'getMemoryAccesser' this stream
-     * access started.
+    /**
+     * @brief Return the number of bytes relative to 'getMemoryAccesser' this
+     *    stream
+     *   access started.
+     *
+     * @return The number of bytes relative to 'getMemoryAccesser' this stream
+     *    access started.
      */
     const uint getMemoryAccesserStartAddress() const;
 
-    /*
-     * Return the number of bytes relative to 'getMemoryAccesser' this stream
-     * access ended.
+    /**
+     * @brief Return the number of bytes relative to 'getMemoryAccesser' this
+     *    stream
+     *   access ended.
+     *
+     * @return The number of bytes relative to 'getMemoryAccesser' this stream
+     *    access ended.
      */
     const uint getMemoryAccesserEndAddress() const;
 
-    /*
-     * Return a new memory stream forked from this stream which access only
-     * the relative 'start..end' portion of the stream
+    /**
+     * @brief Return a new memory stream forked from this stream which access
+     *    only the
+     *   relative 'start..end' portion of the stream
      *
-     * virtualStart - The starting address from 0 pointer of this stream
-     * virtualEnd - The ending address from 0 pointer of this stream in bytes
+     * @param virtualStart The starting address from 0 pointer of this stream
+     * @param virtualEnd The ending address from 0 pointer of this stream in
+     *    bytes
+     * @return A new memory stream forked from this stream which access only the
+     *    relative 'start..end' portion of the stream.
      */
     cMemoryAccesserStreamPtr forkRegion(uint virtualStart, uint virtualEnd) const;
 
 protected:
-    // Init the seeking methods.
-    // All seek operations are permitted
+    /**
+     * @brief Init the seeking methods.
+     *
+     * @details All seek operations are permitted
+     */
     virtual void initSeek();
 
 private:
-    // Copy-constructor. Used in the fork API
+    /**
+     * @brief Copy-constructor. Used in the fork API
+     */
     cMemoryAccesserStream(const cMemoryAccesserStream& other);
-    // Deny operator =
+    /**
+     * @brief Deny operator =
+     */
     cMemoryAccesserStream& operator = (const cMemoryAccesserStream& other);
 
-    // The memory which the data will be read from
+    /**
+     * @brief The memory which the data will be read from
+     */
     cVirtualMemoryAccesserPtr m_data;
-    // The position inside the memory stream, the pointer is inside the
-    // [start..end] range in order to accelerated calculations.
+    /**
+     * @brief The position inside the memory stream, the pointer is inside the
+     *   [start..end] range in order to accelerated calculations.
+     */
     uint m_filePosition;
-    // The relative address to access the stream
+    /**
+     * @brief The relative address to access the stream
+     */
     uint m_startAddress;
-    // The size of the stream (end-start)
+    /**
+     * @brief The size of the stream (end-start)
+     */
     uint m_endAddress;
-    // Should fragmented memory be ignored or should it be notified
+    /**
+     * @brief Should fragmented memory be ignored or should it be notified
+     */
     bool m_ignoreFragments;
 };
 
+
+/** @} */
 #endif // __TBA_STL_STREAM_MEMORYACCESSERSTREAM_H

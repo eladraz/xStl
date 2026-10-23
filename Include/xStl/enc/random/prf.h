@@ -32,13 +32,18 @@
 #ifndef __TBA_STL_ENCRYPTION_RANDOM_PRF_H
 #define __TBA_STL_ENCRYPTION_RANDOM_PRF_H
 
-/*
- * prf.h
+/**
+ * @addtogroup xstl_enc_random
+ * @{
+ */
+
+/**
+ * @file prf.h
+ * @brief The pseudo-random-function (PRF) as described in RFC 2246 which is the
+ *    TLS
+ *   protocol specification.
  *
- * The pseudo-random-function (PRF) as described in RFC 2246 which is the TLS
- * protocol specification.
- *
- * Author: Elad Raz <e@eladraz.com>
+ * @author Elad Raz
  */
 #include "xStl/types.h"
 #include "xStl/data/array.h"
@@ -47,39 +52,52 @@
 #include "xStl/enc/random/pmacRnd.h"
 
 
-/*
- * class cPRF
+/**
+ * @brief Defines the PRF function.
  *
- * Defines the PRF function. The PRF function is defined as follows:
+ * @details The PRF function is defined as follows:
  *
- *      PRF(secret, label, seed) = P_MD5(S1, label + seed) XOR
- *                                 P_SHA-1(S2, label + seed);
+ * @code
+ * PRF(secret, label, seed) = P_MD5(S1, label + seed) XOR
+ *                            P_SHA-1(S2, label + seed);
+ * @endcode
  */
 class cPRF : public cRandom
 {
 public:
-    /*
-     * Init the random mechanism according to 'seed' and a 'secret' the
-     * seed is the 'label + seed' and the secret is split into two halves
-     * used to init the P-MD5 and the P-SHA-1 objects.
+    /**
+     * @brief Init the random mechanism according to 'seed' and a 'secret' the
+     *    seed is
+     *   the 'label + seed' and the secret is split into two halves used to init
+     *   the P-MD5 and the P-SHA-1 objects.
+     *
+     * @param seed The `label + seed` of the PRF.
+     * @param secret The secret. It is split into two halves for the P-MD5 and
+     *    P-SHA-1 objects.
      */
     cPRF(const cBuffer& seed, const cBuffer& secret);
 
-    /*
-     * Generate 'length' bytes of random and put it in 'output'. The 'output'
-     * size is changed to 'length' and step over pure random. This function
-     * advances the internal random mechanism.
-     * The generated random
+    /**
+     * @brief Generate 'length' bytes of random and put it in 'output'.
      *
-     * length - The amount of random to be generate.
-     * output - Will be filled with the required pseudo-random generation code.
+     * @details The 'output' size is changed to 'length' and step over pure
+     *    random. This function advances the internal random mechanism. The
+     *    generated random
+     *
+     * @param length The amount of random to be generate.
+     * @param output Will be filled with the required pseudo-random generation
+     *    code.
      */
     virtual void generateRandom(uint length, cBuffer& output);
 
 private:
-    // The MD5 object and the SHA1 object
+    /**
+     * @brief The MD5 object and the SHA1 object
+     */
     cSmartPtr<cPMacRandom> m_md5;
     cSmartPtr<cPMacRandom> m_sha1;
 };
 
+
+/** @} */
 #endif // __TBA_STL_ENCRYPTION_RANDOM_PRF_H

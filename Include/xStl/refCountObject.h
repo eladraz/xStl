@@ -32,75 +32,79 @@
 #ifndef __TBA_XSTL_REFCOUNTOBJECT_H
 #define __TBA_XSTL_REFCOUNTOBJECT_H
 
-/*
- * refCountObject.h
+/**
+ * @addtogroup xstl_core
+ * @{
+ */
+
+/**
+ * @file refCountObject.h
+ * @brief Contains code which makes classes into reference-count modules.
  *
- * Contains code which makes classes into reference-count modules.
- *
- * Author: Elad Raz <e@eladraz.com>
+ * @author Elad Raz
  */
 #include "xStl/types.h"
 #include "xStl/data/counter.h"
 #include "xStl/os/xstlLockable.h"
 #include "xStl/os/lock.h"
 
-// Inside the constructor list, reset all ref-count object generated members
-// See REFCOUNTABLE
+/**
+ * @brief Inside the constructor list, reset all ref-count object generated
+ *    members
+ *
+ * @see REFCOUNTABLE
+ */
 #define REFCOUNTABLE_INIT m_referenceCounter(NULL)
 
-/*
- * This macro makes a class reference-countable over a data-type.
+/**
+ * @brief Make a class reference-countable over a data type.
  *
- * Parameters:
- *   DataType   - The type-name of the data which is reference-countable, this
- *                value can be a typedef, struct-name, class-name or pointer to
- *                for sharable-objects
+ * The macro declares, inside the class, the members and helper functions that
+ * let several instances of the class share one object. Usage in the class
+ * header:
  *
- * The usage is inside the class .H file:
- *  class MyClass {
- *    ...
- *    REFCOUNTABLE(Data*);
- *    REFCOUNTABLE_COPY(MyClass);
- *    REFCOUNT_SHARABLE_APPENDIX(Data*);
- *  };
+ * @code
+ * class MyClass {
+ * ...
+ * REFCOUNTABLE(Data*);
+ * REFCOUNTABLE_COPY(MyClass);
+ * REFCOUNT_SHARABLE_APPENDIX(Data*);
+ * };
  *
- *  REFCOUNTABLE_CPP(MyClass);
+ * REFCOUNTABLE_CPP(MyClass);   // in the CPP file
+ * @endcode
  *
- * This single line will generate all functions and members needed to make
- * the class a reference-countable object.
- * But there are still a few things to do in order to link the operation
- * properly.
+ * The macro generates the following members: `m_object` (the shared object),
+ * `m_referenceCounter` (the count of all opened references) and a static
+ * protected lock that protects the counter.
  *
- * IMPORTANT NOTE: Notice the pointer! For sharable objects the data-type is
- *                 a pointer!
+ * It also generates the public function `getObject()` (const and non-const
+ * versions) and the protected functions `init(object)`, which the constructor
+ * calls to start the reference count, and `free()`, which reduces the reference
+ * count and returns true when the last reference was released (the caller then
+ * deletes the object).
  *
+ * In the constructor of the class, call `init()` after REFCOUNTABLE_INIT:
+ * @code
+ * MyClass::MyClass() : REFCOUNTABLE_INIT {
+ *     init(new Data(4));
+ * }
+ * @endcode
  *
- * The macro generates and handles the following members:
- *    m_object           - Pointer to the reference-countable member
- *    m_referenceCounter - The count of all opened references
- *
- * The macro generates the following functions:
- *   public:
- *     getObject()  - Return const/non-const object
- *
- *   protected:
- *     init(object) - Called by the constructor in order to init the reference
- *                    count.
- *     free()       - Called in order to reduce the reference-count object
- *
- * In the constructor of the class you should invoke a call to the 'init'
- * function:
- *   MyClass::MyClass() :
- *      REFCOUNTABLE_INIT {
- *      init(new Data(4));
- *   }
- *
- * In the destructor you should use the following code instead:
- *   MyClass::~MyClass() {
- *      if (free()) {
+ * In the destructor use the following code instead of deleting the object
+ * directly:
+ * @code
+ * MyClass::~MyClass() {
+ *     if (free()) {
  *         delete getObject();
- *      }
- *   }
+ *     }
+ * }
+ * @endcode
+ *
+ * @param DataType The type name of the data which is reference-countable. It
+ *    can be a typedef, struct name, class name or a pointer (for sharable
+ *    objects).
+ * @warning For sharable objects the data type is a pointer.
  */
 #define REFCOUNTABLE(DataType)                                          \
     protected:                                                          \
@@ -128,42 +132,41 @@
             return m_object;                                            \
         }
 
-/*
- * Must be called inside the CPP file in order to generate the protective
- * mutex.
+/**
+ * @brief Must be called inside the CPP file in order to generate the protective
+ *   mutex.
+ *
+ * @param MyClass The name of the class which uses the reference-countable
+ *    object.
  */
 #define REFCOUNTABLE_CPP(MyClass) cXstlLockable MyClass::m_refCountLockable;
 
 
-/*
- * This macro generates a copy-constructor and operator = for a reference-
- * countable class. There are two ways to generate this copy methods:
- *  - For a class which has only the reference-count object, use the
- *    'REFCOUNTABLE_COPY' definitions
- *  - For a class which has several members, use the
- *    'REFCOUNTABLE_COPY_MORE' definitions. This definition adds a call
- *    to 'void copy(const ClassName& other)' method
+/**
+ * @brief Generate a copy-constructor and operator = for a reference-countable
+ *    class.
  *
- * Parameters:
- *   ClassName  - The name of the class in which the operation takes place
+ * Use REFCOUNTABLE_COPY for a class whose only member is the reference-count
+ * object. Use REFCOUNTABLE_COPY_MORE for a class that has other members; it
+ * additionally calls the class method `void copy(const ClassName& other)` to
+ * copy them. For example:
+ * @code
+ * class MyClass {
+ * private:
+ *     void copy(const MyClass& other) {
+ *         m_member1 = other.m_member1;
+ *         m_member2 = other.m_member2;
+ *         strcpy(m_member3, other.m_member3);
+ *     }
  *
- * In case the REFCOUNTABLE_COPY_MORE is used the class should also
- * implement the 'copy()' method:
- *   class MyClass {
- *   private:
- *       void copy(const MyClass& other) {
- *          m_member1 = other.m_member1;
- *          m_member2 = other.m_member2;
- *          strcpy(m_member3, other.m_member3);
- *       }
+ *     int m_member1;
+ *     OtherClass m_member2;
+ *     char m_member3[100];
+ * };
+ * @endcode
  *
- *       int m_member1;
- *       OtherClass m_member1;
- *       char m_member1[100];
- *   };
- *
- * NOTE: In the copy method, the reference-countable object is invalid.
- *
+ * @param ClassName The name of the class in which the macro is used.
+ * @note In the copy method, the reference-countable object is invalid.
  */
 #define REFCOUNTABLE_COPY(ClassName)                                 \
     public:                                                          \
@@ -184,6 +187,16 @@
         return *this;                                                \
     }                                                                \
 
+/**
+ * @brief Generate a copy-constructor and operator = which also call the class
+ *    method `copy()`.
+ *
+ * Like REFCOUNTABLE_COPY, but additionally calls `void copy(const ClassName&
+ * other)` so that the other members of the class are copied too.
+ *
+ * @param ClassName The name of the class in which the macro is used.
+ * @see REFCOUNTABLE_COPY
+ */
 #define REFCOUNTABLE_COPY_MORE(ClassName)                            \
     ClassName(const ClassName& other) : REFCOUNTABLE_INIT {          \
         copy(other);                                                 \
@@ -205,9 +218,11 @@
     }                                                                \
 
 
-/*
- * For sharable objects, use this prefix macro in order to generate
- * the operators: (cast), *, ->
+/**
+ * @brief For sharable objects, use this prefix macro in order to generate the
+ *   operators: (cast), *, -\>
+ *
+ * @param DataType The type of the shared object.
  */
 #define REFCOUNT_SHARABLE_APPENDIX(DataType)                         \
     public:                                                          \
@@ -216,4 +231,6 @@
     inline DataType* operator->(void) { return m_object; }
 
 
+
+/** @} */
 #endif // __TBA_XSTL_REFCOUNTOBJECT_H

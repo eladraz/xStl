@@ -32,12 +32,17 @@
 #ifndef __TBA_STL_OS_STREAMMEMORYACCESSER_H
 #define __TBA_STL_OS_STREAMMEMORYACCESSER_H
 
-/*
- * streamMemoryAccesser.h
+/**
+ * @addtogroup xstl_os
+ * @{
+ */
+
+/**
+ * @file streamMemoryAccesser.h
+ * @brief A stream memory accesser is a manageable reference-countable memory
+ *    stream
  *
- * A stream memory accesser is a manageable reference-countable memory stream
- *
- * Author: Elad Raz <e@eladraz.com>
+ * @author Elad Raz
  */
 #include "xStl/types.h"
 #include "xStl/data/array.h"
@@ -47,36 +52,46 @@
 #include "xStl/os/virtualMemoryAccesser.h"
 #include "xStl/os/threadUnsafeMemoryAccesser.h"
 
-/*
- * A stream memory accesser is a manageable reference-countable memory stream.
+/**
+ * @brief A stream memory accesser is a manageable reference-countable memory
+ *   stream.
  *
- * NOTE: It's safer to never change the size or the content of the cBuffer data,
- *       however, this option exists. After a change at the 'data'
- *       pointer, the 'updateStreamBoundaries' function must be invoked.
+ * @note It's safer to never change the size or the content of the cBuffer data,
+ *    however, this option exists. After a change at the 'data' pointer, the
+ *    'updateStreamBoundaries' function must be invoked.
  */
 class cStreamMemoryAccesser : public cThreadUnsafeMemoryAccesser {
 public:
-    /*
-     * Constructor. Create a thread memory accesser that points to the
-     * content of the 'data'. If the data stream is changed, there must be a
-     * notification. See updateStreamBoundaries.
+    /**
+     * @brief Constructor. Create a thread memory accesser that points to the
+     *    content of
+     *   the 'data'.
      *
-     * data - The stream which the thread memory points at.
+     * @details If the data stream is changed, there must be a notification. See
+     *    updateStreamBoundaries.
+     *
+     * @param data The stream which the thread memory points at.
      */
     cStreamMemoryAccesser(const cBufferPtr& data);
 
-    /*
-     * Called when the 'data' cBuffer object was modified outside the content
-     * of the cVirtualMemoryAccesser.
-     * This function recalibrates the boundaries of the stream.
+    /**
+     * @brief Called when the 'data' cBuffer object was modified outside the
+     *    content of
+     *   the cVirtualMemoryAccesser.
+     *
+     * @details This function recalibrates the boundaries of the stream.
      */
     void updateStreamBoundaries();
 
 private:
     // Copy-constructor and operator = are denied by the cThreadUnsafeMemoryAccesser
 
-    // The reference-countable data object
+    /**
+     * @brief The reference-countable data object
+     */
     cBufferPtr m_data;
 };
 
+
+/** @} */
 #endif // __TBA_STL_OS_STREAMMEMORYACCESSER_H

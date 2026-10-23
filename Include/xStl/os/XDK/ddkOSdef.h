@@ -32,12 +32,17 @@
 #ifndef __TBA_STL_OS_WINOS_H
 #define __TBA_STL_OS_WINOS_H
 
-/*
- * ddkOSdef.h
+/**
+ * @addtogroup xstl_os_xdk
+ * @{
+ */
+
+/**
+ * @file ddkOSdef.h
+ * @brief Types, struct definitions and constants needed for the Windows driver
+ *   library
  *
- * Types, struct definitions and constants needed for the Windows driver library
- *
- * Author: Elad Raz <e@eladraz.com>
+ * @author Elad Raz
  */
 
 namespace cOSDef {
@@ -46,9 +51,15 @@ namespace cOSDef {
      *   The following code implements the Windows DDK over NT+ driver kit
      */
 
-    // The mutexHandle
+    /**
+     * @brief The mutex handle of the Windows driver kit: a spin lock together
+     *    with its locked state.
+     */
     class mutexHandle {
     public:
+        /**
+         * @brief Constructor. Initialize the spin lock and mark it as unlocked.
+         */
         mutexHandle() :
             isLocked(false),
             oldIrql(PASSIVE_LEVEL)
@@ -56,28 +67,48 @@ namespace cOSDef {
             KeInitializeSpinLock(&spinLock);
         }
 
-        // The spin-lock object
+        /**
+         * @brief The spin-lock object
+         */
         KSPIN_LOCK spinLock;
-        // The old IRQL level
+        /**
+         * @brief The old IRQL level
+         */
         KIRQL oldIrql;
-        // Is the spin-lock locked
+        /**
+         * @brief Is the spin-lock locked
+         */
         bool isLocked;
     };
 
-    // The fileHandle
+    /**
+     * @brief The fileHandle
+     */
     typedef HANDLE fileHandle;
-    // The systemTime.
+    /**
+     * @brief The systemTime.
+     */
     typedef uint64 systemTime;
-    // The OS exception code type
+    /**
+     * @brief The OS exception code type
+     */
     typedef NTSTATUS exceptionCode;
-    // System-thread
+    /**
+     * @brief System-thread
+     */
     typedef PKTHREAD threadHandle;
-    // The event handle
+    /**
+     * @brief The event handle
+     */
     typedef KEVENT eventHandle;
 }; // namespace cOSDef
 
-// Consts
-#define INVALID_FILE_HANDLE   ((HANDLE)(-1))  // Invalid fileHandle
-#define INVALID_THREAD_HANDLE (NULL)          // Invalid threadHandle
+/**
+ * @brief Consts
+ */
+#define INVALID_FILE_HANDLE   ((HANDLE)(-1))  ///< Invalid fileHandle
+#define INVALID_THREAD_HANDLE (NULL)          ///< Invalid threadHandle
 
+
+/** @} */
 #endif // __TBA_STL_OS_WINOS_H

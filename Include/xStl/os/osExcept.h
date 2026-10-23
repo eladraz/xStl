@@ -32,84 +32,118 @@
 #ifndef __TBA_STL_OSEXCEPT_H
 #define __TBA_STL_OSEXCEPT_H
 
-/*
- * osExcept.h
+/**
+ * @addtogroup xstl_os
+ * @{
+ */
+
+/**
+ * @file osExcept.h
+ * @brief The OS exception is a class derived from cException which is triggered
+ *    in
+ *   response to operating system API failure.
  *
- * The OS exception is a class derived from cException which is triggered in
- * response to operating system API failure. The exception constructor
- * has the information needed to tell the developer what happened.
+ * @details The exception constructor has the information needed to tell the
+ *    developer what happened.
  *
- * Author: Elad Raz <e@eladraz.com>
+ * @author Elad Raz
  */
 #include "xStl/types.h"
 #include "xStl/except/exception.h"
 #include "xStl/os/osdef.h"
 
-/*
- * Used in order to throw an exception which contains the operating system failure
- * code.
+/**
+ * @brief Used in order to throw an exception which contains the operating
+ *    system
+ *   failure code.
  *
- * Here are a few examples:
+ * @details Here are a few examples:
  *
  * - xStl source code example. Taken from file.cpp:
- *      if (CreateFile(...) == INVALID_HANDLE_VALUE)
- *         XSTL_THROW(cOsException());
  *
- *   OS: New OS exception thrown, code 0x2E, Access denied
+ * @code
+ * if (CreateFile(...) == INVALID_HANDLE_VALUE)
+ *    XSTL_THROW(cOsException());
+ * @endcode
+ *
+ * OS: New OS exception thrown, code 0x2E, Access denied
  *
  * - XDK application:
- *     NTSTATUS ret = IoCreateDevice(...);
- *     if (!NT_SUCCESS(ret))
- *          XSTL_THROW(cOsException(ret));
+ *
+ * @code
+ * NTSTATUS ret = IoCreateDevice(...);
+ * if (!NT_SUCCESS(ret))
+ *      XSTL_THROW(cOsException(ret));
+ * @endcode
  */
 class cOsException : public cException {
 public:
-    /*
-     * Default constructor. The ctor should be called in response to API
-     * call. The function invokes a call to the operating system and queries
-     * the error code ('GetLastError()' in Windows. 'errno' for all others)
+    /**
+     * @brief Default constructor. The ctor should be called in response to API
+     *    call.
+     *
+     * @details The function invokes a call to the operating system and queries
+     *    the error code ('GetLastError()' in Windows. 'errno' for all others)
      *
      * For operating systems whose last error code cannot be determined
      * this function constructs a 'Failure' code.
      * For these kinds of operating systems use the predetermined code ctor.
+     *
+     * @param file The source file where the exception is thrown.
+     * @param line The line in the source file where the exception is thrown.
      */
     cOsException(char * file, uint32 line);
 
-    /*
-     * Predetermined error code constructor.
+    /**
+     * @brief Predetermined error code constructor.
      *
-     * exceptionCode - The code to be thrown
+     * @param exceptionCode The code to be thrown
+     * @param file The source file where the exception is thrown.
+     * @param line The line in the source file where the exception is thrown.
      */
     cOsException(char * file, uint32 line, const cOSDef::exceptionCode& exceptionCode);
 
 private:
-    /*
-     * Called from the constructors.
-     * Inits the exception code for this class and the base class.
+    /**
+     * @brief Called from the constructors.
+     *
+     * @details Inits the exception code for this class and the base class.
      */
     void init(const cOSDef::exceptionCode& exceptionCode);
 
-    // The OS exception code
+    /**
+     * @brief The OS exception code
+     */
     cOSDef::exceptionCode m_exceptionCode;
 };
 
 
-/*
- * Evaluates provided boolean expression and throws cOsException if it is
- * false.
+/**
+ * @brief Evaluates provided boolean expression and throws cOsException if it is
+ *   false.
+ *
+ * @param n The boolean expression to evaluate.
  */
 #define OS_CHECK(n) if (!(n)) { XSTL_THROW(cOsException); }
 
 
-/*
- * Same as OS_CHECK, but allows passing exception code to the constructor
- * of cOsException.
+/**
+ * @brief Same as OS_CHECK, but allows passing exception code to the constructor
+ *    of
+ *   cOsException.
+ *
+ * @param n The boolean expression to evaluate.
+ * @param code The exception code passed to the cOsException constructor.
  */
 #define OS_CHECK_WITH_CODE(n,code) if (!(n)) { XSTL_THROW(cOsException, code); }
 
-/*
- * Throws cOsException with provided exception code.
+/**
+ * @brief Throws cOsException with provided exception code.
+ *
+ * @param code The exception code passed to the cOsException constructor.
  */
 #define OS_CHECK_FAIL(code) XSTL_THROW(cOsException, code);
 
+
+/** @} */
 #endif // __TBA_STL_OSEXCEPT_H

@@ -32,12 +32,16 @@
 #ifndef __TBA_STL_IOSTREAM_H
 #define __TBA_STL_IOSTREAM_H
 
-/*
- * iostream.h
+/**
+ * @addtogroup xstl_stream
+ * @{
+ */
+
+/**
+ * @file ioStream.h
+ * @brief Declaration of the cout/cin/cerr class
  *
- * Declaration of the cout/cin/cerr class
- *
- * Author: Elad Raz <e@eladraz.com>
+ * @author Elad Raz
  */
 
 #include "xStl/types.h"
@@ -59,51 +63,58 @@
 #endif
 
 
-/*
- * conOutStream
- *
- * Output stream directed to the console output.
+/**
+ * @brief Output stream directed to the console output.
  */
 class conOutStream : public cStringerStream
 {
 public:
-    /*
-     * Constructor. This stream uses a cache and waits until new-line is sent.
+    /**
+     * @brief Constructor. This stream uses a cache and waits until new-line is
+     *    sent.
      */
     conOutStream();
 
-    /*
-     * Return a global (Singleton) cout object
+    /**
+     * @brief Return a global (Singleton) cout object
+     *
+     * @return A global (Singleton) cout object.
      */
     static conOutStream& getCout();
 
-    /*
-     * Return a global (Singleton) cerr object
+    /**
+     * @brief Return a global (Singleton) cerr object
+     *
+     * @return A global (Singleton) cerr object.
      */
     static conOutStream& getCerr();
 
 protected:
-    /*
-     * Output the string into the m_data member.
-     * See cStringerStream::outputString
+    /**
+     * @brief Output the string into the m_data member.
+     *
+     * @param string The string to output.
+     * @see cStringerStream::outputString
      */
     virtual void outputString(const cString& string);
 
 private:
-    // Type of out objects.
+    /**
+     * @brief Type of out objects.
+     */
     enum conOutObjects
     {
         CON_OUT_COUT_OBJECT,
         CON_OUT_CERR_OBJECT
     };
 
-    /*
-     * Private constructor. Create con-out object according to the out-object
-     * type.
+    /**
+     * @brief Private constructor. Create con-out object according to the
+     *    out-object
+     *   type.
      *
-     * object - The type of the out-object
-     *
-     * Throws an exception in case of construction error.
+     * @param object The type of the out-object
+     * @throws cException in case of construction error.
      */
     conOutStream(conOutObjects object);
 
@@ -112,9 +123,13 @@ private:
         // Only the cConsoleDeviceControls can poll the console.
         // See cConsoleDevice
         friend class cConsoleDeviceControls;
-        // Use as a repository for holding the console messages
+        /**
+         * @brief Use as a repository for holding the console messages
+         */
         cXdkTrace m_conOut;
-        // The memory limits
+        /**
+         * @brief The memory limits
+         */
         enum { MAX_CON_MESSAGES = 2000 };
 
     #elif (defined (XSTL_16BIT) || defined (XSTL_CE))
@@ -123,17 +138,22 @@ private:
         // Windows CE is implemented by the ConsoleLibrary. Please review the
         // code on this project.
     #else
-        // WINDOWS APP and UNIX application
-        // The output stream for windows and linux
+        /**
+         * @brief WINDOWS APP and UNIX application The output stream for windows
+         *    and linux
+         */
         cFileStream m_outputFile;
     #endif
 };
 
 
-/*
- * Define the cout/cerr objects
+/**
+ * @brief Define the cout/cerr objects
  */
 #define cout conOutStream::getCout()
+/// Redirect the `cerr` object to the console error stream.
 #define cerr conOutStream::getCerr()
 
+
+/** @} */
 #endif //__TBA_STL_IOSTREAM_H

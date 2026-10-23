@@ -32,32 +32,42 @@
 #ifndef __TBA_STL_QUEUE_FIFO_H
 #define __TBA_STL_QUEUE_FIFO_H
 
+/**
+ * @addtogroup xstl_data_containers
+ * @{
+ */
+
 #include "xStl/types.h"
 #include "xStl/data/array.h"
 
-/*
- * cQueueFifo.h
+/**
+ * @file queueFifo.h
+ * @brief The interface for the fifo-queue.
  *
- * The interface for the fifo-queue. The queue is a memory block with const
- * size which has two pointers: read pointer and write pointer. The program
- * can write down to the queue and in the other hand read from the queue.
- * The writing and the reading are circular throughout the allocated buffer.
+ * @details The queue is a memory block with const size which has two pointers:
+ *    read pointer and write pointer. The program can write down to the queue
+ *    and in the other hand read from the queue. The writing and the reading are
+ *    circular throughout the allocated buffer.
  *
  * This class is not thread-safe. (IT WAS...)
  *
- * TODO
- * ----
- *  - Make this class template class for future usage ;)
+ * **TODO**
+ * - Make this class template class for future usage ;)
  *
- * Author: Elad Raz <e@eladraz.com>
+ * @author Elad Raz
  */
 
+/**
+ * @brief A first-in first-out queue of bytes with a fixed capacity.
+ */
 class cQueueFifo
 {
 public:
-    /*
-     * Constructor.
-     * Create an empty queue with a capacity of 'size' bytes.
+    /**
+     * @brief Constructor. Create an empty queue with a capacity of 'size'
+     *    bytes.
+     *
+     * @param size The capacity of the queue in bytes.
      */
     cQueueFifo(uint size);
 
@@ -66,65 +76,95 @@ public:
      * copying all class members.
      */
 
-    /*
-     * Return how many free bytes there are in the queue.
+    /**
+     * @brief Return how many free bytes there are in the queue.
+     *
+     * @return How many free bytes there are in the queue.
      */
     uint getQueueFreespace();
 
-    /*
-     * Return how many data bytes are available in the queue.
+    /**
+     * @brief Return how many data bytes are available in the queue.
+     *
+     * @return How many data bytes are available in the queue.
      */
     uint getQueueOccupyspace();
 
-    /*
-     * Read from the queue. The number of bytes actually read is returned
-     * from the function. If the queue is empty, the function returns
-     * 0 as the number of bytes read. (There isn't an error...)
+    /**
+     * @brief Read from the queue.
      *
-     * buffer - The data will be stored at.
-     * count  - How many bytes to read.
+     * @details The number of bytes actually read is returned from the function.
+     *    If the queue is empty, the function returns 0 as the number of bytes
+     *    read. (There isn't an error...)
      *
-     * Return the number of bytes read.
+     * @param buffer The data will be stored at.
+     * @param count How many bytes to read.
+     * @return The number of bytes read.
      */
     uint read(uint8 *buffer, uint count);
 
-    /*
-     * Write bytes to the queue. The number of bytes written is returned
-     * from the function. The function returns a different number than
-     * 'count' only when the queue is full.
+    /**
+     * @brief Write bytes to the queue.
      *
-     * buffer - The bytes to be written to the queue.
-     * count - The number of bytes written
+     * @details The number of bytes written is returned from the function. The
+     *    function returns a different number than 'count' only when the queue
+     *    is full.
      *
-     * Return the number of bytes written.
+     * @param buffer The bytes to be written to the queue.
+     * @param count The number of bytes written
+     * @return The number of bytes written.
      */
     uint write(const uint8* buffer, uint count);
 
 // TODO DBG CODE - removed private for debugging
 //private:
-    /*
-     * Internal unlock functions.
-     * This function is used to prevent deadlocks...
+    /**
+     * @brief Return the number of free bytes. Internal function which does not
+     *    lock the queue.
+     *
+     * The function is used to prevent deadlocks.
+     *
+     * @return The number of free bytes in the queue.
      */
     uint getFreespace();
+    /**
+     * @brief Return the number of occupied bytes. Internal function which does
+     *    not lock the queue.
+     *
+     * @return The number of occupied bytes in the queue.
+     */
     uint getOccupyspace();
 
-    /*
-     * The queue is implemented as an array of bytes.
-     * And two queue pointers.
+    /**
+     * @brief The queue is implemented as an array of bytes.
+     *
+     * @details And two queue pointers.
      */
     cBuffer        m_queue;
+    /**
+     * @brief The read position inside the queue buffer.
+     */
     volatile uint  m_readPointer;
+    /**
+     * @brief The write position inside the queue buffer.
+     */
     volatile uint  m_writePointer;
 
-    // Stores whether the read and the write pointer are together because the
-    // queue is full or completely empty.
+    /**
+     * @brief Stores whether the read and the write pointer are together because
+     *    the
+     *   queue is full or completely empty.
+     */
     volatile bool m_isFull;
 
-    // Is equal to m_queue.getSize();
+    /**
+     * @brief Is equal to m_queue.getSize();
+     */
     uint m_queueSize;
 };
 
 
+
+/** @} */
 #endif // __TBA_STL_QUEUE_FIFO_H
 

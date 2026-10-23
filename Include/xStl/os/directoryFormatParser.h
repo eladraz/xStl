@@ -32,13 +32,18 @@
 #ifndef __TBA_STL_OS_DIRECTORYFORMATPARSER_H
 #define __TBA_STL_OS_DIRECTORYFORMATPARSER_H
 
-/*
- * directoryFormatParser.h
+/**
+ * @addtogroup xstl_os
+ * @{
+ */
+
+/**
+ * @file directoryFormatParser.h
+ * @brief This file is a helper library function set for the cFilename class.
  *
- * This file is a helper library function set for the cFilename class.
- * Please see xStl/os/filename for more information
+ * @details Please see xStl/os/filename for more information
  *
- * Author: Elad Raz <e@eladraz.com>
+ * @author Elad Raz
  */
 #include "xStl/types.h"
 #include "xStl/data/string.h"
@@ -47,65 +52,95 @@
 // Forward declaration
 class cFilename;
 class cDirectoryFormatParser;
+/// A reference counted pointer to a cDirectoryFormatParser.
 typedef cSmartPtr<cDirectoryFormatParser> cDirectoryFormatParserPtr;
 
-/*
- * Generic filename type parser.
+/**
+ * @brief Generic filename type parser.
  */
 class cDirectoryFormatParser {
 protected:
     friend class cFilename;
-    /*
-     * Return true if 'filename' contains absolute-path information and this
-     * handler controls
+    /**
+     * @brief Return true if 'filename' contains absolute-path information and
+     *    this
+     *   handler controls
+     *
+     * @param filename The filename to test.
+     * @return True if 'filename' contains absolute-path information and this
+     *    handler controls.
      */
     virtual bool isAbsolutePath(const cString& filename) = 0;
 
-    /*
-     * Translate an absolutePath into an absolutePath without any
+    /**
+     * @brief Translate an absolutePath into an absolutePath without any
+     *   relative-path markers.
+     *
+     * @param absolutePath The absolute path to translate.
+     * @return The translated path.
      */
     virtual cString translateAbsolutePath(const cString& absolutePath) = 0;
 
     // Forward declaration
     class FilenameParser;
+    /// A reference counted pointer to a FilenameParser.
     typedef cSmartPtr<FilenameParser> FilenameParserPtr;
 
-    /*
-     * Generate the object manager for filenames translation.
-     * See FilenameParser for more information
+    /**
+     * @brief Generate the object manager for filenames translation.
+     *
+     * @details See FilenameParser for more information
+     *
+     * @return The object manager for filenames translation.
      */
     virtual FilenameParserPtr generateParser() = 0;
 
-    /*
-     * The object manager for filenames translation.
+    /**
+     * @brief The object manager for filenames translation.
      */
     class FilenameParser {
     protected:
         // Only the filename manager can instance this class
         friend class cFilename;
 
-        /*
-         * Returns the parent object
+        /**
+         * @brief Returns the parent object
+         *
+         * @return The parent object.
          */
         virtual cDirectoryFormatParserPtr getParent() const = 0;
 
-        /*
-         * Returns the database name from an absolute-path
+        /**
+         * @brief Returns the database name from an absolute-path
+         *
+         * @param absoluteTranslatedPath The absolute path, after translation.
+         * @return The database name from an absolute-path.
          */
         virtual cString getDatabaseName(const cString& absoluteTranslatedPath) const = 0;
 
-        /*
-         * Return the directory of the file. The directory contains the base position
-         * of the file, including it's database name.
+        /**
+         * @brief Return the directory of the file.
+         *
+         * @details The directory contains the base position of the file,
+         *    including it's database name.
+         *
+         * @param absoluteTranslatedPath The absolute path, after translation.
+         * @return The directory of the file.
          */
         virtual cString getDirectoryName(const cString& absoluteTranslatedPath) const = 0;
 
-        /*
-         * Returns only the portion of the filename.
-         * Returns empty string if the path is a directory
+        /**
+         * @brief Returns only the portion of the filename.
+         *
+         * @details Returns empty string if the path is a directory
+         *
+         * @param absoluteTranslatedPath The absolute path, after translation.
+         * @return Only the portion of the filename.
          */
         virtual cString getFilename(const cString& absoluteTranslatedPath) const = 0;
     };
 };
 
+
+/** @} */
 #endif // __TBA_STL_OS_DIRECTORYFORMATPARSER_H

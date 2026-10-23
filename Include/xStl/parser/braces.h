@@ -32,105 +32,147 @@
 #ifndef __TBA_XSTL_PARSER_BRACES_H
 #define __TBA_XSTL_PARSER_BRACES_H
 
-/*
- * braces.h
+/**
+ * @addtogroup xstl_parser
+ * @{
+ */
+
+/**
+ * @file braces.h
+ * @brief The braces module 'eats' up braces until the current braces block
+ *    ends.
  *
- * The braces module 'eats' up braces until the current braces block ends.
- *
- * Author: Elad Raz <e@eladraz.com>
+ * @author Elad Raz
  */
 #include "xStl/types.h"
 #include "xStl/data/char.h"
 #include "xStl/data/list.h"
 #include "xStl/exceptions.h"
 
-/*
- * When the braces has error, the exception is stored in this format
+/**
+ * @brief When the braces has error, the exception is stored in this format
  */
 class BracesException : public cException
 {
 public:
-    /*
-     * Exception constructor.
+    /**
+     * @brief Exception constructor.
      *
-     * found - The character which was found
-     * expected - The character which was expected to be found
+     * @param found The character which was found
+     * @param expected The character which was expected to be found
+     * @param file The source file where the exception is thrown.
+     * @param line The line in the source file where the exception is thrown.
      */
-    BracesException(char * file, uint32 line, character found, character expected);
+    BracesException(char * file, uint32 line,
+                     character found, character expected);
 
-    // The character which was found
+    /**
+     * @brief The character which was found
+     */
     character m_found;
-    // The character which was expected to be found
+    /**
+     * @brief The character which was expected to be found
+     */
     character m_expected;
 };
 
-/*
- * Count down braces.
+/**
+ * @brief Count down braces.
  */
 class Braces {
 public:
-    // The different braces types
+    /**
+     * @brief The different braces types
+     */
     struct BracesData {
-        // Start braces character '[','(','{'
+        /**
+         * @brief Start braces character '[','(','{'
+         */
         character m_open;
-        // Stop braces character ']',')','}'
+        /**
+         * @brief Stop braces character ']',')','}'
+         */
         character m_close;
     };
 
-    /*
-     * Constructor. Prepare the braces block.
+    /**
+     * @brief Constructor. Prepare the braces block.
      *
-     * braces - The first brace to be read
+     * @details Throw BracesException if the 'braces' is not open braces
      *
-     * Throw BracesException if the 'braces' is not open braces
+     * @param braces The first brace to be read
      */
     Braces(character braces);
 
-    /*
-     * Eats up a character.
+    /**
+     * @brief Eats up a character.
      *
-     * data - The character to be eaten
-     *
-     * Return true if the braces block ended.
-     * Throws BracesException exception if the braces doesn't match
+     * @param data The character to be eaten
+     * @return True if the braces block ended.
+     * @throws cException (BracesException) if the braces doesn't match
      */
     bool eatCharacter(character data);
 
-    /*
-     * Return true if the character is one of the opening characters
+    /**
+     * @brief Return true if the character is one of the opening characters
+     *
+     * @return True if the character is one of the opening characters.
+     * @param data The character to test.
      */
     bool isOpenBrace(character data);
 
-    /*
-     * Return true if the character is one of the closer characters
+    /**
+     * @brief Return true if the character is one of the closer characters
+     *
+     * @return True if the character is one of the closer characters.
+     * @param data The character to test.
      */
     bool isCloseBrace(character data);
 
-    /*
-     * Return true if the open brace matches the close braces
+    /**
+     * @brief Return true if the open brace matches the close braces
+     *
+     * @return True if the open brace matches the close braces.
+     * @param open The opening brace character.
+     * @param close The closing brace character.
      */
     bool isMatch(character open, character close);
 
-    /*
-     * Return the closer character
+    /**
+     * @brief Return the closer character
+     *
+     * @return The closer character.
+     * @param open The opening brace character.
      */
     character getCloseCharacter(character open);
 
-    /*
-     * Returns the cached expected closer character
+    /**
+     * @brief Returns the cached expected closer character
+     *
+     * @return The cached expected closer character.
      */
     character getNextCloserCharacter();
 
 private:
-    // Link list of the current braces state.
+    /**
+     * @brief Link list of the current braces state.
+     */
     cList<character> m_state;
-    // Cache of the last braces character
+    /**
+     * @brief Cache of the last braces character
+     */
     character m_stateCache;
 
-    // The number of different braces
+    /**
+     * @brief The number of different braces
+     */
     enum { BRACES_COUNT = 3 };
-    // The possible different braces types
+    /**
+     * @brief The possible different braces types
+     */
     static BracesData m_braces[BRACES_COUNT];
 };
 
+
+/** @} */
 #endif // __TBA_XSTL_PARSER_BRACES_H

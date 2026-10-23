@@ -51,8 +51,10 @@
 #ifndef XSTL_UNIQUE_STRIP
     // The string "-" which indicate that the number is negative
     const character* cString::m_stringNegativeInteger = XSTL_STRING("-");
-    // The strip for different bases. Uses the 10 digit characters, 26 letters of
-    // the alphabet in the English language and 12 characters for Indian characters
+    // The strip for different bases. Uses the 10 digit characters, 26 letters
+    // of
+    // the alphabet in the English language and 12 characters for Indian
+    // characters
     const character* cString::m_baseStrip = XSTL_STRING("0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ!@#$%^&*()-+");
 #endif
 

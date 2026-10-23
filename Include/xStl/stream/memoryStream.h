@@ -32,13 +32,17 @@
 #ifndef __TBA_STL_STREAMS_MEMORY_STREAM_H
 #define __TBA_STL_STREAMS_MEMORY_STREAM_H
 
-/*
- * memorystream.h
+/**
+ * @addtogroup xstl_stream
+ * @{
+ */
+
+/**
+ * @file memoryStream.h
+ * @brief Declare the cMemoryStream class which implements the basicIO interface
+ *   over the cBuffer class.
  *
- * Declare the cMemoryStream class which implements the basicIO interface over
- * the cBuffer class.
- *
- * Author: Elad Raz <e@eladraz.com>
+ * @author Elad Raz
  */
 #include "xStl/types.h"
 #include "xStl/data/array.h"
@@ -51,129 +55,196 @@
  * The default page size for the memory stream allocation.
  */
 #ifndef DEFAULT_STREAM_PAGE_SIZE
-#define DEFAULT_STREAM_PAGE_SIZE (32 * 1024)  // 32k
+#define DEFAULT_STREAM_PAGE_SIZE (32 * 1024)  ///< 32k
 #endif
 
-/*
- * class cMemoryStream
+/**
+ * @brief Memory stream is a memory file which is stored inside a 'cBuffer'
+ *   container.
  *
- * Memory stream is a memory file which is stored inside a 'cBuffer' container.
- * The memory file can increase its size if the fixedSize is false.
+ * @details The memory file can increase its size if the fixedSize is false.
  */
 class cMemoryStream : public cForkStream {
 public:
-    /*
-     * Default constructor.
+    /**
+     * @brief Default constructor.
      *
-     * initData  - The data to be loaded to the memory stream
-     * realData  - The data to be linked as the memory stream
-     * pageSize  - The pageSize to be used in the stream
-     * initSize  - The number of random bytes to be initialized.
-     * fixedSize - True in case the memory-stream has a fixed size and it
-     *             cannot be expanded.
+     * @details initData  - The data to be loaded to the memory stream
+     *   realData  - The data to be linked as the memory stream
      *
-     * Throws an exception in case there isn't enough memory.
+     * @param pageSize The pageSize to be used in the stream
+     * @param initSize The number of random bytes to be initialized.
+     * @param fixedSize True in case the memory-stream has a fixed size and it
+     *    cannot be expanded.
+     * @throws cException in case there isn't enough memory.
      */
     cMemoryStream(uint pageSize = DEFAULT_STREAM_PAGE_SIZE,
                   uint initSize = 0,
                   bool fixedSize = false);
+    /**
+     * @brief Constructor. Create a stream over a copy of the data.
+     *
+     * @param initData The initial content of the stream.
+     * @param pageSize The pageSize to be used in the stream.
+     * @param fixedSize True in case the memory-stream has a fixed size and it
+     *    cannot be expanded.
+     */
     cMemoryStream(const cBuffer& initData,
                   uint pageSize = DEFAULT_STREAM_PAGE_SIZE,
                   bool fixedSize = false);
+    /**
+     * @brief Constructor. Create a stream which is linked to the shared data.
+     *
+     * @param realData The data to be linked as the memory stream.
+     * @param pageSize The pageSize to be used in the stream.
+     * @param fixedSize True in case the memory-stream has a fixed size and it
+     *    cannot be expanded.
+     */
     cMemoryStream(cBufferPtr& realData,
                   uint pageSize = DEFAULT_STREAM_PAGE_SIZE,
                   bool fixedSize = false);
 
-    // Copy-constructor. Used in the fork API
+    /**
+     * @brief Copy-constructor. Used in the fork API
+     *
+     * @param other The stream to copy.
+     */
     cMemoryStream(const cMemoryStream& other);
 
-    /*
-     * Memory-files will be treated as the default endian in the system
+    /**
+     * @brief Memory-files will be treated as the default endian in the system
      */
     defaultEndianImpl;
 
     // Derived from the basicIO
 
-    /*
-     * Retrieve the position of the write/read head
+    /**
+     * @brief Retrieve the position of the write/read head
+     *
+     * @return The position of the read/write head, in bytes from the beginning
+     *    of the stream.
      */
     virtual uint getPointer() const;
 
-    /*
-     * Return the length of the memory-file.
+    /**
+     * @brief Return the length of the memory-file.
+     *
+     * @return The length of the memory-file.
      */
     virtual uint length() const;
 
-    /*
-     * Return true if the file pointer reach the end of the file.
+    /**
+     * @brief Return true if the file pointer reach the end of the file.
+     *
+     * @return True if the file pointer reach the end of the file.
      */
     virtual bool isEOS();
 
-    /*
-     * Flush the information of the file. Shouldn't do anything.
+    /**
+     * @brief Flush the information of the file.
+     *
+     * @details Shouldn't do anything.
      */
     virtual void flush();
 
-    /*
-     * Read from the memory array into a buffer. If the reading reaches the end
-     * of the array then the function returns the number of bytes read until
-     * EOF is reached.
+    /**
+     * @brief Read from the memory array into a buffer.
+     *
+     * @details If the reading reaches the end of the array then the function
+     *    returns the number of bytes read until EOF is reached.
+     *
+     * @param buffer The buffer which receives the data.
+     * @param length The number of bytes to read.
+     * @return The number of bytes actually read.
      */
     virtual uint read(void *buffer, const uint length);
 
-    /*
-     * Write bytes to the stream.
-     * Change the bytes of the array. If the file position reached the end of the
-     * array, and m_fixedSize is false then the array size will increase.
+    /**
+     * @brief Write bytes to the stream.
+     *
+     * @details Change the bytes of the array. If the file position reached the
+     *    end of the array, and m_fixedSize is false then the array size will
+     *    increase.
+     *
+     * @param buffer The data to write.
+     * @param length The number of bytes to write.
+     * @return The number of bytes actually written.
      */
     virtual uint write(const void *buffer, const uint length);
 
-    /*
-     * Move to a specific position in the file. Throw an exception if failed.
-     * See basicInput::seek for more information.
+    /**
+     * @brief Move to a specific position in the file.
+     *
+     * @details Throw an exception if failed. See basicInput::seek for more
+     *    information.
+     *
+     * @param distance The distance to move, relative to @a method.
+     * @param method The reference position of the movement.
      */
     virtual void seek(const int distance, const basicInput::seekMethod method);
 
 
-    /*
-     * Returns how many bytes should be read for best performance in the
-     * pipeRead() function in a single call to the read() function.
+    /**
+     * @brief Returns how many bytes should be read for best performance in the
+     *   pipeRead() function in a single call to the read() function.
      *
-     * This value stands at 4kb which is the pageSize in most platform.
+     * @details This value stands at 4kb which is the pageSize in most platform.
+     *
+     * @return How many bytes should be read for best performance in the
+     *    pipeRead() function in a single call to the read() function.
      */
     virtual uint getPipeReadBestRequest() const { return 4096; }
 
 
-    // The cForkStream API
+    /**
+     * @brief The cForkStream API
+     *
+     * @return A new instance of the same stream.
+     */
     virtual cForkStreamPtr fork() const;
 
 
     // cMemoryStream functions.
 
-    /*
-     * Return pointer to the memory stream.
+    /**
+     * @brief Return pointer to the memory stream.
+     *
+     * @return Pointer to the memory stream.
      */
     cBufferPtr getStream() { return m_data; }
 
 protected:
-    // Init the seeking methods.
-    // All seek operations are permitted
+    /**
+     * @brief Init the seeking methods.
+     *
+     * @details All seek operations are permitted
+     */
     virtual void initSeek();
 
 private:
     /* Private functions and variables */
 
-    // Deny operator =
+    /**
+     * @brief Deny operator =
+     */
     cMemoryStream& operator = (const cMemoryStream& other);
 
-    // Is the mem-file fixed?
+    /**
+     * @brief Is the mem-file fixed?
+     */
     bool m_fixedSize;
 
-    // The position inside the memory stream
+    /**
+     * @brief The position inside the memory stream
+     */
     uint m_filePosition;
 
-    // The stream file.
+    /**
+     * @brief The stream file.
+     */
     cBufferPtr m_data;
 };
 
+
+/** @} */
 #endif //__TBA_STL_STREAMS_MEMORY_STREAM_H

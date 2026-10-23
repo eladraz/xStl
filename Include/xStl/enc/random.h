@@ -32,40 +32,49 @@
 #ifndef __TBA_STL_ENCRYPTION_RANDOM_H
 #define __TBA_STL_ENCRYPTION_RANDOM_H
 
-/*
- * random.h
+/**
+ * @addtogroup xstl_enc_random
+ * @{
+ */
+
+/**
+ * @file random.h
+ * @brief The random-generated class interface declaration.
  *
- * The random-generated class interface declaration. Doesn't define the
- * using seed.
+ * @details Doesn't define the using seed.
  *
- * Author: Elad Raz <e@eladraz.com>
+ * @author Elad Raz
  */
 #include "xStl/types.h"
 #include "xStl/data/array.h"
 
 
-/*
- * class cRandom
+/**
+ * @brief The pseudo random generation interface.
  *
- * The pseudo random generation interface. Generate required random.
+ * @details Generate required random.
  */
 class cRandom
 {
 public:
-    /*
-     * Virtual destructor.
+    /**
+     * @brief Virtual destructor.
      */
     virtual ~cRandom();
 
-    /*
-     * Generate 'length' bytes of random and put it in 'output'. The 'output'
-     * size is changed to 'length' and step over pure random. This function
-     * advances the internal random mechanism.
+    /**
+     * @brief Generate 'length' bytes of random and put it in 'output'.
      *
-     * length - The amount of random to be generated.
-     * output - Will be filled with the required pseudo-random generation code.
+     * @details The 'output' size is changed to 'length' and step over pure
+     *    random. This function advances the internal random mechanism.
+     *
+     * @param length The amount of random to be generated.
+     * @param output Will be filled with the required pseudo-random generation
+     *    code.
      */
     virtual void generateRandom(uint length, cBuffer& output) = 0;
 };
 
+
+/** @} */
 #endif // __TBA_STL_ENCRYPTION_RANDOM_H

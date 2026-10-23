@@ -32,33 +32,44 @@
 #ifndef __TBA_STL_FORKSTREAM_H
 #define __TBA_STL_FORKSTREAM_H
 
-/*
- * forkStream.h
+/**
+ * @addtogroup xstl_stream
+ * @{
+ */
+
+/**
+ * @file forkStream.h
+ * @brief Interface for streams which can be forked.
  *
- * Interface for streams which can be forked. A forked stream is a stream
- * which is able to duplicate itself.
+ * @details A forked stream is a stream which is able to duplicate itself.
  *
- * Author: Elad Raz <e@eladraz.com>
+ * @author Elad Raz
  */
 #include "xStl/types.h"
 #include "xStl/stream/basicIO.h"
 
 // Forward declaration
 class cForkStream;
-// The reference countable object for the forked objects
+/**
+ * @brief The reference countable object for the forked objects
+ */
 typedef cSmartPtr<cForkStream> cForkStreamPtr;
 
-/*
- * The interface contains only a single, very powerful function:
- *    cForkStreamPtr fork().
+/**
+ * @brief The interface contains only a single, very powerful function:
+ *   cForkStreamPtr fork().
  */
 class cForkStream : public basicIO {
 public:
-    /*
-     * Return a new instance of the same stream
+    /**
+     * @brief Return a new instance of the same stream
+     *
+     * @return A new instance of the same stream.
      */
     virtual cForkStreamPtr fork() const = 0;
 };
 
 
+
+/** @} */
 #endif // __TBA_STL_FORKSTREAM_H

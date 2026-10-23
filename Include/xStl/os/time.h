@@ -32,72 +32,92 @@
 #ifndef __TBA_STL_OS_TIME_H
 #define __TBA_STL_OS_TIME_H
 
-/*
- * time.h
+/**
+ * @addtogroup xstl_os
+ * @{
+ */
+
+/**
+ * @file time.h
+ * @brief Abstract class for time.
  *
- * Abstract class for time. The time is a packed struct of the date in the year and
- * the time of the day. The class is wrapped in an abstract interface which allows
- * accessing and modifying the time in a very simple way.
- * The time can be the English calendar time or even the Hebrew calendar time.
+ * @details The time is a packed struct of the date in the year and the time of
+ *    the day. The class is wrapped in an abstract interface which allows
+ *    accessing and modifying the time in a very simple way. The time can be the
+ *    English calendar time or even the Hebrew calendar time.
  *
- * Author: Elad Raz <e@eladraz.com>
+ * @author Elad Raz
  */
 #include "xStl/types.h"
 
-/*
- * class cTime
+/**
+ * @brief Access to the time and the date of the operating system.
  */
 class cTime {
 public:
-    /*
-     * Return the time packed in the current operating system mode. The result
-     * buffer can be converted to the 'time_t' struct which changes between OS
-     * platforms.
+    /**
+     * @brief Return the time packed in the current operating system mode.
+     *
+     * @details The result buffer can be converted to the 'time_t' struct which
+     *    changes between OS platforms.
+     *
+     * @return The time packed in the current operating system mode.
      */
     cBuffer getOSTime();
 
     // Get functions
 
-    /*
-     * Return the year. Note that the year is not limited to or from the year 1970
+    /**
+     * @brief Return the year. Note that the year is not limited to or from the
+     *    year
+     *   1970
+     *
+     * @return The year.
      */
     uint getYear();
 
-    /*
-     * Return the month of the year
+    /**
+     * @brief Return the month of the year
+     *
+     * @return The month of the year.
      */
     uint getMonth();
 
-    /*
-     * Return the day of the month
+    /**
+     * @brief Return the day of the month
+     *
+     * @return The day of the month.
      */
     uint getDay();
 
     // Set functions.
 
-    /*
-     * Change the date. Change the year and the month and the day.
+    /**
+     * @brief Change the date. Change the year and the month and the day.
      *
-     * newYear   - The new year for the date
-     * newMonth - The new month for the date
-     * newDay    - The new day for the date
-     *
-     * Return true if the change completed. False is the date is invalid (such as
-     * 29 feb. for 3 out of 4 years).
+     * @param newYear The new year for the date
+     * @param newMonth The new month for the date
+     * @param newDay The new day for the date
+     * @return True if the change completed. False is the date is invalid (such
+     *    as 29 feb. for 3 out of 4 years).
      */
     bool setDate(uint newYear,
                  uint newMonth,
                  uint newDay);
 
-    /*
-     * Change the OS date. The format of the date depends on the
-     * implementation.
+    /**
+     * @brief Change the OS date.
+     *
+     * @details The format of the date depends on the implementation.
      *
      * newDate - The OS formatted bytes which represent the date.
      *
-     * Return the status of the change or the validation of the time packet.
+     * @return The status of the change or the validation of the time packet.
+     * @param newOSDate The OS formatted bytes which represent the date.
      */
     bool setDate(const cBuffer& newOSDate);
 };
 
+
+/** @} */
 #endif // __TBA_STL_OS_TIME_H

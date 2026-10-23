@@ -32,20 +32,28 @@
 #ifndef __TBA_TODO_Deserializer_H
 #define __TBA_TODO_Deserializer_H
 
-/*
- * Deserializer.h
+/**
+ * @addtogroup xstl_stream
+ * @{
+ */
+
+/**
+ * @file deserializer.h
+ * @brief The deserializer is a main component which is responsible for
+ *    generating
+ *   xStl objects.
  *
- * The deserializer is a main component which is responsible for generating xStl
- * objects.
- *
- * Author: Elad Raz <e@eladraz.com>
+ * @author Elad Raz
  */
 #include "xStl/types.h"
 
-/*
- * TODO!
+/**
+ * @brief Placeholder for the xStl objects deserializer. The class is not
+ *    implemented yet.
  */
 class Deserializer {
 };
 
+
+/** @} */
 #endif // __TBA_TODO_Deserializer_H

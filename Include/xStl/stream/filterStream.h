@@ -32,113 +32,134 @@
 #ifndef __TBA_STL_STREAMS_FILTER_STREAM_H
 #define __TBA_STL_STREAMS_FILTER_STREAM_H
 
+/**
+ * @addtogroup xstl_stream
+ * @{
+ */
 
-/*
- * filterStream.h
+
+/**
+ * @file filterStream.h
+ * @brief Define the "filterStream" objects.
  *
- * Define the "filterStream" objects.
- * The filter_streams provide the interface of the standard basicIO (basicInput,
- * basicOutput) and provide the filter interface which cascades a stream into one
- * another. The class is an abstract base class for all the decorators.
+ * @details The filter_streams provide the interface of the standard basicIO
+ *    (basicInput, basicOutput) and provide the filter interface which cascades
+ *    a stream into one another. The class is an abstract base class for all the
+ *    decorators.
  *
  * This class should be used as a chain.
  *
- * Author: Elad Raz <e@eladraz.com>
+ * @author Elad Raz
  */
 #include "xStl/types.h"
 #include "xStl/data/smartptr.h"
 #include "xStl/stream/basicIO.h"
 
-/*
- * class filterStreamInput
- *
- * Decorator for basicInput only streams.
+/**
+ * @brief Decorator for basicInput only streams.
  */
 class filterStreamInput : public basicInput
 {
 public:
-    /*
-     * Constructor
-     *
-     * inputStream - The input stream which is being filtered
+    /**
+     * @param inputStream The input stream which is being filtered
      */
     filterStreamInput(const cSmartPtr<basicInput>& inputStream);
 
-    // Virtual destructor. You can inherit from me
+    /**
+     * @brief Virtual destructor. You can inherit from me
+     */
     virtual ~filterStreamInput();
 
-    // Return the lower input stream of the filter
+    /**
+     * @brief Return the lower input stream of the filter
+     *
+     * @return The lower input stream of the filter.
+     */
     const cSmartPtr<basicInput>& getDownInputStream() const;
 
 protected:
-    // The lower-edge stream pointer
+    /**
+     * @brief The lower-edge stream pointer
+     */
     cSmartPtr<basicInput> m_inputStream;
 };
 
 
-/*
- * class filterStreamOutput
- *
- * Decorator for basicOutput only streams.
+/**
+ * @brief Decorator for basicOutput only streams.
  */
 class filterStreamOutput : public basicOutput
 {
 public:
-    /*
-     * Constructor
-     *
-     * outputStream - The output stream which is being filtered
+    /**
+     * @param outputStream The output stream which is being filtered
      */
     filterStreamOutput(const cSmartPtr<basicOutput>& outputStream);
 
-    // Virtual destructor. You can inherit from me
+    /**
+     * @brief Virtual destructor. You can inherit from me
+     */
     virtual ~filterStreamOutput();
 
-    // Return the lower output stream of the filter
+    /**
+     * @brief Return the lower output stream of the filter
+     *
+     * @return The lower output stream of the filter.
+     */
     const cSmartPtr<basicOutput>& getDownOutputStream() const;
 
 protected:
-    // The lower-edge stream pointer
+    /**
+     * @brief The lower-edge stream pointer
+     */
     cSmartPtr<basicOutput> m_outputStream;
 };
 
 
-/*
- * filterStream
+/**
+ * @brief ABC for decorators.
  *
- * ABC for decorators.
- *
- * NOTE after opening the stream you should use it for reading or writing only.
- *      You cannot combine read and write functions in the same pipe unless you
- *      called the flush() function.
+ * @note after opening the stream you should use it for reading or writing only.
+ *    You cannot combine read and write functions in the same pipe unless you
+ *    called the flush() function.
  */
 class filterStream : public basicIO
 {
 public:
-    /*
-     * Constructor
-     *
-     * stream - The stream which is being filtered
+    /**
+     * @param stream The stream which is being filtered
      */
     filterStream(const cSmartPtr<basicIO>& stream);
 
-    // Virtual destructor. You can inherit from me
+    /**
+     * @brief Virtual destructor. You can inherit from me
+     */
     virtual ~filterStream();
 
-    // Return the lower stream of the filter
+    /**
+     * @brief Return the lower stream of the filter
+     *
+     * @return The lower stream of the filter.
+     */
     const cSmartPtr<basicIO>& getDownStream() const;
 
 protected:
-    // The lower-edge stream pointer
+    /**
+     * @brief The lower-edge stream pointer
+     */
     cSmartPtr<basicIO> m_stream;
 };
 
 /*
- * Take care of the endianness of all filter streams. The endianness should be the
+ * Take care of the endianness of all filter streams. The endianness should be
+ * the
  * same as the down stream endian implementation.
  */
 #ifdef XSTL_16BIT
-// 16 bit compilers
+/**
+ * @brief 16 bit compilers
+ */
 #define filterStreamEndianImpl \
     virtual uint32 readUint32(const uint8* buffer) const { return ((cEndian*)((basicInput*)m_stream.getPointer()))->readUint32(buffer); }; \
     virtual uint16 readUint16(const uint8* buffer) const { return ((cEndian*)((basicInput*)m_stream.getPointer()))->readUint16(buffer); }; \
@@ -146,7 +167,9 @@ protected:
     virtual void writeUint16(uint8* buffer, uint16 number) const { ((cEndian*)((basicInput*)m_stream.getPointer()))->writeUint16(buffer,number); }; \
     virtual bool isLittleEndian() const { return ((cEndian*)((basicInput*)m_stream.getPointer()))->isLittleEndian(); }
 #else
-// 32 bit compilers
+/**
+ * @brief 32 bit compilers
+ */
 #define filterStreamEndianImpl \
     virtual uint64 readUint64(const uint8* buffer) const { return ((cEndian*)((basicInput*)m_stream.getPointer()))->readUint64(buffer); }; \
     virtual uint32 readUint32(const uint8* buffer) const { return ((cEndian*)((basicInput*)m_stream.getPointer()))->readUint32(buffer); }; \
@@ -157,4 +180,6 @@ protected:
     virtual bool isLittleEndian() const { return ((cEndian*)((basicInput*)m_stream.getPointer()))->isLittleEndian(); }
 #endif
 
+
+/** @} */
 #endif // __TBA_STL_STREAMS_FILTER_STREAM_H

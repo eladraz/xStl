@@ -1,0 +1,14 @@
+# Documentation-coverage audit. Includes the production configuration and
+# reports every undocumented public symbol as a warning.
+#
+# Run from the repository root:   doxygen docs/Doxyfile.check
+
+@INCLUDE               = docs/Doxyfile
+
+EXTRACT_ALL            = NO
+OUTPUT_DIRECTORY       = docs/build/check
+GENERATE_HTML          = NO
+GENERATE_XML           = YES
+SOURCE_BROWSER         = NO
+WARN_LOGFILE           = docs/build/check/doxygen-warnings.log
+

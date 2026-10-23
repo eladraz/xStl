@@ -32,13 +32,19 @@
 #ifndef __TBA_STL_DATA_SERIALIZEDOBJECT_H
 #define __TBA_STL_DATA_SERIALIZEDOBJECT_H
 
-/*
- * serializedObject.h
+/**
+ * @addtogroup xstl_data_serialization
+ * @{
+ */
+
+/**
+ * @file serializedObject.h
+ * @brief A serialized object is an object which declares itself as streamable.
  *
- * A serialized object is an object which declares itself as streamable. The
- * object can be saved into a stream and loaded later into the exact same state.
+ * @details The object can be saved into a stream and loaded later into the
+ *    exact same state.
  *
- * Author: Elad Raz <e@eladraz.com>
+ * @author Elad Raz
  */
 #include "xStl/types.h"
 
@@ -46,32 +52,42 @@
 class basicInput;
 class basicOutput;
 
-/*
- * A serialized-object should support the following interface.
- * The object must have a default constructor (Class::Class()). If the object
- * must have data it should have the 'isValid' function as well
+/**
+ * @brief A serialized-object should support the following interface.
+ *
+ * @details The object must have a default constructor (Class::Class()). If the
+ *    object must have data it should have the 'isValid' function as well
  */
 class cSerializedObject {
 public:
-    /*
-     * You may inherit from me
+    /**
+     * @brief You may inherit from me
      */
     virtual ~cSerializedObject();
 
-    /*
-     * Return true if the object is valid or false if the object is empty.
+    /**
+     * @brief Return true if the object is valid or false if the object is
+     *    empty.
+     *
+     * @return True if the object is valid or false if the object is empty.
      */
     virtual bool isValid() const = 0;
 
-    /*
-     * Read from a stream the content of the object
+    /**
+     * @brief Read from a stream the content of the object
+     *
+     * @param inputStream The stream to read the content from.
      */
     virtual void deserialize(basicInput& inputStream) = 0;
 
-    /*
-     * Marshal the class objects into a stream
+    /**
+     * @brief Marshal the class objects into a stream
+     *
+     * @param outputStream The stream to write the content to.
      */
     virtual void serialize(basicOutput& outputStream) const = 0;
 };
 
+
+/** @} */
 #endif // __TBA_STL_DATA_SERIALIZEDOBJECT_H

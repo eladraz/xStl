@@ -123,7 +123,8 @@ cString cDosDirectoryParser::translateAbsolutePath(const cString& absolutePath)
     while (i < absolutePath.length())
     {
         cString newDirectory = cFilename::readDirectory(absolutePath, i);
-        // Advance the iterator by the directory name length and the directory separator
+        // Advance the iterator by the directory name length and the directory
+        // separator
         i+= newDirectory.length() + 1;
         if (!cFilename::isCurrentDirectoryMarker(newDirectory))
         {
@@ -152,7 +153,8 @@ cString cDosDirectoryParser::translateAbsolutePath(const cString& absolutePath)
     {
         ret+= (*j);
         if ((j != last) ||
-            (cFilename::isDirectorySeparator(absolutePath[absolutePath.length()-1])))
+            (cFilename::isDirectorySeparator(
+                absolutePath[absolutePath.length()-1])))
             ret+= cFilename::m_directorySeparatorWindows;
     }
 

@@ -32,13 +32,17 @@
 #ifndef __TBA_STL_STREAMS_STRINGER_H
 #define __TBA_STL_STREAMS_STRINGER_H
 
-/*
- * stringerStream.h
+/**
+ * @addtogroup xstl_stream
+ * @{
+ */
+
+/**
+ * @file stringerStream.h
+ * @brief The stringer module converts data into strings and outputs them into
+ *   virtual functions which handle the string.
  *
- * The stringer module converts data into strings and outputs them into
- * virtual functions which handle the string.
- *
- * Author: Elad Raz <e@eladraz.com>
+ * @author Elad Raz
  */
 
 #include "xStl/types.h"
@@ -47,74 +51,142 @@
 #include "xStl/stream/basicIO.h"
 #include "xStl/os/xstlLockable.h"
 
-/*
- * Implements the serialization functions (such as write, operator << etc) to
- * convert raw data into strings.
- * The class adds some abstraction with the function 'outputString()' which
- * should be implemented in the inheriting class. The function
+/**
+ * @brief Implements the serialization functions (such as write, operator \<\<
+ *    etc)
+ *   to convert raw data into strings.
  *
- * NOTE: This class is thread-safe
+ * @details The class adds some abstraction with the function 'outputString()'
+ *    which should be implemented in the inheriting class. The function
+ *
+ * @note This class is thread-safe
  */
 class cStringerStream : public basicOutput
 {
 public:
-    /*
-     * Endian thing...
+    /**
+     * @brief Endian thing...
      */
     defaultEndianImpl;
 
-    /*
-     * Constructor. Inits the string output stream.
+    /**
+     * @brief Constructor. Inits the string output stream.
      *
-     * shouldWaitToNewLine - True if the output function (outputString) should
-     *                       be called only when a new line arrives.
+     * @param shouldWaitToNewLine True if the output function (outputString)
+     *    should be called only when a new line arrives.
      */
     cStringerStream(bool shouldWaitToNewLine);
 
-    /*
-     * The following functions are implementation of the basicOutput
-     * interface. The functions are implemented by converting the stream
-     * to a character set.
+    /**
+     * @brief The following functions are implementation of the basicOutput
+     *    interface.
      *
-     * See basicOutput.
+     * @details The functions are implemented by converting the stream to a
+     *    character set.
+     *
+     * @see basicOutput
+     * @param buffer The data to write.
+     * @param length The number of bytes to write.
+     * @return The number of bytes actually written.
      */
     virtual uint write(const void* buffer, const uint length);
     virtual void flush();
 
-    /*
-     * Numeric operator <<, convert number into strings, characters into
-     * data.
+    /**
+     * @brief Numeric operator \<\<, convert number into strings, characters
+     *    into data.
+     *
+     * @param rawData The data to be written as is.
+     * @return A reference to this stream.
      */
     cStringerStream& operator << (const cBuffer& rawData);
+    /**
+     * @brief Write a character to the stream.
+     *
+     * @param ch The character to write.
+     * @return A reference to this stream.
+     */
     cStringerStream& operator << (const char ch);
 #ifdef XSTL_UNICODE
+    /**
+     * @brief Write a character to the stream.
+     *
+     * @param ch The character to write.
+     * @return A reference to this stream.
+     */
     cStringerStream& operator << (const character ch);
 #endif
-    //cStringerStream& operator << (const int16 word);
+    /**
+     * @brief cStringerStream\& operator \<\< (const int16 word);
+     *
+     * @param dword The number to write.
+     * @return A reference to this stream.
+     */
     cStringerStream& operator << (const int32  dword);
+    /**
+     * @brief Write the int64 number as text, in the current base.
+     *
+     * @param qword The number to write.
+     * @return A reference to this stream.
+     */
     cStringerStream& operator << (const int64  qword);
+    /**
+     * @brief Write the uint8 number as text, in the current base.
+     *
+     * @param byte The number to write.
+     * @return A reference to this stream.
+     */
     cStringerStream& operator << (const uint8  byte);
+    /**
+     * @brief Write the uint16 number as text, in the current base.
+     *
+     * @param word The number to write.
+     * @return A reference to this stream.
+     */
     cStringerStream& operator << (const uint16 word);
+    /**
+     * @brief Write the uint32 number as text, in the current base.
+     *
+     * @param dword The number to write.
+     * @return A reference to this stream.
+     */
     cStringerStream& operator << (const uint32 dword);
+    /**
+     * @brief Write the uint64 number as text, in the current base.
+     *
+     * @param qword The number to write.
+     * @return A reference to this stream.
+     */
     cStringerStream& operator << (const uint64 qword);
 
-    /*
-     * Change the base for numeric stringer
+    /**
+     * @brief Change the base for numeric stringer
+     *
+     * @param newBase The new base of the numbers.
+     * @return A reference to this stream.
      */
     cStringerStream& setBase(uint newBase);
 
-    /*
-     * Return the current base for the stream
+    /**
+     * @brief Return the current base for the stream
+     *
+     * @return The current base for the stream.
      */
     uint getBase() const;
 
-    /*
-     * cString operator
+    /**
+     * @brief cString operator
+     *
+     * @param string The string to write.
+     * @return A reference to this stream.
      */
     cStringerStream& operator << (const cString& string);
 
-    /*
-     * ASCII string operator
+    /**
+     * @brief ASCII string operator
+     *
+     * @param asciiString The null-terminated ASCII string to write.
+     * @return A reference to this stream.
      */
     cStringerStream& operator << (const char* asciiString);
 
@@ -122,143 +194,188 @@ public:
      * Unicode string operator
      */
     #ifdef XSTL_UNICODE
+    /**
+     * @brief Write a null-terminated unicode string.
+     *
+     * @param unicodeString The string to write.
+     * @return A reference to this stream.
+     */
     cStringerStream& operator << (const character* unicodeString);
     #endif
 
 protected:
-    /*
-     * Abstract function. Used in the sub-classes in order to 'print' a string
-     * to the device.
+    /**
+     * @brief Abstract function. Used in the sub-classes in order to 'print' a
+     *    string to
+     *   the device.
      *
-     * string - The string to be output.
-     *
-     * NOTE: The outputString function isn't called with any lockable object
-     *       acquired. Otherwise a deadlock may occur.
+     * @param string The string to be output.
+     * @note The outputString function isn't called with any lockable object
+     *    acquired. Otherwise a deadlock may occur.
      */
     virtual void outputString(const cString& string) = 0;
 
-    // The screen optimizer
+    /**
+     * @brief The screen optimizer
+     */
     enum { SCREEN_STRING_OPTIMIZER = 160 };
 
 private:
-    /*
-     * Called in order to flush out all cache complete lines.
+    /**
+     * @brief Called in order to flush out all cache complete lines.
      */
     void flushNewLines();
 
-    /*
-     * Clear the output buffer and return a copy-of it.
-     * NOTE: This function is thread-safe
+    /**
+     * @brief Clear the output buffer and return a copy-of it.
      *
-     * ret - Will be filled by the information to be output
-     *
-     * Return true if ret was filled by information to be output
+     * @param ret Will be filled by the information to be output
+     * @return True if ret was filled by information to be output.
+     * @note This function is thread-safe
      */
     bool flushBuffer(cString& ret);
 
 
-    /*
-     * Clear the output buffer until 'endl' appears. The information is stored
-     * in a local stack variable.
-     * NOTE: This function is thread-safe
+    /**
+     * @brief Clear the output buffer until 'endl' appears.
      *
-     * ret - Will be filled by the information to be output
+     * @details The information is stored in a local stack variable.
      *
-     * Return true if ret was filled by information to be output
+     * @param ret Will be filled by the information to be output
+     * @return True if ret was filled by information to be output.
+     * @note This function is thread-safe
      */
     bool flushEndlBuffer(cString& ret);
 
-    /*
-     * Safely append data to the line storage repository.
+    /**
+     * @brief Safely append data to the line storage repository.
      *
-     * data - The information that will be added to the line-repository
+     * @param data The information that will be added to the line-repository
      */
     void addToRepository(const cString& data);
 
-    // The portion of the line saved in a cache. Used for waiting for endln.
+    /**
+     * @brief The portion of the line saved in a cache.
+     *
+     * @details Used for waiting for endln.
+     */
     cString m_lineRepository;
-    // Should the class
+    /**
+     * @brief Should the class
+     */
     bool m_shouldWaitToNewLine;
-    // The base for numeric conversions.
+    /**
+     * @brief The base for numeric conversions.
+     */
     uint m_base;
 
-    // Protect the stream
+    /**
+     * @brief Protect the stream
+     */
     cXstlLockable m_lock;
 
-    // The default numeric base
+    /**
+     * @brief The default numeric base
+     */
     enum { DEFAULT_BASE = 10 };
 };
 
-// The reference countable object
+/**
+ * @brief The reference countable object
+ */
 typedef cSmartPtr<cStringerStream> cStringerStreamPtr;
 
-/*
- * The newline character set
+/**
+ * @brief The newline character set
  */
 extern character* endl;
 
-/*
- * Simple implementation of the cStringerStream which save the output strings
- * inside a memory of a cString class.
+/**
+ * @brief Simple implementation of the cStringerStream which save the output
+ *    strings
+ *   inside a memory of a cString class.
  *
- * NOTE: This class is not thread-safe
+ * @note This class is not thread-safe
  */
 class cStringStream : public cStringerStream
 {
 public:
-    /*
-     * Constructor. This class shouldn't wait for endln.
+    /**
+     * @brief Constructor. This class shouldn't wait for endln.
      *
-     * optimization - The amount of memory to reserve.
+     * @param optimization The amount of memory to reserve.
      */
     cStringStream(uint optimization = SCREEN_STRING_OPTIMIZER);
 
-    /*
-     * Returns the complete stream memory as a string.
+    /**
+     * @brief Returns the complete stream memory as a string.
+     *
+     * @return The complete stream memory as a string.
      */
     const cString& getData() const;
 
-    /*
-     * Deletes the memory held so far.
+    /**
+     * @brief Deletes the memory held so far.
      */
     void clean();
 
 protected:
-    /*
-     * Output the string into the m_data member.
-     * See cStringerStream::outputString
+    /**
+     * @brief Output the string into the m_data member.
+     *
+     * @param string The string to output.
+     * @see cStringerStream::outputString
      */
     virtual void outputString(const cString& string);
 
 private:
-    // Deny copy-constructor and operator =
+    /**
+     * @brief Deny copy-constructor and operator =
+     */
     cStringStream(const cStringStream& other);
     cStringStream& operator = (const cStringStream& other);
-    // The string data
+    /**
+     * @brief The string data
+     */
     cString m_data;
 };
 
-/*
- * The NULL stringer stream is responsible for sending the string message into
- * a void space. The implementation is simple
+/**
+ * @brief The NULL stringer stream is responsible for sending the string message
+ *   into a void space.
+ *
+ * @details The implementation is simple
  */
 class cNullStringerStream : public cStringerStream {
 public:
-    /*
-     * Default constructor
+    /**
+     * @brief Default constructor
      */
     cNullStringerStream() : cStringerStream(false) {};
 
 protected:
-    // Deny copy-constructor and operator =
+    /**
+     * @brief Deny copy-constructor.
+     *
+     * @param other Not used.
+     */
     cNullStringerStream(const cNullStringerStream& other);
+    /**
+     * @brief Deny operator =.
+     *
+     * @param other Not used.
+     * @return Not used.
+     */
     cNullStringerStream& operator = (const cNullStringerStream& other);
 
-    /*
-     * See cStringerStream::outputString
-     * Ignore the string.
+    /**
+     * @brief Ignore the string.
+     *
+     * @see cStringerStream::outputString
      */
     virtual void outputString(const cString&) {};
 };
 
+
+/** @} */
 #endif // __TBA_STL_STREAMS_STRINGER_H

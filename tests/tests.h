@@ -89,7 +89,8 @@ public:
 
 /*
  * The function converts char* to character* without being thread-safe.
- * The only purpose of this function is to convert the __FILE__ macro to unicode.
+ * The only purpose of this function is to convert the __FILE__ macro to
+ * unicode.
  */
 character* makeString(char* string);
 

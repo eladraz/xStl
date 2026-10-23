@@ -60,7 +60,9 @@ static unsigned int lastPutValue = 0;
 class TESTOBJECT
 {
 public:
-    TESTOBJECT()  { lastAction = CONSTRUCTOR; constructorCounter++; m_global = lastPutValue; }
+    TESTOBJECT()  {
+        lastAction = CONSTRUCTOR; constructorCounter++; m_global = lastPutValue;
+    }
     ~TESTOBJECT() { lastAction = DESTRUCTOR; destructorCounter++; }
     TESTOBJECT(const TESTOBJECT& other) { UNUSED_PARAM(other); lastAction = COPYCONSTRUCTOR; }
     TESTOBJECT& operator=(const TESTOBJECT& other) { UNUSED_PARAM(other); lastAction = OPERATOREQUAL; return *this; }

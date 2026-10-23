@@ -32,62 +32,78 @@
 #ifndef __TBA_STK_UTILS_CALLBACKER_H
 #define __TBA_STK_UTILS_CALLBACKER_H
 
-/*
- * callbacker.h
+/**
+ * @addtogroup xstl_utils
+ * @{
+ */
+
+/**
+ * @file callbacker.h
+ * @brief A functor class. Provides callbacks to a class and provides a class
+ *   context.
  *
- * A functor class. Provides callbacks to a class and provides a class context.
- *
- * Author: Elad Raz <e@eladraz.com>
+ * @author Elad Raz
  */
 #include "xStl/types.h"
 #include "xStl/data/smartptr.h"
 #include "xStl/utils/genericCallbackerFunctor.h"
 
-/*
- * class cCallbacker
+/**
+ * @brief Defines the callbackers interface.
  *
- * Defines the callbackers interface. The usage of the callback functions is as
- * follows:
- *   There are several classes: class A, class B, class C etc.
- *   There is a dispatcher class which wants to invoke messages to every
- *   registered classes (such as class A and class B).
- *   The dispatcher class should contain the following function:
+ * @details The usage of the callback functions is as follows: There are several
+ *    classes: class A, class B, class C etc. There is a dispatcher class which
+ *    wants to invoke messages to every registered classes (such as class A and
+ *    class B). The dispatcher class should contain the following function:
  *
- *      void registerCallback(cCallbackPtr callbackClass);
+ * @code
+ * void registerCallback(cCallbackPtr callbackClass);
+ * @endcode
  *
- *   The class A and B will contain the following code:
+ * The class A and B will contain the following code:
  *
- *   class A {
- *   public:
- *       // The following code will be called as a result of the dispatcher
- *       // event
- *       [virtual] void* onDispatcherEvent(void* argument);
+ * class A {
+ * public:
  *
- *       DECLARE_CALLBACK(A, onDispatcherEvent);
- *   };
+ * @code
+ * // The following code will be called as a result of the dispatcher
+ * // event
+ * [virtual] void* onDispatcherEvent(void* argument);
+ * @endcode
  *
- *   On the implementation of A the following code should exist
+ * @code
+ * DECLARE_CALLBACK(A, onDispatcherEvent);
+ * @endcode
  *
- *   // The constructor should register the callback
- *   A::A() {
- *      dispatcher.registerCallback(CALLBACKER(onDispatcherEvent));
- *   }
+ * };
+ *
+ * On the implementation of A the following code should exist
+ *
+ * // The constructor should register the callback
+ * A::A() {
+ *
+ * @code
+ * dispatcher.registerCallback(CALLBACKER(onDispatcherEvent));
+ * @endcode
+ *
+ * }
  */
 class cCallback
 {
 public:
-    /*
-     * Default destructor. The
+    /**
+     * @brief Default destructor. The
      */
     virtual ~cCallback() {};
 
-    /*
-     * Perform the callback. The function will be called from the dispatcher
-     * class to notify that the event occurred.
+    /**
+     * @brief Perform the callback. The function will be called from the
+     *    dispatcher
+     *   class to notify that the event occurred.
      *
-     * argument - Allows transferring additional information to the callback.
-     *
-     * Return any information in any format
+     * @param argument Allows transferring additional information to the
+     *    callback.
+     * @return Any information in any format.
      */
     virtual void* call(void* argument) = 0;
 };
@@ -95,17 +111,26 @@ public:
 /// The callbacker reference object
 typedef cSmartPtr<cCallback> cCallbackPtr;
 
-/*
- * This macro generates a unique functor that will invoke the 'function' when
- * it is called.
+/**
+ * @brief This macro generates a unique functor that will invoke the 'function'
+ *    when
+ *   it is called.
+ *
+ * @param function_name The name of the member function to invoke.
  */
 #define CALLBACKER(function_name) \
     FUNC_CALLBACKER(function_name, cCallbackPtr)
 
-/*
- * This macro generates a functor thunk that will generate a call to a function.
+/**
+ * @brief This macro generates a functor thunk that will generate a call to a
+ *   function.
+ *
+ * @param class_name The class which declares the callback.
+ * @param function_name The name of the member function to invoke.
  */
 #define DECLARE_CALLBACK(class_name, function_name) \
     FUNC_DECLARE_CALLBACK(class_name, function_name, cCallback, call, void*, void*)
 
+
+/** @} */
 #endif // __TBA_STK_UTILS_CALLBACKER_H

@@ -32,14 +32,21 @@
 #ifndef __TBA_STL_ENCRYPTION_RANDOM_PMAC_H
 #define __TBA_STL_ENCRYPTION_RANDOM_PMAC_H
 
-/*
- * pmacRnd.h
+/**
+ * @addtogroup xstl_enc_random
+ * @{
+ */
+
+/**
+ * @file pmacRnd.h
+ * @brief The pseudo-random-generated class for P function as described in RFC
+ *    2246
+ *   which is the TLS protocol specification.
  *
- * The pseudo-random-generated class for P function as described in RFC 2246
- * which is the TLS protocol specification. The RFC describes the PRF function
- * which uses the P function for a single pseudo random-generated HMAC function
+ * @details The RFC describes the PRF function which uses the P function for a
+ *    single pseudo random-generated HMAC function
  *
- * Author: Elad Raz <e@eladraz.com>
+ * @author Elad Raz
  */
 #include "xStl/types.h"
 #include "xStl/data/array.h"
@@ -49,14 +56,16 @@
 #include "xStl/enc/digest/hmac.h"
 
 
-/*
- * class cPMacRandom
+/**
+ * @brief Defines the P function.
  *
- * Defines the P function. The P function is defined as follows:
+ * @details The P function is defined as follows:
  *
- *      P_hash(secret, seed) = HMAC_hash(secret, A(1) + seed) +
- *                             HMAC_hash(secret, A(2) + seed) +
- *                             HMAC_hash(secret, A(3) + seed) + ...
+ * @code
+ * P_hash(secret, seed) = HMAC_hash(secret, A(1) + seed) +
+ *                        HMAC_hash(secret, A(2) + seed) +
+ *                        HMAC_hash(secret, A(3) + seed) + ...
+ * @endcode
  *
  * Where cPMacRandom gets a pointer to a constructed HMAC object (which has
  * been initialized with a secret) and a seed.
@@ -64,43 +73,60 @@
 class cPMacRandom : public cRandom
 {
 public:
-    /*
-     * Init the random mechanism according to 'seed' and hmac object which
-     * is used to digest secret+seed and generate random.
+    /**
+     * @brief Init the random mechanism according to 'seed' and hmac object
+     *    which is
+     *   used to digest secret+seed and generate random.
+     *
+     * @param hmac A constructed HMAC object which was initialized with the
+     *    secret.
+     * @param seed The seed of the random mechanism.
      */
     cPMacRandom(cSmartPtr<cHMAC> hmac,
                 const cBuffer& seed);
 
-    /*
-     * Generate 'length' bytes of random and put it in 'output'. The 'output'
-     * size is changed to 'length' and step over pure random. This function
-     * advances the internal random mechanism.
-     * The generated random
+    /**
+     * @brief Generate 'length' bytes of random and put it in 'output'.
      *
-     * length - The amount of random to be generate.
-     * output - Will be filled with the required pseudo-random generation code.
+     * @details The 'output' size is changed to 'length' and step over pure
+     *    random. This function advances the internal random mechanism. The
+     *    generated random
+     *
+     * @param length The amount of random to be generate.
+     * @param output Will be filled with the required pseudo-random generation
+     *    code.
      */
     virtual void generateRandom(uint length, cBuffer& output);
 
 private:
-    /*
-     * Deny copy-constructor and operator =
+    /**
+     * @brief Deny copy-constructor and operator =
      */
     cPMacRandom(const cPMacRandom& other);
     cPMacRandom& operator = (const cPMacRandom& other);
 
 
-    // The HMAC object
+    /**
+     * @brief The HMAC object
+     */
     cSmartPtr<cHMAC> m_hmac;
 
-    // The seed of the object
+    /**
+     * @brief The seed of the object
+     */
     cBuffer m_seed;
 
-    // The A's seed of the object
+    /**
+     * @brief The A's seed of the object
+     */
     cBuffer m_a;
 
-    // The rest of the random data
+    /**
+     * @brief The rest of the random data
+     */
     cQueueFifo m_queue;
 };
 
+
+/** @} */
 #endif // __TBA_STL_ENCRYPTION_RANDOM_PMAC_H

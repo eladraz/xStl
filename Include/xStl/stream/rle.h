@@ -32,14 +32,20 @@
 #ifndef __TBA_STL_STREAMS_RLE_H
 #define __TBA_STL_STREAMS_RLE_H
 
+/**
+ * @addtogroup xstl_stream
+ * @{
+ */
 
-/*
- * rle.h
+
+/**
+ * @file rle.h
+ * @brief Define the cRLEcompression which implements the filterStream
+ *    interface.
  *
- * Define the cRLEcompression which implements the filterStream interface.
- * The class provides simple run-length encoding.
+ * @details The class provides simple run-length encoding.
  *
- * Author: Elad Raz <e@eladraz.com>
+ * @author Elad Raz
  */
 
 #include "xStl/types.h"
@@ -51,138 +57,181 @@
 
 
 /*
- * The default flag character to be used. According to statistics the character '\253' is
+ * The default flag character to be used. According to statistics the character
+ * '\253' is
  * not found in text files and rarely found in binary data.
  */
 #ifndef RLE_FLAG_CHARACTER
+/**
+ * @brief The flag character which marks a run in the RLE compression. It can be
+ *   overridden before including the header.
+ */
 #define RLE_FLAG_CHARACTER  (253)
 #endif
 
 
 
-/*
- * cRLEcompression
+/**
+ * @brief Run-Length-Encoding. The filter-stream finds blocks of the same bytes
+ *    and
+ *   encodes them as one unit.
  *
- * Run-Length-Encoding. The filter-stream finds blocks of the same bytes
- * and encodes them as one unit. The encoding is made by putting inside the
- * string a flag. After the flag come the byte to be written and how
- * many times it should repeat. In case the character itself should be encoded
- * the compression writes out the flag twice.
+ * @details The encoding is made by putting inside the string a flag. After the
+ *    flag come the byte to be written and how many times it should repeat. In
+ *    case the character itself should be encoded the compression writes out the
+ *    flag twice.
  *
  * Encoding scheme:
- *  <FLAG> <LENGTH> <BYTE>
+ * \<FLAG\> \<LENGTH\> \<BYTE\>
  */
 class cRLEcompression : public filterStream
 {
 public:
-    /*
-     * Constructor. Create an RLE filter stream based on the 'stream' stream. The
-     * flag used in the compression is stored in the 'flag' variable.
+    /**
+     * @brief Constructor. Create an RLE filter stream based on the 'stream'
+     *    stream.
      *
-     * stream - The decorated stream class to be used for reading/written.
-     * flag - The 8 bit flag for the RLE compression information. This
-     *        character should be the least frequent character in the
-     *        stream.
+     * @details The flag used in the compression is stored in the 'flag'
+     *    variable.
+     *
+     * @param stream The decorated stream class to be used for reading/written.
+     * @param flag The 8 bit flag for the RLE compression information. This
+     *    character should be the least frequent character in the stream.
      */
     cRLEcompression(const cSmartPtr<basicIO>& stream,
                     BYTE flag = RLE_FLAG_CHARACTER);
 
-    /*
-     * Virtual destructor. Flush the information.
+    /**
+     * @brief Virtual destructor. Flush the information.
      */
     virtual ~cRLEcompression();
 
-    /*
-     * The endian for the bit stream is the same as the down stream.
+    /**
+     * @brief The endian for the bit stream is the same as the down stream.
      */
     filterStreamEndianImpl;
 
 
     // Derived from the basicIO
 
-    /*
-     * Decompress data from the lower stream.
+    /**
+     * @brief Decompress data from the lower stream.
+     *
+     * @param buffer The buffer which receives the data.
+     * @param length The number of bytes to read.
+     * @return The number of bytes actually read.
      */
     virtual uint read(void *buffer, const uint length);
 
-    /*
-     * Encoding the buffer into the compressor.
+    /**
+     * @brief Encoding the buffer into the compressor.
      *
-     * W A R N I N G
+     * @details W A R N I N G
      *   This function cannot work with the read() instruction
      *   in the same time.
      *
      * Throws "EXCEPTION_WRITE_EXCEPTION" exception.
+     *
+     * @param buffer The data to write.
+     * @param length The number of bytes to write.
+     * @return The number of bytes actually written.
      */
     virtual uint write(const void *buffer, const uint length);
 
-    /*
-     * Flush out read buffer and write-buffers. Init the compression to
-     * new stream.
+    /**
+     * @brief Flush out read buffer and write-buffers.
+     *
+     * @details Init the compression to new stream.
      */
     virtual void flush();
 
-    /*
-     * Can seek forward 'distance' amount of bytes. All other seeking methods
-     * throw an exception.
-     * If the down stream can seek to the beginning this function will be valid
-     * from the beginning of the stream.
+    /**
+     * @brief Can seek forward 'distance' amount of bytes.
+     *
+     * @details All other seeking methods
+     *
+     * @throws cException . If the down stream can seek to the beginning this
+     *    function will be valid from the beginning of the stream.
+     * @param distance The distance to move, relative to @a method.
+     * @param method The reference position of the movement.
      */
     virtual void seek(const int distance, const basicInput::seekMethod method);
 
-    /*
-     * Return true if we have reached the end of the compression.
+    /**
+     * @brief Return true if we have reached the end of the compression.
+     *
+     * @return True if we have reached the end of the compression.
      */
     virtual bool isEOS();
 
-    /*
-     * Length, getPointer are invalid in the RLE compression since I don't
-     * have any way to know the size of the compressed data.
+    /**
+     * @brief Length, getPointer are invalid in the RLE compression since I
+     *    don't have
+     *   any way to know the size of the compressed data.
+     *
+     * @return The total length of the stream in bytes.
      */
     virtual uint length() const;
+    /**
+     * @return The position of the read/write head, in bytes from the beginning
+     *    of the stream.
+     */
     virtual uint getPointer() const;
 
-    /*
-     * Returns how many bytes should be read for best performance in the
-     * pipeRead() function in a single call to the read() function.
+    /**
+     * @brief Returns how many bytes should be read for best performance in the
+     *   pipeRead() function in a single call to the read() function.
+     *
+     * @return How many bytes should be read for best performance in the
+     *    pipeRead() function in a single call to the read() function.
      */
     virtual uint getPipeReadBestRequest() const { return m_stream->getPipeReadBestRequest(); }
 
 protected:
-    // Init the seeking methods.
+    /**
+     * @brief Init the seeking methods.
+     */
     virtual void initSeek();
 
 private:
     // Inline function
-    /*
-     * Flush the compression for a single element
-     * This is where the real compression is
-     * accomplished.
+    /**
+     * @brief Flush the compression for a single element This is where the real
+     *   compression is accomplished.
      */
     void rleWriteFlush();
 
-    /*
-     * Flush the information for reading operation
-     * Discrete reading.
+    /**
+     * @brief Flush the information for reading operation Discrete reading.
      */
     void rleReadFlush();
 
-    /* The flag for the compression */
+    /**
+     * @brief The flag for the compression
+     */
     BYTE m_flag;
 
-    /* Prevent copying objects */
+    /**
+     * @brief Prevent copying objects
+     */
     cRLEcompression();
     cRLEcompression(const cRLEcompression& other);
     cRLEcompression & operator = (const cRLEcompression& other);
 
-    /* Compression variable for writing */
+    /**
+     * @brief Compression variable for writing
+     */
     BYTE         m_w_compression_byte;
     unsigned int m_w_count;
 
-    /* Compression variable for reading */
+    /**
+     * @brief Compression variable for reading
+     */
     bool         m_r_is_compress;
     BYTE         m_r_compression_byte;
     unsigned int m_r_count;
 };
 
+
+/** @} */
 #endif // __TBA_STL_STREAMS_RLE_H

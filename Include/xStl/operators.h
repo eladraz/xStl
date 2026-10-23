@@ -32,26 +32,32 @@
 #ifndef __TBA_XSTL_OPERATORS_H
 #define __TBA_XSTL_OPERATORS_H
 
-/*
- * operators.h
+/**
+ * @addtogroup xstl_core
+ * @{
+ */
+
+/**
+ * @file operators.h
+ * @brief Define the MAKE_SIMPLE_OPERATORS macro which creates all standard
+ *   comparison operators by invoking calls to operators == and operator \<
+ *   only.
  *
- * Define the MAKE_SIMPLE_OPERATORS macro which creates all standard comparison
- * operators by invoking calls to operators == and operator < only.
- * The class also defines the MAKE_INCREASE_OPERATORS which implements operators
- * ++, -- by calling the next() and prev() functions.
+ * @details The class also defines the MAKE_INCREASE_OPERATORS which implements
+ *    operators ++, -- by calling the next() and prev() functions.
  *
- * Author: Elad Raz <e@eladraz.com>
+ * @author Elad Raz
  */
 
 
-/*
- * Creates the default implementation of operators:
- *    !=   Not equal
- *    >    Bigger
- *    >=   Bigger or equal
- *    <=   Less or equal
- * By dispatching a call to operator == or operator < which should
- * be implemented by the class.
+/**
+ * @brief Generate the comparison operators `!=`, `>`, `>=` and `<=` for a
+ *    class.
+ *
+ * The generated operators are implemented with the operators `==` and `<` of
+ * the class, which the class must therefore provide.
+ *
+ * @param className The name of the class for which the operators are generated.
  */
 #define MAKE_SIMPLE_OPERATORS(className) \
     bool inline operator != (const className &other) const   \
@@ -71,9 +77,15 @@
         return ((*this < other) || (*this == other));        \
     }
 
-/*
- * Use the functions 'void next()' and 'void prev()' to implement the
- * increment operators.
+/**
+ * @brief Generate the prefix and postfix `++` and `--` operators for a class.
+ *
+ * The `++` operators call the member function `next()` and the `--` operators
+ * call the member function `prev()`, which the class must provide.
+ *
+ * @param className The name of the class for which the operators are generated.
+ * @note The postfix versions return a reference to the object itself (after the
+ *    change), not a copy of its previous state.
  */
 #define MAKE_INCREASE_OPERATORS(className) \
     className& operator++()                \
@@ -100,4 +112,6 @@
     }
 
 
+
+/** @} */
 #endif // __TBA_XSTL_OPERATORS_H

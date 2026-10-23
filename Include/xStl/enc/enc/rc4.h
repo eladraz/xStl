@@ -32,58 +32,79 @@
 #ifndef __TBA_STL_ENCRYPTION_RC4_H
 #define __TBA_STL_ENCRYPTION_RC4_H
 
+/**
+ * @addtogroup xstl_enc_cipher
+ * @{
+ */
 
-/*
- * rc4.h
+
+/**
+ * @file rc4.h
+ * @brief Interface for the pseudo Rivest Cipher 4 (RC4).
  *
- * Interface for the pseudo Rivest Cipher 4 (RC4). Since all rights are reserved for Rivest,
- * the code will be called cRC4.
+ * @details Since all rights are reserved for Rivest, the code will be called
+ *    cRC4.
  *
- * Author: Elad Raz <e@eladraz.com>
+ * @author Elad Raz
  */
 #include "xStl/types.h"
 #include "xStl/data/array.h"
 #include "xStl/enc/encryption.h"
 
 
-/*
- * class cRC4
- *
- * Normal implementation.
+/**
+ * @brief The RC4 stream cipher.
  */
 class cRC4
 {
 public:
-    /*
-     * Load a key for the mechanism. The key is limited to 256 bytes.
-     * If the key is smaller than 256 bytes the loading wraps around in a cycle
-     * to expand the key.
+    /**
+     * @brief Load a key for the mechanism.
+     *
+     * @details The key is limited to 256 bytes. If the key is smaller than 256
+     *    bytes the loading wraps around in a cycle to expand the key.
+     *
+     * @param key The key to load.
      */
     virtual void loadKey(const cBuffer& key);
 
-    /*
-     * Encrypt/Decrypt. Generate a random from the current key and XOR it to
-     * the data stream.
+    /**
+     * @brief Encrypt/Decrypt. Generate a random from the current key and XOR it
+     *    to the
+     *   data stream.
      *
-     * data - The cipher or the plain information to be converted to plain/cipher.
+     * @param data The cipher or the plain information to be converted to
+     *    plain/cipher.
      */
     virtual void encrypt(cBuffer& data);
+    /**
+     * @brief Decrypt the data. RC4 is symmetric so this is the same operation
+     *    as encrypt().
+     *
+     * @param data The cipher information, converted in place to plain
+     *    information.
+     */
     virtual void decrypt(cBuffer& data);
 
-    /*
-     * Fills up 'data' (according to its previous length) with the following
-     * strip of the RC4 mechanism
+    /**
+     * @brief Fills up 'data' (according to its previous length) with the
+     *    following
+     *   strip of the RC4 mechanism
      *
-     * data - Array to be filled with pseudo-random RC4 generated strip.
+     * @param data Array to be filled with pseudo-random RC4 generated strip.
      */
     void strip(cBuffer& data);
 
-    /* Constants for the algorithm */
-    enum { RC4KEY_LEN = 256 };
+    /**
+     * @brief Constants for the algorithm
+     */
+    enum {
+        RC4KEY_LEN = 256   ///< The length of the RC4 key table in bytes.
+    };
 
 private:
-    /*
-     * Advance the mechanism by one.
+    /**
+     * @brief Advance the mechanism by one.
      */
     uint8 advance();
 
@@ -93,5 +114,7 @@ private:
     uint8 m_j;
 };
 
+
+/** @} */
 #endif // __TBA_STL_ENCRYPTION_RC4_H
 

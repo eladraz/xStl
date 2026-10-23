@@ -32,39 +32,48 @@
 #ifndef __TBA_STL_FILE_EXCEPTION_H
 #define __TBA_STL_FILE_EXCEPTION_H
 
-/*
- * fileException.h
+/**
+ * @addtogroup xstl_os
+ * @{
+ */
+
+/**
+ * @file fileException.h
+ * @brief Define the exceptions types regarding the handling of a file
  *
- * Define the exceptions types regarding the handling of a file
- *
- * Author: Elad Raz <e@eladraz.com>
+ * @author Elad Raz
  */
 #include "xStl/types.h"
 #include "xStl/except/exception.h"
 
 
-/*
- * class cFileException
- *
- * File exception class. All the file exceptions classes will be inherited from
- * this class.
+/**
+ * @brief File exception class. All the file exceptions classes will be
+ *    inherited
+ *   from this class.
  */
 class cFileException : public cException
 {
 public:
-    /*
-     * Construct an exception using a description string
+    /**
+     * @brief Construct an exception using a description string
      *
-     * msg - The error message
+     * @param msg The error message
+     * @param file The source file where the exception is thrown.
+     * @param line The line in the source file where the exception is thrown.
      */
     cFileException(char * file, uint32 line, const character* msg) : cException(file, line, msg) {};
 
-    /*
-     * Construct an exception using a number
+    /**
+     * @brief Construct an exception using a number
      *
-     * id - The error message identification number
+     * @param id The error message identification number
+     * @param file The source file where the exception is thrown.
+     * @param line The line in the source file where the exception is thrown.
      */
     cFileException(char * file, uint32 line, const uint32 id) : cException(file, line, id) {};
 };
 
+
+/** @} */
 #endif // __TBA_STL_FILE_EXCEPTION_H

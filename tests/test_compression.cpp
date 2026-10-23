@@ -118,7 +118,8 @@ public:
             uint32 cmp_size = ((cMemoryStream*)memstream.getPointer())->getStream()->getSize();
             random_radio = ((double)cmp_size * 100) / size;
             _gcvt_s(double_buffer, 50, random_radio, 3);
-            TRACE(TRACE_MEDIUM, cString("Random compression ratio: ") +  double_buffer + "%  [" + getCompressionType(type) + "]");
+            TRACE(TRACE_MEDIUM, cString("Random compression ratio: ") +
+                  double_buffer + "%  [" + getCompressionType(type) + "]");
             #endif
 
             cout << getCompressionType(type);

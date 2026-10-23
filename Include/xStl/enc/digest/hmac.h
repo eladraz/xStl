@@ -32,14 +32,19 @@
 #ifndef __TBA_STL_ENCRYPTION_DIGEST_HMAC_H
 #define __TBA_STL_ENCRYPTION_DIGEST_HMAC_H
 
+/**
+ * @addtogroup xstl_enc_digest
+ * @{
+ */
 
-/*
- * hmac.h
+
+/**
+ * @file hmac.h
+ * @brief Filter implementation of the hmac (hash by secret) algorithm as RFC
+ *    2104
+ *   suggests.
  *
- * Filter implementation of the hmac (hash by secret) algorithm as RFC 2104
- * suggests.
- *
- * Author: Elad Raz <e@eladraz.com>
+ * @author Elad Raz
  */
 
 #include "xStl/types.h"
@@ -48,12 +53,12 @@
 #include "xStl/enc/digest.h"
 
 
-/*
- * class cHMAC
+/**
+ * @brief Hash data using a secret and another hash algorithm.
  *
- * Hash data using a secret and another hash algorithm. See RFC2104 for more
- * information. The class is initialized with a key and a smart-pointer to a constructed
- * hash object which will be used for the hashing.
+ * @details See RFC2104 for more information. The class is initialized with a
+ *    key and a smart-pointer to a constructed hash object which will be used
+ *    for the hashing.
  *
  * This class is not thread-safe. The hash-object shouldn't be shared within
  * several of different threads.
@@ -61,11 +66,11 @@
 class cHMAC : public cDigest
 {
 public:
-    /*
-     * Constructor. Create HMAC object with a secret ('key').
+    /**
+     * @brief Constructor. Create HMAC object with a secret ('key').
      *
-     * hashObj - The hash object to be used for the HMAC process.
-     * key     - The init secret of the HMAC
+     * @param hashObj The hash object to be used for the HMAC process.
+     * @param key The init secret of the HMAC
      */
     cHMAC(cSmartPtr<cDigest> hashObj, const cBuffer& key);
 
@@ -75,63 +80,69 @@ public:
      * This is normal behavior.
      */
 
-    /*
-     * Reset the hash setting as this class just constructed.
+    /**
+     * @brief Reset the hash setting as this class just constructed.
      */
     virtual void reset();
 
-    /*
-     * Update the hash using a 'buffer' and its length.
+    /**
+     * @brief Update the hash using a 'buffer' and its length.
      *
-     * buffer - The bytes to be digest.
-     * length - The length of the buffer.
+     * @param buffer The bytes to be digest.
+     * @param length The length of the buffer.
      */
     virtual void update(const void* buffer, const uint32 length);
 
-    /*
-     * Return the current digest of the hash using for all previous call to
-     * 'update' from the last 'reset()'/construction call.
+    /**
+     * @brief Return the current digest of the hash using for all previous call
+     *    to
+     *   'update' from the last 'reset()'/construction call.
      *
-     * Return CONST amount of bytes.
+     * @return The current digest of the hash using for all previous call to
+     *    'update' from the last 'reset()'/construction call.
      */
     virtual cBuffer digest();
 
-    /*
-     * Clone the hash object.
+    /**
+     * @brief Clone the hash object.
      *
-     * Return new constructed object equal to my object.
+     * @return New constructed object equal to my object.
      */
     virtual cSmartPtr<cDigest> clone();
 
-    /*
-     * Return the number of bytes used for the digest.
+    /**
+     * @brief Return the number of bytes used for the digest.
+     *
+     * @return The number of bytes used for the digest.
      */
     virtual uint getDigestLength();
 
 
 private:
-    /*
-     * The number of bytes for the inner and the outer key.
+    /**
+     * @brief The number of bytes for the inner and the outer key.
      */
     enum { KEY_B_LENGTH = 64 };
 
-    /*
-     * The secret inner and outer key of the hmac.
+    /**
+     * @brief The secret inner and outer key of the hmac.
      */
     uint8 m_innerKey[KEY_B_LENGTH];
     uint8 m_outerKey[KEY_B_LENGTH];
 
-    /*
-     * The hash object to be used.
+    /**
+     * @brief The hash object to be used.
      */
     cSmartPtr<cDigest> m_hashObj;
 
-    /*
-     * The text to be hashed.
+    /**
+     * @brief The text to be hashed.
      */
     cBuffer m_text;
 };
 
 
+
+/** @} */
 #endif // __TBA_STL_ENCRYPTION_DIGEST_HMAC_H
 

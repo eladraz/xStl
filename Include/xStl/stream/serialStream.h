@@ -32,38 +32,43 @@
 #ifndef __TBA_STL_STREAM_SERIALSTREAM_H
 #define __TBA_STL_STREAM_SERIALSTREAM_H
 
-/*
- * serialStream.h
+/**
+ * @addtogroup xstl_stream
+ * @{
+ */
+
+/**
+ * @file serialStream.h
+ * @brief Handles the serial devices.
  *
- * Handles the serial devices. Wrap a basic input-output stream over the serial
- * interface
+ * @details Wrap a basic input-output stream over the serial interface
  *
- * Author: Elad Raz <e@eladraz.com>
+ * @author Elad Raz
  */
 #include "xStl/types.h"
 #include "xStl/os/serialPort.h"
 #include "xStl/stream/basicIO.h"
 #include "xStl/stream/fileStream.h"
 
-/*
- * The serial port has connection attributes:
- *     - Baud rate      The number of bits per second which the line supports
- *     - Transition     Indicates when and how the parity bit is transmitted, how
- *                      many stop bits should be used, and how many bits should
- *                      be transmitted for each session.
+/**
+ * @brief The serial port has connection attributes:
+ *
+ * - Baud rate: the number of bits per second which the line supports.
+ * - Transition: indicates when and how the parity bit is transmitted, how
+ *   many stop bits should be used, and how many bits should
+ *   be transmitted for each session.
  */
 class cSerialStream : public basicIO {
 public:
-    /*
-     * Default constructor. Open a serial port.
+    /**
+     * @brief Default constructor. Open a serial port.
      *
-     * comport  - The port to be opened
-     * baudRate - The baud rate for the COM port.
-     * bitSize  - The number of bits for a single byte (4-8)
-     * parity   - The type for the parity check
-     * stopBits - Terminator between transmission.
-     *
-     * Throw an exception if the serial-stream cannot be instantiated
+     * @param comport The port to be opened
+     * @param baudRate The baud rate for the COM port.
+     * @param bitSize The number of bits for a single byte (4-8)
+     * @param parity The type for the parity check
+     * @param stopBits Terminator between transmission.
+     * @throws cException if the serial-stream cannot be instantiated
      */
     cSerialStream(uint comport,
                   cSerialPort::BaudRate baudRate = cSerialPort::BaudRate_115200,
@@ -71,77 +76,113 @@ public:
                   cSerialPort::ParityBit parity  = cSerialPort::NoParity,
                   cSerialPort::StopBit stopBits  = cSerialPort::SingleStopBit);
 
-    /*
-     * Memory-files will be treated as the default endian in the system
+    /**
+     * @brief Memory-files will be treated as the default endian in the system
      */
     defaultEndianImpl;
 
     // Derived from the basicIO
 
-    /*
-     * Retrieve the position of the write/read head
+    /**
+     * @brief Retrieve the position of the write/read head
+     *
+     * @return The position of the read/write head, in bytes from the beginning
+     *    of the stream.
      */
     virtual uint getPointer() const;
 
-    /*
-     * Return the length of the memory-file.
+    /**
+     * @brief Return the length of the memory-file.
+     *
+     * @return The length of the memory-file.
      */
     virtual uint length() const;
 
-    /*
-     * Return true if the file pointer reach the end of the file.
+    /**
+     * @brief Return true if the file pointer reach the end of the file.
+     *
+     * @return True if the file pointer reach the end of the file.
      */
     virtual bool isEOS();
 
-    /*
-     * Flush the information of the file. Shouldn't do anything.
+    /**
+     * @brief Flush the information of the file.
+     *
+     * @details Shouldn't do anything.
      */
     virtual void flush();
 
-    /*
-     * Read from the memory array into a buffer. If the reading reaches the end
-     * of the array then the function returns the number of bytes read until
-     * EOF is reached.
+    /**
+     * @brief Read from the memory array into a buffer.
+     *
+     * @details If the reading reaches the end of the array then the function
+     *    returns the number of bytes read until EOF is reached.
+     *
+     * @param buffer The buffer which receives the data.
+     * @param length The number of bytes to read.
+     * @return The number of bytes actually read.
      */
     virtual uint read(void *buffer, const uint length);
 
-    /*
-     * Write bytes to the stream.
-     * Change the bytes of the array. If the file position reached the end of the
-     * array, and m_fixedSize is false then the array size will increase.
+    /**
+     * @brief Write bytes to the stream.
+     *
+     * @details Change the bytes of the array. If the file position reached the
+     *    end of the array, and m_fixedSize is false then the array size will
+     *    increase.
+     *
+     * @param buffer The data to write.
+     * @param length The number of bytes to write.
+     * @return The number of bytes actually written.
      */
     virtual uint write(const void *buffer, const uint length);
 
-    /*
-     * Move to a specific position in the file. Throw an exception if failed.
-     * See basicInput::seek for more information.
+    /**
+     * @brief Move to a specific position in the file.
+     *
+     * @details Throw an exception if failed. See basicInput::seek for more
+     *    information.
+     *
+     * @param distance The distance to move, relative to @a method.
+     * @param method The reference position of the movement.
      */
     virtual void seek(const int distance, const basicInput::seekMethod method);
 
-    /*
-     * Returns how many bytes should be read for best performance in the
-     * pipeRead() function in a single call to the read() function.
+    /**
+     * @brief Returns how many bytes should be read for best performance in the
+     *   pipeRead() function in a single call to the read() function.
      *
-     * This value stands at 1kb which is the responsible value
+     * @details This value stands at 1kb which is the responsible value
+     *
+     * @return How many bytes should be read for best performance in the
+     *    pipeRead() function in a single call to the read() function.
      */
     virtual uint getPipeReadBestRequest() const { return 1024; }
 
-    /*
-     * Return true if the line is ringing
+    /**
+     * @brief Return true if the line is ringing
      *
-     * Throw an exception if the serial-stream cannot acquire the UART status
-     * register
-    */
+     * @return True if the line is ringing.
+     * @throws cException if the serial-stream cannot acquire the UART status
+     *    register
+     */
     bool isRinging();
 
 protected:
-    // Init the seeking methods.
-    // All seeking methods are allowed
+    /**
+     * @brief Init the seeking methods.
+     *
+     * @details All seeking methods are allowed
+     */
     virtual void initSeek();
 
 private:
-    // The pipe handle
+    /**
+     * @brief The pipe handle
+     */
     cFileStream m_serialHandle;
 };
 
+
+/** @} */
 #endif // __TBA_STL_STREAM_SERIALSTREAM_H

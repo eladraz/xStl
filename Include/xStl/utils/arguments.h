@@ -32,73 +32,135 @@
 #ifndef __TBA_STL_ARGUMENTS_H
 #define __TBA_STL_ARGUMENTS_H
 
-/*
- * arguments.h
- *
- * Analyze arguments from the user command
- * line.
+/**
+ * @addtogroup xstl_utils
+ * @{
+ */
+
+/**
+ * @file arguments.h
+ * @brief Analyze arguments from the user command line.
  */
 
 #include "xStl/types.h"
 #include "xStl/data/string.h"
 #include "xStl/data/hash.h"
 
-/*
- * cArguments class
+/**
+ * @brief Parse and query the command line arguments of an application.
  *
- * Provide an easy way to parse command line
- * arguments.
+ * @details Provide an easy way to parse command line
+ *   arguments.
  *
- * Command line arguments
- * Can be:
+ * Command line arguments can be:
  *
- *   1. Macro
- *      Start with -name or /name
- *      Macro can be with a string description or without.
- *      for example: -i filename.txt
- *         Create a new macro name i with string 'filename.txt'
+ * 1. Macro: starts with -name or /name.
+ *    A macro can be with a string description or without.
+ *    For example: `-i filename.txt` creates a new macro named `i` with the
+ *    string `filename.txt`.
  *
- *   2. Strings
- *      A list of strings that appear at the start of the
- *      line or at the end.
- *      Input like:
- *        tcpdump -n eth0  [In this program -nlxs 5000 will not be parsed right]
+ * 2. Strings: a list of strings that appear at the start of the
+ *    line or at the end.
+ *    Input like: `tcpdump -n eth0`
+ *    (in this program `-nlxs 5000` will not be parsed right).
  *
- *
- *  In case of advanced parsing it is possible
- *  to overload this class and modify the
- *  OnXXX() functions.
+ * In case of advanced parsing it is possible
+ * to overload this class and modify the
+ * OnXXX() functions.
  */
 class cArguments
 {
 public:
-    // Constructors, Destructors
+    /**
+     * @brief Constructors, Destructors
+     */
     cArguments();
+    /**
+     * @brief Constructor. Parse the command line arguments.
+     *
+     * @param argc The number of arguments.
+     * @param argv The arguments array.
+     */
     cArguments(const int argc, const char **argv);
     ~cArguments();
 
+    /**
+     * @brief Parse the command line arguments.
+     *
+     * @param argc The number of arguments.
+     * @param argv The arguments array.
+     */
     void Parse(const int argc, const char **argv);
 
-    // Argument information
+    /**
+     * @brief Return the value which was given to a command-line macro.
+     *
+     * @param macro The name of the macro.
+     * @return The value of the macro.
+     */
     cString get_command(const cString& macro) const;
+    /**
+     * @brief Check whether a macro appeared in the command line.
+     *
+     * @param macro The name of the macro.
+     * @return Non-zero if the macro exists.
+     */
     BOOL    check_macro(const cString& macro) const;
 
+    /**
+     * @brief Return the number of the string arguments.
+     *
+     * @return The number of the string arguments.
+     */
     unsigned int get_string_count() const;
+    /**
+     * @brief Return a string argument.
+     *
+     * @param index The index of the string argument.
+     * @return The string argument.
+     */
     cString      get_string(unsigned int index) const;
 
 
-    // Parser helper function
+    /**
+     * @brief Parser helper function. Add a macro.
+     *
+     * @param macro The name of the macro.
+     * @param description The value of the macro.
+     */
     void add_macro (const cString &macro, const cString& description);
+    /**
+     * @brief Parser helper function. Add a string argument.
+     *
+     * @param string The string to add.
+     */
     void add_string(const cString &string);
 
 
-    // Parser commands
+    /**
+     * @brief Parser command. Called for each token.
+     *
+     * @param token_name The name of the token.
+     */
     virtual void OnToken (cString& token_name);
+    /**
+     * @brief Parser command. Called for each macro.
+     *
+     * @param macro_name The name of the macro.
+     * @param description The value of the macro.
+     */
     virtual void OnMacro (cString& macro_name, cString &description);
+    /**
+     * @brief Parser command. Called for each string argument.
+     *
+     * @param string The string argument.
+     */
     virtual void OnString(cString& string);
 
 private:
-    // Disable copy things
+    /**
+     * @brief Disable copy things
+     */
     cArguments(const cArguments& other);
     cArguments & operator = (const cArguments& other);
 
@@ -106,20 +168,19 @@ private:
     cList<cString>         argv_str;
 };
 
-/*
- * cArguments::cArguments
- *
- * Default constructor. Init the class.
+/**
+ * @brief Default constructor. Init the class.
  */
 cArguments::cArguments()
 {
 }
 
-/*
- * cArguments::cArguments(const int argc, const char **argv)
+/**
+ * @brief cArguments::cArguments(const int argc, const char **argv)
  *
- * Init the class, Parse the data
- * throw an exception in case of an error
+ * @details Init the class, Parse the data
+ *
+ * @throws cException in case of an error
  */
 cArguments::cArguments(const int argc, const char **argv)
 {
@@ -127,13 +188,15 @@ cArguments::cArguments(const int argc, const char **argv)
     Parse(argc, argv);
 }
 
-/*
- * cArguments::~cArguments
+/**
+ * @brief cArguments::~cArguments
  *
- * Init the class.
+ * @details Init the class.
  */
 cArguments::~cArguments()
 {
 }
 
+
+/** @} */
 #endif // __TBA_STL_ARGUMENTS_H

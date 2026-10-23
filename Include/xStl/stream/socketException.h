@@ -32,45 +32,71 @@
 #ifndef __TBA_STL_SOCKET_EXCEPTION_H
 #define __TBA_STL_SOCKET_EXCEPTION_H
 
-/*
- * socket_exception.h
- *
- * Define the group of socket exceptions.
+/**
+ * @addtogroup xstl_stream
+ * @{
+ */
+
+/**
+ * @file socketException.h
+ * @brief Define the group of socket exceptions.
  */
 #include "xStl/except/exception.h"
 
+/// The first error ID of the socket exceptions.
 #define SOCKET_EXCEPTION_BASE  (1024)
 
+/// The socket could not be created.
 #define SOCKETEXCEPTION_CREATION_FAILED  ( 0 + SOCKET_EXCEPTION_BASE)
+/// A write operation timed out.
 #define SOCKETEXCEPTION_WRITE_TIMEOUT   ( 1 + SOCKET_EXCEPTION_BASE)
+/// A read operation timed out.
 #define SOCKETEXCEPTION_READ_TIMEOUT    ( 2 + SOCKET_EXCEPTION_BASE)
+/// A write operation failed.
 #define SOCKETEXCEPTION_WRITE_FAILED     ( 3 + SOCKET_EXCEPTION_BASE)
+/// A read operation failed.
 #define SOCKETEXCEPTION_READ_FAILED      ( 4 + SOCKET_EXCEPTION_BASE)
+/// The socket was not initialized.
 #define SOCKETEXCEPTION_NOT_INIT        ( 5 + SOCKET_EXCEPTION_BASE)
+/// An error in a socket address.
 #define SOCKETEXCEPTION_ADDRESS_ERROR   ( 6 + SOCKET_EXCEPTION_BASE)
+/// Connecting the socket failed.
 #define SOCKETEXCEPTION_CONNECT         ( 7 + SOCKET_EXCEPTION_BASE)
+/// Binding the socket failed.
 #define SOCKETEXCEPTION_BIND            ( 8 + SOCKET_EXCEPTION_BASE)
+/// Listening on the socket failed.
 #define SOCKETEXCEPTION_LISTEN          ( 9 + SOCKET_EXCEPTION_BASE)
+/// Accepting a connection failed.
 #define SOCKETEXCEPTION_ACCEPT          (10 + SOCKET_EXCEPTION_BASE)
 
 
-/*
- * class cSocketException
+/**
+ * @brief Basic socket exception, from this class all the socket exception
+ *    classes
+ *   will be inherited.
  *
- * Basic socket exception, from this class
- * all the socket exception classes will be inherited.
+ * @details This class is a shell class to provide simple division
+ *   from other exceptions.
  *
- * This class is a shell class to provide simple division
- * from other exceptions.
- *
- * Author: Elad Raz <e@eladraz.com>
+ * Author: Elad Raz \<e\@eladraz.com\>
  */
 class cSocketException : public cException
 {
 public:
+    /**
+     * @brief Constructor.
+     *
+     * @param file The source file where the exception is thrown.
+     * @param line The line in the source file where the exception is thrown.
+     * @param msgId The error ID of the exception. See the SOCKETEXCEPTION_*
+     *    definitions.
+     */
     cSocketException(char * file, uint32 line, const uint32 msgId = 0);
+    /// Virtual destructor.
     virtual ~cSocketException() {};
 };
 
+
+/** @} */
 #endif
 

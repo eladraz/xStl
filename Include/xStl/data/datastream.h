@@ -32,12 +32,16 @@
 #ifndef __TBA_STL_DATASTREAM_H
 #define __TBA_STL_DATASTREAM_H
 
-/*
- * datastream.h
+/**
+ * @addtogroup xstl_data_dump
+ * @{
+ */
+
+/**
+ * @file datastream.h
+ * @brief Provides a set of tools to dump memory structs to the screen.
  *
- * Provides a set of tools to dump memory structs to the screen.
- *
- * Author: Elad Raz <e@eladraz.com>
+ * @author Elad Raz
  */
 #include "xStl/types.h"
 #include "xStl/data/char.h"
@@ -55,6 +59,10 @@
  * The default number of elements in a row.
  */
 #ifndef TTY_MAX_ELEMENTS
+/**
+ * @brief The default number of elements in a dump row. It can be overridden by
+ *    defining it before including the header.
+ */
 #define TTY_MAX_ELEMENTS (16)
 #endif
 
@@ -63,95 +71,146 @@
  * implementations.
  */
 
-/*
- * The default dump of non-printable character.
+/**
+ * @brief The default dump of non-printable character.
  */
 #define DB_DEFAULT_CHAR '.'
 
-/*
- * Return a printable character representing the character.
+/**
+ * @brief Return a printable character representing the character.
  *
- * ch           - The character to be queried
- * nonPrintable - The non-printable value for non-printable characters.
- *
- * Return a printable value of the character.
+ * @param ch The character to be queried
+ * @param nonPrintable The non-printable value for non-printable characters.
+ * @return A printable character representing the character.
  */
 uint8 DB(const uint8& ch,
          const uint8 nonPrintable = DB_DEFAULT_CHAR);
 
-/*
- * Return the high/low nibble of a character as a hex char.
+/**
+ * @brief Return the high nibble of a byte as a hexadecimal character.
+ *
+ * @param ch The byte.
+ * @return The hexadecimal character of the high nibble of @a ch.
  */
 character HEXHIGH(const uint8& ch);
+/**
+ * @brief Return the low nibble of a byte as a hexadecimal character.
+ *
+ * @param ch The byte.
+ * @return The hexadecimal character of the low nibble of @a ch.
+ */
 character HEXLOW(const uint8& ch);
 
 
-/*
- * Convert a number to hexadecimal. Return a cString.
+/**
+ * @brief Convert an 8 bit number to its hexadecimal string.
+ *
+ * @param ch The number to convert.
+ * @return The hexadecimal string.
  */
 cString HEXBYTE(const uint8& ch);
+/**
+ * @brief Convert a 16 bit number to its hexadecimal string.
+ *
+ * @param word The number to convert.
+ * @return The hexadecimal string.
+ */
 cString HEXWORD(const uint16& word);
+/**
+ * @brief Convert a 32 bit number to its hexadecimal string.
+ *
+ * @param dword The number to convert.
+ * @return The hexadecimal string.
+ */
 cString HEXDWORD(const uint32& dword);
 
 #ifndef XSTL_16BIT
-// TODO! 16 bit compilers don't support 64bit integers.
-// TODO! Add uint64 as a class
+/**
+ * @todo 16 bit compilers don't support 64bit integers.
+ * @todo Add uint64 as a class
+ * @param qword The number to convert.
+ * @return The hexadecimal string.
+ */
 cString HEXQWORD(const uint64& qword);
 #endif
 
-/*
- * Convert a number to the closest hexadecimal value. If the number is 8 bit
- * then HEXBYTE will be used, if the number is a 16 bit number then HEXWORD
- * will be used, etc.
+/**
+ * @brief Convert a number to the closest hexadecimal value.
+ *
+ * @details If the number is 8 bit then HEXBYTE will be used, if the number is a
+ *    16 bit number then HEXWORD will be used, etc.
+ *
+ * @param number The number to convert.
+ * @return The hexadecimal string.
  */
 cString HEXNUMBER(uint number);
 
-/*
- * Convert an address to hex-number. If the machine uses 32bit address then the
- * conversions will be to DWORD otherwise the conversions will be 64bit or 24bit
- * depending on the machine.
+/**
+ * @brief Convert an address to hex-number.
+ *
+ * @details If the machine uses 32bit address then the conversions will be to
+ *    DWORD otherwise the conversions will be 64bit or 24bit depending on the
+ *    machine.
+ *
+ * @param address The address to convert.
+ * @return The hexadecimal string.
  */
 cString HEXADDRESS(const addressNumericValue& address);
 
-/*
- * Convert a remote address into hex-number. The encoding is taken from the
- * remote address
+/**
+ * @brief Convert a remote address into hex-number.
+ *
+ * @details The encoding is taken from the remote address
+ *
+ * @param address The remote address to convert.
+ * @return The hexadecimal string.
  */
 cString HEXREMOTEADDRESS(const remoteAddressNumericValue& address);
 
-/*
- * DUMP class
+/**
+ * @brief A hexadecimal dump of a range of elements.
  *
- * An ostream class wrapper. Use this class to dump information according to
- * its hex data.
- * Use the class as follows:
- *  cStrem object;
- *  cout << DATA(object.begin(), object.end()) << endl;
+ * @details An ostream class wrapper. Use this class to dump information
+ *    according to
+ *   its hex data.
+ *   Use the class as follows:
+ *   cStrem object;
+ *   cout \<\< DATA(object.begin(), object.end()) \<\< endl;
+ *
+ * @tparam ITERATOR The type of the iterator over the dumped elements.
+ * @tparam INFO The type of the dumped elements.
  */
 template <class ITERATOR, class INFO>
 class DUMP
 {
 public:
-    /*
-     * DUMP class flags
+    /**
+     * @brief DUMP class flags
      */
     enum {
-        // Print the
+        /**
+         * @brief Print the address at the beginning of each row.
+         */
         DATA_USE_ADDRESS = 1,
+        /**
+         * @brief Print the address in hexadecimal.
+         */
         DATA_ADDRESS_HEX = 2
     };
 
-    /*
-     * Constructor. Create a dump object with operator <<.
+    /**
+     * @brief Constructor. Create a dump object with operator \<\<.
      *
-     * begin - The iterator to the beginning of the object.
-     * end   - The iterator to the end of the object.
-     * flags - How to dump the object.
-     *           DATA_USE_ADDRESS dump the object with address
-     *           DATA_ADDRESS_HEX print the address in hex
-     * startAddress - The address for the first iterator
-     * segmentName  - The name of the segment
-     * elementInRow - How many objects to dump in a line.
+     * @details elementInRow - How many objects to dump in a line.
+     *
+     * @param begin The iterator to the beginning of the object.
+     * @param end The iterator to the end of the object.
+     * @param flags How to dump the object. DATA_USE_ADDRESS dump the object
+     *    with address DATA_ADDRESS_HEX print the address in hex
+     * @param startAddress The address for the first iterator
+     * @param segmentName The name of the segment
+     * @param elementsInRow How many elements to dump in a row. The default is
+     *    TTY_MAX_ELEMENTS.
      */
     DUMP(ITERATOR begin,
          ITERATOR end,
@@ -168,7 +227,11 @@ public:
     {
     }
 
-    // Copy constructor
+    /**
+     * @brief Copy constructor
+     *
+     * @param other The dump object to copy.
+     */
     DUMP(const DUMP<ITERATOR, INFO> &other) :
         m_begin(other.m_begin),
         m_end  (other.m_end),
@@ -180,9 +243,10 @@ public:
     }
 
 #if (defined(XSTL_WINDOWS) || defined(XSTL_NTDDK) || defined(XSTL_CE))
-    /*
-     * For Windows compilers, we don't need to declare any template
-     * friend function.
+    /**
+     * @brief For Windows compilers, we don't need to declare any template
+     *    friend
+     *   function.
      */
     template <class OSTREAM>
     friend OSTREAM& operator << (OSTREAM &out, DUMP<ITERATOR, INFO>& object);
@@ -190,9 +254,10 @@ public:
     template <class OSTREAM>
     friend OSTREAM & hexDumpObject(OSTREAM &out, DUMP<ITERATOR, INFO>& object);
 #else
-    /*
-     * For the g++ compiler we need to declare these functions
-     * as template functions
+    /**
+     * @brief For the g++ compiler we need to declare these functions as
+     *    template
+     *   functions
      */
     template <class OSTREAM, class FW_ITR, class DT>
     friend OSTREAM& operator << (OSTREAM &out, DUMP<FW_ITR, DT>& object);
@@ -202,51 +267,89 @@ public:
 #endif
 
 public:
-    // The iterator to the beginning of the object
+    /**
+     * @brief The iterator to the beginning of the object
+     */
     ITERATOR m_begin;
-    // The iterator to the end of the object
+    /**
+     * @brief The iterator to the end of the object
+     */
     ITERATOR m_end;
-    // How to dump the object. See DATA_USE_ADDRESS
+    /**
+     * @brief How to dump the object.
+     *
+     * @details See DATA_USE_ADDRESS
+     */
     unsigned int m_flags;
-    // How many objects to dump in a line
+    /**
+     * @brief How many objects to dump in a line
+     */
     unsigned int m_elementsInRow;
-    // The address for the first iterator
+    /**
+     * @brief The address for the first iterator
+     */
     addressNumericValue m_startAddress;
-    // The name of the segment
+    /**
+     * @brief The name of the segment
+     */
     const character* m_segmentName;
 };
 
 
-/*
- * Print a hex byte of the object. The object stores the type information
- * of how to print the object and where (and how) it is stored in the memory
+/**
+ * @brief Print a hex byte of the object.
  *
- * out    - The output stream to be used.
- * object - The object to be dumped
+ * @details The object stores the type information of how to print the object
+ *    and where (and how) it is stored in the memory
  *
- * Returns the reference object to the dump object.
+ * @param out The output stream to be used.
+ * @param object The object to be dumped
+ * @return The reference object to the dump object.
+ *
+ * @tparam OSTREAM The type of the output stream.
+ * @tparam FW_ITR The type of the forward iterator of the dump object.
+ * @tparam DT The type of the dumped elements.
  */
 template <class OSTREAM, class FW_ITR, class DT>
 OSTREAM & hexDumpObject(OSTREAM &out, DUMP<FW_ITR, DT>& object);
 
-/*
- * operator <<
+/**
+ * @brief operator \<\<
  *
- * Uses the hexDumpObject for the dumping.
+ * @details Uses the hexDumpObject for the dumping.
+ *
+ * @tparam OSTREAM The type of the output stream.
+ * @tparam FW_ITR The type of the forward iterator of the dump object.
+ * @tparam DT The type of the dumped elements.
+ * @param out The output stream to be used.
+ * @param object The object to be dumped.
+ * @return The output stream @a out.
  */
 template <class OSTREAM, class FW_ITR, class DT>
 OSTREAM& operator << (OSTREAM &out, DUMP<FW_ITR, DT>& object);
 
-/*
- * DATA commands
+/**
+ * @brief DATA commands
  *
- * Since most of the use of the DUMP class will be to dump cBuffer data
- * then there is a shortcut.
+ * @details Since most of the use of the DUMP class will be to dump cBuffer data
+ *   then there is a shortcut.
  */
 typedef DUMP<const uint8*, uint8>                      DATA8;
+/**
+ * @brief Dump of the bytes of a cBuffer.
+ */
 typedef DUMP<cBuffer::iterator, uint8>                 DATA;
+/**
+ * @brief Dump of the bytes of a cBuffer.
+ */
 typedef DUMP<cBuffer::iterator, uint8>                 DUMP_BYTE;
+/**
+ * @brief Dump of an array of 16 bit words.
+ */
 typedef DUMP<cArray<unsigned short>::iterator, uint16> DUMP_WORD;
+/**
+ * @brief Dump of an array of 32 bit double-words.
+ */
 typedef DUMP<cArray<unsigned int>::iterator,   uint32> DUMP_DWORD;
 
 /*
@@ -260,4 +363,6 @@ typedef DUMP<cArray<unsigned int>::iterator,   uint32> DUMP_DWORD;
 #endif
 
 
+
+/** @} */
 #endif

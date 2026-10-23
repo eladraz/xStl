@@ -32,96 +32,104 @@
 #ifndef __TBA_XSTL_DATA_MESSAGEQUEUE_H
 #define __TBA_XSTL_DATA_MESSAGEQUEUE_H
 
-/*
- * messageQueue.h
+/**
+ * @addtogroup xstl_data_containers
+ * @{
+ */
+
+/**
+ * @file messageQueue.h
+ * @brief The messageQueue is a component which holds messages for clients.
  *
- * The messageQueue is a component which holds messages for clients.
- * Each client has a unique ID in the system and has messages which link to
- * it. The queue manages the storing and polling of messages.
+ * @details Each client has a unique ID in the system and has messages which
+ *    link to it. The queue manages the storing and polling of messages.
  *
- * Author: Elad Raz <e@eladraz.com>
+ * @author Elad Raz
  */
 #include "xStl/types.h"
 
 
-/*
- * Holds messages for clients. The program can access the queue, store messages
- * for one or more clients, poll the messages etc.
- * The queue has the following properties:
- *   - Template over the client-ID.
- *   - Template over group-ID
- *   - Saves the queue inside the repository. Can be used for persistence.
- *   - Stores a message for one or more clients.
- *   - Poll a message for a client.
- *   - Set a queue quota for a client (In memory bytes)
- *   - A watch-dog timer is supported.
+/**
+ * @brief Holds messages for clients.
+ *
+ * @details The program can access the queue, store messages for one or more
+ *    clients, poll the messages etc. The queue has the following properties: -
+ *    Template over the client-ID. - Template over group-ID - Saves the queue
+ *    inside the repository. Can be used for persistence. - Stores a message for
+ *    one or more clients. - Poll a message for a client. - Set a queue quota
+ *    for a client (In memory bytes) - A watch-dog timer is supported.
  *
  * The messages are stream of bytes.
  *
  * The client-id, which is templated in the name cClientID is a unique identifier
  * for the client. The template must implement the following operator:
- *   bool operator == (const cClientID& other) const;
- *   copy-constructor
+ * bool operator == (const cClientID\& other) const;
+ * copy-constructor
  * This operator is used to distinguish between different clients.
  *
  * The client-id can be a number corresponding to the user, can be a process-ID
  * which separates different processes which want to poll messages from a shared
- * device. It can be an even more complex struct which contains a process-ID and a
+ * device. It can be an even more complex struct which contains a process-ID and
+ * a
  * client-ID, allowing multiple instances of device-objects inside a single
  * process...
  *
  * The group-ID has the following operator:
- *   bool isMine(const cClientID& id);
+ * bool isMine(const cClientID\& id);
  * This function is used to separate clients into groups.
+ *
+ * @tparam cClientID The type of the client identifier.
+ * @tparam cGroupID The type of the group identifier. It must provide `bool
+ *    isMine(const cClientID&)`.
  */
 template <cClientID, cGroupID>
 class cMessageQueue
 {
 public:
-    /*
-     * Constructor. Initialize empty queue.
+    /**
+     * @brief Constructor. Initialize empty queue.
      */
     cMessageQueue();
 
-    /*
-     * Destructor. Free all messages and queue memory.
+    /**
+     * @brief Destructor. Free all messages and queue memory.
      */
     ~cMessageQueue();
 
-    /*
-     * Stores a message for list of clients.
+    /**
+     * @brief Stores a message for list of clients.
      *
-     * clients - The clients ID list.
-     * message - The message to be stored.
+     * @details clients - The clients ID list.
      *
-     * Throws cMessageQueueException:
-     *    ClientNotFound - One or more of the clients do not exist. The other
-     *                     clients will contain the message in the queue.
-     *    ClientQuotaLimit - One or more of the clients has a quota-limit. Other
-     *                      clients will contain the message in the queue.
+     * Throws cMessageQueueException: ClientNotFound - One or more of the
+     * clients do not exist. The other clients will contain the message in the
+     * queue. ClientQuotaLimit - One or more of the clients has a quota-limit.
+     * Other clients will contain the message in the queue.
+     *
+     * @param message The message to be stored.
+     * @param clientsID The identifiers of the clients which receive the
+     *    message.
      */
     void storeMessage(const cList<cClientID>& clientsID,
                       cBufferPtr message);
 
-    /*
-     * Polls a message for a client.
+    /**
+     * @brief Polls a message for a client.
      *
-     * clientID - The client ID
+     * @details Throws cMessageQueueException: ClientNotFound - The client
+     *    cannot be found, or its queue is empty.
      *
-     * Return a stream reference count for the message.
-     *
-     * Throws cMessageQueueException:
-     *    ClientNotFound - The client cannot be found, or its queue is empty.
+     * @param clientID The client ID
+     * @return A stream reference count for the message.
      */
     cBufferPtr pollMessage(const cClientID& clientID);
 
-    /*
-     * Poll a message for a group.
+    /**
+     * @brief Poll a message for a group.
      *
-     * groupID - The group ID
-     * clientID - Will be filled with the polled client identification
-     *
-     * Return a stream reference count for the message.
+     * @param groupID The group ID
+     * @param clientID Will be filled with the polled client identification
+     * @return A stream reference count for the message.
      */
     cBufferPtr pollMessage(const cGroupID& groupID,
                            cClientID* clientID);
@@ -130,20 +138,32 @@ private:
 };
 
 
-/*
- * MessageQueue for which the group is irrelevant, use the cNullGroup as the
- * second argument for the cMessageQueue template argument.
- * The cNullGroup doesn't contain any clients.
+/**
+ * @brief MessageQueue for which the group is irrelevant, use the cNullGroup as
+ *    the
+ *   second argument for the cMessageQueue template argument.
+ *
+ * @details The cNullGroup doesn't contain any clients.
+ *
+ * @tparam cClientID The type of the client identifier.
  */
 template <cClientID>
 class cNullGroup
 {
 public:
+    /**
+     * @brief Check whether a client belongs to the group.
+     *
+     * @param other The client identifier.
+     * @return Always false. The group contains no clients.
+     */
     bool isMine(const cClientID& other)
     {
         return false;
     }
 };
 
+
+/** @} */
 #endif // __TBA_XSTL_DATA_MESSAGEQUEUE_H
 

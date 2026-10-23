@@ -127,6 +127,25 @@ In order to cross-compile (ARM, for example):
 ```
 Please note that the cross-compiler `bin` folder must be in your PATH (e.g. `arm-none-linux-gnueabi-g++`).
 
+API Documentation
+=================
+The API reference is generated with [Doxygen](https://www.doxygen.nl/) from the
+comments in `Include/xStl`. Install Doxygen (the documentation was generated and
+checked with version 1.18.0), then run:
+
+```
+# Windows (PowerShell): winget install DimitriVanHeesch.Doxygen
+powershell -File docs\build-docs.ps1
+
+# Linux / macOS (GNU make)
+make -f docs/Makefile docs-all
+```
+
+The HTML pages are written to `docs/build/html` (open `index.html`) and the XML
+to `docs/build/xml` (for Sphinx/Breathe and similar tools). Other targets:
+`docs-html`, `docs-xml`, `docs-api` (HTML and XML), `docs-pdf` (PDF manual, needs a\nLaTeX installation: `pdflatex`, `makeindex`, `epstopdf`), `docs-check` (fails on any
+Doxygen warning) and `docs-clean`. See `docs/README.md` for the details.
+
 License
 =======
 Please see the LICENSE file

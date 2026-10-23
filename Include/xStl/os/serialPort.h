@@ -32,58 +32,65 @@
 #ifndef __TBA_XSTL_OS_SERIALPORT_H
 #define __TBA_XSTL_OS_SERIALPORT_H
 
-/*
- * serialPort.h
+/**
+ * @addtogroup xstl_os
+ * @{
+ */
+
+/**
+ * @file serialPort.h
  *
- * Author: Elad Raz <e@eladraz.com>
+ * @author Elad Raz
  */
 #include "xStl/types.h"
 
-/*
- * class cSerialPort
+/**
+ * @brief Definitions of the serial port communication parameters.
  */
 class cSerialPort {
 public:
-    /*
-     * Baud rates at which the communication device operates
+    /**
+     * @brief Baud rates at which the communication device operates
      */
     enum BaudRate {
-        BaudRate_110    = 110,
-        BaudRate_300    = 300,
-        BaudRate_600    = 600,
-        BaudRate_1200   = 1200,
-        BaudRate_2400   = 2400,
-        BaudRate_4800   = 4800,
-        BaudRate_9600   = 9600,
-        BaudRate_14400  = 14400,
-        BaudRate_19200  = 19200,
-        BaudRate_38400  = 38400,
-        BaudRate_56000  = 56000,
-        BaudRate_57600  = 57600,
-        BaudRate_115200 = 115200,
-        BaudRate_128000 = 128000,
-        BaudRate_256000 = 256000
+        BaudRate_110    = 110,      ///< 110 baud.
+        BaudRate_300    = 300,      ///< 300 baud.
+        BaudRate_600    = 600,      ///< 600 baud.
+        BaudRate_1200   = 1200,     ///< 1200 baud.
+        BaudRate_2400   = 2400,     ///< 2400 baud.
+        BaudRate_4800   = 4800,     ///< 4800 baud.
+        BaudRate_9600   = 9600,     ///< 9600 baud.
+        BaudRate_14400  = 14400,    ///< 14400 baud.
+        BaudRate_19200  = 19200,    ///< 19200 baud.
+        BaudRate_38400  = 38400,    ///< 38400 baud.
+        BaudRate_56000  = 56000,    ///< 56000 baud.
+        BaudRate_57600  = 57600,    ///< 57600 baud.
+        BaudRate_115200 = 115200,   ///< 115200 baud.
+        BaudRate_128000 = 128000,   ///< 128000 baud.
+        BaudRate_256000 = 256000    ///< 256000 baud.
     };
 
-    /*
-     * The different methods for the parity bit
+    /**
+     * @brief The different methods for the parity bit
      */
     enum ParityBit {
-        NoParity    = 0,
-        OddParity   = 1,
-        EvenParity  = 2,
-        MarkParity  = 3,
-        SpaceParity = 4
+        NoParity    = 0,    ///< No parity bit.
+        OddParity   = 1,    ///< Odd parity.
+        EvenParity  = 2,    ///< Even parity.
+        MarkParity  = 3,    ///< The parity bit is always 1 (mark).
+        SpaceParity = 4     ///< The parity bit is always 0 (space).
     };
 
-    /*
-     * The different methods for the stop bit
+    /**
+     * @brief The different methods for the stop bit
      */
     enum StopBit {
-        SingleStopBit     = 0,
-        OneAndHalfStopBit = 1,
-        TwoStopBits       = 2,
+        SingleStopBit     = 0,  ///< One stop bit.
+        OneAndHalfStopBit = 1,  ///< One and a half stop bits.
+        TwoStopBits       = 2,  ///< Two stop bits.
     };
 };
 
+
+/** @} */
 #endif // __TBA_TODO_SerialPort_H

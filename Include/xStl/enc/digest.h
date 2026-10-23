@@ -32,81 +32,95 @@
 #ifndef __TBA_STL_ENCRYPTION_DIGEST_H
 #define __TBA_STL_ENCRYPTION_DIGEST_H
 
+/**
+ * @addtogroup xstl_enc_digest
+ * @{
+ */
 
-/*
- * digest.h
+
+/**
+ * @file digest.h
+ * @brief Declare the abstract class cDigest used for one-way hash functions -
+ *   digital signature of the information.
  *
- * Declare the abstract class cDigest used for one-way hash functions -
- * digital signature of the information.
- *
- * Author: Elad Raz <e@eladraz.com>
+ * @author Elad Raz
  */
 
 #include "xStl/types.h"
 #include "xStl/data/array.h"
 #include "xStl/data/smartptr.h"
 
-/*
- * class cDigest
+/**
+ * @brief Hash a number of bytes.
  *
- * Hash a number of bytes. To use the class you should create the class or call
- * 'reset()'. Update the hash using one or more calls to the 'update()' function
- * giving the hash bytes. At any period of time a call to 'digest()' returns the
- * signature for the hash.
+ * @details To use the class you should create the class or call 'reset()'.
+ *    Update the hash using one or more calls to the 'update()' function giving
+ *    the hash bytes. At any period of time a call to 'digest()' returns the
+ *    signature for the hash.
  */
 class cDigest
 {
 public:
-    /*
-     * Virtual destructor
+    /**
+     * @brief Virtual destructor
      */
     virtual ~cDigest();
 
-    /*
-     * Reset the hash settings as if this class was just constructed.
+    /**
+     * @brief Reset the hash settings as if this class was just constructed.
      */
     virtual void reset() = 0;
 
-    /*
-     * Update the hash using a 'buffer' and its length.
+    /**
+     * @brief Update the hash using a 'buffer' and its length.
      *
-     * buffer - The bytes to be digested.
-     * length - The length of the buffer.
+     * @param buffer The bytes to be digested.
+     * @param length The length of the buffer.
      */
     virtual void update(const void* buffer, const uint32 length) = 0;
 
-    /*
-     * Return the current digest of the hash computed from all previous calls to
-     * 'update' since the last 'reset()'/construction call.
+    /**
+     * @brief Return the current digest of the hash computed from all previous
+     *    calls to
+     *   'update' since the last 'reset()'/construction call.
      *
-     * Return CONST amount of bytes.
+     * @return The current digest of the hash computed from all previous calls
+     *    to 'update' since the last 'reset()'/construction call.
      */
     virtual cBuffer digest() = 0;
 
-    /*
-     * Clone the hash object.
+    /**
+     * @brief Clone the hash object.
      *
-     * Return a newly constructed object equal to this object.
+     * @return A newly constructed object equal to this object.
      */
     virtual cSmartPtr<cDigest> clone() = 0;
 
-    /*
-     * Return the number of bytes used for the digest.
+    /**
+     * @brief Return the number of bytes used for the digest.
+     *
+     * @return The number of bytes used for the digest.
      */
     virtual uint getDigestLength() = 0;
 
-    /*
-     * Update the hash using a stream. The implementation of this function is
-     * to call the virtual 'update(uint8*, uint32)' function.
+    /**
+     * @brief Update the hash using a stream.
      *
-     * data - The data to be digested in cBuffer format.
+     * @details The implementation of this function is to call the virtual
+     *    'update(uint8*, uint32)' function.
+     *
+     * @param data The data to be digested in cBuffer format.
      */
     virtual void updateStream(const cBuffer& data);
 };
 
-// The digest pointer object
+/**
+ * @brief The digest pointer object
+ */
 typedef cSmartPtr<cDigest> cDigestPtr;
 
 
+
+/** @} */
 #endif // __TBA_STL_ENCRYPTION_DIGEST_H
 

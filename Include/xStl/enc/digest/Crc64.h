@@ -32,13 +32,18 @@
 #ifndef __STL_ENCRYPTION_DIGEST_CRC64_H
 #define __STL_ENCRYPTION_DIGEST_CRC64_H
 
+/**
+ * @addtogroup xstl_enc_digest
+ * @{
+ */
+
 #include "xStl/types.h"
 #include "xStl/enc/digest.h"
 
 /**
- * 64 bit CRC implementation
+ * @brief The 64 bit CRC digest.
  *
- * Based on "liblzma" implementation (dynamic table building)
+ * @details Based on "liblzma" implementation (dynamic table building)
  *
  * Author: Lasse Collin
  * Author: Elad Raz <e@eladraz.com>
@@ -48,19 +53,37 @@ public:
     /// Initializes the CRC calculator.
     CRC64();
 
-    // See cDigest::reset
+    /**
+     * @see cDigest::reset
+     */
     virtual void reset();
-    // See cDigest::update
+    /**
+     * @see cDigest::update
+     * @param buffer The data to process.
+     * @param length The number of bytes in @a buffer.
+     */
     virtual void update(const void* buffer, const uint32 length);
-    // See cDigest::digest
+    /**
+     * @see cDigest::digest
+     * @return The 8 bytes CRC value.
+     */
     virtual cBuffer digest();
-    // See cDigest::getDigestLength - Return 8
+    /**
+     * @brief See cDigest::getDigestLength - Return 8
+     *
+     * @return The length of the digest in bytes (8).
+     */
     virtual uint getDigestLength();
-    // See cDigest::clone
+    /**
+     * @see cDigest::clone
+     * @return A new digest object in the same state as this object.
+     */
     virtual cSmartPtr<cDigest> clone();
 
     /**
-     * Returns the CRC value for the processed stream.
+     * @brief Return the CRC value for the processed stream.
+     *
+     * @return The 64 bit CRC value.
      */
     uint64 getValue();
 
@@ -68,24 +91,32 @@ private:
     enum { CRC64_NUMBER_OF_TABLES = 4,
            CRC64_PERMUTATION_TABLE_LEN = 256 };
 
-    // Singleton object for CRC 64 tables
+    /**
+     * @brief Singleton object for CRC 64 tables
+     */
     class CRC64Tables {
     public:
-        /*
-         * Singleton get object. Initiate CRC on first call
+        /**
+         * @brief Singleton get object. Initiate CRC on first call
          */
         static CRC64Tables& getInstance();
 
-        /*
-         * Return the precalculated tables
+        /**
+         * @brief Return the precalculated tables
+         *
+         * @return The precalculated tables.
          */
         const uint64** getTables();
 
     private:
-        // Constructor and destructor. Allocate/free memory
+        /**
+         * @brief Constructor and destructor. Allocate/free memory
+         */
         CRC64Tables();
         ~CRC64Tables();
-        // 4k table (of CRC64_PERMUTATION_TABLE_LEN)
+        /**
+         * @brief 4k table (of CRC64_PERMUTATION_TABLE_LEN)
+         */
         uint64* m_tables[CRC64_NUMBER_OF_TABLES];
     };
 
@@ -94,4 +125,6 @@ private:
 };
 
 
+
+/** @} */
 #endif // __STL_ENCRYPTION_DIGEST_CRC16_H

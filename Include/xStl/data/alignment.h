@@ -32,58 +32,102 @@
 #ifndef __TBA_STL_ALIGNMENT_H
 #define __TBA_STL_ALIGNMENT_H
 
-/*
- * alignment.h
+/**
+ * @addtogroup xstl_data_containers
+ * @{
+ */
+
+/**
+ * @file alignment.h
+ * @brief Contains functions which align data structures to memory-size
+ *    boundaries
  *
- * Contains functions which align data structures to memory-size boundaries
- *
- * Author: Elad Raz <e@eladraz.com>
+ * @author Elad Raz
  */
 #include "xStl/types.h"
 
-/*
- * Usage:
+/**
+ * @brief Static helpers that align numbers to power-of-two boundaries and read
+ *    words from unaligned addresses.
  *
- *    alignUpToDword(0xFF0) -> 0xFF0
- *    alignUpToDword(0xFF1) -> 0xFF4
- *    alignUpToDword(0xFF2) -> 0xFF4
- *    alignUpToDword(0xFF3) -> 0xFF4
+ * Usage of the alignment macros:
+ * @code
+ * alignUpToDword(0xFF0) -> 0xFF0
+ * alignUpToDword(0xFF1) -> 0xFF4
+ * alignUpToDword(0xFF2) -> 0xFF4
+ * alignUpToDword(0xFF3) -> 0xFF4
+ * @endcode
  */
 class Alignment {
 public:
-    /*
-     * Align to 4-byte boundaries
+    /**
+     * @brief Align a number up to a 4-byte (dword) boundary.
+     *
+     * @param number The number to align.
      */
     #define alignUpToDword(number) alignUp((number), 3)
+    /**
+     * @brief Align a number down to a 4-byte (dword) boundary.
+     *
+     * @param number The number to align.
+     */
     #define alignDownToDword(number) alignDown((number), 3)
 
-    /*
-     * Align to 8-byte boundaries
+    /**
+     * @brief Align a number up to an 8-byte (qword) boundary.
+     *
+     * @param number The number to align.
      */
     #define alignUpToQword(number) alignUp((number), 7)
+    /**
+     * @brief Align a number down to an 8-byte (qword) boundary.
+     *
+     * @param number The number to align.
+     */
     #define alignDownToQword(number) alignDown((number), 7)
 
-    /*
-     * Align a number up to 'base2NumberMinus1'
+    /**
+     * @brief Align a number up to 'base2NumberMinus1'
+     *
+     * @param number The number to align.
+     * @param base2NumberMinus1 The alignment boundary minus one, which must be
+     *    a power of two minus one (3 for 4-byte alignment, 7 for 8-byte
+     *    alignment).
+     * @return The smallest multiple of the boundary that is not below @a
+     *    number.
      */
     static addressNumericValue alignUp(addressNumericValue number,
                                        addressNumericValue base2NumberMinus1);
 
-    /*
-     * Align a number down to 'base2NumberMinus1'
+    /**
+     * @brief Align a number down to 'base2NumberMinus1'
+     *
+     * @param number The number to align.
+     * @param base2NumberMinus1 The alignment boundary minus one, which must be
+     *    a power of two minus one (3 for 4-byte alignment, 7 for 8-byte
+     *    alignment).
+     * @return The largest multiple of the boundary that is not above @a number.
      */
     static addressNumericValue alignDown(addressNumericValue number,
                                          addressNumericValue base2NumberMinus1);
 
-    /*
-     * Read a 16 bit word by a 32bit bus transaction
+    /**
+     * @brief Read a 16 bit word by a 32 bit bus transaction.
      *
-     * ptr     - The pointer to read from
-     * busSize - The bus size in bytes.
-     *           Right now this value is fixed to the current machine size.
+     * The aligned 32 bit value that contains the word is read in one
+     * transaction and the requested word is extracted from it, so @a ptr does
+     * not have to be aligned. The bus size is currently fixed to 4 bytes (the
+     * size of the machine word).
      *
+     * @param ptr The pointer to read from.
+     * @return The 16 bit word at @a ptr.
+     * @note A word that starts at the last byte of the 32 bit value is not read
+     *    completely, because only that one byte is inside the value that is
+     *    read.
      */
     static uint16 readAlignedWord(const uint16* ptr /*, uint busSize = 4*/);
 };
 
+
+/** @} */
 #endif // __TBA_STL_ALIGNMENT_H

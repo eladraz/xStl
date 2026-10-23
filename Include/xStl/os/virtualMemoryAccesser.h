@@ -32,110 +32,129 @@
 #ifndef __TBA_STL_OS_VIRTUALMEMORYACCESSER_H
 #define __TBA_STL_OS_VIRTUALMEMORYACCESSER_H
 
-/*
- * virtualMemoryAccesser.h
+/**
+ * @addtogroup xstl_os
+ * @{
+ */
+
+/**
+ * @file virtualMemoryAccesser.h
+ * @brief Analyzer classes need to access the complete virtual memory mapping of
+ *    an
+ *   object.
  *
- * Analyzer classes need to access the complete virtual memory mapping of an
- * object. The problem is that most of the times the virtual format sits inside
- * a page-file or a file or other process memory. This interface allows accessing
- * virtual memory without knowing any information.
+ * @details The problem is that most of the times the virtual format sits inside
+ *    a page-file or a file or other process memory. This interface allows
+ *    accessing virtual memory without knowing any information.
  *
- * Author: Elad Raz <e@eladraz.com>
+ * @author Elad Raz
  */
 #include "xStl/types.h"
 #include "xStl/data/endian.h"
 #include "xStl/data/smartptr.h"
 #include "xStl/os/fragmentsDescriptor.h"
 
-/*
- * Interface for accessing virtual memory-map. The interface allows accessing the
- * bus with default bit size operations. The interface is used by the stack
- * analyzer, so only default stack bit size (=uint) operations are allowed.
+/**
+ * @brief Interface for accessing virtual memory-map.
+ *
+ * @details The interface allows accessing the bus with default bit size
+ *    operations. The interface is used by the stack analyzer, so only default
+ *    stack bit size (=uint) operations are allowed.
  */
 class cVirtualMemoryAccesser : public cEndian {
 public:
     // Memory accessor
 
-    /*
-     * Read a block of memory. The memory can be fragmented.
-     * NOTE: This function is a synchronized operation.
+    /**
+     * @brief Read a block of memory.
      *
-     * address   - The virtual address to be read
-     * buffer    - Will be filled with the reading memory.
-     * length    - The length for the read operation.
-     * fragments - If the memory is fragmented, will be filled with the
-     *             description of the fragment blocks.
-     *             If this argument is NULL than the fragmentation information
-     *             will not be generated.
-     *
-     * Return true if the entire memory was read. False if one or more bytes
-     * in the memory are missing and it is fragmented. In this case the
-     * 'fragments' argument will be filled with which parts of the data are
-     * valid and which parts aren't.
+     * @details The memory can be fragmented.
      *
      * The function shouldn't throw any exception. However, an implementation of
      * this interface may throw an exception. See cThreadUnsafeMemoryAccesser.
+     *
+     * @param address The virtual address to be read
+     * @param buffer Will be filled with the reading memory.
+     * @param length The length for the read operation.
+     * @param fragments If the memory is fragmented, will be filled with the
+     *    description of the fragment blocks. If this argument is NULL than the
+     *    fragmentation information will not be generated.
+     * @return True if the entire memory was read. False if one or more bytes in
+     *    the memory are missing and it is fragmented. In this case the
+     *    'fragments' argument will be filled with which parts of the data are
+     *    valid and which parts aren't.
+     * @note This function is a synchronized operation.
      */
     virtual bool memread(addressNumericValue address,
                          void* buffer,
                          uint length,
                          cFragmentsDescriptor* fragments = NULL) const = 0;
 
-    /*
-     * Performs a write to the virtual memory. This memory
+    /**
+     * @brief Performs a write to the virtual memory.
      *
-     * address   - The virtual address to be written to
-     * buffer    - The data to write
-     * length    - The length in bytes of 'buffer'
+     * @details This memory
      *
-     * Throw an exception if the interface is a read-only interface.
-     * Return true if the memory was written completely.
-     * Return false if one or more bytes within the memory-range couldn't be
-     * written.
+     * @param address The virtual address to be written to
+     * @param buffer The data to write
+     * @param length The length in bytes of 'buffer'
+     * @return True if the memory was written completely.
+     * @throws cException if the interface is a read-only interface.
      */
     virtual bool write(addressNumericValue address,
                        const void* buffer,
                        uint length) = 0;
 
-    /*
-     * Return true if the interface supports the writable functions.
+    /**
+     * @brief Return true if the interface supports the writable functions.
+     *
+     * @return True if the interface supports the writable functions.
      */
     virtual bool isWritableInterface() const = 0;
 
     // Numeric accessor. Implemented by a call to 'memread' and 'write'
 
-    /*
-     * Deserialize uint (Stack sized variable) from virtual memory map.
+    /**
+     * @brief Deserialize uint (Stack sized variable) from virtual memory map.
      *
-     * address - The location inside the virtual process memory.
+     * @details This function cannot fail. If the memory doesn't exist, this
+     *   function throws an exception.
      *
-     * This function cannot fail. If the memory doesn't exist, this
-     * function throws an exception.
+     * @param address The location inside the virtual process memory.
+     * @return The value read from the memory.
      */
     uint readUint(addressNumericValue address) const;
 
-    /*
-     * Serialize a uint to the virtual memory map.
+    /**
+     * @brief Serialize a uint to the virtual memory map.
      *
-     * address - The location inside the virtual process memory.
-     * value - The data to be written to.
-     *
-     * Some platforms don't support the writable interface. In this case,
-     * the function may throw a FAILED exception. See isWritableInterface()
+     * @details Some platforms don't support the writable interface. In this
+     *    case,
+     *   the function may throw a FAILED exception. See isWritableInterface()
      *
      * This function cannot fail. If the memory doesn't exist, this
      * function throws an exception.
+     *
+     * @param address The location inside the virtual process memory.
+     * @param value The data to be written to.
      */
     void writeUint(addressNumericValue address,
                    uint value);
 
-    /*
-     * Const byte-read implementation of operator [] over memory address
+    /**
+     * @brief Const byte-read implementation of operator [] over memory address
+     *
+     * @param address The address of the byte.
+     * @return The byte at @a address.
      */
     uint8 operator [] (addressNumericValue address) const;
 };
 
-// The reference-countable object over the memory-accesser.
+/**
+ * @brief The reference-countable object over the memory-accesser.
+ */
 typedef cSmartPtr<cVirtualMemoryAccesser> cVirtualMemoryAccesserPtr;
 
+
+/** @} */
 #endif // __TBA_STL_OS_VIRTUALMEMORYACCESSER_H

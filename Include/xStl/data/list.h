@@ -32,12 +32,16 @@
 #ifndef __TBA_STL_LIST_H
 #define __TBA_STL_LIST_H
 
-/*
- * list.h
+/**
+ * @addtogroup xstl_data_containers
+ * @{
+ */
+
+/**
+ * @file list.h
+ * @brief Contains declaration of link-list module.
  *
- * Contains declaration of link-list module.
- *
- * Author: Elad Raz <e@eladraz.com>
+ * @author Elad Raz
  */
 #include "xStl/types.h"
 #include "xStl/operators.h"
@@ -56,24 +60,37 @@
  * g++ and vc compiler changes
  */
 #ifdef XSTL_LINUX
+    /**
+     * @brief Qualifier prefix for the nested types of cList in out-of-class
+     *    definitions.
+     *
+     * Empty on Linux (g++), `cList<T>::` on the other platforms.
+     */
     #define cListT
 #else
+    /**
+     * @brief Qualifier prefix for the nested types of cList in out-of-class
+     *    definitions (`cList<T>::`).
+     */
     #define cListT cList<T>::
 #endif
 
-/*
- * template cList class
+/**
+ * @brief The declaration of the stl "list" class which includes implementation
+ *    of
+ *   the abstract layer of the list, and the implementation of the iterator
+ *   class.
  *
- * The declaration of the stl "list" class which includes implementation of the
- * abstract layer of the list, and the implementation of the iterator class.
- *
- * The link-list copies the element into internal data-struct.
+ * @details The link-list copies the element into internal data-struct.
  *
  * Requirements for T:
- *  T must have an equal == operator
- *  T should have copy constructor.
- *  T must NOT be a pointer because this class calls the destructor of T only,
- *    and doesn't assume that T is a pointer!
+ * T must have an equal == operator
+ * T should have copy constructor.
+ * T must NOT be a pointer because this class calls the destructor of T only,
+ * and doesn't assume that T is a pointer!
+ *
+ * @tparam T The type of the elements. It must implement operator == and should
+ *    have a copy constructor. It must not be a pointer type.
  */
 template <class T>
 class cList
@@ -82,15 +99,23 @@ public:
     // Forward declaration of the iterator class.
     class iterator;
 
-    /*
-     * This is an internal class which stores information about the link-list.
-     * The class stores pointers to allow a terminating entry in the link-list.
-     * The implementation is inside the include file since out-side compilation
-     * crashes the system
+    /**
+     * @brief This is an internal class which stores information about the
+     *    link-list.
+     *
+     * @details The class stores pointers to allow a terminating entry in the
+     *    link-list. The implementation is inside the include file since
+     *    out-side compilation crashes the system
      */
     class ListNode
     {
     public:
+        /**
+         * @brief Constructor. Copy the node content to a new entry.
+         *
+         * @param node The content of the entry. If it is NULL the entry holds
+         *    no content (terminating entry).
+         */
         ListNode(const T* node) :
           information(NULL)
         {
@@ -98,6 +123,9 @@ public:
                 information = new T(*node);
         }
 
+        /**
+         * @brief Destructor. Free the content of the entry.
+         */
         ~ListNode()
         {
             if (information != NULL)
@@ -105,47 +133,58 @@ public:
         }
 
         /* Saves the next and the previous pointers */
-        // The content of the entry
+        /**
+         * @brief The content of the entry
+         */
         T* information;
-        // The next element
+        /**
+         * @brief The next element
+         */
         ListNode* next;
-        // The previous element
+        /**
+         * @brief The previous element
+         */
         ListNode* prev;
     };
 
     /* Constructor and destructor of the list */
 
-    /*
-     * Constructor. Create empty link-list.
+    /**
+     * @brief Constructor. Create empty link-list.
      */
     cList();
 
-    /*
-     * Destructor, free all entries in the link-list.
+    /**
+     * @brief Destructor, free all entries in the link-list.
      */
     ~cList();
 
-    /*
-     * Copy constructor. Creates a clone of the link-list entries.
+    /**
+     * @brief Copy constructor. Creates a clone of the link-list entries.
+     *
+     * @param other The list to clone.
      */
     cList(const cList<T> &other);
 
-    /*
-     * Create a new link-list with one element 'object'
+    /**
+     * @brief Create a new link-list with one element 'object'
+     *
+     * @param object The only element of the new list.
      */
     cList(const T& object);
 
-    /*
-     * Free the link-list memory and create a new list which will be an exact
-     * copy of the original link.
+    /**
+     * @brief Free the link-list memory and create a new list which will be an
+     *    exact
+     *   copy of the original link.
      *
-     * assignPointer - In case the variable is true, the function makes the
-     *                 internal pointer reference to the pointers of 'other'.
-     *
-     * Note: if the "assignPointer" flag is on, WHICH IS
-     *       NOT RECOMMENDED, then a new link-list will be assigned
-     *       to the original data type, and there will be a big problem
-     *       of memory collision in MTA (Multiple Thread Apartment).
+     * @param assignPointer In case the variable is true, the function makes the
+     *    internal pointer reference to the pointers of 'other'.
+     * @note if the "assignPointer" flag is on, WHICH IS NOT RECOMMENDED, then a
+     *    new link-list will be assigned to the original data type, and there
+     *    will be a big problem of memory collision in MTA (Multiple Thread
+     *    Apartment).
+     * @param other The list to copy from.
      */
     void clone(const cList<T> &other, bool assignPointer = false);
 
@@ -153,72 +192,87 @@ public:
     // Operators of the list
     // You can also use the iterator to do these functions
 
-    /*
-     * Append an element to the link-list. The element is copied using copy-
-     * constructor.
+    /**
+     * @brief Append an element to the link-list.
      *
-     * node - The object to be added.
+     * @details The element is copied using copy- constructor.
+     *
+     * @param node The object to be added.
      */
     void append(const T& node);
 
-    /*
-     * Insert an element at the beginning of the link-list. The element is
-     * copied using the copy-constructor.
+    /**
+     * @brief Insert an element at the beginning of the link-list.
      *
-     * node - The object to be added.
+     * @details The element is copied using the copy-constructor.
+     *
+     * @param node The object to be added.
      */
     void insert(const T& node);
 
-    /*
-     * Free the link-list, create an empty list.
+    /**
+     * @brief Free the link-list, create an empty list.
      */
     void removeAll();
 
-    /*
-     * Determine whether the list has any items or not.
-     * Returns true if the list has no items, false if it has item(s).
+    /**
+     * @brief Determine whether the list has any items or not.
+     *
+     * @return True if the list has no items, false if it has item(s).
      */
     bool isEmpty() const;
 
-    /*
-     * Insert an element into the link-list before 'position'
+    /**
+     * @brief Insert an element into the link-list before 'position'
+     *
+     * @param position The element before which the new element is inserted.
+     * @param node The object to be added. It is copied using the
+     *    copy-constructor.
      */
     void insert(iterator &position, const T& node);
 
-    /*
-     * Remove a node from the list. After the call the iterator will become
-     * invalid. Don't use it.
+    /**
+     * @brief Remove a node from the list.
      *
-     * position - The iterator position.
+     * @details After the call the iterator will become invalid. Don't use it.
+     *
+     * @param position The iterator position.
+     * @return An iterator to the element which follows the removed one.
      */
     iterator remove(iterator &position);
 
-    /*
-     * Try to find an object and return true if it is there
+    /**
+     * @brief Try to find an object and return true if it is there
+     *
+     * @param object The object to look for.
+     * @return True if the object is in the list.
      */
     bool isIn(const T& object);
 
-    /*
-     * Try to find an object and remove it from the list
+    /**
+     * @brief Try to find an object and remove it from the list
+     *
+     * @param object The object to remove.
      */
     void remove(const T& object);
 
-    /*
-     * Return the length of the link-list.
+    /**
+     * @brief Return the length of the link-list.
+     *
+     * @return The length of the link-list.
      */
     uint length() const;
 
-    /*
-     * Construct a new iterator that will point to the start of the list.
+    /**
+     * @brief Construct a new iterator that will point to the start of the list.
      *
-     * Note: if the iterator is at the end of the list any attempts to access
-     *       it will cause an exception.
-     *
-     * NOTE: Although the function is declared as const, the iterator can be used
-     *       for non-const operations.
-     *
-     * NOTE: Microsoft Visual Studio .NET version 7.10 cannot compile the
-     *       code of the function if it's found outside the class declaration.
+     * @note if the iterator is at the end of the list any attempts to access it
+     *    will cause an exception.
+     * @note Although the function is declared as const, the iterator can be
+     *    used for non-const operations.
+     * @note Microsoft Visual Studio .NET version 7.10 cannot compile the code
+     *    of the function if it's found outside the class declaration.
+     * @return An iterator to the first element of the list.
      */
     iterator begin() const
     {
@@ -229,15 +283,16 @@ public:
         #endif
     }
 
-    /*
-     * Construct a new iterator that will point to the end of the list.
-     * Any attempts to access it will cause an exception.
+    /**
+     * @brief Construct a new iterator that will point to the end of the list.
      *
-     * NOTE: Although the function is declared as const, the iterator can be used
-     *       for non-const operations.
+     * @details Any attempts to access it will cause an exception.
      *
-     * NOTE: Microsoft Visual Studio .NET version 7.10 cannot compile the
-     *       code of the function if it's found outside the class declaration.
+     * @note Although the function is declared as const, the iterator can be
+     *    used for non-const operations.
+     * @note Microsoft Visual Studio .NET version 7.10 cannot compile the code
+     *    of the function if it's found outside the class declaration.
+     * @return An iterator which points after the last element of the list.
      */
     iterator end() const
     {
@@ -250,20 +305,30 @@ public:
 
     // Operators
 
-    /*
-     * Return true if the two link-list are equal, all internal elements
-     * compare with operator == are TRUE.
-     * TODO: compare is not ready yet.
+    /**
+     * @brief Return true if the two link-list are equal, all internal elements
+     *    compare
+     *   with operator == are TRUE.
+     *
+     * @todo compare is not ready yet.
+     * @param other The list to compare with.
+     * @return True if both lists are equal.
      */
     bool operator == (const cList<T> &other);
 
-    /*
-     * Return the opposite of operator ==.
+    /**
+     * @brief Return the opposite of operator ==.
+     *
+     * @param other The list to compare with.
+     * @return True if the lists are not equal.
      */
     bool operator != (const cList<T> &other);
 
-    /*
-     * Copy operator.
+    /**
+     * @brief Copy operator.
+     *
+     * @param other The list to copy from.
+     * @return A reference to this list.
      */
     cList<T> & operator = (const cList<T> &other);
 
@@ -271,12 +336,16 @@ public:
     // cList<T> operator , (const cList<T> &other, const T& object);
 
     // Dumping operator
-    /*
-     * Print the list data to an output stream.
-     * Usually it will be to the standard output.
+    /**
+     * @brief Print the list data to an output stream.
+     *
+     * @details Usually it will be to the standard output.
      *
      * Using:
-     *    cout << "My list is: " << cList<T>(1, 2, 3) << endl;
+     *
+     * @code
+     * cout << "My list is: " << cList<T>(1, 2, 3) << endl;
+     * @endcode
      */
     template <class S, class OSTREAM>
     friend OSTREAM & operator << (OSTREAM &out, cList<S> &object);
@@ -289,49 +358,48 @@ public:
      * iterator.
      */
     friend class iterator;
+    /**
+     * @brief A bidirectional iterator over the elements of a cList.
+     */
     class iterator
     {
     friend class cList<T>;
     public:
-        /*
-         * cList::iterator::iterator
+        /**
+         * @brief Constructor. Used only in the cList class.
          *
-         * Constructor. Used only in the cList class.
+         * @param position The list entry the iterator points to.
          */
         iterator(ListNode *position)
         {
             m_position = position;
             assertIndex();
         }
-        /*
-         * cList::iterator::iterator
+        /**
+         * @brief Copy Constructor.
          *
-         * Copy Constructor.
+         * @param other The iterator to copy.
          */
         iterator(const iterator& other)
         {
             m_position = other.m_position;
         }
-        /*
-         * cList::iterator::~iterator, Destructor
+        /**
+         * @brief cList::iterator::~iterator, Destructor
          */
         ~iterator()
         {
         }
-        /*
-         * cList::iterator::next
-         *
-         * Going to the next element in the list.
+        /**
+         * @brief Going to the next element in the list.
          */
         void next()
         {
             m_position = m_position->next;
             assertIndex();
         }
-        /*
-         * cList::iterator::prev
-         *
-         * Going to the previous element in the list.
+        /**
+         * @brief Going to the previous element in the list.
          */
         void prev()
         {
@@ -339,8 +407,11 @@ public:
             assertIndex();
         }
 
-        /*
-         * Return whether two iterators point to the same location.
+        /**
+         * @brief Return whether two iterators point to the same location.
+         *
+         * @param other The iterator to compare with.
+         * @return True if both iterators point to the same entry.
          */
         bool operator == (const iterator &other) const
         {
@@ -351,8 +422,11 @@ public:
             return false;
         }
 
-        /*
-         * Copy iterator.
+        /**
+         * @brief Copy iterator.
+         *
+         * @param other The iterator to copy from.
+         * @return A reference to this iterator.
          */
         iterator& operator =  (const iterator &other)
         {
@@ -363,8 +437,15 @@ public:
             return *this;
         }
 
-        /*
-         * Is the iterator less than the other.
+        /**
+         * @brief Check whether another iterator is reachable from this iterator
+         *    by moving forward.
+         *
+         * The list is scanned from the position of this iterator to its end.
+         *
+         * @param other The iterator to look for.
+         * @return True if the position of @a other is the position of this
+         *    iterator or follows it.
          */
         bool operator < (const iterator &other) const
         {
@@ -384,20 +465,20 @@ public:
             return false;
         }
 
-        /*
-         * operator *
+        /**
+         * @brief operator *
          *
-         * Return a reference to the data.
+         * @return A reference to the data.
          */
         T& operator *()
         {
             return *(m_position->information);
         }
 
-        /*
-         * const operator *
+        /**
+         * @brief const operator *
          *
-         * Return a reference to the data.
+         * @return A reference to the data.
          */
         const T& operator *() const
         {
@@ -417,18 +498,21 @@ public:
         }
          */
 
-        /*
-         * Implement operator >, !=, >=, <=
+        /**
+         * @brief Implement operator \>, !=, \>=, \<=
          */
         MAKE_SIMPLE_OPERATORS(iterator);
 
-        /*
-         * Implement the two operators ++ and the two operators --.
+        /**
+         * @brief Implement the two operators ++ and the two operators --.
          */
         MAKE_INCREASE_OPERATORS(iterator);
 
-        /*
-         * Increase the iterator by a number of elements.
+        /**
+         * @brief Increase the iterator by a number of elements.
+         *
+         * @param count The number of elements to advance.
+         * @return The advanced iterator.
          */
         iterator operator+ (const uint count)
         {
@@ -441,8 +525,11 @@ public:
             return iterator(tmp);
         }
 
-        /*
-         * Decrease the iterator by a number of elements.
+        /**
+         * @brief Decrease the iterator by a number of elements.
+         *
+         * @param count The number of elements to move back.
+         * @return The iterator which was moved back.
          */
         iterator operator- (const uint count)
         {
@@ -455,16 +542,18 @@ public:
             return iterator(tmp);
         }
     private:
-        /*
-         * assertIndex()
+        /**
+         * @brief assertIndex()
          *
-         * Throw an exception if the index is invalid.
+         * @throws cException if the index is invalid.
          */
         inline void assertIndex()
         {
             ASSERT(m_position != NULL);
         }
-        /* Inline data about the list position */
+        /**
+         * @brief Inline data about the list position
+         */
         ListNode *m_position;
     };
 
@@ -476,24 +565,29 @@ private:
      * recommended to use them for anything else.
      */
 
-    /*
-     * Clear the class memory.
-     * Destroy the link-list and free the memory.
+    /**
+     * @brief Clear the class memory.
+     *
+     * @details Destroy the link-list and free the memory.
      */
     void freeList();
 
-    /*
-     * Create an empty list
-     * Init an empty link-list, create the first pointers.
+    /**
+     * @brief Create an empty list Init an empty link-list, create the first
+     *    pointers.
      */
     void initList();
 
     // Members
 
-    // Pointer to the first element in the link-list
+    /**
+     * @brief Pointer to the first element in the link-list
+     */
     ListNode *m_first;
 
-    // Pointer to the last element in the link-list
+    /**
+     * @brief Pointer to the last element in the link-list
+     */
     ListNode *m_last;
 };
 
@@ -505,4 +599,6 @@ private:
     #pragma warning(pop)
 #endif
 
+
+/** @} */
 #endif // __TBA_STL_LIST_H

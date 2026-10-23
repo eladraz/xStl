@@ -32,12 +32,16 @@
 #ifndef __TBA_STL_ENCRYPTION_RANDOM_RC4_H
 #define __TBA_STL_ENCRYPTION_RANDOM_RC4_H
 
-/*
- * rc4rnd.h
+/**
+ * @addtogroup xstl_enc_random
+ * @{
+ */
+
+/**
+ * @file rc4rnd.h
+ * @brief The pseudo-random-generated class for RC4 mechanism.
  *
- * The pseudo-random-generated class for RC4 mechanism.
- *
- * Author: Elad Raz <e@eladraz.com>
+ * @author Elad Raz
  */
 #include "xStl/types.h"
 #include "xStl/data/array.h"
@@ -45,35 +49,43 @@
 #include "xStl/enc/enc/rc4.h"
 
 
-/*
- * class cRC4Random
- *
- * The pseudo-random-generated class for RC4 mechanism.
+/**
+ * @brief The pseudo-random-generated class for RC4 mechanism.
  */
 class cRC4Random : public cRandom
 {
 public:
-    /*
-     * Init the random mechanism according to 'seed'. The mechanism initializes
-     * the RC4 engine (which limits the seed to 256 bytes only...)
+    /**
+     * @brief Init the random mechanism according to 'seed'.
+     *
+     * @details The mechanism initializes the RC4 engine (which limits the seed
+     *    to 256 bytes only...)
+     *
+     * @param seed The seed of the random mechanism, limited to 256 bytes.
      */
     cRC4Random(const cBuffer& seed);
 
-    /*
-     * Generate 'length' bytes of random and put it in 'output'. The 'output'
-     * size is changed to 'length' and step over pure random. This function
-     * advances the internal random mechanism.
-     * The generated random
+    /**
+     * @brief Generate 'length' bytes of random and put it in 'output'.
      *
-     * length - The amount of random to be generate.
-     * output - Will be filled with the required pseudo-random generation code.
+     * @details The 'output' size is changed to 'length' and step over pure
+     *    random. This function advances the internal random mechanism. The
+     *    generated random
+     *
+     * @param length The amount of random to be generate.
+     * @param output Will be filled with the required pseudo-random generation
+     *    code.
      */
     virtual void generateRandom(uint length, cBuffer& output);
 
 private:
 
-    // The RC4 object to generate the random from.
+    /**
+     * @brief The RC4 object to generate the random from.
+     */
     cRC4 m_rc4;
 };
 
+
+/** @} */
 #endif // __TBA_STL_ENCRYPTION_RANDOM_RC4_H

@@ -32,69 +32,86 @@
 #ifndef __TBA_STL_ENCRYPTION_H
 #define __TBA_STL_ENCRYPTION_H
 
+/**
+ * @addtogroup xstl_enc_cipher
+ * @{
+ */
 
-/*
- * encryption.h
+
+/**
+ * @file encryption.h
+ * @brief Declare the abstract class cEncryption used for encryption.
  *
- * Declare the abstract class cEncryption used for encryption. The class
- * simplifies the encryption process by hiding the implementation and the
- * key specification.
+ * @details The class simplifies the encryption process by hiding the
+ *    implementation and the key specification.
  *
- * Author: Elad Raz <e@eladraz.com>
+ * @author Elad Raz
  */
 #include "xStl/types.h"
 #include "xStl/data/array.h"
 
 
-/*
- * class cEncryption
+/**
+ * @brief The encryption class. When first instantiated the class should be set
+ *    up
+ *   by providing a cBuffer key.
  *
- * The encryption class. When first instantiated the class should be set up by providing
- * a cBuffer key. The key is used to init the mechanism. The key can (and should) be
- * the result of cKeyGeneration which creates random keys and adds an auxiliary layer.
+ * @details The key is used to init the mechanism. The key can (and should) be
+ *    the result of cKeyGeneration which creates random keys and adds an
+ *    auxiliary layer.
  *
  * Used:
- *   // cEncryption enc;
- *   enc.loadKey(key);
- *   enc.encrypt(data);
- *   // data now contains the encrypted stream
+ *
+ * @code
+ * // cEncryption enc;
+ * enc.loadKey(key);
+ * enc.encrypt(data);
+ * // data now contains the encrypted stream
+ * @endcode
  */
 class cEncryption
 {
 public:
-    /*
-     * Virtual destructor
+    /**
+     * @brief Virtual destructor
      */
     virtual ~cEncryption();
 
-    /*
-     * Setup new key for the mechanism.
+    /**
+     * @brief Setup new key for the mechanism.
      *
-     * key - The new bytes for the key.
+     * @details Each implementation is entitled to use some/or all bytes in the
+     *    key.
      *
-     * Each implementation is entitled to use some/or all bytes in the key.
+     * @param key The new bytes for the key.
      */
     virtual void loadKey(const cBuffer& key) = 0;
 
-    /*
-     * Encrypt the data in the stream 'data'. The mechanism is advanced by the
-     * amount of bytes input to the function. In a block cipher the data should
-     * be aligned to the block boundaries. An assertion will be thrown otherwise.
+    /**
+     * @brief Encrypt the data in the stream 'data'.
      *
-     * data - The bytes to be encrypted.
+     * @details The mechanism is advanced by the amount of bytes input to the
+     *    function. In a block cipher the data should be aligned to the block
+     *    boundaries. An assertion will be thrown otherwise.
+     *
+     * @param data The bytes to be encrypted.
      */
     virtual void encrypt(cBuffer &data) = 0;
 
-    /*
-     * Decrypt the data in the stream 'data'. The mechanism is advanced by the
-     * amount of bytes input to the function. In a block cipher the data should
-     * be aligned to the block boundaries. An assertion will be thrown otherwise.
+    /**
+     * @brief Decrypt the data in the stream 'data'.
      *
-     * data - The bytes to be decrypted.
+     * @details The mechanism is advanced by the amount of bytes input to the
+     *    function. In a block cipher the data should be aligned to the block
+     *    boundaries. An assertion will be thrown otherwise.
+     *
+     * @param data The bytes to be decrypted.
      */
     virtual void decrypt(cBuffer &data) = 0;
 };
 
 
+
+/** @} */
 #endif // __TBA_STL_ENCRYPTION_H
 

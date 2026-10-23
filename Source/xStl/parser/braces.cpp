@@ -42,7 +42,8 @@
 
 Braces::BracesData Braces::m_braces[BRACES_COUNT];
 
-BracesException::BracesException(char * file, uint32 line, character found, character expected) :
+BracesException::BracesException(char * file, uint32 line,
+                                 character found, character expected) :
     cException(file, line, NULL, 0),
     m_found(found),
     m_expected(expected)

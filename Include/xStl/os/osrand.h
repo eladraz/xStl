@@ -32,12 +32,16 @@
 #ifndef __TBA_STL_OS_OSRAND_H
 #define __TBA_STL_OS_OSRAND_H
 
-/*
- * osrand.h
+/**
+ * @addtogroup xstl_os
+ * @{
+ */
+
+/**
+ * @file osrand.h
+ * @brief Declare operating-system-independent functions (random)
  *
- * Declare operating-system-independent functions (random)
- *
- * Author: Elad Raz <e@eladraz.com>
+ * @author Elad Raz
  */
 #include "xStl/types.h"
 #include "xStl/data/sarray.h"
@@ -48,13 +52,12 @@
 #include "xStl/os/xstlLockable.h"
 
 
-/*
- * class cOSRand
+/**
+ * @brief Random API
  *
- * Random API
- *
- * All of these functions are thread-safe and can be invoked from several threads
- * without worrying about data loss.
+ * @details All of these functions are thread-safe and can be invoked from
+ *    several threads
+ *   without worrying about data loss.
  */
 class cOSRand
 {
@@ -63,47 +66,65 @@ public:
     // Global random generator
     //
 
-    /*
-     * Reset the mechanism into a newly constructed random object. This function
-     * is called when the system is loaded into the default random object. See the
-     * file 'random.cpp' in the OS xStl directory.
+    /**
+     * @brief Reset the mechanism into a newly constructed random object.
      *
-     * newLoading - The new mechanism and the seeding object
+     * @details This function is called when the system is loaded into the
+     *    default random object. See the file 'random.cpp' in the OS xStl
+     *    directory.
+     *
+     * @param newLoading The new mechanism and the seeding object
      */
     static void srand(const cSmartPtr<cRandom>& newLoading);
 
-    /*
-     * Return the global random object used in this system. The returned object
-     * can be shared by a number of tasks in the system so it won't be a good
-     * recommendation to use it.
+    /**
+     * @brief Return the global random object used in this system.
      *
-     * TODO: Move to private: code?
+     * @details The returned object can be shared by a number of tasks in the
+     *    system so it won't be a good recommendation to use it.
+     *
+     * @return The global random object used in this system.
+     * @todo Move to private: code?
      */
     static cSmartPtr<cRandom> getRandom();
 
-    /*
-     * Return a random number from the random-generation for the system.
-     * The function advances the global random mechanism by sizeof(uint)
-     * bytes.
+    /**
+     * @brief Return a random number from the random-generation for the system.
+     *
+     * @details The function advances the global random mechanism by
+     *    sizeof(uint) bytes.
      *
      * This function is thread-safe.
+     *
+     * @return A random number from the random-generation for the system.
      */
     static uint rand();
 
-    /*
-     * Generate a buffer of random information using the global-random object.
+    /**
+     * @brief Generate a buffer of random information using the global-random
+     *    object.
      *
-     * This function is thread-safe, but the 'output' object should not be touched
-     * from other threads.
+     * @details This function is thread-safe, but the 'output' object should not
+     *    be touched
+     *   from other threads.
+     *
+     * @param length The number of random bytes to generate.
+     * @param output The buffer which receives the random bytes.
      */
     static void generateRandom(uint length, cBuffer& output);
 
 private:
-    // When accessing the global random object it should be locked.
+    /**
+     * @brief When accessing the global random object it should be locked.
+     */
     static cXstlLockable g_globalRandomMutex;
-    // The global random object.
+    /**
+     * @brief The global random object.
+     */
     static cSmartPtr<cRandom> g_globalRandom;
 };
 
+
+/** @} */
 #endif // __TBA_STL_OS_OSRAND_H
 

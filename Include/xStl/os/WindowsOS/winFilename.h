@@ -35,87 +35,116 @@
 #ifndef __TBA_STL_OS_WINOS_WINFILENAME_H
 #define __TBA_STL_OS_WINOS_WINFILENAME_H
 
-/*
- * winFilename.h
+/**
+ * @addtogroup xstl_os_windows
+ * @{
+ */
+
+/**
+ * @file winFilename.h
+ * @brief A set of functions which parse the DOS filename structs.
  *
- * A set of functions which parse the DOS filename structs.
- *
- * Author: Elad Raz <e@eladraz.com>
+ * @author Elad Raz
  */
 #include "xStl/types.h"
 #include "xStl/os/directoryFormatParser.h"
 #include "xStl/os/filename.h"
 
-/*
- * A set of functions which parse the DOS filename structs.
- * A DOS format is built up from:
- *    <DRIVE-LETTER>:\<Directory>\<>
+/**
+ * @brief A set of functions which parse the DOS filename structs.
+ *
+ * @details A DOS format is built up from:
+ *    \<DRIVE-LETTER\>:\\\<Directory\>\\\<\>
  */
 class cDosDirectoryParser : public cDirectoryFormatParser {
 protected:
     friend class cFilename;
-    /*
-     * See cDirectoryFormatParser::isAbsolutePath
-     *
-     * Return true if the format of filename starts with 'X:\'
+    /**
+     * @param filename The filename to test.
+     * @return True if the format of filename starts with 'X:\\'.
+     * @see cDirectoryFormatParser::isAbsolutePath
      */
     virtual bool isAbsolutePath(const cString& filename);
 
-    /*
-     * See cDirectoryFormatParser::translateAbsolutePath
+    /**
+     * @brief Replace all the '.' and the '..' directories into their original
+     *    meaning
      *
-     * Replace all the '.' and the '..' directories into their original meaning
+     * @param absolutePath The absolute path to translate.
+     * @return The translated path.
+     * @see cDirectoryFormatParser::translateAbsolutePath
      */
     virtual cString translateAbsolutePath(const cString& absolutePath);
 
-    /*
-     * See cDirectoryFormatParser::generateParser
+    /**
+     * @return The object manager for filenames translation.
+     * @see cDirectoryFormatParser::generateParser
      */
     virtual cDirectoryFormatParser::FilenameParserPtr generateParser();
 
-    /*
-     * See cDirectoryFormatParser::FilenameParser
+    /**
+     * @brief The filenames translation object of the DOS filename format.
+     *
+     * @see cDirectoryFormatParser::FilenameParser
      */
     class cDosFilenameParser : public cDirectoryFormatParser::FilenameParser {
     public:
-        /*
-         * Default empty constructor
+        /**
+         * @brief Default empty constructor
          */
         cDosFilenameParser() {};
 
     protected:
         friend class cFilename;
 
-        /*
-         * Returns the parent object
+        /**
+         * @brief Returns the parent object
+         *
+         * @return The parent object.
          */
         virtual cDirectoryFormatParserPtr getParent() const;
 
-        /*
-         * Returns the database name from an absolute-path
+        /**
+         * @brief Returns the database name from an absolute-path
+         *
+         * @param absoluteTranslatedPath The absolute path, after translation.
+         * @return The database name from an absolute-path.
          */
         virtual cString getDatabaseName(const cString& absoluteTranslatedPath) const;
 
-        /*
-         * Return the directory of the file. The directory contains the base position
-         * of the file, including its database name.
+        /**
+         * @brief Return the directory of the file.
+         *
+         * @details The directory contains the base position of the file,
+         *    including its database name.
+         *
+         * @param absoluteTranslatedPath The absolute path, after translation.
+         * @return The directory of the file.
          */
         virtual cString getDirectoryName(const cString& absoluteTranslatedPath) const;
 
-        /*
-         * Returns only the portion of the filename.
-         * Returns empty string if the path is a directory
+        /**
+         * @brief Returns only the portion of the filename.
+         *
+         * @details Returns empty string if the path is a directory
+         *
+         * @param absoluteTranslatedPath The absolute path, after translation.
+         * @return Only the portion of the filename.
          */
         virtual cString getFilename(const cString& absoluteTranslatedPath) const;
 
     private:
-        /*
-         * Return the position of the last directory separator
+        /**
+         * @brief Return the position of the last directory separator
+         *
+         * @return The position of the last directory separator.
          */
         uint getLastDirectorySeparator(const cString& filename) const;
     };
 };
 
+
+/** @} */
 #endif // __TBA_STL_OS_WINOS_WINFILENAME_H
 
 #endif // WIN32

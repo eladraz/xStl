@@ -32,116 +32,171 @@
 #ifndef __TBA_STL_ENDIAN_H
 #define __TBA_STL_ENDIAN_H
 
-/*
- * endian.h
+/**
+ * @addtogroup xstl_data_serialization
+ * @{
+ */
+
+/**
+ * @file endian.h
+ * @brief Interface for endian machines.
  *
- * Interface for endian machines. Modules which want to work with streams
- * should provide this interface where users can select the needed
- * implementation for the endian (Big/little endian)
+ * @details Modules which want to work with streams should provide this
+ *    interface where users can select the needed implementation for the endian
+ *    (Big/little endian)
  *
- * Author: Elad Raz <e@eladraz.com>
+ * @author Elad Raz
  */
 #include "xStl/types.h"
 
 
-/*
- * class cEndian
+/**
+ * @brief The interface for endian.
  *
- * The interface for endian. Streaming uint16 and uint32 back and forth into
- * a buffer.
- * Classes which support different marshaling code (little-endian and big-endian)
- * can declare themselves as inheriting from the cEndian class. In the implementation
- * call the marshaling code through the interface.
- * You can see two kinds of examples of the implementation in the basicInput/basic
- * Output classes and in the encryption digital hash modules (SHA-1 and MD5)
+ * @details Streaming uint16 and uint32 back and forth into a buffer. Classes
+ *    which support different marshaling code (little-endian and big-endian) can
+ *    declare themselves as inheriting from the cEndian class. In the
+ *    implementation call the marshaling code through the interface. You can see
+ *    two kinds of examples of the implementation in the basicInput/basic Output
+ *    classes and in the encryption digital hash modules (SHA-1 and MD5)
  */
 class cEndian {
 public:
-    /* Virtual destructor */
+    /**
+     * @brief Virtual destructor
+     */
     virtual ~cEndian() {};
 
     #ifndef XSTL_16BIT
-    /*
-     * Deserialize uint64 from a stream.
-     * NOTE: 16 bit compilers cannot work with 64 bit numbers
+    /**
+     * @brief Deserialize uint64 from a stream.
      *
-     * buffer - Pointer to at least 8 bytes memory
+     * @param buffer Pointer to at least 8 bytes memory
+     * @note 16 bit compilers cannot work with 64 bit numbers
+     * @return The deserialized number.
      */
     virtual uint64 readUint64(const uint8* buffer) const = 0;
 
-    /*
-     * Serialize a 64 bit unsigned number into a buffer
-     * NOTE: 16 bit compilers cannot work with 64 bit numbers
+    /**
+     * @brief Serialize a 64 bit unsigned number into a buffer
      *
-     * buffer - Pointer to at least 4 bytes memory
-     * number - The number to serialize.
+     * @param buffer Pointer to at least 4 bytes memory
+     * @param number The number to serialize.
+     * @note 16 bit compilers cannot work with 64 bit numbers
      */
     virtual void writeUint64(uint8* buffer, uint64 number) const = 0;
     #endif // XSTL_16BIT
 
 
-    /*
-     * Deserialize uint32 from a stream
+    /**
+     * @brief Deserialize uint32 from a stream
      *
-     * buffer - Pointer to at least 4 bytes memory
+     * @param buffer Pointer to at least 4 bytes memory
+     * @return The deserialized number.
      */
     virtual uint32 readUint32(const uint8* buffer) const = 0;
 
-    /*
-     * Serialize a 32 bit unsigned number into a buffer
+    /**
+     * @brief Serialize a 32 bit unsigned number into a buffer
      *
-     * buffer - Pointer to at least 4 bytes memory
-     * number - The number to serialize.
+     * @param buffer Pointer to at least 4 bytes memory
+     * @param number The number to serialize.
      */
     virtual void writeUint32(uint8* buffer, uint32 number) const = 0;
 
-    /*
-     * Deserialize uint16 from a stream
+    /**
+     * @brief Deserialize uint16 from a stream
      *
-     * buffer - Pointer to at least 2 bytes memory
+     * @param buffer Pointer to at least 2 bytes memory
+     * @return The deserialized number.
      */
     virtual uint16 readUint16(const uint8* buffer) const = 0;
 
-    /*
-     * Serialize a 16 bit unsigned number into a buffer
+    /**
+     * @brief Serialize a 16 bit unsigned number into a buffer
      *
-     * buffer - Pointer to at least 2 bytes memory
-     * number - The number to serialize.
+     * @param buffer Pointer to at least 2 bytes memory
+     * @param number The number to serialize.
      */
     virtual void writeUint16(uint8* buffer, uint16 number) const = 0;
 
-    /*
-     * Return true if the system is little endian, false for big-endian.
-     * Little-endian means that the least significant word is first.
+    /**
+     * @brief Return true if the system is little endian, false for big-endian.
+     *
+     * @details Little-endian means that the least significant word is first.
+     *
+     * @return True if the system is little endian, false for big-endian.
      */
     virtual bool isLittleEndian() const = 0;
 
-    /*
-     * Read little or big endian value from the buffer
+    /**
+     * @brief Read a 16 bit number from the buffer in the requested byte order.
+     *
+     * @param buffer Pointer to at least 2 bytes memory.
+     * @param isLittleEndian True to read the number as little-endian, false for
+     *    big-endian.
+     * @return The deserialized number.
      */
     static uint16 readUint16(const uint8* buffer, bool isLittleEndian);
+    /**
+     * @brief Read a 32 bit number from the buffer in the requested byte order.
+     *
+     * @param buffer Pointer to at least 4 bytes memory.
+     * @param isLittleEndian True to read the number as little-endian, false for
+     *    big-endian.
+     * @return The deserialized number.
+     */
     static uint32 readUint32(const uint8* buffer, bool isLittleEndian);
 #ifndef XSTL_16BIT
+    /**
+     * @brief Read a 64 bit number from the buffer in the requested byte order.
+     *
+     * @param buffer Pointer to at least 8 bytes memory.
+     * @param isLittleEndian True to read the number as little-endian, false for
+     *    big-endian.
+     * @return The deserialized number.
+     */
     static uint64 readUint64(const uint8* buffer, bool isLittleEndian);
 #endif // XSTL_16BIT
 
-    /*
-     * Write little or big endian value to the buffer
+    /**
+     * @brief Write a 16 bit number to the buffer in the requested byte order.
+     *
+     * @param buffer Pointer to at least 2 bytes memory.
+     * @param number The number to serialize.
+     * @param isLittleEndian True to write the number as little-endian, false
+     *    for big-endian.
      */
     static void writeUint16(uint8* buffer, uint16 number, bool isLittleEndian);
+    /**
+     * @brief Write a 32 bit number to the buffer in the requested byte order.
+     *
+     * @param buffer Pointer to at least 4 bytes memory.
+     * @param number The number to serialize.
+     * @param isLittleEndian True to write the number as little-endian, false
+     *    for big-endian.
+     */
     static void writeUint32(uint8* buffer, uint32 number, bool isLittleEndian);
 #ifndef XSTL_16BIT
+    /**
+     * @brief Write a 64 bit number to the buffer in the requested byte order.
+     *
+     * @param buffer Pointer to at least 8 bytes memory.
+     * @param number The number to serialize.
+     * @param isLittleEndian True to write the number as little-endian, false
+     *    for big-endian.
+     */
     static void writeUint64(uint8* buffer, uint64 number, bool isLittleEndian);
 #endif // XSTL_16BIT
 
 };
 
 
-/*
- * Big-endian implementation.
+/**
+ * @brief Big-endian implementation.
  *
- * Most significant word first (Motorola)
- * 0x1234 will be stored as 12 34
+ * @details Most significant word first (Motorola)
+ *   0x1234 will be stored as 12 34
  */
 class cBigEndian
 {
@@ -151,15 +206,55 @@ public:
      * See cEndian for explanation about these functions.
      */
     #ifndef XSTL_16BIT
-    // See comment
+    /**
+     * @brief Deserialize a big-endian 64 bit number. See cEndian::readUint64.
+     *
+     * @param buffer Pointer to at least 8 bytes memory.
+     * @return The deserialized number.
+     */
     static uint64 readUint64(const uint8* buffer);
+    /**
+     * @brief Serialize a 64 bit number as big-endian. See cEndian::writeUint64.
+     *
+     * @param buffer Pointer to at least 8 bytes memory.
+     * @param number The number to serialize.
+     */
     static void writeUint64(uint8* buffer, uint64 number);
     #endif
 
+    /**
+     * @brief Deserialize a big-endian 32 bit number. See cEndian::readUint32.
+     *
+     * @param buffer Pointer to at least 4 bytes memory.
+     * @return The deserialized number.
+     */
     static uint32 readUint32(const uint8* buffer);
+    /**
+     * @brief Deserialize a big-endian 16 bit number. See cEndian::readUint16.
+     *
+     * @param buffer Pointer to at least 2 bytes memory.
+     * @return The deserialized number.
+     */
     static uint16 readUint16(const uint8* buffer);
+    /**
+     * @brief Serialize a 32 bit number as big-endian. See cEndian::writeUint32.
+     *
+     * @param buffer Pointer to at least 4 bytes memory.
+     * @param number The number to serialize.
+     */
     static void writeUint32(uint8* buffer, uint32 number);
+    /**
+     * @brief Serialize a 16 bit number as big-endian. See cEndian::writeUint16.
+     *
+     * @param buffer Pointer to at least 2 bytes memory.
+     * @param number The number to serialize.
+     */
     static void writeUint16(uint8* buffer, uint16 number);
+    /**
+     * @brief Return the byte order of this implementation.
+     *
+     * @return Always false.
+     */
     static bool isLittleEndian() { return false; };
 };
 
@@ -168,7 +263,9 @@ public:
  * Definition which implements the big endian interface
  */
 #ifdef XSTL_16BIT
-// 16 bit compilers
+/**
+ * @brief 16 bit compilers
+ */
 #define bigEndianImpl \
     virtual uint32 readUint32(const uint8* buffer) const { return cBigEndian::readUint32(buffer); }; \
     virtual uint16 readUint16(const uint8* buffer) const { return cBigEndian::readUint16(buffer); }; \
@@ -176,7 +273,9 @@ public:
     virtual void writeUint16(uint8* buffer, uint16 number) const { cBigEndian::writeUint16(buffer,number); }; \
     virtual bool isLittleEndian() const { return cBigEndian::isLittleEndian(); }
 #else
-// Non 16 bit compilers
+/**
+ * @brief Non 16 bit compilers
+ */
 #define bigEndianImpl \
     virtual uint64 readUint64(const uint8* buffer) const { return cBigEndian::readUint64(buffer); }; \
     virtual uint32 readUint32(const uint8* buffer) const { return cBigEndian::readUint32(buffer); }; \
@@ -188,11 +287,11 @@ public:
 #endif
 
 
-/*
- * Little-endian implementation.
+/**
+ * @brief Little-endian implementation.
  *
- * Least significant word first (Intel)
- * 0x1234 will be stored as 34 12
+ * @details Least significant word first (Intel)
+ *   0x1234 will be stored as 34 12
  */
 class cLittleEndian {
 public:
@@ -201,15 +300,61 @@ public:
      * See cEndian for explanation about these functions.
      */
     #ifndef XSTL_16BIT
-    // See comment
+    /**
+     * @brief Deserialize a little-endian 64 bit number. See
+     *    cEndian::readUint64.
+     *
+     * @param buffer Pointer to at least 8 bytes memory.
+     * @return The deserialized number.
+     */
     static uint64 readUint64(const uint8* buffer);
+    /**
+     * @brief Serialize a 64 bit number as little-endian. See
+     *    cEndian::writeUint64.
+     *
+     * @param buffer Pointer to at least 8 bytes memory.
+     * @param number The number to serialize.
+     */
     static void writeUint64(uint8* buffer, uint64 number);
     #endif // XSTL_16BIT
 
+    /**
+     * @brief Deserialize a little-endian 32 bit number. See
+     *    cEndian::readUint32.
+     *
+     * @param buffer Pointer to at least 4 bytes memory.
+     * @return The deserialized number.
+     */
     static uint32 readUint32(const uint8* buffer);
+    /**
+     * @brief Deserialize a little-endian 16 bit number. See
+     *    cEndian::readUint16.
+     *
+     * @param buffer Pointer to at least 2 bytes memory.
+     * @return The deserialized number.
+     */
     static uint16 readUint16(const uint8* buffer);
+    /**
+     * @brief Serialize a 32 bit number as little-endian. See
+     *    cEndian::writeUint32.
+     *
+     * @param buffer Pointer to at least 4 bytes memory.
+     * @param number The number to serialize.
+     */
     static void writeUint32(uint8* buffer, uint32 number);
+    /**
+     * @brief Serialize a 16 bit number as little-endian. See
+     *    cEndian::writeUint16.
+     *
+     * @param buffer Pointer to at least 2 bytes memory.
+     * @param number The number to serialize.
+     */
     static void writeUint16(uint8* buffer, uint16 number);
+    /**
+     * @brief Return the byte order of this implementation.
+     *
+     * @return Always true.
+     */
     static bool isLittleEndian() { return true; };
 };
 
@@ -218,7 +363,9 @@ public:
  * Definition which implements the little endian interface
  */
 #ifdef XSTL_16BIT
-// 16 bit compilers
+/**
+ * @brief 16 bit compilers
+ */
 #define littleEndianImpl \
     virtual uint32 readUint32(const uint8* buffer) const { return cLittleEndian::readUint32(buffer); }; \
     virtual uint16 readUint16(const uint8* buffer) const { return cLittleEndian::readUint16(buffer); }; \
@@ -226,7 +373,9 @@ public:
     virtual void writeUint16(uint8* buffer, uint16 number) const { cLittleEndian::writeUint16(buffer,number); }; \
     virtual bool isLittleEndian() const { return cLittleEndian::isLittleEndian(); }
 #else
-// Non 16 bit compilers
+/**
+ * @brief Non 16 bit compilers
+ */
 #define littleEndianImpl \
         virtual uint64 readUint64(const uint8* buffer) const { return cLittleEndian::readUint64(buffer); }; \
         virtual uint32 readUint32(const uint8* buffer) const { return cLittleEndian::readUint32(buffer); }; \
@@ -237,4 +386,6 @@ public:
         virtual bool isLittleEndian() const { return cLittleEndian::isLittleEndian(); }
 #endif
 
+
+/** @} */
 #endif //__TBA_STL_ENDIAN_H

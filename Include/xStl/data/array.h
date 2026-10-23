@@ -32,13 +32,19 @@
 #ifndef __TBA_STL_ARRAY_H
 #define __TBA_STL_ARRAY_H
 
-/*
- * array.h
+/**
+ * @addtogroup xstl_data_containers
+ * @{
+ */
+
+/**
+ * @file array.h
+ * @brief Declaration of the global array memory handler.
  *
- * Declaration of the global array memory handler. Provides a safe way to
- * allocate an array of memory. Handles everything that needs to be done.
+ * @details Provides a safe way to allocate an array of memory. Handles
+ *    everything that needs to be done.
  *
- * Author: Elad Raz <e@eladraz.com>
+ * @author Elad Raz
  */
 #include "xStl/types.h"
 #include "xStl/operators.h"
@@ -52,26 +58,31 @@
 #pragma warning(disable:4505)
 #endif
 
-/*
- * cArray template class.
+/**
+ * @brief A dynamic array with a paging memory mechanism.
  *
- * Contains standard implementation of arrays. This is a template vector for
- * class T. T should have default constructor (due to using operator new[]).
- * operator == should be implemented only for reference call to remove().
+ * @details Contains standard implementation of arrays. This is a template
+ *    vector for
+ *   class T. T should have default constructor (due to using operator new[]).
+ *   operator == should be implemented only for reference call to remove().
  *
- * The array also implements a 'paging' memory. The paging allows allocating more
+ * The array also implements a 'paging' memory. The paging allows allocating
+ * more
  * memory for the array but when the size of the array is changed within the
  * page size, no memory allocation operation is called.
  *
  * PS: cArray can be used for many calls to changeSize()
- *    only if you configure the page_size variable correctly.
+ * only if you configure the page_size variable correctly.
  *
  * T must have:
- *    default constructor.
- *    For using remove(T&) T must implement operator ==.
+ * default constructor.
+ * For using remove(T\&) T must implement operator ==.
  *
- * TODO: Add to this class copy-on-write abilities (Reference count and unshare
- *       method).
+ * @todo Add to this class copy-on-write abilities (Reference count and unshare
+ *    method).
+ * @tparam T The type of the array elements. It must have a default constructor
+ *    (the memory is allocated with `operator new[]`). For using remove(T&), T
+ *    must also implement operator ==.
  */
 template <class T>
 class cArray
@@ -80,120 +91,146 @@ public:
     // Forward declaration for class iterator.
     class iterator;
 
-    /*
-     * Explicit constructor.
+    /**
+     * @brief Explicit constructor.
      *
-     * Create an array at size 'numberOfElements'. The 'pageSize' determines
-     * how many elements should be allocated in addition to the needed items.
+     * @details Create an array at size 'numberOfElements'. The 'pageSize'
+     *    determines
+     *   how many elements should be allocated in addition to the needed items.
      *
-     * throws 'EXCEPTION_OUT_OF_MEM' exception.
+     * @throws cException (EXCEPTION_OUT_OF_MEM) .
+     * @param numberOfElements The number of elements of the new array.
+     * @param pageSize The page size. How many elements are allocated in
+     *    addition to the needed elements.
      */
     explicit cArray(uint numberOfElements = 0,
                     uint pageSize = 0);
 
-    /*
-     * Create array and copy 'staticArray' to the constructor array.
+    /**
+     * @brief Create array and copy 'staticArray' to the constructor array.
      *
-     * staticArray - The source array.
-     * length      - The number of elements in the array
-     * pageSize    - The size of the paging
-     *
-     * throws 'EXCEPTION_OUT_OF_MEM' exception.
+     * @param staticArray The source array.
+     * @param length The number of elements in the array
+     * @param pageSize The size of the paging
+     * @throws cException (EXCEPTION_OUT_OF_MEM) .
      */
     explicit cArray(const T* staticArray,
                     uint length,
                     uint pageSize = 0);
 
-    /*
-     * Copy constructor
+    /**
+     * @brief Copy constructor
+     *
+     * @param other The array to copy.
      */
     cArray(const cArray<T>& other);
 
-    /*
-     * Virtual destructor. Used for cBuffer implementation.
+    /**
+     * @brief Virtual destructor. Used for cBuffer implementation.
      */
     virtual ~cArray();
 
 
     /* Class functions */
 
-    /*
-     * Return the buffer of the array. getBuffer() declare as const but return
-     * non-const operator. The return type can be NULL if the array is empty.
+    /**
+     * @brief Return the buffer of the array. getBuffer() declare as const but
+     *    return
+     *   non-const operator.
      *
-     * Note:
-     * The returned buffer is valid for the following commands until another command
-     * from the cArray class is invoked. Each function of the array can
-     * reallocate the buffer pointer.
+     * @details The return type can be NULL if the array is empty.
+     *
+     * @return The buffer of the array. getBuffer() declare as const but return
+     *    non-const operator.
+     * @note The returned buffer is valid for the following commands until
+     *    another command from the cArray class is invoked. Each function of the
+     *    array can reallocate the buffer pointer.
      */
     T* getBuffer() const;
 
-    /*
-     * Return the page size of the array object.
+    /**
+     * @brief Return the page size of the array object.
+     *
+     * @return The page size of the array object.
      */
     uint getPageSize() const;
 
-    /*
-     * Return the number of elements in the array.
+    /**
+     * @brief Return the number of elements in the array.
+     *
+     * @return The number of elements in the array.
      */
     uint getSize() const;
 
-    /*
-     * Replace the array pointers of the current array and 'other'
+    /**
+     * @brief Replace the array pointers of the current array and 'other'
      *
-     * NOTE: This function doesn't replace the pageSize values.
-     * NOTE: This class is not thread-safe
+     * @note This function doesn't replace the pageSize values.
+     * @note This class is not thread-safe
+     * @param other The array to swap the content with.
      */
     void swap(cArray<T>& other);
 
-    /*
-     * Increase or decrease the count of elements in the array. Destroy the
-     * previous memory if the preserveMemory is false. Otherwise, if the
-     * newSize is smaller than the old one, then the padding will be freed.
-     * If the new size is bigger than the old size, the newly allocated fields
-     * will not be initialized. If the newSize is equal to zero, then the list
-     * will be freed.
+    /**
+     * @brief Increase or decrease the count of elements in the array.
+     *
+     * @details Destroy the previous memory if the preserveMemory is false.
+     *    Otherwise, if the newSize is smaller than the old one, then the
+     *    padding will be freed. If the new size is bigger than the old size,
+     *    the newly allocated fields will not be initialized. If the newSize is
+     *    equal to zero, then the list will be freed.
+     *
+     * @param newSize The new number of elements in the array.
+     * @param preserveMemory If true the previous content is preserved. If false
+     *    the previous memory is destroyed.
      */
     virtual void changeSize(uint newSize, bool preserveMemory = true);
 
-    /*
-     * Change the page size of the array. The effect of this function is
-     * on future calls to the 'changeSize' function.
+    /**
+     * @brief Change the page size of the array.
+     *
+     * @details The effect of this function is on future calls to the
+     *    'changeSize' function.
+     *
+     * @param newPageSize The new page size.
      */
     void setPageSize(uint newPageSize);
 
-    /*
-     * Like the Python's operator [:], but much less improved. Copy from the
-     * array 'count' elements starting from 'startLocation' into 'other' array.
-     * 'other' will be reset to an array of 'count' elements.
+    /**
+     * @brief Like the Python's operator [:], but much less improved.
      *
-     * other         - The output array
-     * startLocation - The start location in the array
-     * count         - The number of elements to copy.
+     * @details Copy from the array 'count' elements starting from
+     *    'startLocation' into 'other' array. 'other' will be reset to an array
+     *    of 'count' elements.
      *
-     * throws 'EXCEPTION_OUT_OF_MEM' exception.
+     * @param other The output array
+     * @param startLocation The start location in the array
+     * @param count The number of elements to copy.
+     * @throws cException (EXCEPTION_OUT_OF_MEM) .
      */
     virtual void copyRange(const cArray<T>& other,
                            uint startLocation,
                            uint count);
 
-    /*
-     * Insert a single object at the end of the array. The array is expanded by one
-     * element and the 'object' is copied to the end of the array.
+    /**
+     * @brief Insert a single object at the end of the array.
      *
-     * object - The object to append
+     * @details The array is expanded by one element and the 'object' is copied
+     *    to the end of the array.
      *
-     * throws 'EXCEPTION_OUT_OF_MEM' exception.
+     * @param object The object to append
+     * @throws cException (EXCEPTION_OUT_OF_MEM) .
      */
     virtual void append(const T& object);
 
-    /*
-     * Insert a new array at the end of the array. The array is expanded by one
-     * element and the 'object' is copied to the end of the array.
+    /**
+     * @brief Insert a new array at the end of the array.
      *
-     * object - The object to append
+     * The array is expanded by the number of elements of @a array and the
+     * elements are copied to its end.
      *
-     * throws 'EXCEPTION_OUT_OF_MEM' exception.
+     * @param array The array to append.
+     * @throws cException (EXCEPTION_OUT_OF_MEM) if there is not enough memory.
      */
     virtual void append(const cArray<T>& array);
 
@@ -202,50 +239,59 @@ public:
     //void insert(const T& object, const iterator& index);
     //void insert(const cArray<T>& array, const iterator& index);
 
-    /*
-     * Construct a new iterator at the beginning of the array. (Which means that
-     * the iterator points to the first element in the array).
+    /**
+     * @brief Construct a new iterator at the beginning of the array. (Which
+     *    means that
+     *   the iterator points to the first element in the array).
      *
-     * The function is declared as const because sometimes you need a way to scan
-     * the array without changing it and you don't have any other way to perform
-     * this.
+     * @details The function is declared as const because sometimes you need a
+     *    way to scan
+     *   the array without changing it and you don't have any other way to
+     *   perform
+     *   this.
      *
-     * NOTE: Microsoft Visual Studio .NET version 7.10 cannot compile the
-     *       code of the function if it's found outside the class declaration.
+     * @note Microsoft Visual Studio .NET version 7.10 cannot compile the code
+     *    of the function if it's found outside the class declaration.
+     * @return An iterator that points to the first element of the array.
      */
     iterator begin() const
     {
         return iterator(const_cast<cArray<T> *> (this), 0);
     }
 
-    /*
-     * Create a new iterator at the end of the array.
+    /**
+     * @brief Create a new iterator at the end of the array.
      *
-     * Note: You cannot access the content of the iterator!
+     * @details The function is declared as const because sometimes you need a
+     *    way to scan
+     *   the array without changing it and you don't have any other way to
+     *   perform
+     *   this.
      *
-     * The function is declared as const because sometimes you need a way to scan
-     * the array without changing it and you don't have any other way to perform
-     * this.
-     *
-     * NOTE: Microsoft Visual Studio .NET version 7.10 cannot compile the
-     *       code of the function if it's found outside the class declaration.
+     * @note You cannot access the content of the iterator!
+     * @note Microsoft Visual Studio .NET version 7.10 cannot compile the code
+     *    of the function if it's found outside the class declaration.
+     * @return An iterator that points after the last element of the array.
      */
     iterator end() const
     {
         return iterator(const_cast<cArray<T> *> (this), m_size);
     }
 
-    /*
-     * Create a new iterator at a position in the array.
+    /**
+     * @brief Create a new iterator at a position in the array.
      *
-     * Note: You cannot access the content of the iterator!
+     * @details The function is declared as const because sometimes you need a
+     *    way to scan
+     *   the array without changing it and you don't have any other way to
+     *   perform
+     *   this.
      *
-     * The function is declared as const because sometimes you need a way to scan
-     * the array without changing it and you don't have any other way to perform
-     * this.
-     *
-     * NOTE: Microsoft Visual Studio .NET version 7.10 cannot compile the
-     *       code of the function if it's found outside the class declaration.
+     * @note You cannot access the content of the iterator!
+     * @note Microsoft Visual Studio .NET version 7.10 cannot compile the code
+     *    of the function if it's found outside the class declaration.
+     * @param index The position in the array.
+     * @return An iterator that points to the element at @a index.
      */
     iterator at(const uint& index) const
     {
@@ -254,54 +300,96 @@ public:
 
     // Operators
 
-    /*
-     * Return the element of the array in a specific location.
+    /**
+     * @brief Return the element of the array in a specific location.
      *
-     * Index - The index of the elements.
-     *
-     * Throws an exception when the index is invalid.
+     * @param index The index of the elements.
+     * @return The element of the array in a specific location.
+     * @throws cException when the index is invalid.
      */
     T& operator [] (const uint index);
+    /**
+     * @brief Return the element of the array in a specific location (const
+     *    version).
+     *
+     * @param index The index of the element.
+     * @return The element of the array in the location @a index.
+     * @throws cException if the index is invalid.
+     */
     const T& operator [] (const uint index) const;
 
-    /*
-     * Copy one array to other.
+    /**
+     * @brief Copy one array to other.
+     *
+     * @param other The array to copy from.
+     * @return A reference to this array.
      */
     cArray<T>& operator = (const cArray<T>& other);
 
-    /*
-     * Operators which append data to the array. Another array
-     * or another element.
+    /**
+     * @brief Create a new array that contains this array followed by another
+     *    array.
+     *
+     * @param other The array whose elements are appended.
+     * @return The new array.
      */
     cArray<T>  operator + (const cArray<T>& other);
+    /**
+     * @brief Append the elements of another array to this array.
+     *
+     * @param other The array whose elements are appended.
+     * @return A reference to this array.
+     */
     cArray<T>& operator +=(const cArray<T>& other);
+    /**
+     * @brief Create a new array that contains this array followed by an
+     *    element.
+     *
+     * @param object The element that is appended.
+     * @return The new array.
+     */
     cArray<T>  operator + (const T & object);
+    /**
+     * @brief Append an element to this array.
+     *
+     * @param object The element that is appended.
+     * @return A reference to this array.
+     */
     cArray<T>& operator +=(const T & object);
 
 
-    /* Printing operators */
+    /**
+     * @brief Print the array to an output stream.
+     *
+     * The elements are separated by commas and enclosed in square brackets. The
+     * cascading works only if the type of the elements can be written to the
+     * stream.
+     *
+     * @tparam S The type of the array elements.
+     * @tparam OSTREAM The type of the output stream.
+     * @param out The output stream.
+     * @param object The array to print.
+     * @return The output stream @a out.
+     */
     template <class S, class OSTREAM>
     friend OSTREAM & operator << (OSTREAM &out, const cArray<S> &object);
 
     friend class iterator;
 
-    /********************************************
-     *** Iterator class.
-     *   Inline implementation
+    /**
+     * @brief Iterator over the elements of a cArray.
      *
-     * Implements the iterator on an array. Create the basic elements of an
-     * iterator according to the basicIterator interface documentation.
-     *
-     * The only reason this is an inline implementation is because the compilers
-     * seem to have difficulties handling internal template classes.
-     *
-     * Author: Elad Raz.
+     * The iterator is an inline implementation, because the compilers seem to
+     * have difficulties handling internal template classes.
      */
     class iterator
     {
         public:
-            /*
-             * Copy constructor. Copy the iterator position from another object.
+            /**
+             * @brief Copy constructor. Copy the iterator position from another
+             *    object.
+             *
+             * @param other The iterator to copy.
              */
             iterator(const iterator &other)
             {
@@ -310,15 +398,15 @@ public:
                 assertIndex();
             }
 
-            /*
-             * Destructor.
+            /**
+             * @brief Destructor.
              */
             ~iterator()
             {
             }
 
-            /*
-             * Advance the iterator by one position.
+            /**
+             * @brief Advance the iterator by one position.
              */
             void next()
             {
@@ -326,8 +414,8 @@ public:
                 assertIndex();
             }
 
-            /*
-             * Set the iterator back to the previous element.
+            /**
+             * @brief Set the iterator back to the previous element.
              */
             void prev()
             {
@@ -335,17 +423,22 @@ public:
                 assertIndex();
             }
 
-            /*
-             * Java-style iterator function. Return true if the iterator
-             * points to the last element in the array.
+            /**
+             * @brief Java-style iterator function.
+             *
+             * @return True if the iterator position does not exceed the end of
+             *    the array (the implementation tests that the index is not
+             *    greater than the size of the array).
              */
             bool hasNext()
             {
                 return (m_index <= m_tcArray->m_size);
             }
 
-            /*
-             * Get the content of the iterator
+            /**
+             * @brief Get the content of the iterator
+             *
+             * @return A reference to the element the iterator points to.
              */
             T& operator *()
             {
@@ -363,8 +456,10 @@ public:
             }
             **/
 
-            /*
-             * Return the iterator location in the array
+            /**
+             * @brief Return the iterator location in the array
+             *
+             * @return The iterator location in the array.
              */
             uint getLocation()
             {
@@ -372,8 +467,12 @@ public:
                 return m_index;
             }
 
-            /*
-             * Compare the position of the iterator.
+            /**
+             * @brief Compare the position of the iterator.
+             *
+             * @param other The iterator to compare with.
+             * @return True if both iterators point to the same position of the
+             *    same array.
              */
             bool operator == (const iterator &other) const
             {
@@ -385,8 +484,11 @@ public:
                 return FALSE;
             }
 
-            /*
-             * Assignment operator.
+            /**
+             * @brief Assignment operator.
+             *
+             * @param other The iterator to copy from.
+             * @return A reference to this iterator.
              */
             iterator& operator = (const iterator &other)
             {
@@ -398,8 +500,12 @@ public:
                 return *this;
             }
 
-            /*
-             * Is the pointer lower in the index range.
+            /**
+             * @brief Is the pointer lower in the index range.
+             *
+             * @param other The iterator to compare with.
+             * @return True if both iterators belong to the same array and the
+             *    index of this iterator is lower than the index of @a other.
              */
             bool operator < (const iterator &other) const
             {
@@ -411,28 +517,35 @@ public:
                 return FALSE;
             }
 
-            /*
-             * Implement operator >, !=, >=, <=
+            /**
+             * @brief Implement operator \>, !=, \>=, \<=
              */
             MAKE_SIMPLE_OPERATORS(iterator);
 
-            /*
-             * Implement the two operators ++ and the two operators --.
+            /**
+             * @brief Implement the two operators ++ and the two operators --.
              */
             MAKE_INCREASE_OPERATORS(iterator);
 
-            /*
-             * Decrease the iterator by 'count' elements
-             * TODO! unsigned!
+            /**
+             * @brief Return an iterator that is advanced by @a count elements.
+             *
+             * @param count The number of elements to advance.
+             * @return The new iterator.
+             * @todo unsigned!
              */
             iterator operator+ (const uint count)
             {
                 return iterator(m_tcArray, m_index + count);
             }
 
-            /*
-             * Increase the iterator by 'count' elements
-             * TODO! unsigned!
+            /**
+             * @brief Return an iterator that is moved back by @a count
+             *    elements.
+             *
+             * @param count The number of elements to move back.
+             * @return The new iterator.
+             * @todo unsigned!
              */
             iterator operator- (const uint count)
             {
@@ -446,11 +559,12 @@ public:
              */
             friend class cArray<T>;
 
-            /*
-             * cArray<T>::iterator::iterator
+            /**
+             * @brief Constructor. Create an array iterator according to the
+             *    index inside the array.
              *
-             * Constructor. Create an array iterator according to the index
-             * inside the array.
+             * @param tcArray The array to iterate over.
+             * @param index The position of the iterator in the array.
              */
             iterator(cArray<T> *tcArray, uint index = 0)
             {
@@ -461,17 +575,21 @@ public:
 
             // Inside parameters
 
-            // Pointer to the array object.
+            /**
+             * @brief Pointer to the array object.
+             */
             cArray<T>  * m_tcArray;
 
-            // Pointer to the position inside the array.
+            /**
+             * @brief Pointer to the position inside the array.
+             */
             uint m_index;
 
-            /*
-             * Asserts the index which the iterator points at.
+            /**
+             * @brief Asserts the index which the iterator points at.
              *
-             * Since m_index is uint, it cannot be below zero, so if
-             * the index goes below zero then it will wrap around.
+             * @details Since m_index is uint, it cannot be below zero, so if
+             *   the index goes below zero then it will wrap around.
              */
             void assertIndex()
             {
@@ -483,43 +601,56 @@ protected:
     /* Private methods */
     friend class cTestArray;
 
-    /*
-     * Free the array: free all allocated memory and create an empty array.
+    /**
+     * @brief Free the array: free all allocated memory and create an empty
+     *    array.
      */
     void freeArray();
 
-    /*
-     * Create an empty array with the 'pageSize' attribute. Init all members. The array
-     * should be free, otherwise memory will not be freed properly.
+    /**
+     * @brief Create an empty array with the 'pageSize' attribute.
      *
-     * pageSize - The size of the paging in use.
+     * @details Init all members. The array should be free, otherwise memory
+     *    will not be freed properly.
+     *
+     * @param pageSize The size of the paging in use.
      */
     void initArray(uint pageSize);
 
-    /*
-     * Copy from other cArray class.
+    /**
+     * @brief Copy from other cArray class.
+     *
+     * @param other The array to copy from.
      */
     virtual void copyFrom(const cArray<T> &other);
 
-    /*
-     * Page-round the array elements, using the page size setting.
+    /**
+     * @brief Page-round the array elements, using the page size setting.
      *
-     * bytes - The number of items to be allocated.
-     *
-     * Return the number of elements that need to be allocated in the page boundaries.
+     * @param bytes The number of items to be allocated.
+     * @return The number of elements that need to be allocated in the page
+     *    boundaries.
      */
     uint pageRound(uint bytes) const;
 
     /*
      * Private members
      */
-    // Pointer to the allocated array
+    /**
+     * @brief Pointer to the allocated array
+     */
     T* m_array;
-    // The number of real elements in the array
+    /**
+     * @brief The number of real elements in the array
+     */
     uint m_size;
-    // The real allocated items in the array
+    /**
+     * @brief The real allocated items in the array
+     */
     uint m_allocatedArray;
-    // The page size for the allocation.
+    /**
+     * @brief The page size for the allocation.
+     */
     uint m_pageSize;
 };
 
@@ -535,4 +666,6 @@ protected:
 #pragma warning(pop)
 #endif
 
+
+/** @} */
 #endif // __TBA_STL_ARRAY_H
