@@ -392,6 +392,63 @@ bool Parser::isCUnsignedInteger(uint* retNumber,
     return true;
 }
 
+bool Parser::isUnsignedInteger64(uint64* retNumber,
+                                 bool shouldAdvancePosition)
+{
+    // Duplicate this parser
+    Parser dup(*this);
+    Parser* object = &dup;
+    if (shouldAdvancePosition)
+        object = this;
+
+    // The number must start with a digit
+    if (object->isEOS() || !cChar::isDigit(object->peekChar()))
+        return false;
+    cString number = object->readCString(false);
+
+    // Hexadecimal number with a 0x prefix or a h suffix, decimal otherwise
+    uint base = 10;
+    uint i = 0;
+    uint length = number.length();
+    if ((length > 2) && (number[0] == XSTL_CHAR('0')) &&
+        (cChar::getUppercase(number[1]) == XSTL_CHAR('X')))
+    {
+        base = 16;
+        i = 2;
+    } else if ((length > 1) &&
+               (cChar::getUppercase(number[length - 1]) == XSTL_CHAR('H')))
+    {
+        base = 16;
+        length--;
+    }
+    // At least one digit is needed after the prefix or before the suffix
+    if (i >= length)
+        return false;
+
+    uint64 ret = 0;
+    for (; i < length; i++)
+    {
+        character digit = cChar::getUppercase(number[i]);
+        uint value = 0;
+        if (cChar::isDigit(digit))
+            value = cChar::getDigit(digit);
+        else if ((base == 16) && (digit >= XSTL_CHAR('A')) &&
+                 (digit <= XSTL_CHAR('F')))
+            value = digit - XSTL_CHAR('A') + 10;
+        else
+            return false;
+
+        // ret * base + value must fit in 64 bits
+        if (ret > (((uint64)-1) - value) / base)
+            return false;
+        ret = ret * base + value;
+    }
+
+    if (retNumber != NULL)
+        *retNumber = ret;
+    return true;
+}
+
 uint Parser::readHexString()
 {
     // Test the first character special marks

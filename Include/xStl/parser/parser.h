@@ -267,6 +267,26 @@ public:
     bool isCUnsignedInteger(uint* retNumber = NULL,
                             bool shouldAdvancePosition = false);
 
+    /**
+     * @brief Try to read a 64 bit unsigned integer from the stream.
+     *
+     * @details The number can be written in decimal (123), as a hexadecimal
+     *    number with a prefix of 0x (0x7b) or as a hexadecimal number with a
+     *    suffix of h (7bh). The number is read as a word of letters, digits
+     *    and underscores which must start with a digit. Unlike
+     *    isCUnsignedInteger, a number which overflows 64 bits is not accepted.
+     *
+     * @param retNumber A pointer into the read integer. If this pointer is null
+     *    then the function only returns true or false
+     * @param shouldAdvancePosition Set to true if the token position should be
+     *    advanced. Set to false to indicate that the position should remain the
+     *    same.
+     * @return True if the next token is a valid 64 bit unsigned integer. False
+     *    if the token is not a number or if an overflow occurred.
+     */
+    bool isUnsignedInteger64(uint64* retNumber = NULL,
+                             bool shouldAdvancePosition = false);
+
     // TODO!
     /**
      * @brief Alias of readCUnsignedInteger. A real 64 bit parser is not
