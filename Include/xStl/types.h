@@ -185,8 +185,13 @@ typedef unsigned char   uint8;
 typedef unsigned short  uint16;
 /** @brief Signed 16 bit integer. */
 typedef short int16;
-/** @brief Signed 8 bit integer. */
-typedef char  int8;
+/**
+ * @brief Signed 8 bit integer.
+ *
+ * @details Explicitly signed: the signedness of plain char is
+ *    implementation-defined, and char is unsigned on Linux arm64.
+ */
+typedef signed char  int8;
 
 #ifndef XSTL_16BIT
     /** @brief Unsigned 32 bit integer. */
@@ -333,7 +338,7 @@ void* getPtr(addressNumericValue address);
  * I will use their declarations.
  */
 #ifndef _WINDEF_        // <windef.h> - ring3 stdafx.h include file
-    typedef int8    CHAR;       ///< Windows-compatible signed 8 bit character.
+    typedef char    CHAR;       ///< Windows-compatible 8 bit character.
     typedef uint8   BYTE;       ///< Windows-compatible unsigned 8 bit integer.
     typedef uint8*  PBYTE;      ///< Pointer to a BYTE.
     typedef uint16  WCHAR;      ///< Windows-compatible 16 bit wide character.
