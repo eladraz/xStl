@@ -56,10 +56,14 @@ cSArray<T>::cSArray(const T* staticArray,
                     uint pageSize /* = 0 */) :
     cArray<T>(length, pageSize)
 {
-    ASSERT(staticArray != NULL);
+    // An empty array may come from an empty buffer (NULL pointer)
+    ASSERT((staticArray != NULL) || (length == 0));
 
     // Copy the array using memcpy
-    cOS::memcpy(this->m_array, staticArray, this->m_size * sizeof(T));
+    if (this->m_size > 0)
+    {
+        cOS::memcpy(this->m_array, staticArray, this->m_size * sizeof(T));
+    }
 }
 
 template <class T>
