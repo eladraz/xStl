@@ -273,8 +273,15 @@ void cArray<T>::changeSize(uint newSize,
 			uint new_alloc = pageRound(newSize);
 			T *buffer;
 
-			/* Create a new buffer and copy the data to it, if needed */
-			if ((uint)t_abs((int)new_alloc - (int)m_allocatedArray) >= m_pageSize)
+			/*
+			 * Create a new buffer and copy the data to it, if needed: always
+			 * when growing past the allocated buffer, and when shrinking by at
+			 * least a page. (The allocated size isn't always a multiple of the
+			 * current page size, e.g. after setPageSize(), so growing by less
+			 * than a page may still need a new buffer.)
+			 */
+			if ((new_alloc > m_allocatedArray) ||
+			    ((m_allocatedArray - new_alloc) >= m_pageSize))
 			{
 				/* Need to realloc the buffer */
 				buffer = new T[new_alloc];

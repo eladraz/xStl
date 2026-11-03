@@ -187,6 +187,30 @@ public:
         }
     }
 
+    /*
+     * Change the page size of an array which is already allocated and grow it
+     * by less than a page. The allocated buffer isn't a multiple of the new
+     * page size, so the array must still be reallocated (it used to only
+     * change its size and write past the end of the buffer).
+     */
+    void test_grow_after_page_size_change()
+    {
+        cArray<uint> a(1);
+        a[0] = 7;
+        a.setPageSize(100);
+        a.changeSize(0);
+        for (uint i = 0; i < 150; i++)
+        {
+            a.changeSize(i + 1);
+            a[i] = i * 3;
+        }
+        TESTS_ASSERT_EQUAL(a.getSize(), 150u);
+        for (uint i = 0; i < 150; i++)
+        {
+            TESTS_ASSERT_EQUAL(a[i], i * 3);
+        }
+    }
+
     void test_swap()
     {
         uint i;
@@ -237,6 +261,7 @@ public:
         test_assignment();
         test_array_members();
         test_page_round();
+        test_grow_after_page_size_change();
         test_swap();
     };
 
