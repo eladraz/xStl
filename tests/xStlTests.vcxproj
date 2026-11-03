@@ -182,6 +182,7 @@
     <ClCompile Include="$(XSTL_PATH)\tests\test_hmac_md5.cpp" />
     <ClCompile Include="$(XSTL_PATH)\tests\test_hmac_sha1.cpp" />
     <ClCompile Include="$(XSTL_PATH)\tests\test_md5.cpp" />
+    <ClCompile Include="$(XSTL_PATH)\tests\test_operators.cpp" />
     <ClCompile Include="$(XSTL_PATH)\tests\test_osRandom.cpp" />
     <ClCompile Include="$(XSTL_PATH)\tests\test_pipe.cpp" />
     <ClCompile Include="$(XSTL_PATH)\tests\test_pmac.cpp" />

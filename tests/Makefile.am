@@ -11,6 +11,7 @@ bin_PROGRAMS = xstl_tests
 # Need to add test_filename.cpp
 xstl_tests_SOURCES = test_compression.cpp \
                      test_md5.cpp \
+                     test_operators.cpp \
                      test_string.cpp \
                      test_counter.cpp  \
                      test_osRandom.cpp \
