@@ -55,7 +55,10 @@
  *    class.
  *
  * The generated operators are implemented with the operators `==` and `<` of
- * the class, which the class must therefore provide.
+ * the class, which the class must therefore provide. They are correct for
+ * partial orders too: when neither `a < b` nor `b < a` (and `a != b`), all of
+ * `<`, `>`, `<=` and `>=` are false.
+ * `<` must be a strict order (`a < a` is false), and `==` the equality.
  *
  * @param className The name of the class for which the operators are generated.
  */
@@ -66,11 +69,11 @@
     }                                                        \
     bool inline operator >  (const className &other) const   \
     {                                                        \
-        return ((!(*this < other)) && (!(*this == other)));  \
+        return (other < *this);                              \
     }                                                        \
     bool inline operator >= (const className &other) const   \
     {                                                        \
-        return !(*this < other);                             \
+        return ((other < *this) || (*this == other));        \
     }                                                        \
     bool inline operator <= (const className &other) const   \
     {                                                        \
