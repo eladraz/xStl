@@ -139,7 +139,7 @@ bool cFile::isFileExist(const cString& filename)
     if (stat(filename.getASCIIstring().getBuffer(), &st) == 0)
     {
         // Return true on all types of files/devices except directories
-        return S_ISDIR(st.st_mode);
+        return !S_ISDIR(st.st_mode);
     }
 
     return false;
