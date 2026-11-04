@@ -276,7 +276,8 @@ public:
      */
     iterator begin() const
     {
-        #ifdef XSTL_LINUX
+        // GCC (also on Windows, e.g. MinGW) requires the typename keyword
+        #if defined(XSTL_LINUX) || defined(__GNUC__)
             return typename cList<T>::iterator::iterator(m_first);
         #else
         return cList<T>::iterator::iterator(m_first);
@@ -296,7 +297,8 @@ public:
      */
     iterator end() const
     {
-        #ifdef XSTL_LINUX
+        // GCC (also on Windows, e.g. MinGW) requires the typename keyword
+        #if defined(XSTL_LINUX) || defined(__GNUC__)
             return typename cList<T>::iterator::iterator(m_last);
         #else
         return cList<T>::iterator::iterator(m_last);
