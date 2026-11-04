@@ -59,6 +59,13 @@ typedef cSmartPtr<cDirectoryFormatParser> cDirectoryFormatParserPtr;
  * @brief Generic filename type parser.
  */
 class cDirectoryFormatParser {
+public:
+    /**
+     * @brief Virtual destructor: the parsers are deleted by cSmartPtr through
+     *    this base class.
+     */
+    virtual ~cDirectoryFormatParser() {}
+
 protected:
     friend class cFilename;
     /**
@@ -99,6 +106,13 @@ protected:
      * @brief The object manager for filenames translation.
      */
     class FilenameParser {
+    public:
+        /**
+         * @brief Virtual destructor: the parsers are deleted by cSmartPtr
+         *    through this base class.
+         */
+        virtual ~FilenameParser() {}
+
     protected:
         // Only the filename manager can instance this class
         friend class cFilename;
@@ -138,6 +152,14 @@ protected:
          * @return Only the portion of the filename.
          */
         virtual cString getFilename(const cString& absoluteTranslatedPath) const = 0;
+
+        /**
+         * @brief Returns the directory separator of this format, used to end a
+         *    directory name (see cFilename's enforceDirectory)
+         *
+         * @return The directory separator, such as '\\' or '/'.
+         */
+        virtual character getDirectorySeparator() const = 0;
     };
 };
 

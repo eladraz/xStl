@@ -74,10 +74,10 @@ cFilename::cFilename(const cFilename& basePath,
             // Construct a new filename handler from it
             m_filename = m_directoryParserHandlers[i]->translateAbsolutePath(
                                                         relativeFilenamePath);
+            m_directoryParser = m_directoryParserHandlers[i]->generateParser();
             if (enforceDirectory)
                 this->enforceDirectory();
 
-            m_directoryParser = m_directoryParserHandlers[i]->generateParser();
             // Check whether the base path must exist for filename
             if (!shouldStepBackward)
                 CHECK(m_filename.left(basePath.m_filename.length()).
@@ -109,9 +109,8 @@ cFilename::cFilename(const cFilename& basePath,
 
 void cFilename::enforceDirectory()
 {
-    // TODO! Windows and UNIX styles...
     if (!isDirectorySeparator(m_filename[m_filename.length() - 1]))
-        m_filename+= m_directorySeparatorWindows;
+        m_filename+= m_directoryParser->getDirectorySeparator();
 }
 
 const cString& cFilename::getFullPath() const

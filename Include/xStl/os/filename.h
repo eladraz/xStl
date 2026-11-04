@@ -115,6 +115,7 @@ public:
      *   - For internet site, the return value will be the name of the service,
      *   such as "http:", "ftp:", "https:".
      *   - UNC name will have the following syntax: \\\\servername\\devicename\\
+     *   - UNIX names have no database name; the return value is empty.
      *
      * @return The database name of the file.
      */
@@ -157,6 +158,22 @@ public:
      * @return The current directory of the computer at this moment.
      */
     static cFilename getCurrentDirectory();
+
+    /**
+     * @brief Return the directory of the running executable.
+     *
+     * @details Use it to open files installed next to the program, whatever
+     *   the current directory is (for example when the program is started from
+     *   a file manager):
+     *      cFilename(cFilename::getApplicationDirectory(), "data/a.bmp")
+     *   Symbolic links to the executable are resolved where the operating
+     *   system reports it (macOS, Linux).
+     *
+     * @return The directory of the running executable, ending with a directory
+     *    separator.
+     * @throws cException if the operating system cannot report the path.
+     */
+    static cFilename getApplicationDirectory();
 
     /**
      * @brief Tests whether a character is a directory separator.

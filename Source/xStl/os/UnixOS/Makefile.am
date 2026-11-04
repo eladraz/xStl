@@ -8,7 +8,7 @@ endif
 
 lib_LTLIBRARIES = libxstl_unix.la
 
-libxstl_unix_la_SOURCES = unixFile.cpp  unixMutex.cpp  unixOS.cpp  unixThread.cpp  unixOSRand.cpp  unixEvent.cpp
+libxstl_unix_la_SOURCES = unixFile.cpp  unixFilename.cpp  unixMutex.cpp  unixOS.cpp  unixThread.cpp  unixOSRand.cpp  unixEvent.cpp
 libxstl_unix_la_CFLAGS = $(CFLAGS_XSTL_COMMON) $(DBGFLAGS) $(AM_CFLAGS)
 libxstl_unix_la_CPPFLAGS = $(CFLAGS_XSTL_COMMON) $(DBGFLAGS) $(AM_CFLAGS)
 

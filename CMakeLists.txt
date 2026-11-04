@@ -89,6 +89,7 @@ list(APPEND XSTL_LIB_FILES
 )
 
 list(APPEND XSTL_LIB_FILES
+	Source/xStl/os/filename.cpp
 	Source/xStl/os/lockable.cpp
 	Source/xStl/os/osrand.cpp
 	Source/xStl/os/threadedClass.cpp
@@ -139,6 +140,7 @@ if (UNIX)
 	add_definitions(-DLINUX)
 	list(APPEND XSTL_LIB_FILES
 		Source/xStl/os/UnixOS/unixFile.cpp
+		Source/xStl/os/UnixOS/unixFilename.cpp
 		Source/xStl/os/UnixOS/unixOSRand.cpp
 		Source/xStl/os/UnixOS/unixThread.cpp
 		Source/xStl/os/UnixOS/unixOS.cpp

@@ -8,7 +8,6 @@ endif
 
 bin_PROGRAMS = xstl_tests
 
-# Need to add test_filename.cpp
 xstl_tests_SOURCES = test_compression.cpp \
                      test_md5.cpp \
                      test_operators.cpp \
@@ -18,6 +17,7 @@ xstl_tests_SOURCES = test_compression.cpp \
                      test_stringStream.cpp \
                      sampleProtocol.cpp  \
                      test_endian.cpp       \
+                     test_filename.cpp     \
                      test_setArray.cpp  \
                      test_threadClasses.cpp \
                      test_event.cpp        \

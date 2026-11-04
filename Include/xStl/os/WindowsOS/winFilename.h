@@ -133,6 +133,11 @@ protected:
          */
         virtual cString getFilename(const cString& absoluteTranslatedPath) const;
 
+        /**
+         * @return The DOS directory separator ('\\').
+         */
+        virtual character getDirectorySeparator() const;
+
     private:
         /**
          * @brief Return the position of the last directory separator

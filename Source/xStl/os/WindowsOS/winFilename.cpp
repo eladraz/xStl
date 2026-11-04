@@ -73,6 +73,22 @@ cFilename cFilename::getCurrentDirectory()
         cDosDirectoryParser::FilenameParserPtr(new cDosDirectoryParser::cDosFilenameParser()));
 }
 
+cFilename cFilename::getApplicationDirectory()
+{
+    character path[MAX_PATH+1];
+    DWORD length = GetModuleFileName(NULL, path, MAX_PATH);
+    // A return value of MAX_PATH means that the path was truncated
+    if ((length == 0) || (length >= MAX_PATH))
+    {
+        XSTL_THROW(cException, EXCEPTION_FAILED);
+    }
+    path[length] = 0;
+
+    cFilename executable(cString(path),
+        cDosDirectoryParser::FilenameParserPtr(new cDosDirectoryParser::cDosFilenameParser()));
+    return executable.getDirectoryName();
+}
+
 // This function is global since it used as initializer for the
 // 'cFilename::getTempDirectory()' static variable constructor.
 cString win32getTempDirectory()
@@ -193,6 +209,11 @@ cString cDosDirectoryParser::cDosFilenameParser::getFilename(
 {
     return absoluteTranslatedPath.right(absoluteTranslatedPath.length() -
                     getLastDirectorySeparator(absoluteTranslatedPath) - 1);
+}
+
+character cDosDirectoryParser::cDosFilenameParser::getDirectorySeparator() const
+{
+    return cFilename::m_directorySeparatorWindows;
 }
 
 uint cDosDirectoryParser::cDosFilenameParser::getLastDirectorySeparator(

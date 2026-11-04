@@ -54,6 +54,7 @@ add_executable(xstl_tests
      test_stringStream.cpp
      sampleProtocol.cpp
      test_endian.cpp
+     test_filename.cpp
      test_setArray.cpp
      test_threadClasses.cpp
      test_event.cpp
