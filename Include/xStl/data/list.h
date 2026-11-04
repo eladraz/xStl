@@ -453,8 +453,12 @@ public:
         {
             /*
              * Scanning the next of the list to see whether the
-             * element is there.
+             * element is there. An iterator isn't smaller than itself.
              */
+            if (m_position == other.m_position)
+            {
+                return false;
+            }
             ListNode *index = m_position;
             while (index != NULL)
             {
