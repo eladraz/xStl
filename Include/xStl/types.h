@@ -126,6 +126,11 @@
 
     #include <memory.h>
     #include <string.h>
+    // The glibc sys/types.h (included by stdlib.h and others) declares a
+    // type named uint, which xStl defines as a macro below: declare it now,
+    // so a system header included after this one doesn't redeclare it as
+    // the macro (a conflicting declaration of uint64)
+    #include <sys/types.h>
 
     // Linux is big-endian platform
     // TODO!
