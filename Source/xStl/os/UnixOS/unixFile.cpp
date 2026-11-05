@@ -150,6 +150,25 @@ bool cFile::deleteFile(const cString& filename)
     return (::unlink(filename.getASCIIstring().getBuffer()) == 0);
 }
 
+cFile& cFile::getStandardStream(StandardStream stream)
+{
+    // The objects are never closing their handles (closeHandle=false)
+    static cFile standardInput(STDIN_FILENO, cFile::READ, false);
+    static cFile standardOutput(STDOUT_FILENO, cFile::WRITE, false);
+    static cFile standardError(STDERR_FILENO, cFile::WRITE, false);
+
+    switch (stream)
+    {
+    case STANDARD_INPUT:
+        return standardInput;
+    case STANDARD_OUTPUT:
+        return standardOutput;
+    case STANDARD_ERROR:
+        return standardError;
+    }
+    XSTL_THROW(cFileException, XSTL_STRING("Unknown standard stream."));
+}
+
 bool cFile::isOpen() const
 {
     return (m_handle != INVALID_FILE_HANDLE);
@@ -188,7 +207,8 @@ cFile::~cFile()
     {
         flush();
         // UNIX version
-        ::close(m_handle);
+        if (m_closeHandle)
+            ::close(m_handle);
         // Reset data (Legacy code)
         m_handle = INVALID_FILE_HANDLE;
         m_isReadable  = FALSE;
@@ -225,6 +245,32 @@ uint cFile::write(const void *buffer, const uint length)
     }
 
     return written;
+}
+
+void cFile::writeAll(const void *buffer, const uint length)
+{
+    ASSERT(isOpen());
+    CHECK(m_isWriteable);
+
+    const uint8 *cursor = static_cast<const uint8 *>(buffer);
+    uint remaining = length;
+    while (remaining > 0)
+    {
+        ssize_t written = ::write(m_handle, cursor, remaining);
+        if (written < 0)
+        {
+            if (errno == EINTR)
+                continue;
+            cString msg = cOS::getLastErrorString();
+            XSTL_THROW(cFileException, msg.getBuffer());
+        }
+        if (written == 0)
+        {
+            XSTL_THROW(cFileException, XSTL_STRING("Writing to file failed."));
+        }
+        cursor += written;
+        remaining -= (uint)written;
+    }
 }
 
 uint cFile::length() const

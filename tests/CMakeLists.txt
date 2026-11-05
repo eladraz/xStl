@@ -72,7 +72,8 @@ add_executable(xstl_tests
      test_callback.cpp
      test_hmac_sha1.cpp
      tests.cpp
-     test_stream.cpp)
+     test_stream.cpp
+     test_stdio.cpp)
 
 set(ENV{XSTL_PATH} ../)
 

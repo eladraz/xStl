@@ -127,6 +127,28 @@ bool cFile::deleteFile(const cString& filename)
     return (::DeleteFile(OS_CSTRING(filename.getBuffer())) == TRUE);
 }
 
+cFile& cFile::getStandardStream(StandardStream stream)
+{
+    // The objects are never closing their handles (closeHandle=false)
+    static cFile standardInput(GetStdHandle(STD_INPUT_HANDLE),
+                               cFile::READ, false);
+    static cFile standardOutput(GetStdHandle(STD_OUTPUT_HANDLE),
+                                cFile::WRITE, false);
+    static cFile standardError(GetStdHandle(STD_ERROR_HANDLE),
+                               cFile::WRITE, false);
+
+    switch (stream)
+    {
+    case STANDARD_INPUT:
+        return standardInput;
+    case STANDARD_OUTPUT:
+        return standardOutput;
+    case STANDARD_ERROR:
+        return standardError;
+    }
+    XSTL_THROW(cFileException, XSTL_STRING("Unknown standard stream."));
+}
+
 bool cFile::isOpen() const
 {
     return (m_handle != INVALID_FILE_HANDLE);
@@ -165,7 +187,8 @@ cFile::~cFile()
     {
         flush();
         // Windows version
-        CloseHandle(m_handle);
+        if (m_closeHandle)
+            CloseHandle(m_handle);
         // Reset data (Legacy code)
         m_handle = INVALID_FILE_HANDLE;
         m_isReadable  = FALSE;
@@ -201,6 +224,30 @@ uint cFile::write(const void *buffer, const uint length)
     }
 
     return written;
+}
+
+void cFile::writeAll(const void *buffer, const uint length)
+{
+    ASSERT(isOpen());
+    CHECK(m_isWriteable);
+
+    const uint8 *cursor = static_cast<const uint8 *>(buffer);
+    uint remaining = length;
+    while (remaining > 0)
+    {
+        DWORD written = 0;
+        if (!WriteFile(m_handle, cursor, remaining, &written, NULL))
+        {
+            /* There was an error */
+            XSTL_THROW(cFileException, cOS::getLastErrorString().getBuffer());
+        }
+        if (written == 0)
+        {
+            XSTL_THROW(cFileException, XSTL_STRING("Writing to file failed."));
+        }
+        cursor += written;
+        remaining -= written;
+    }
 }
 
 uint cFile::length() const

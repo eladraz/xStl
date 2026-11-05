@@ -50,6 +50,15 @@
 #include "xStl/os/osdef.h"
 
 /**
+ * @brief The standard streams of the current process.
+ */
+enum StandardStream {
+    STANDARD_INPUT,  ///< Standard input (fd 0 / STD_INPUT_HANDLE)
+    STANDARD_OUTPUT, ///< Standard output (fd 1 / STD_OUTPUT_HANDLE)
+    STANDARD_ERROR   ///< Standard error (fd 2 / STD_ERROR_HANDLE)
+};
+
+/**
  * @brief The cFile class is an API which communicates with files.
  *
  * @details 2008: New 64 bit seek file operation
@@ -145,6 +154,17 @@ public:
     static bool deleteFile(const cString& filename);
 
     /**
+     * @brief Return a file object which wraps one of the standard streams.
+     *
+     * @details The returned object is a process-wide singleton which never
+     *    closes the underlying handle. It is not safe to delete or copy it.
+     *
+     * @param stream The standard stream to return.
+     * @return A reference to the file object of @a stream.
+     */
+    static cFile& getStandardStream(StandardStream stream);
+
+    /**
      * @brief Copy-constructor.
      *
      * @param other The file object to copy.
@@ -188,6 +208,18 @@ public:
      * @param length The number of bytes to write.
      */
     uint write(const void *buffer, const uint length);
+
+    /**
+     * @brief Write the whole buffer to the file.
+     *
+     * @details Unlike write(), keeps writing until all @a length bytes were
+     *    written (short writes are retried and EINTR is restarted).
+     *    Throws cFileException in case of error.
+     *
+     * @param buffer The data to write.
+     * @param length The number of bytes to write.
+     */
+    void writeAll(const void *buffer, const uint length);
 
     /**
      * @brief Move to a specific position in the file.

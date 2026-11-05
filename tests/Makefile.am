@@ -35,7 +35,8 @@ xstl_tests_SOURCES = test_compression.cpp \
                      test_callback.cpp   \
                      test_hmac_sha1.cpp    \
                      tests.cpp          \
-                     test_stream.cpp
+                     test_stream.cpp \
+                     test_stdio.cpp
 
 
 xstl_tests_CFLAGS = $(CFLAGS_XSTL_COMMON) $(DBGFLAGS) $(AM_CFLAGS)
