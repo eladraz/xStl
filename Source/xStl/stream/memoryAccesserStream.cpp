@@ -99,7 +99,7 @@ uint cMemoryAccesserStream::length() const
 
 bool cMemoryAccesserStream::isEOS()
 {
-    return m_filePosition == m_endAddress;
+    return m_filePosition >= m_endAddress;
 }
 
 void cMemoryAccesserStream::flush()

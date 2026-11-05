@@ -142,7 +142,7 @@ bool cFileStream::isEOS()
     uint fileLength   = length();
     uint filePosition = getPointer();
 
-    return (fileLength == filePosition);
+    return (filePosition >= fileLength);
 }
 
 uint cFileStream::getPointer() const
