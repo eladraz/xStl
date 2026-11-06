@@ -193,6 +193,7 @@
     <ClCompile Include="$(XSTL_PATH)\tests\test_sha1.cpp" />
     <ClCompile Include="$(XSTL_PATH)\tests\test_smartptr.cpp" />
     <ClCompile Include="$(XSTL_PATH)\tests\test_socket.cpp" />
+    <ClCompile Include="$(XSTL_PATH)\tests\test_stdio.cpp" />
     <ClCompile Include="$(XSTL_PATH)\tests\test_stream.cpp" />
     <ClCompile Include="$(XSTL_PATH)\tests\test_string.cpp" />
     <ClCompile Include="$(XSTL_PATH)\tests\test_stringStream.cpp" />
