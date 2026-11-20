@@ -47,6 +47,7 @@
 #include <fcntl.h>
 #include <unistd.h>
 #include <dirent.h>
+#include <stdio.h>
 #include <errno.h>
 #include <string.h>
 #include <time.h>
