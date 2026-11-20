@@ -141,6 +141,7 @@ public:
         // Missing names report ENOENT
         TESTS_ASSERT(cPosixPath::fstatAt(POSIX_PATH_TEST_CWD, "pp_missing", 0, st) == -ENOENT);
 
+#if defined(__linux__)
         // AT_EMPTY_PATH on an open descriptor is fstat
         int dirfd = open("pp_dir", O_RDONLY | O_DIRECTORY);
         TESTS_ASSERT(dirfd >= 0);
@@ -148,6 +149,7 @@ public:
         TESTS_ASSERT(cPosixPath::fstatAt(dirfd, "", AT_EMPTY_PATH, viaFd) == 0);
         TESTS_ASSERT(viaFd.ino == st.ino);
         TESTS_ASSERT(close(dirfd) == 0);
+#endif
 
         TESTS_ASSERT(cPosixPath::unlinkAt(POSIX_PATH_TEST_CWD, "pp_dir", POSIX_PATH_TEST_REMOVEDIR) == 0);
         TESTS_ASSERT(cPosixPath::unlinkAt(POSIX_PATH_TEST_CWD, "pp_dir", POSIX_PATH_TEST_REMOVEDIR) == -ENOENT);
@@ -169,6 +171,7 @@ public:
         TESTS_ASSERT(S_ISREG(st.mode));
         TESTS_ASSERT(st.size == POSIX_PATH_TEST_FILE_SIZE);
 
+#if defined(__linux__)
         // statx fills the kernel record; stx_mask is its first u32
         unsigned char sx[POSIX_PATH_TEST_STATX_BUF];
         memset(sx, 0, sizeof(sx));
@@ -184,6 +187,11 @@ public:
             sxSize |= (uint64)sx[40 + i] << (8 * i);
         }
         TESTS_ASSERT(sxSize == POSIX_PATH_TEST_FILE_SIZE);
+#else
+        unsigned char sx[POSIX_PATH_TEST_STATX_BUF];
+        TESTS_ASSERT(cPosixPath::statx(POSIX_PATH_TEST_CWD, "pp_file", 0,
+                                       POSIX_PATH_TEST_STATX_BASIC, sx) == -ENOSYS);
+#endif
 
         // Times: utimensAt sets the modification time, fstatAt reads it back
         int64 times[4] = { POSIX_PATH_TEST_MTIME, 0,
@@ -206,6 +214,7 @@ public:
         createFile("pp_a", 1);
         createFile("pp_b", 1);
 
+#if defined(__linux__)
         // RENAME_NOREPLACE refuses an existing target
         TESTS_ASSERT(cPosixPath::renameAt2(POSIX_PATH_TEST_CWD, "pp_a",
                                            POSIX_PATH_TEST_CWD, "pp_b",
@@ -213,6 +222,12 @@ public:
         TESTS_ASSERT(cPosixPath::renameAt2(POSIX_PATH_TEST_CWD, "pp_a",
                                            POSIX_PATH_TEST_CWD, "pp_c",
                                            POSIX_PATH_TEST_RENAME_NOREPLACE) == 0);
+#else
+        TESTS_ASSERT(cPosixPath::renameAt2(POSIX_PATH_TEST_CWD, "pp_a",
+                                           POSIX_PATH_TEST_CWD, "pp_c",
+                                           0) == -ENOSYS);
+        TESTS_ASSERT(rename("pp_a", "pp_c") == 0);
+#endif
 
         // Symbolic link: readlinkAt returns the target without a NUL
         TESTS_ASSERT(cPosixPath::symlinkAt("pp_c", POSIX_PATH_TEST_CWD, "pp_link") == 0);
@@ -237,6 +252,7 @@ public:
         createFile("pp_list/a.txt", 0);
         TESTS_ASSERT(cPosixPath::symlinkAt("a.txt", POSIX_PATH_TEST_CWD, "pp_list/link") == 0);
 
+#if defined(__linux__)
         int dirfd = open("pp_list", O_RDONLY | O_DIRECTORY);
         TESTS_ASSERT(dirfd >= 0);
         bool hasDot, hasDotDot, hasA, hasB;
@@ -244,6 +260,10 @@ public:
         TESTS_ASSERT(count == 4);
         TESTS_ASSERT(hasDot && hasDotDot && hasA && hasB);
         TESTS_ASSERT(close(dirfd) == 0);
+#else
+        char buf[64];
+        TESTS_ASSERT(cPosixPath::getdents64(0, buf, sizeof(buf)) == -ENOSYS);
+#endif
 
         TESTS_ASSERT(cPosixPath::unlinkAt(POSIX_PATH_TEST_CWD, "pp_list/link", 0) == 0);
         TESTS_ASSERT(cPosixPath::unlinkAt(POSIX_PATH_TEST_CWD, "pp_list/a.txt", 0) == 0);

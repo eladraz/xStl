@@ -37,7 +37,9 @@
 #include <sys/types.h>
 #include <sys/wait.h>
 #include <sys/resource.h>
+#ifdef __linux__
 #include <sys/sysinfo.h>
+#endif
 #include <sys/times.h>
 #include <errno.h>
 #include <signal.h>
@@ -157,9 +159,13 @@ public:
         struct tms ticks;
         TESTS_ASSERT(cPosixProcess::times(&ticks) >= 0);
 
+#if defined(__linux__)
         struct sysinfo info;
         TESTS_ASSERT(cPosixProcess::sysinfo(&info) == 0);
         TESTS_ASSERT(info.uptime >= 0);
+#else
+        TESTS_ASSERT(cPosixProcess::sysinfo(NULL) == -ENOSYS);
+#endif
 
         TESTS_ASSERT(cPosixProcess::schedYield() == 0);
     }
@@ -172,7 +178,8 @@ public:
         int64 bytes = cPosixProcess::schedGetAffinity(mask, sizeof(mask));
         TESTS_ASSERT(bytes > 0);
 #else
-        TESTS_EXCEPTION(cPosixProcess::schedGetAffinity(mask, sizeof(mask)));
+        TESTS_ASSERT(cPosixProcess::schedGetAffinity(mask, sizeof(mask)) ==
+                     -ENOSYS);
 #endif
     }
 
@@ -188,9 +195,16 @@ public:
                                                  seconds, nanoseconds) == 0);
         int64 start = seconds * 1000000000LL + nanoseconds;
 
+#if defined(__linux__)
         TESTS_ASSERT(cPosixProcess::sleep(CLOCK_MONOTONIC, 0, 0,
                                           POSIX_TEST_SLEEP_NS,
                                           NULL, NULL) == 0);
+#else
+        TESTS_ASSERT(cPosixProcess::sleep(CLOCK_MONOTONIC, 0, 0,
+                                          POSIX_TEST_SLEEP_NS,
+                                          NULL, NULL) == -ENOSYS);
+        return;
+#endif
 
         TESTS_ASSERT(cPosixProcess::clockGetTime(CLOCK_MONOTONIC,
                                                  seconds, nanoseconds) == 0);
@@ -215,6 +229,9 @@ public:
 #if POSIX_TEST_UNIX && defined(__linux__)
         TESTS_ASSERT(cPosixProcess::getRandom(buffer, sizeof(buffer), 0) ==
                      (int64)sizeof(buffer));
+#elif POSIX_TEST_UNIX
+        TESTS_ASSERT(cPosixProcess::getRandom(buffer, sizeof(buffer), 0) ==
+                     -ENOSYS);
 #else
         TESTS_EXCEPTION(cPosixProcess::getRandom(buffer, sizeof(buffer), 0));
 #endif

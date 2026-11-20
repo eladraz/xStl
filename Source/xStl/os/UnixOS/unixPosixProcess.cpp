@@ -32,7 +32,9 @@
 // System headers come before xStl/types.h ('uint' macro clash)
 #include <sys/types.h>
 #include <sys/resource.h>
+#ifdef __linux__
 #include <sys/sysinfo.h>
+#endif
 #include <sys/time.h>
 #include <sys/times.h>
 #include <sys/utsname.h>
@@ -195,11 +197,16 @@ int64 cPosixProcess::times(void* buf)
 
 int cPosixProcess::sysinfo(void* buf)
 {
+#ifdef __linux__
     if (::sysinfo((struct sysinfo*)buf) != 0)
     {
         return POSIX_RESULT_ERRNO();
     }
     return 0;
+#else
+    (void)buf;
+    return -ENOSYS;
+#endif
 }
 
 int64 cPosixProcess::schedGetAffinity(void* buf, uint64 length)
@@ -257,6 +264,7 @@ int cPosixProcess::sleep(int clockId, int flags, int64 seconds,
                          int64 nanoseconds, int64* remainingSeconds,
                          int64* remainingNanoseconds)
 {
+#ifdef __linux__
     struct timespec request;
     struct timespec remaining;
     request.tv_sec = (time_t)seconds;
@@ -278,6 +286,11 @@ int cPosixProcess::sleep(int clockId, int flags, int64 seconds,
         return -error;
     }
     return 0;
+#else
+    (void)clockId; (void)flags; (void)seconds; (void)nanoseconds;
+    (void)remainingSeconds; (void)remainingNanoseconds;
+    return -ENOSYS;
+#endif
 }
 
 int64 cPosixProcess::getRandom(void* buf, uint64 length, uint flags)
