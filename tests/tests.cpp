@@ -37,6 +37,10 @@
  *
  * Author: Elad Raz <e@eladraz.com>
  */
+#if !defined(XSTL_CE)
+// Before xStl/types.h, which defines the 'uint' macro that clashes with libc.
+#include <stdlib.h>
+#endif
 #include "xStl/types.h"
 #include "xStl/os/os.h"
 #include "xStl/os/osrand.h"
@@ -106,6 +110,19 @@ cString cTestObject::randomizeName(uint maxNumberOfDigits)
 
 
 /*
+ * matchesTestFilter
+ *
+ * Returns true when the module name contains the filter string.
+ * cString::find returns the length of the string when nothing was found, so a
+ * match is a position strictly inside the name (the filter is never empty).
+ */
+static bool matchesTestFilter(const cString& name, const cString& filter)
+{
+    return name.find(filter) < name.length();
+}
+
+
+/*
  * main
  *
  * Scan all registered modules and execute them.
@@ -117,6 +134,32 @@ int main(const int, const char**)
     {
         uint32 total_counts = tests_container::get_tests().length();
 
+        // Optional test filter: XSTL_TEST_FILTER=<substring> runs only the
+        // tests whose name contains the substring. Not available on CE, which
+        // has no environment block.
+        bool filterEnabled = false;
+        cString filter;
+        #if !defined(XSTL_CE)
+            const char* filterEnv = getenv("XSTL_TEST_FILTER");
+            if (filterEnv != NULL && filterEnv[0] != '\0')
+            {
+                filterEnabled = true;
+                filter = cString(filterEnv);
+            }
+        #endif
+
+        // Count the modules selected by the filter.
+        uint32 selected_counts = 0;
+        for (cList<cTestObject*>::iterator i = tests_container::get_tests().begin();
+                                           i!= tests_container::get_tests().end();
+                                           i++)
+        {
+            if (!filterEnabled || matchesTestFilter((*i)->getName(), filter))
+            {
+                selected_counts++;
+            }
+        }
+
         // print logo ;)
         cout << endl;
         cout << "Welcome to xStl test module" << endl;
@@ -124,6 +167,16 @@ int main(const int, const char**)
         cout << endl;
         cout << "xStl written by Elad Raz T.B.A." << endl;
         cout << "The system contains tests for " << total_counts << " modules" << endl;
+        if (filterEnabled)
+        {
+            cout << "Filter '" << filter << "': " << selected_counts << " of "
+                 << total_counts << " modules" << endl;
+            if (selected_counts == 0)
+            {
+                cout << "No test matches '" << filter << "'" << endl;
+                return RC_ERROR;
+            }
+        }
         cout << "Start tests execution" << endl << endl;
 
 
@@ -132,6 +185,11 @@ int main(const int, const char**)
                                            i!= tests_container::get_tests().end();
                                            i++)
         {
+            if (filterEnabled && !matchesTestFilter((*i)->getName(), filter))
+            {
+                continue;
+            }
+
             // Capture the test
             XSTL_TRY
             {
@@ -179,14 +237,14 @@ int main(const int, const char**)
 
         cout << endl;
 
-        if (modules_passed == total_counts)
+        if (modules_passed == selected_counts)
         {
             cout << "OK!" << endl;
             return RC_OK;
         } else
         {
-            cout << modules_passed << " out of " << total_counts << " passed ("
-                 << ((modules_passed*100)/total_counts) << "%)" << endl;
+            cout << modules_passed << " out of " << selected_counts << " passed ("
+                 << ((modules_passed*100)/selected_counts) << "%)" << endl;
             return RC_ERROR;
         }
     }
