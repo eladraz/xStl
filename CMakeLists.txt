@@ -147,7 +147,9 @@ if (UNIX)
 		Source/xStl/os/UnixOS/unixMutex.cpp
 		Source/xStl/os/UnixOS/unixEvent.cpp
 		Source/xStl/os/UnixOS/unixVirtualMemory.cpp
+		Source/xStl/os/UnixOS/unixPosixPath.cpp
 		Source/xStl/os/UnixOS/unixPosixProcess.cpp
+		Source/xStl/os/UnixOS/unixPosixFile.cpp
 	)
 endif()
 if (WIN32)
@@ -163,7 +165,9 @@ if (WIN32)
 		Source/xStl/os/WindowsOS/winRandom.cpp
 		Source/xStl/os/WindowsOS/winThread.cpp
 		Source/xStl/os/WindowsOS/winVirtualMemory.cpp
+		Source/xStl/os/WindowsOS/winPosixPath.cpp
 		Source/xStl/os/WindowsOS/winPosixProcess.cpp
+		Source/xStl/os/WindowsOS/winPosixFile.cpp
 		Source/xStl/os/WindowsOS/windowsOS.cpp
 		Source/xStl/stream/pipeStream.cpp
 	)

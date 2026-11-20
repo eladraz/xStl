@@ -196,8 +196,11 @@
     <ClCompile Include="$(XSTL_PATH)\tests\test_stdio.cpp" />
     <ClCompile Include="$(XSTL_PATH)\tests\test_osServices.cpp" />
     <ClCompile Include="$(XSTL_PATH)\tests\test_processServices.cpp" />
+    <ClCompile Include="$(XSTL_PATH)\tests\test_posixPath.cpp" />
     <ClCompile Include="$(XSTL_PATH)\tests\test_posixProcess.cpp" />
+    <ClCompile Include="$(XSTL_PATH)\tests\test_posixFile.cpp" />
     <ClCompile Include="$(XSTL_PATH)\tests\test_virtualMemory.cpp" />
+    <ClCompile Include="$(XSTL_PATH)\tests\test_fileExt.cpp" />
     <ClCompile Include="$(XSTL_PATH)\tests\test_stream.cpp" />
     <ClCompile Include="$(XSTL_PATH)\tests\test_string.cpp" />
     <ClCompile Include="$(XSTL_PATH)\tests\test_stringStream.cpp" />

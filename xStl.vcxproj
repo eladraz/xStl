@@ -315,6 +315,7 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Kernel Release|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Kernel Debug|Win32'">true</ExcludedFromBuild>
     </ClCompile>
+    <ClCompile Include="$(XSTL_PATH)\Source\xStl\os\WindowsOS\winPosixFile.cpp" />
     <ClCompile Include="$(XSTL_PATH)\Source\xStl\os\WindowsOS\winFilename.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Kernel Debug|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Kernel Release|Win32'">true</ExcludedFromBuild>
@@ -331,6 +332,7 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Kernel Debug|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Kernel Release|Win32'">true</ExcludedFromBuild>
     </ClCompile>
+    <ClCompile Include="$(XSTL_PATH)\Source\xStl\os\WindowsOS\winPosixPath.cpp" />
     <ClCompile Include="$(XSTL_PATH)\Source\xStl\os\WindowsOS\winPosixProcess.cpp" />
     <ClCompile Include="$(XSTL_PATH)\Source\xStl\enc\digest.cpp" />
     <ClCompile Include="$(XSTL_PATH)\Source\xStl\enc\encryption.cpp" />
@@ -499,6 +501,7 @@
     <ClInclude Include="$(XSTL_PATH)\Include\xStl\os\directoryFormatParser.h" />
     <ClInclude Include="$(XSTL_PATH)\Include\xStl\os\event.h" />
     <ClInclude Include="$(XSTL_PATH)\Include\xStl\os\file.h" />
+    <ClInclude Include="$(XSTL_PATH)\Include\xStl\os\posixFile.h" />
     <ClInclude Include="$(XSTL_PATH)\Include\xStl\os\fileException.h" />
     <ClInclude Include="$(XSTL_PATH)\Include\xStl\os\filename.h" />
     <ClInclude Include="$(XSTL_PATH)\Include\xStl\os\fragmentsDescriptor.h" />
@@ -516,6 +519,7 @@
     <ClInclude Include="$(XSTL_PATH)\Include\xStl\os\threadUnsafeMemoryAccesser.h" />
     <ClInclude Include="$(XSTL_PATH)\Include\xStl\os\time.h" />
     <ClInclude Include="$(XSTL_PATH)\Include\xStl\os\virtualMemory.h" />
+    <ClInclude Include="$(XSTL_PATH)\Include\xStl\os\posixPath.h" />
     <ClInclude Include="$(XSTL_PATH)\Include\xStl\os\virtualMemoryAccesser.h" />
     <ClInclude Include="$(XSTL_PATH)\Include\xStl\os\waitable.h" />
     <ClInclude Include="$(XSTL_PATH)\Include\xStl\os\WindowsOS\winFilename.h" />

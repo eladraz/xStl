@@ -89,7 +89,16 @@ public:
         /**
          * @brief Allow other handles to open the file for writing.
          */
-        SHARE_WRITE = 32
+        SHARE_WRITE = 32,
+        /**
+         * @brief Append mode (O_APPEND semantics). Every write goes to the
+         *    end of the file, whatever position seek() set; seek() still moves
+         *    the read position. The existing content is kept (no truncation).
+         *    Combine with WRITE, READWRITE or CREATE (CREATE then only creates
+         *    a missing file). Unix: O_APPEND. Windows: the write right is
+         *    FILE_APPEND_DATA without FILE_WRITE_DATA.
+         */
+        APPEND      = 64
     };
 
     /**
@@ -154,6 +163,24 @@ public:
     static bool deleteFile(const cString& filename);
 
     /**
+     * @brief Rename (move) a file. An existing 'to' file is replaced.
+     *
+     * @param from The full-path file to rename.
+     * @param to The new full-path name of the file.
+     * @return True if the file was renamed, false otherwise.
+     */
+    static bool renameFile(const cString& from, const cString& to);
+
+    /**
+     * @brief Return true if the standard stream is attached to a terminal
+     *    (console) rather than to a file or a pipe.
+     *
+     * @param stream The standard stream to test.
+     * @return True if @a stream is a terminal.
+     */
+    static bool isTerminal(StandardStream stream);
+
+    /**
      * @brief Return a file object which wraps one of the standard streams.
      *
      * @details The returned object is a process-wide singleton which never
@@ -172,12 +199,31 @@ public:
     cFile(const cFile& other);
 
     /**
+     * @brief Construct a closed file object. Use tryOpen() to open it.
+     */
+    cFile();
+
+    /**
      * @brief Copy operator.
      *
      * @param other The file object to copy from.
      * @return A reference to this object.
      */
     cFile& operator = (const cFile& other);
+
+    /**
+     * @brief Open a closed file object, without throwing.
+     *
+     * @details Same flags as the constructor. The object must not be open,
+     *    otherwise the call fails with osError set to EBUSY.
+     *
+     * @param name The full-path file to open.
+     * @param flags The open mode, creation mode and access mode for the file.
+     * @param osError On failure, receives the OS error code (errno values such
+     *    as ENOENT or EACCES). Set to 0 on success.
+     * @return True if the file was opened, false otherwise.
+     */
+    bool tryOpen(const cString& name, const uint flags, int& osError);
 
     /**
      * @brief Return a handle to the file.
