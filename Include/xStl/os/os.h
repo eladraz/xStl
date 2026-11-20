@@ -257,6 +257,21 @@ public:
      */
     static cString getLastErrorString();
 
+    /**
+     * @brief Read an environment variable of the current process.
+     *
+     * @details The name is an ASCII string. On Windows the ANSI environment
+     *    block is used (GetEnvironmentVariableA). A variable that is set to an
+     *    empty string is found, with an empty value.
+     *
+     * @param name The name of the environment variable (ASCII).
+     * @param value Receives the value of the variable when the function
+     *    returns true. It is not modified when the variable is not set.
+     * @return true if the variable is set, false otherwise.
+     * @throws cException if the operating system fails to read the block.
+     */
+    static bool getEnvironmentVariable(const char* name, cString& value);
+
     //
     // Times functions
     //
@@ -282,6 +297,79 @@ public:
      */
     static uint calculateTimesDiffMilli(cOSDef::systemTime currentTime,
                                         cOSDef::systemTime startTime);
+
+    /**
+     * @brief Return the current wall-clock time as seconds since the Unix
+     *    epoch (1970-01-01 00:00:00 UTC).
+     *
+     * @details Unix: time(NULL). Windows: the system FILETIME converted to
+     *    the epoch. Both use the same clock as getSystemTime().
+     *
+     * @return Seconds since the epoch.
+     * @throws cException if the operating system fails to report the time.
+     */
+    static int64 getEpochSeconds();
+
+    /**
+     * @brief Return the CPU time consumed by the current process (user plus
+     *    kernel time, all threads) in microseconds.
+     *
+     * @details Unix: clock_gettime(CLOCK_PROCESS_CPUTIME_ID). Windows:
+     *    GetProcessTimes. The value is monotonic while the process runs.
+     *
+     * @return The process CPU time in microseconds.
+     * @throws cException if the operating system fails to report the time.
+     */
+    static uint64 getProcessCpuMicroseconds();
+
+    /**
+     * @brief Monotonic clock in nanoseconds (arbitrary origin). Throws on
+     *    failure.
+     */
+    static uint64 getMonotonicNanoseconds();
+
+    /**
+     * @brief Wall-clock time in nanoseconds since the Unix epoch. Throws on
+     *    failure.
+     */
+    static int64 getRealtimeNanoseconds();
+
+    //
+    // Process functions
+    //
+
+    /** @brief waitProcess() option: return 0 at once if the child runs. */
+    enum { WAIT_NO_HANG = 1 };
+
+    /**
+     * @brief Fork the process (Unix only). Returns 0 in the child, the child
+     *    pid in the parent, -1 on failure. The caller must flush stdio before
+     *    forking. Throws EXCEPTION_FAILED on Windows (unsupported).
+     */
+    static int64 forkProcess();
+
+    /**
+     * @brief Wait for a child (Unix only). pid -1 waits for any child.
+     *    Returns the reaped pid, 0 (WAIT_NO_HANG, child running) or -1 with
+     *    osError set (ECHILD when no child is left). rawStatus is the raw
+     *    wait status. Throws EXCEPTION_FAILED on Windows (unsupported).
+     */
+    static int64 waitProcess(int64 pid, int options, int& rawStatus,
+                             int& osError);
+
+    /**
+     * @brief Terminate the process with 'status'. No atexit handlers run and
+     *    stdio is not flushed. Never returns.
+     */
+    static void exitImmediately(int status);
+
+    /**
+     * @brief Set an environment variable. Returns true when the variable is
+     *    present afterwards (also when an existing value is kept because
+     *    overwrite is false), false on an OS error.
+     */
+    static bool setEnvironmentVariable(const char* name, const char* value,
+                                       bool overwrite);
 
     //
     // Debug

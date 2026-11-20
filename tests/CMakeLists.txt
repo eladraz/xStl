@@ -74,6 +74,9 @@ add_executable(xstl_tests
      tests.cpp
      test_stream.cpp
      test_stdio.cpp
+     test_osServices.cpp
+     test_processServices.cpp
+     test_posixProcess.cpp
      test_virtualMemory.cpp)
 
 set(ENV{XSTL_PATH} ../)
