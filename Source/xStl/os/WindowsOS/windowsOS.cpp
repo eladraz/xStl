@@ -160,6 +160,161 @@ uint cOS::calculateTimesDiffMilli(cOSDef::systemTime currentTime,
     return (uint)((currentTime - startTime) / 10000L);
 }
 
+// Seconds between the FILETIME epoch (1601-01-01) and the Unix epoch
+#define XSTL_FILETIME_TO_UNIX_SECONDS (11644473600LL)
+
+int64 cOS::getEpochSeconds()
+{
+    // getSystemTime() returns FILETIME units (100 ns since 1601-01-01 UTC)
+    uint64 fileTime = getSystemTime();
+    return (int64)(fileTime / 10000000ULL) - XSTL_FILETIME_TO_UNIX_SECONDS;
+}
+
+uint64 cOS::getProcessCpuMicroseconds()
+{
+#ifdef XSTL_CE
+    // Windows CE has no per-process CPU accounting in this API
+    XSTL_THROW(cException, EXCEPTION_FAILED);
+#else
+    FILETIME creation, exitTime, kernel, user;
+    if (!GetProcessTimes(GetCurrentProcess(), &creation, &exitTime,
+                         &kernel, &user))
+    {
+        XSTL_THROW(cException, EXCEPTION_FAILED);
+    }
+
+    // Both times are in 100 ns units (FILETIME), 10 units per microsecond
+    uint64 kernelUnits = ((uint64)kernel.dwHighDateTime << 32) |
+                         (uint64)kernel.dwLowDateTime;
+    uint64 userUnits = ((uint64)user.dwHighDateTime << 32) |
+                       (uint64)user.dwLowDateTime;
+    return (kernelUnits + userUnits) / 10ULL;
+#endif // XSTL_CE
+}
+
+bool cOS::getEnvironmentVariable(const char* name, cString& value)
+{
+#ifdef XSTL_CE
+    // Windows CE has no environment block: every variable is unset
+    return false;
+#else
+    // The ANSI block is used; the name is ASCII by contract
+    for (;;)
+    {
+        // Query the required size (including the terminating NUL)
+        DWORD needed = GetEnvironmentVariableA(name, NULL, 0);
+        if (needed == 0)
+        {
+            // Not set (or the name is invalid)
+            return false;
+        }
+
+        cSArray<char> buffer(needed);
+        buffer[0] = 0;
+        SetLastError(ERROR_SUCCESS);
+        DWORD got = GetEnvironmentVariableA(name, buffer.getBuffer(), needed);
+        if (got == 0)
+        {
+            // 0 is also the length of a variable set to "": only a missing
+            // variable reports ERROR_ENVVAR_NOT_FOUND
+            DWORD error = GetLastError();
+            if (error == ERROR_ENVVAR_NOT_FOUND)
+            {
+                return false;
+            }
+            if (error != ERROR_SUCCESS)
+            {
+                XSTL_THROW(cException, EXCEPTION_FAILED);
+            }
+            value = cString(buffer.getBuffer());
+            return true;
+        }
+        if (got < needed)
+        {
+            // 'got' excludes the terminating NUL
+            value = cString(buffer.getBuffer());
+            return true;
+        }
+        // The variable grew between the two calls, query again
+    }
+#endif // XSTL_CE
+}
+
+bool cOS::setEnvironmentVariable(const char* name, const char* value,
+                                 bool overwrite)
+{
+#ifdef XSTL_CE
+    // Windows CE has no environment block
+    return false;
+#else
+    if (!overwrite)
+    {
+        // 0 means unset or invalid name (a variable set to "" reports 1)
+        if (GetEnvironmentVariableA(name, NULL, 0) != 0)
+        {
+            return true;
+        }
+        if (GetLastError() != ERROR_ENVVAR_NOT_FOUND)
+        {
+            return false;
+        }
+    }
+    return SetEnvironmentVariableA(name, value) != 0;
+#endif // XSTL_CE
+}
+
+// FILETIME units (100 ns) from 1601-01-01 to 1970-01-01
+#define XSTL_FILETIME_TO_UNIX_100NS (116444736000000000LL)
+
+uint64 cOS::getMonotonicNanoseconds()
+{
+#ifdef XSTL_CE
+    // Milliseconds resolution, the best the CE API offers here
+    return (uint64)GetTickCount() * 1000000ULL;
+#else
+    LARGE_INTEGER frequency, counter;
+    if (!QueryPerformanceFrequency(&frequency) ||
+        !QueryPerformanceCounter(&counter) ||
+        frequency.QuadPart <= 0)
+    {
+        XSTL_THROW(cException, EXCEPTION_FAILED);
+    }
+    // Split the division so that the multiplication cannot overflow
+    uint64 ticks = (uint64)counter.QuadPart;
+    uint64 hertz = (uint64)frequency.QuadPart;
+    return (ticks / hertz) * 1000000000ULL +
+           (ticks % hertz) * 1000000000ULL / hertz;
+#endif // XSTL_CE
+}
+
+int64 cOS::getRealtimeNanoseconds()
+{
+    // getSystemTime() returns FILETIME units (100 ns since 1601-01-01 UTC)
+    uint64 fileTime = getSystemTime();
+    return ((int64)fileTime - XSTL_FILETIME_TO_UNIX_100NS) * 100;
+}
+
+int64 cOS::forkProcess()
+{
+    XSTL_THROW(cException, EXCEPTION_FAILED);
+    return -1;
+}
+
+int64 cOS::waitProcess(int64 pid, int options, int& rawStatus, int& osError)
+{
+    XSTL_THROW(cException, EXCEPTION_FAILED);
+    return -1;
+}
+
+void cOS::exitImmediately(int status)
+{
+#ifdef XSTL_CE
+    ExitProcess((UINT)status);
+#else
+    TerminateProcess(GetCurrentProcess(), (UINT)status);
+#endif
+}
+
 cString cOS::getLastErrorString()
 {
     // Query error code

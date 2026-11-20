@@ -16,3 +16,4 @@ if UNICODE
 libxstl_unix_la_CFLAGS+= -DXSTL_UNICODE -D_UNICODE
 libxstl_unix_la_CPPFLAGS+= -DXSTL_UNICODE -D_UNICODE
 endif
+libxstl_unix_la_SOURCES += unixPosixProcess.cpp

@@ -40,8 +40,13 @@
  *
  * Author: Elad Raz <e@eladraz.com>
  */
+// System headers come before xStl/types.h ('uint' macro clash)
+#include <sys/types.h>
+#include <sys/wait.h>
+
 #include "xStl/types.h"
 #include "xStl/except/trace.h"
+#include "xStl/except/exception.h"
 #include "xStl/data/sarray.h"
 #include "xStl/data/datastream.h"
 #include "xStl/enc/random.h"
@@ -111,6 +116,99 @@ uint cOS::calculateTimesDiffMilli(cOSDef::systemTime currentTime,
                                   cOSDef::systemTime startTime)
 {
     return (uint)((difftime(currentTime, startTime) * 1000));
+}
+
+int64 cOS::getEpochSeconds()
+{
+    return (int64)time(NULL);
+}
+
+uint64 cOS::getProcessCpuMicroseconds()
+{
+    struct timespec ts;
+    if (clock_gettime(CLOCK_PROCESS_CPUTIME_ID, &ts) != 0)
+    {
+        XSTL_THROW(cException, EXCEPTION_FAILED);
+    }
+    return (uint64)ts.tv_sec * 1000000ULL + (uint64)(ts.tv_nsec / 1000);
+}
+
+bool cOS::getEnvironmentVariable(const char* name, cString& value)
+{
+    const char* found = getenv(name);
+    if (found == NULL)
+    {
+        return false;
+    }
+    value = cString(found);
+    return true;
+}
+
+bool cOS::setEnvironmentVariable(const char* name, const char* value,
+                                 bool overwrite)
+{
+    // An existing variable is kept (and still present) when overwrite is false
+    if (!overwrite && getenv(name) != NULL)
+    {
+        return true;
+    }
+    return setenv(name, value, 1) == 0;
+}
+
+uint64 cOS::getMonotonicNanoseconds()
+{
+    struct timespec ts;
+    if (clock_gettime(CLOCK_MONOTONIC, &ts) != 0)
+    {
+        XSTL_THROW(cException, EXCEPTION_FAILED);
+    }
+    return (uint64)ts.tv_sec * 1000000000ULL + (uint64)ts.tv_nsec;
+}
+
+int64 cOS::getRealtimeNanoseconds()
+{
+    struct timespec ts;
+    if (clock_gettime(CLOCK_REALTIME, &ts) != 0)
+    {
+        XSTL_THROW(cException, EXCEPTION_FAILED);
+    }
+    return (int64)ts.tv_sec * 1000000000LL + (int64)ts.tv_nsec;
+}
+
+int64 cOS::forkProcess()
+{
+    pid_t pid = fork();
+    return (int64)pid;
+}
+
+int64 cOS::waitProcess(int64 pid, int options, int& rawStatus, int& osError)
+{
+    int flags = (options & WAIT_NO_HANG) ? WNOHANG : 0;
+    for (;;)
+    {
+        int status = 0;
+        pid_t reaped = waitpid((pid_t)pid, &status, flags);
+        if (reaped < 0 && errno == EINTR)
+        {
+            continue;
+        }
+        if (reaped < 0)
+        {
+            osError = errno;
+            return -1;
+        }
+        osError = 0;
+        if (reaped > 0)
+        {
+            rawStatus = status;
+        }
+        return (int64)reaped;
+    }
+}
+
+void cOS::exitImmediately(int status)
+{
+    _exit(status);
 }
 
 cString cOS::getLastErrorString()

@@ -331,6 +331,7 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Kernel Debug|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Kernel Release|Win32'">true</ExcludedFromBuild>
     </ClCompile>
+    <ClCompile Include="$(XSTL_PATH)\Source\xStl\os\WindowsOS\winPosixProcess.cpp" />
     <ClCompile Include="$(XSTL_PATH)\Source\xStl\enc\digest.cpp" />
     <ClCompile Include="$(XSTL_PATH)\Source\xStl\enc\encryption.cpp" />
     <ClCompile Include="$(XSTL_PATH)\Source\xStl\enc\random.cpp" />
@@ -507,6 +508,7 @@
     <ClInclude Include="$(XSTL_PATH)\Include\xStl\os\os.h" />
     <ClInclude Include="$(XSTL_PATH)\Include\xStl\os\osdef.h" />
     <ClInclude Include="$(XSTL_PATH)\Include\xStl\os\osExcept.h" />
+    <ClInclude Include="$(XSTL_PATH)\Include\xStl\os\posixProcess.h" />
     <ClInclude Include="$(XSTL_PATH)\Include\xStl\os\serialPort.h" />
     <ClInclude Include="$(XSTL_PATH)\Include\xStl\os\streamMemoryAccesser.h" />
     <ClInclude Include="$(XSTL_PATH)\Include\xStl\os\thread.h" />

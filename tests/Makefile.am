@@ -37,6 +37,9 @@ xstl_tests_SOURCES = test_compression.cpp \
                      tests.cpp          \
                      test_stream.cpp \
                      test_stdio.cpp \
+                     test_osServices.cpp \
+                     test_processServices.cpp \
+                     test_posixProcess.cpp \
                      test_virtualMemory.cpp
 
 
