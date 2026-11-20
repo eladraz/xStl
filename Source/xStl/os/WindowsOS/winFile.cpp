@@ -49,37 +49,87 @@
 #include "xStl/os/file.h"
 #include "xStl/os/fileException.h"
 
-cFile::cFile(const cString& filename,
-             const uint flags /* = cFile::READ */) :
-    m_handle(INVALID_FILE_HANDLE)
+#include <errno.h>
+
+/*
+ * Map a Windows error code to the errno value reported by tryOpen().
+ */
+static int windowsErrorToErrno(const DWORD error)
+{
+    switch (error)
+    {
+    case ERROR_FILE_NOT_FOUND:
+    case ERROR_PATH_NOT_FOUND:
+    case ERROR_INVALID_DRIVE:
+        return ENOENT;
+    case ERROR_ACCESS_DENIED:
+    case ERROR_SHARING_VIOLATION:
+    case ERROR_LOCK_VIOLATION:
+        return EACCES;
+    case ERROR_FILE_EXISTS:
+    case ERROR_ALREADY_EXISTS:
+        return EEXIST;
+    case ERROR_TOO_MANY_OPEN_FILES:
+        return EMFILE;
+    case ERROR_NOT_ENOUGH_MEMORY:
+    case ERROR_OUTOFMEMORY:
+        return ENOMEM;
+    case ERROR_INVALID_PARAMETER:
+        return EINVAL;
+    }
+    return EIO;
+}
+
+/*
+ * Open the file without throwing. Returns INVALID_FILE_HANDLE on failure and
+ * stores the Windows error code in lastError.
+ */
+static cOSDef::fileHandle openFileHandle(const cString& filename,
+                                         const uint flags,
+                                         DWORD& lastError)
 {
     DWORD dwShareMode = 0;
     DWORD dwDesiredAccess = 0;
     DWORD dwCreationDisposition = OPEN_EXISTING;
 
+    /*
+     * Append (O_APPEND semantics): FILE_APPEND_DATA without FILE_WRITE_DATA
+     * makes every write go to the end of the file, whatever the position.
+     * The rights are GENERIC_WRITE minus FILE_WRITE_DATA, listed explicitly
+     * (masking the generic bit would not remove FILE_WRITE_DATA).
+     */
+    const DWORD writeAccess = (flags & cFile::APPEND)
+        ? (FILE_APPEND_DATA | FILE_WRITE_ATTRIBUTES | FILE_WRITE_EA |
+           READ_CONTROL | SYNCHRONIZE)
+        : GENERIC_WRITE;
+
     /* fill in the dwDesiredAccess variable */
-    if (flags & READWRITE)
-        dwDesiredAccess = GENERIC_WRITE | GENERIC_READ;
+    if (flags & cFile::READWRITE)
+        dwDesiredAccess = writeAccess | GENERIC_READ;
     else
     {
-        if (flags & READ)
+        if (flags & cFile::READ)
             dwDesiredAccess|= GENERIC_READ;
 
-        if (flags & WRITE)
-            dwDesiredAccess|= GENERIC_WRITE;
+        if (flags & cFile::WRITE)
+            dwDesiredAccess|= writeAccess;
     }
 
     /* fill in the dwSharedMode variable */
-    if (flags & SHARE_READ)
+    if (flags & cFile::SHARE_READ)
         dwShareMode|= FILE_SHARE_READ;
 
-    if (flags & SHARE_WRITE)
+    if (flags & cFile::SHARE_WRITE)
         dwShareMode|= FILE_SHARE_WRITE;
 
 
     /* fill in the dwCreationDisposition variable */
-    if (flags & CREATE)
-        dwCreationDisposition = CREATE_ALWAYS;
+    if (flags & cFile::CREATE)
+    {
+        // Append keeps the content, so the file is only created when missing
+        dwCreationDisposition = (flags & cFile::APPEND) ? OPEN_ALWAYS
+                                                        : CREATE_ALWAYS;
+    }
 
     HANDLE handle = CreateFile(OS_CSTRING(filename.getBuffer()),
                           dwDesiredAccess,
@@ -88,6 +138,21 @@ cFile::cFile(const cString& filename,
                           dwCreationDisposition,
                           FILE_ATTRIBUTE_NORMAL,
                           NULL);
+    if (handle == INVALID_FILE_HANDLE)
+    {
+        lastError = GetLastError();
+        return INVALID_FILE_HANDLE;
+    }
+
+    return handle;
+}
+
+cFile::cFile(const cString& filename,
+             const uint flags /* = cFile::READ */) :
+    m_handle(INVALID_FILE_HANDLE)
+{
+    DWORD lastError = 0;
+    HANDLE handle = openFileHandle(filename, flags, lastError);
 
     /* Test for open errors */
     if (handle == INVALID_FILE_HANDLE)
@@ -97,6 +162,35 @@ cFile::cFile(const cString& filename,
     }
 
     openHandle(handle, flags, true);
+}
+
+cFile::cFile() :
+    m_handle(INVALID_FILE_HANDLE),
+    m_isReadable(false),
+    m_isWriteable(false),
+    m_closeHandle(false)
+{
+}
+
+bool cFile::tryOpen(const cString& name, const uint flags, int& osError)
+{
+    osError = 0;
+    if (isOpen())
+    {
+        osError = EBUSY;
+        return false;
+    }
+
+    DWORD lastError = 0;
+    HANDLE handle = openFileHandle(name, flags, lastError);
+    if (handle == INVALID_FILE_HANDLE)
+    {
+        osError = windowsErrorToErrno(lastError);
+        return false;
+    }
+
+    openHandle(handle, flags, true);
+    return true;
 }
 
 cFile::cFile(cOSDef::fileHandle handle,
@@ -125,6 +219,32 @@ bool cFile::isFileExist(const cString& filename)
 bool cFile::deleteFile(const cString& filename)
 {
     return (::DeleteFile(OS_CSTRING(filename.getBuffer())) == TRUE);
+}
+
+bool cFile::renameFile(const cString& from, const cString& to)
+{
+    return (::MoveFileEx(OS_CSTRING(from.getBuffer()),
+                         OS_CSTRING(to.getBuffer()),
+                         MOVEFILE_REPLACE_EXISTING) == TRUE);
+}
+
+bool cFile::isTerminal(StandardStream stream)
+{
+    DWORD id = STD_INPUT_HANDLE;
+    switch (stream)
+    {
+    case STANDARD_INPUT:
+        id = STD_INPUT_HANDLE;
+        break;
+    case STANDARD_OUTPUT:
+        id = STD_OUTPUT_HANDLE;
+        break;
+    case STANDARD_ERROR:
+        id = STD_ERROR_HANDLE;
+        break;
+    }
+    DWORD mode = 0;
+    return GetConsoleMode(GetStdHandle(id), &mode) != 0;
 }
 
 cFile& cFile::getStandardStream(StandardStream stream)

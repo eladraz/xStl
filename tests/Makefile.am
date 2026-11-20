@@ -39,8 +39,11 @@ xstl_tests_SOURCES = test_compression.cpp \
                      test_stdio.cpp \
                      test_osServices.cpp \
                      test_processServices.cpp \
+                     test_posixPath.cpp \
                      test_posixProcess.cpp \
-                     test_virtualMemory.cpp
+                     test_posixFile.cpp \
+                     test_virtualMemory.cpp \
+                     test_fileExt.cpp
 
 
 xstl_tests_CFLAGS = $(CFLAGS_XSTL_COMMON) $(DBGFLAGS) $(AM_CFLAGS)

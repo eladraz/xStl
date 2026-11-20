@@ -64,9 +64,11 @@
 #include <errno.h>
 
 
-cFile::cFile(const cString& filename,
-             const uint flags /* = cFile::READ */) :
-    m_handle(INVALID_FILE_HANDLE)
+/*
+ * Open the file without throwing. Returns INVALID_FILE_HANDLE on failure and
+ * leaves the reason in errno (the callers read it right after the call).
+ */
+static int openFileHandle(const cString& filename, const uint flags)
 {
     #ifdef XSTL_MACOSX
         // Files on MAC are automatically 64bit
@@ -75,14 +77,17 @@ cFile::cFile(const cString& filename,
         int o_flags = O_LARGEFILE;
     #endif
 
-    if (flags & READ)
+    if (flags & cFile::READ)
         o_flags|= O_RDONLY;
 
-    if (flags & WRITE)
+    if (flags & cFile::WRITE)
         o_flags|= O_WRONLY;
 
-    if ((flags & READWRITE) == READWRITE)
+    if ((flags & cFile::READWRITE) == cFile::READWRITE)
         o_flags = O_RDWR;
+
+    if (flags & cFile::APPEND)
+        o_flags|= O_APPEND;
 
     // fill in the dwSharedMode variable
     //if (flags & SHARE_READ)
@@ -90,29 +95,36 @@ cFile::cFile(const cString& filename,
 
     // fill in the dwCreationDisposition variable
     int handle = INVALID_FILE_HANDLE;
-    if (flags & CREATE)
+    if (flags & cFile::CREATE)
     {
-        // TODO!!!
-
-        //o_flags = o_flags | O_CREAT | O_TRUNC;
-        //mode_t mode = 666;
-        //mode_t old = umask(mode);
-        //handle = ::open(filename.getASCIIstring().getBuffer(), o_flags, mode);
-        //umask(old);
-
-        // Create the file and reopen it. The above method doesn't seem to
-        // work on Ubuntu
-        FILE* file = fopen(filename.getASCIIstring().getBuffer(), "w+");
-        if (file != NULL)
+        if (flags & cFile::APPEND)
         {
-            fclose(file);
-            handle = ::open(filename.getASCIIstring().getBuffer(), o_flags);
+            // Append keeps the content, so create the file only when missing
+            handle = ::open(filename.getASCIIstring().getBuffer(),
+                            o_flags | O_CREAT, 0666);
+        } else
+        {
+            // Create the file and reopen it. The above method doesn't seem to
+            // work on Ubuntu
+            FILE* file = fopen(filename.getASCIIstring().getBuffer(), "w+");
+            if (file != NULL)
+            {
+                fclose(file);
+                handle = ::open(filename.getASCIIstring().getBuffer(), o_flags);
+            }
         }
     } else
     {
         handle = ::open(filename.getASCIIstring().getBuffer(), o_flags);
     }
+    return handle;
+}
 
+cFile::cFile(const cString& filename,
+             const uint flags /* = cFile::READ */) :
+    m_handle(INVALID_FILE_HANDLE)
+{
+    int handle = openFileHandle(filename, flags);
 
     // Test for open errors
     if (handle == INVALID_FILE_HANDLE)
@@ -122,6 +134,34 @@ cFile::cFile(const cString& filename,
     }
 
     openHandle(handle, flags, true);
+}
+
+cFile::cFile() :
+    m_handle(INVALID_FILE_HANDLE),
+    m_isReadable(false),
+    m_isWriteable(false),
+    m_closeHandle(false)
+{
+}
+
+bool cFile::tryOpen(const cString& name, const uint flags, int& osError)
+{
+    osError = 0;
+    if (isOpen())
+    {
+        osError = EBUSY;
+        return false;
+    }
+
+    int handle = openFileHandle(name, flags);
+    if (handle == INVALID_FILE_HANDLE)
+    {
+        osError = errno;
+        return false;
+    }
+
+    openHandle(handle, flags, true);
+    return true;
 }
 
 cFile::cFile(cOSDef::fileHandle handle,
@@ -148,6 +188,30 @@ bool cFile::isFileExist(const cString& filename)
 bool cFile::deleteFile(const cString& filename)
 {
     return (::unlink(filename.getASCIIstring().getBuffer()) == 0);
+}
+
+bool cFile::renameFile(const cString& from, const cString& to)
+{
+    return (::rename(from.getASCIIstring().getBuffer(),
+                     to.getASCIIstring().getBuffer()) == 0);
+}
+
+bool cFile::isTerminal(StandardStream stream)
+{
+    int fd = -1;
+    switch (stream)
+    {
+    case STANDARD_INPUT:
+        fd = STDIN_FILENO;
+        break;
+    case STANDARD_OUTPUT:
+        fd = STDOUT_FILENO;
+        break;
+    case STANDARD_ERROR:
+        fd = STDERR_FILENO;
+        break;
+    }
+    return (fd >= 0) && (isatty(fd) == 1);
 }
 
 cFile& cFile::getStandardStream(StandardStream stream)
