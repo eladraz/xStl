@@ -327,6 +327,10 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Kernel Debug|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Kernel Release|Win32'">true</ExcludedFromBuild>
     </ClCompile>
+    <ClCompile Include="$(XSTL_PATH)\Source\xStl\os\WindowsOS\winVirtualMemory.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Kernel Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Kernel Release|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="$(XSTL_PATH)\Source\xStl\enc\digest.cpp" />
     <ClCompile Include="$(XSTL_PATH)\Source\xStl\enc\encryption.cpp" />
     <ClCompile Include="$(XSTL_PATH)\Source\xStl\enc\random.cpp" />
@@ -509,6 +513,7 @@
     <ClInclude Include="$(XSTL_PATH)\Include\xStl\os\threadedClass.h" />
     <ClInclude Include="$(XSTL_PATH)\Include\xStl\os\threadUnsafeMemoryAccesser.h" />
     <ClInclude Include="$(XSTL_PATH)\Include\xStl\os\time.h" />
+    <ClInclude Include="$(XSTL_PATH)\Include\xStl\os\virtualMemory.h" />
     <ClInclude Include="$(XSTL_PATH)\Include\xStl\os\virtualMemoryAccesser.h" />
     <ClInclude Include="$(XSTL_PATH)\Include\xStl\os\waitable.h" />
     <ClInclude Include="$(XSTL_PATH)\Include\xStl\os\WindowsOS\winFilename.h" />

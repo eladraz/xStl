@@ -180,6 +180,9 @@
     <ClCompile Include="$(XSTL_PATH)\Source\xStl\os\WindowsOS\winThread.cpp">
       <Filter>Source Files\os\winOS</Filter>
     </ClCompile>
+    <ClCompile Include="$(XSTL_PATH)\Source\xStl\os\WindowsOS\winVirtualMemory.cpp">
+      <Filter>Source Files\os\winOS</Filter>
+    </ClCompile>
     <ClCompile Include="$(XSTL_PATH)\Source\xStl\enc\digest.cpp">
       <Filter>Source Files\enc</Filter>
     </ClCompile>
@@ -503,6 +506,9 @@
       <Filter>Header Files\os.h</Filter>
     </ClInclude>
     <ClInclude Include="$(XSTL_PATH)\Include\xStl\os\time.h">
+      <Filter>Header Files\os.h</Filter>
+    </ClInclude>
+    <ClInclude Include="$(XSTL_PATH)\Include\xStl\os\virtualMemory.h">
       <Filter>Header Files\os.h</Filter>
     </ClInclude>
     <ClInclude Include="$(XSTL_PATH)\Include\xStl\os\virtualMemoryAccesser.h">

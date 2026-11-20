@@ -146,6 +146,7 @@ if (UNIX)
 		Source/xStl/os/UnixOS/unixOS.cpp
 		Source/xStl/os/UnixOS/unixMutex.cpp
 		Source/xStl/os/UnixOS/unixEvent.cpp
+		Source/xStl/os/UnixOS/unixVirtualMemory.cpp
 	)
 endif()
 if (WIN32)
@@ -160,6 +161,7 @@ if (WIN32)
 		Source/xStl/os/WindowsOS/winFilename.cpp
 		Source/xStl/os/WindowsOS/winRandom.cpp
 		Source/xStl/os/WindowsOS/winThread.cpp
+		Source/xStl/os/WindowsOS/winVirtualMemory.cpp
 		Source/xStl/os/WindowsOS/windowsOS.cpp
 		Source/xStl/stream/pipeStream.cpp
 	)
