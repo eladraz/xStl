@@ -138,12 +138,22 @@ int64 cPosixFile::dup(int fd)
 
 int64 cPosixFile::dup3(int oldFd, int newFd, int flags)
 {
+#ifdef __linux__
     return posixResult(::dup3(oldFd, newFd, flags));
+#else
+    (void)oldFd; (void)newFd; (void)flags;
+    return -(int64)ENOSYS;
+#endif
 }
 
 int64 cPosixFile::pipe2(int fds[2], int flags)
 {
+#ifdef __linux__
     return posixResult(::pipe2(fds, flags));
+#else
+    (void)fds; (void)flags;
+    return -(int64)ENOSYS;
+#endif
 }
 
 int64 cPosixFile::fcntlInt(int fd, int cmd, int64 arg)
@@ -173,11 +183,17 @@ int64 cPosixFile::fsync(int fd)
 
 int64 cPosixFile::fdatasync(int fd)
 {
+#ifdef __linux__
     return posixResult(::fdatasync(fd));
+#else
+    (void)fd;
+    return -(int64)ENOSYS;
+#endif
 }
 
 int64 cPosixFile::ppoll(void* pollfds, uint64 count, const int64* timeoutNs)
 {
+#ifdef __linux__
     struct timespec timeout;
     struct timespec* timeoutPtr = NULL;
     if (timeoutNs != NULL)
@@ -192,4 +208,8 @@ int64 cPosixFile::ppoll(void* pollfds, uint64 count, const int64* timeoutNs)
     }
     return posixResult(::ppoll((struct pollfd*)pollfds, (nfds_t)count,
                                timeoutPtr, NULL));
+#else
+    (void)pollfds; (void)count; (void)timeoutNs;
+    return -(int64)ENOSYS;
+#endif
 }

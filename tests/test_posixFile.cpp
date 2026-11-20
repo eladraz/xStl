@@ -42,6 +42,12 @@
 #define POSIX_FILE_TEST_UNIX (0)
 #else
 #define POSIX_FILE_TEST_UNIX (1)
+// dup3, pipe2, fdatasync and ppoll exist on Linux only; elsewhere they -ENOSYS
+#if defined(__linux__)
+#define POSIX_FILE_TEST_LINUX (1)
+#else
+#define POSIX_FILE_TEST_LINUX (0)
+#endif
 #include <sys/types.h>
 #include <sys/ioctl.h>
 #include <sys/uio.h>
@@ -125,7 +131,11 @@ public:
         TESTS_ASSERT(cPosixFile::pwrite(fd, "W", 1, 6) == 1);
         TESTS_ASSERT(cPosixFile::ftruncate(fd, 8) == 0);
         TESTS_ASSERT(cPosixFile::fsync(fd) == 0);
+#if POSIX_FILE_TEST_LINUX
         TESTS_ASSERT(cPosixFile::fdatasync(fd) == 0);
+#else
+        TESTS_ASSERT(cPosixFile::fdatasync(fd) == -ENOSYS);
+#endif
         TESTS_ASSERT(cPosixFile::lseek(fd, 0, SEEK_END) == 8);
 
         TESTS_ASSERT(cPosixFile::close(fd) == 0);
@@ -140,6 +150,7 @@ public:
         TESTS_ASSERT(cPosixFile::read(-1, &byte, 1) == -EBADF);
     }
 
+#if POSIX_FILE_TEST_LINUX
     // writev of three iovecs, read back in order; readv scatters the same bytes
     void test_pipeVectors()
     {
@@ -301,6 +312,19 @@ public:
         TESTS_ASSERT(cPosixFile::close(fds[0]) == 0);
         TESTS_ASSERT(cPosixFile::close(fds[1]) == 0);
     }
+#endif
+#if !POSIX_FILE_TEST_LINUX
+    // The Linux-only services report ENOSYS on other UNIX systems
+    void test_enosysOnOtherUnix()
+    {
+        int fds[2] = { -1, -1 };
+        int64 timeout = 0;
+        char byte = 0;
+        TESTS_ASSERT(cPosixFile::pipe2(fds, 0) == -ENOSYS);
+        TESTS_ASSERT(cPosixFile::dup3(0, 1, 0) == -ENOSYS);
+        TESTS_ASSERT(cPosixFile::ppoll(&byte, 0, &timeout) == -ENOSYS);
+    }
+#endif
 #else
     // Windows has none of these services: every call reports it
     void test_unsupportedOnWindows()
@@ -325,12 +349,16 @@ public:
 #if POSIX_FILE_TEST_UNIX
         test_fileRoundTrip();
         test_badFileDescriptor();
+#if POSIX_FILE_TEST_LINUX
         test_pipeVectors();
         test_dup();
         test_dup3CloseOnExec();
         test_fcntlStatusFlags();
         test_fcntlLock();
         test_ioctlAndPoll();
+#else
+        test_enosysOnOtherUnix();
+#endif
 #else
         test_unsupportedOnWindows();
 #endif

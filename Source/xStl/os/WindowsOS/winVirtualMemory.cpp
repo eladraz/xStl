@@ -44,6 +44,7 @@
  */
 #include "xStl/types.h"
 #include "xStl/except/exception.h"
+#include "xStl/data/string.h"
 #include "xStl/os/os.h"
 #include "xStl/os/osdef.h"
 #include "xStl/data/char.h"

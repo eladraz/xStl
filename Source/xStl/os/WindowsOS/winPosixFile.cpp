@@ -40,6 +40,7 @@
  *
  * Author: Elad Raz <e@eladraz.com>
  */
+#include "xStl/xStlPrecompiled.h"
 #include "xStl/types.h"
 #include "xStl/except/trace.h"
 #include "xStl/except/exception.h"

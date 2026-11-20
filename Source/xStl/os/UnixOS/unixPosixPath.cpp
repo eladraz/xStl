@@ -51,6 +51,17 @@
 #include "xStl/except/exception.h"
 #include "xStl/os/posixPath.h"
 
+// The interface carries the Linux AT_FDCWD (-100); other UNIX systems number it
+// differently, so it is mapped to the host value there (identity on Linux)
+static int hostDirFd(int64 dirfd)
+{
+    if (dirfd == -100)
+    {
+        return AT_FDCWD;
+    }
+    return (int)dirfd;
+}
+
 // Converts a libc result (-1 with errno set) into the cPosixPath convention
 static int64 posixResult(long ret)
 {
@@ -66,7 +77,7 @@ int64 cPosixPath::fstatAt(int64 dirfd, const char* path, int flags,
 {
     struct stat st;
     memset(&st, 0, sizeof(st));
-    int ret = fstatat((int)dirfd, path, &st, flags);
+    int ret = fstatat(hostDirFd(dirfd), path, &st, flags);
     if (ret < 0)
     {
         return -(int64)errno;
@@ -81,67 +92,84 @@ int64 cPosixPath::fstatAt(int64 dirfd, const char* path, int flags,
     stat.size = (int64)st.st_size;
     stat.blksize = (int64)st.st_blksize;
     stat.blocks = (int64)st.st_blocks;
+#ifdef __APPLE__
+    stat.atimeSec = (int64)st.st_atimespec.tv_sec;
+    stat.atimeNsec = (int64)st.st_atimespec.tv_nsec;
+    stat.mtimeSec = (int64)st.st_mtimespec.tv_sec;
+    stat.mtimeNsec = (int64)st.st_mtimespec.tv_nsec;
+    stat.ctimeSec = (int64)st.st_ctimespec.tv_sec;
+    stat.ctimeNsec = (int64)st.st_ctimespec.tv_nsec;
+#else
     stat.atimeSec = (int64)st.st_atim.tv_sec;
     stat.atimeNsec = (int64)st.st_atim.tv_nsec;
     stat.mtimeSec = (int64)st.st_mtim.tv_sec;
     stat.mtimeNsec = (int64)st.st_mtim.tv_nsec;
     stat.ctimeSec = (int64)st.st_ctim.tv_sec;
     stat.ctimeNsec = (int64)st.st_ctim.tv_nsec;
+#endif
     return 0;
 }
 
 int64 cPosixPath::statx(int64 dirfd, const char* path, int flags, uint32 mask,
                         void* buf)
 {
+#ifdef __linux__
     // The raw call: no libc wrapper is needed, and buf is the kernel's struct
-    return posixResult(syscall(SYS_statx, (int)dirfd, path, flags,
+    return posixResult(syscall(SYS_statx, hostDirFd(dirfd), path, flags,
                                (unsigned int)mask, buf));
+#else
+    (void)dirfd; (void)path; (void)flags; (void)mask; (void)buf;
+    return -(int64)ENOSYS;
+#endif
 }
 
 int64 cPosixPath::faccessAt(int64 dirfd, const char* path, int mode, int flags)
 {
-    return posixResult(faccessat((int)dirfd, path, mode, flags));
+    return posixResult(faccessat(hostDirFd(dirfd), path, mode, flags));
 }
 
 int64 cPosixPath::unlinkAt(int64 dirfd, const char* path, int flags)
 {
-    return posixResult(unlinkat((int)dirfd, path, flags));
+    return posixResult(unlinkat(hostDirFd(dirfd), path, flags));
 }
 
 int64 cPosixPath::mkdirAt(int64 dirfd, const char* path, uint32 mode)
 {
-    return posixResult(mkdirat((int)dirfd, path, (mode_t)mode));
+    return posixResult(mkdirat(hostDirFd(dirfd), path, (mode_t)mode));
 }
 
 int64 cPosixPath::renameAt2(int64 oldDirfd, const char* oldPath, int64 newDirfd,
                             const char* newPath, uint32 flags)
 {
 #if defined(__GLIBC__) && (__GLIBC__ > 2 || (__GLIBC__ == 2 && __GLIBC_MINOR__ >= 28))
-    return posixResult(renameat2((int)oldDirfd, oldPath, (int)newDirfd,
+    return posixResult(renameat2(hostDirFd(oldDirfd), oldPath, hostDirFd(newDirfd),
                                  newPath, (unsigned int)flags));
+#elif defined(__linux__)
+    return posixResult(syscall(SYS_renameat2, hostDirFd(oldDirfd), oldPath,
+                               hostDirFd(newDirfd), newPath, (unsigned int)flags));
 #else
-    return posixResult(syscall(SYS_renameat2, (int)oldDirfd, oldPath,
-                               (int)newDirfd, newPath, (unsigned int)flags));
+    (void)oldDirfd; (void)oldPath; (void)newDirfd; (void)newPath; (void)flags;
+    return -(int64)ENOSYS;
 #endif
 }
 
 int64 cPosixPath::linkAt(int64 oldDirfd, const char* oldPath, int64 newDirfd,
                          const char* newPath, int flags)
 {
-    return posixResult(linkat((int)oldDirfd, oldPath, (int)newDirfd, newPath,
+    return posixResult(linkat(hostDirFd(oldDirfd), oldPath, hostDirFd(newDirfd), newPath,
                               flags));
 }
 
 int64 cPosixPath::symlinkAt(const char* target, int64 newDirfd,
                             const char* linkPath)
 {
-    return posixResult(symlinkat(target, (int)newDirfd, linkPath));
+    return posixResult(symlinkat(target, hostDirFd(newDirfd), linkPath));
 }
 
 int64 cPosixPath::readlinkAt(int64 dirfd, const char* path, char* buf,
                              uint64 len)
 {
-    return posixResult((long)readlinkat((int)dirfd, path, buf, (size_t)len));
+    return posixResult((long)readlinkat(hostDirFd(dirfd), path, buf, (size_t)len));
 }
 
 int64 cPosixPath::getcwd(char* buf, uint64 len)
@@ -186,16 +214,21 @@ int64 cPosixPath::utimensAt(int64 dirfd, const char* path, const int64* times,
         ts[1].tv_nsec = (long)times[3];
         request = ts;
     }
-    return posixResult(utimensat((int)dirfd, path, request, flags));
+    return posixResult(utimensat(hostDirFd(dirfd), path, request, flags));
 }
 
 int64 cPosixPath::fchmodAt(int64 dirfd, const char* path, uint32 mode, int flags)
 {
-    return posixResult(fchmodat((int)dirfd, path, (mode_t)mode, flags));
+    return posixResult(fchmodat(hostDirFd(dirfd), path, (mode_t)mode, flags));
 }
 
 int64 cPosixPath::getdents64(int64 fd, void* buf, uint64 len)
 {
     // Raw call: glibc only gained a wrapper in 2.30 and the records are the kernel's
+#ifdef __linux__
     return posixResult(syscall(SYS_getdents64, (int)fd, buf, (size_t)len));
+#else
+    (void)fd; (void)buf; (void)len;
+    return -(int64)ENOSYS;
+#endif
 }
