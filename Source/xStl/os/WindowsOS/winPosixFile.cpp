@@ -29,6 +29,8 @@
  * POSSIBILITY OF SUCH DAMAGE
  */
 
+#include "xStl/xStlPrecompiled.h"
+
 // Only Windows operating system or Windows CE can compile with this API
 #if defined(WIN32) || defined(_WIN32_WCE)
 
@@ -40,7 +42,6 @@
  *
  * Author: Elad Raz <e@eladraz.com>
  */
-#include "xStl/xStlPrecompiled.h"
 #include "xStl/types.h"
 #include "xStl/except/trace.h"
 #include "xStl/except/exception.h"
