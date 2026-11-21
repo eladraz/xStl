@@ -62,6 +62,23 @@ static int hostDirFd(int64 dirfd)
     return (int)dirfd;
 }
 
+// The *at() flags also carry the Linux values (AT_SYMLINK_NOFOLLOW 0x100,
+// AT_SYMLINK_FOLLOW 0x400, and 0x200 for AT_REMOVEDIR/AT_EACCESS). 'flag200'
+// is the host flag that 0x200 stands for in the calling function (or 0).
+static int hostAtFlags(int flags, int flag200)
+{
+#ifdef __linux__
+    (void)flag200;
+    return flags;
+#else
+    int host = 0;
+    if (flags & 0x100) host |= AT_SYMLINK_NOFOLLOW;
+    if (flags & 0x400) host |= AT_SYMLINK_FOLLOW;
+    if (flags & 0x200) host |= flag200;
+    return host;
+#endif
+}
+
 // Converts a libc result (-1 with errno set) into the cPosixPath convention
 static int64 posixResult(long ret)
 {
@@ -77,7 +94,7 @@ int64 cPosixPath::fstatAt(int64 dirfd, const char* path, int flags,
 {
     struct stat st;
     memset(&st, 0, sizeof(st));
-    int ret = fstatat(hostDirFd(dirfd), path, &st, flags);
+    int ret = fstatat(hostDirFd(dirfd), path, &st, hostAtFlags(flags, 0));
     if (ret < 0)
     {
         return -(int64)errno;
@@ -125,12 +142,12 @@ int64 cPosixPath::statx(int64 dirfd, const char* path, int flags, uint32 mask,
 
 int64 cPosixPath::faccessAt(int64 dirfd, const char* path, int mode, int flags)
 {
-    return posixResult(faccessat(hostDirFd(dirfd), path, mode, flags));
+    return posixResult(faccessat(hostDirFd(dirfd), path, mode, hostAtFlags(flags, AT_EACCESS)));
 }
 
 int64 cPosixPath::unlinkAt(int64 dirfd, const char* path, int flags)
 {
-    return posixResult(unlinkat(hostDirFd(dirfd), path, flags));
+    return posixResult(unlinkat(hostDirFd(dirfd), path, hostAtFlags(flags, AT_REMOVEDIR)));
 }
 
 int64 cPosixPath::mkdirAt(int64 dirfd, const char* path, uint32 mode)
@@ -157,7 +174,7 @@ int64 cPosixPath::linkAt(int64 oldDirfd, const char* oldPath, int64 newDirfd,
                          const char* newPath, int flags)
 {
     return posixResult(linkat(hostDirFd(oldDirfd), oldPath, hostDirFd(newDirfd), newPath,
-                              flags));
+                              hostAtFlags(flags, 0)));
 }
 
 int64 cPosixPath::symlinkAt(const char* target, int64 newDirfd,
@@ -214,12 +231,12 @@ int64 cPosixPath::utimensAt(int64 dirfd, const char* path, const int64* times,
         ts[1].tv_nsec = (long)times[3];
         request = ts;
     }
-    return posixResult(utimensat(hostDirFd(dirfd), path, request, flags));
+    return posixResult(utimensat(hostDirFd(dirfd), path, request, hostAtFlags(flags, 0)));
 }
 
 int64 cPosixPath::fchmodAt(int64 dirfd, const char* path, uint32 mode, int flags)
 {
-    return posixResult(fchmodat(hostDirFd(dirfd), path, (mode_t)mode, flags));
+    return posixResult(fchmodat(hostDirFd(dirfd), path, (mode_t)mode, hostAtFlags(flags, 0)));
 }
 
 int64 cPosixPath::getdents64(int64 fd, void* buf, uint64 len)
