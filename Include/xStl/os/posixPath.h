@@ -165,6 +165,14 @@ public:
                           int flags);
 
     /**
+     * fchownat(2). 'uid' and 'gid' are host ids; -1 leaves that id unchanged.
+     * 'flags' carries the Linux AT_* values (AT_SYMLINK_NOFOLLOW 0x100,
+     * AT_EMPTY_PATH 0x1000). @return 0 or -errno.
+     */
+    static int64 fchownAt(int64 dirfd, const char* path, int64 uid, int64 gid,
+                          int flags);
+
+    /**
      * getdents64(2) through the raw system call. Fills buf with kernel
      * linux_dirent64 records. @return bytes written (0 at end) or -errno.
      */

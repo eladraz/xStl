@@ -71,6 +71,8 @@
 #define POSIX_PATH_TEST_FILE_SIZE (4097)
 #define POSIX_PATH_TEST_MTIME (1000000000LL)
 #define POSIX_PATH_TEST_STATFS_BYTES (120)
+#define POSIX_PATH_TEST_SYMLINK_NOFOLLOW (0x100)
+#define POSIX_PATH_TEST_EMPTY_PATH (0x1000)
 
 #if POSIX_PATH_TEST_UNIX
 
@@ -347,6 +349,44 @@ public:
 #endif
     }
 
+    // fchownAt with -1 ids leaves the owner alone; NOFOLLOW changes a dangling
+    // symlink itself, following it is ENOENT; AT_EMPTY_PATH works on a descriptor
+    void test_fchownAt()
+    {
+#if POSIX_PATH_TEST_UNIX && defined(__linux__)
+        int64 uid = (int64)getuid();
+        int64 gid = (int64)getgid();
+        createFile("pp_owned", 1);
+        TESTS_ASSERT(cPosixPath::fchownAt(POSIX_PATH_TEST_CWD, "pp_owned", -1, -1, 0) == 0);
+        TESTS_ASSERT(cPosixPath::fchownAt(POSIX_PATH_TEST_CWD, "pp_owned", uid, gid, 0) == 0);
+
+        cPosixStat st;
+        memset(&st, 0, sizeof(st));
+        TESTS_ASSERT(cPosixPath::fstatAt(POSIX_PATH_TEST_CWD, "pp_owned", 0, st) == 0);
+        TESTS_ASSERT(st.uid == (uint32)uid);
+        TESTS_ASSERT(st.gid == (uint32)gid);
+
+        int fd = open("pp_owned", O_RDONLY);
+        TESTS_ASSERT(fd >= 0);
+        TESTS_ASSERT(cPosixPath::fchownAt(fd, "", -1, -1, POSIX_PATH_TEST_EMPTY_PATH) == 0);
+        TESTS_ASSERT(cPosixPath::fchownAt(-1, "", -1, -1, POSIX_PATH_TEST_EMPTY_PATH) == -EBADF);
+        TESTS_ASSERT(close(fd) == 0);
+        TESTS_ASSERT(cPosixPath::fchownAt(POSIX_PATH_TEST_CWD, "pp_missing", -1, -1, 0) == -ENOENT);
+        TESTS_ASSERT(cPosixPath::unlinkAt(POSIX_PATH_TEST_CWD, "pp_owned", 0) == 0);
+
+        TESTS_ASSERT(symlink("pp_nowhere", "pp_dangling") == 0);
+        TESTS_ASSERT(cPosixPath::fchownAt(POSIX_PATH_TEST_CWD, "pp_dangling", uid, gid,
+                                          POSIX_PATH_TEST_SYMLINK_NOFOLLOW) == 0);
+        TESTS_ASSERT(cPosixPath::fchownAt(POSIX_PATH_TEST_CWD, "pp_dangling", uid, gid, 0) == -ENOENT);
+        TESTS_ASSERT(cPosixPath::unlinkAt(POSIX_PATH_TEST_CWD, "pp_dangling", 0) == 0);
+#elif POSIX_PATH_TEST_UNIX
+        // The Linux-only *at() owner change reports ENOSYS on other UNIX systems
+        TESTS_ASSERT(cPosixPath::fchownAt(POSIX_PATH_TEST_CWD, ".", -1, -1, 0) == -ENOSYS);
+#else
+        TESTS_EXCEPTION(cPosixPath::fchownAt(POSIX_PATH_TEST_CWD, ".", -1, -1, 0));
+#endif
+    }
+
     // Return the name of the module
     virtual void test()
     {
@@ -356,6 +396,7 @@ public:
         test_directoryListing();
         test_cwdAndUmask();
         test_statfs();
+        test_fchownAt();
     }
 
     virtual cString getName() { return __FILE__; }

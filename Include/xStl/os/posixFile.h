@@ -33,7 +33,7 @@
  * @file posixFile.h
  *
  * Thin POSIX file-descriptor services (read, write, open, pipes, fcntl,
- * ioctl, poll, fallocate, fadvise, flock). Used by the Linux system call layer of reforge.
+ * ioctl, poll, fallocate, fadvise, flock, fchmod, fchown). Used by the Linux system call layer of reforge.
  *
  * Every function returns a value >= 0 on success or -errno on failure (the
  * host errno, unchanged). No function throws on an OS error. EINTR is not
@@ -166,6 +166,18 @@ public:
      *    optionally or-ed with LOCK_NB. Returns 0 or -errno.
      */
     static int64 flock(int fd, int operation);
+
+    /**
+     * @brief fchmod(2). 'mode' is the host permission bits (S_I* mask). Returns
+     *    0 or -errno.
+     */
+    static int64 fchmod(int fd, uint32 mode);
+
+    /**
+     * @brief fchown(2). 'uid' and 'gid' are host ids truncated to uid_t and
+     *    gid_t; -1 leaves that id unchanged. Returns 0 or -errno.
+     */
+    static int64 fchown(int fd, int64 uid, int64 gid);
 };
 
 #endif // __TBA_STL_OS_POSIX_FILE_H

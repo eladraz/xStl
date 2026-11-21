@@ -239,6 +239,19 @@ int64 cPosixPath::fchmodAt(int64 dirfd, const char* path, uint32 mode, int flags
     return posixResult(fchmodat(hostDirFd(dirfd), path, (mode_t)mode, hostAtFlags(flags, 0)));
 }
 
+int64 cPosixPath::fchownAt(int64 dirfd, const char* path, int64 uid, int64 gid,
+                           int flags)
+{
+#ifdef __linux__
+    // -1 converts to (uid_t)-1 and (gid_t)-1, which the kernel reads as "unchanged"
+    return posixResult(fchownat(hostDirFd(dirfd), path, (uid_t)uid, (gid_t)gid, flags));
+#else
+    // AT_EMPTY_PATH has no host equivalent here, so the call is Linux-only
+    (void)dirfd; (void)path; (void)uid; (void)gid; (void)flags;
+    return -(int64)ENOSYS;
+#endif
+}
+
 int64 cPosixPath::getdents64(int64 fd, void* buf, uint64 len)
 {
     // Raw call: glibc only gained a wrapper in 2.30 and the records are the kernel's

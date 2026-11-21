@@ -55,6 +55,7 @@
 #include <unistd.h>
 #include <poll.h>
 #include <sys/file.h>
+#include <sys/stat.h>
 #include <errno.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -404,6 +405,34 @@ public:
         TESTS_ASSERT(cPosixFile::close(fds[0]) == 0);
         TESTS_ASSERT(cPosixFile::close(fds[1]) == 0);
     }
+
+    // fchmod sets the permission bits of the open file; fchown to the
+    // process's own ids and the -1 "unchanged" form succeed; bad fd is EBADF
+    void test_fchmodAndFchown()
+    {
+        cTempPath path;
+        int64 fd = cPosixFile::openAt(AT_FDCWD, path.get(),
+                                      O_CREAT | O_RDWR | O_TRUNC, 0600);
+        TESTS_ASSERT(fd >= 0);
+
+        TESTS_ASSERT(cPosixFile::fchmod((int)fd, 0640) == 0);
+        struct stat st;
+        memset(&st, 0, sizeof(st));
+        TESTS_ASSERT(fstat((int)fd, &st) == 0);
+        TESTS_ASSERT((st.st_mode & 07777) == 0640);
+
+        TESTS_ASSERT(cPosixFile::fchown((int)fd, -1, -1) == 0);
+        TESTS_ASSERT(cPosixFile::fchown((int)fd, (int64)getuid(),
+                                        (int64)getgid()) == 0);
+        memset(&st, 0, sizeof(st));
+        TESTS_ASSERT(fstat((int)fd, &st) == 0);
+        TESTS_ASSERT(st.st_uid == getuid());
+        TESTS_ASSERT(st.st_gid == getgid());
+
+        TESTS_ASSERT(cPosixFile::fchmod(-1, 0600) == -EBADF);
+        TESTS_ASSERT(cPosixFile::fchown(-1, -1, -1) == -EBADF);
+        TESTS_ASSERT(cPosixFile::close(fd) == 0);
+    }
 #endif
 #if !POSIX_FILE_TEST_LINUX
     // The Linux-only services report ENOSYS on other UNIX systems
@@ -417,6 +446,8 @@ public:
         TESTS_ASSERT(cPosixFile::ppoll(&byte, 0, &timeout) == -ENOSYS);
         TESTS_ASSERT(cPosixFile::fallocate(0, 0, 0, 1) == -ENOSYS);
         TESTS_ASSERT(cPosixFile::fadvise(0, 0, 0, 0) == -ENOSYS);
+        TESTS_ASSERT(cPosixFile::fchmod(0, 0600) == -ENOSYS);
+        TESTS_ASSERT(cPosixFile::fchown(0, -1, -1) == -ENOSYS);
     }
 #endif
 #else
@@ -437,6 +468,8 @@ public:
         TESTS_EXCEPTION(cPosixFile::fallocate(0, 0, 0, 1));
         TESTS_EXCEPTION(cPosixFile::fadvise(0, 0, 0, 0));
         TESTS_EXCEPTION(cPosixFile::flock(0, 0));
+        TESTS_EXCEPTION(cPosixFile::fchmod(0, 0600));
+        TESTS_EXCEPTION(cPosixFile::fchown(0, -1, -1));
     }
 #endif
 
@@ -458,6 +491,7 @@ public:
 #if POSIX_FILE_TEST_LINUX
         test_fallocate();
         test_fadvise();
+        test_fchmodAndFchown();
 #else
         test_enosysOnOtherUnix();
 #endif

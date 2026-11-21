@@ -46,6 +46,7 @@
 #include <unistd.h>
 #include <poll.h>
 #include <sys/file.h>
+#include <sys/stat.h>
 #include <time.h>
 #include <errno.h>
 
@@ -240,4 +241,25 @@ int64 cPosixFile::fadvise(int fd, int64 offset, int64 length, int advice)
 int64 cPosixFile::flock(int fd, int operation)
 {
     return posixResult(::flock(fd, operation));
+}
+
+int64 cPosixFile::fchmod(int fd, uint32 mode)
+{
+#ifdef __linux__
+    return posixResult(::fchmod(fd, (mode_t)mode));
+#else
+    (void)fd; (void)mode;
+    return -(int64)ENOSYS;
+#endif
+}
+
+int64 cPosixFile::fchown(int fd, int64 uid, int64 gid)
+{
+#ifdef __linux__
+    // -1 converts to (uid_t)-1 and (gid_t)-1, which chown() reads as "unchanged"
+    return posixResult(::fchown(fd, (uid_t)uid, (gid_t)gid));
+#else
+    (void)fd; (void)uid; (void)gid;
+    return -(int64)ENOSYS;
+#endif
 }
