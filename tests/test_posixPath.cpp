@@ -51,6 +51,10 @@
 #include <errno.h>
 #include <string.h>
 #include <time.h>
+#include <fcntl.h>
+#ifdef __linux__
+#include <sys/vfs.h>
+#endif
 #endif
 
 #include "xStl/types.h"
@@ -66,6 +70,7 @@
 #define POSIX_PATH_TEST_STATX_BUF (256)
 #define POSIX_PATH_TEST_FILE_SIZE (4097)
 #define POSIX_PATH_TEST_MTIME (1000000000LL)
+#define POSIX_PATH_TEST_STATFS_BYTES (120)
 
 #if POSIX_PATH_TEST_UNIX
 
@@ -299,6 +304,49 @@ public:
 #endif
     }
 
+    // statfs and fstatfs fill the kernel's 120-byte record; f_type and f_bsize
+    // are compared with the libc struct statfs of this host
+    void test_statfs()
+    {
+#if POSIX_PATH_TEST_UNIX && !defined(__linux__)
+        // The raw Linux statfs is not available on other UNIX systems
+        unsigned char raw[POSIX_PATH_TEST_STATFS_BYTES];
+        TESTS_ASSERT(cPosixPath::statfs(".", raw) == -ENOSYS);
+        TESTS_ASSERT(cPosixPath::fstatfs(0, raw) == -ENOSYS);
+#elif POSIX_PATH_TEST_UNIX
+        unsigned char raw[POSIX_PATH_TEST_STATFS_BYTES];
+        struct statfs host;
+        memset(&host, 0, sizeof(host));
+        TESTS_ASSERT(::statfs(".", &host) == 0);
+
+        // f_type is the first long, f_bsize the second
+        memset(raw, 0, sizeof(raw));
+        TESTS_ASSERT(cPosixPath::statfs(".", raw) == 0);
+        int64 rawType = 0;
+        int64 rawBsize = 0;
+        memcpy(&rawType, raw, sizeof(rawType));
+        memcpy(&rawBsize, raw + sizeof(int64), sizeof(rawBsize));
+        TESTS_ASSERT(rawType == (int64)host.f_type);
+        TESTS_ASSERT(rawBsize == (int64)host.f_bsize);
+        TESTS_ASSERT(rawBsize > 0);
+
+        int fd = open(".", O_RDONLY);
+        TESTS_ASSERT(fd >= 0);
+        memset(raw, 0, sizeof(raw));
+        TESTS_ASSERT(cPosixPath::fstatfs(fd, raw) == 0);
+        memcpy(&rawType, raw, sizeof(rawType));
+        TESTS_ASSERT(rawType == (int64)host.f_type);
+        TESTS_ASSERT(close(fd) == 0);
+
+        TESTS_ASSERT(cPosixPath::statfs("pp_no_such_statfs", raw) == -ENOENT);
+        TESTS_ASSERT(cPosixPath::fstatfs(-1, raw) == -EBADF);
+#else
+        unsigned char raw[POSIX_PATH_TEST_STATFS_BYTES];
+        TESTS_EXCEPTION(cPosixPath::statfs(".", raw));
+        TESTS_EXCEPTION(cPosixPath::fstatfs(0, raw));
+#endif
+    }
+
     // Return the name of the module
     virtual void test()
     {
@@ -307,6 +355,7 @@ public:
         test_renameAndLinks();
         test_directoryListing();
         test_cwdAndUmask();
+        test_statfs();
     }
 
     virtual cString getName() { return __FILE__; }

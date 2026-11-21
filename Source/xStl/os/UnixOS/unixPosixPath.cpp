@@ -249,3 +249,24 @@ int64 cPosixPath::getdents64(int64 fd, void* buf, uint64 len)
     return -(int64)ENOSYS;
 #endif
 }
+
+int64 cPosixPath::statfs(const char* path, void* buf)
+{
+    // The raw call: the kernel's struct statfs is the guest layout (120 bytes)
+#ifdef __linux__
+    return posixResult(syscall(SYS_statfs, path, buf));
+#else
+    (void)path; (void)buf;
+    return -(int64)ENOSYS;
+#endif
+}
+
+int64 cPosixPath::fstatfs(int64 fd, void* buf)
+{
+#ifdef __linux__
+    return posixResult(syscall(SYS_fstatfs, (int)fd, buf));
+#else
+    (void)fd; (void)buf;
+    return -(int64)ENOSYS;
+#endif
+}

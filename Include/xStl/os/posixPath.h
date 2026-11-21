@@ -169,6 +169,19 @@ public:
      * linux_dirent64 records. @return bytes written (0 at end) or -errno.
      */
     static int64 getdents64(int64 fd, void* buf, uint64 len);
+
+    /**
+     * statfs(2) through the raw system call, so buf receives the kernel's
+     * struct statfs (120 bytes on 64-bit targets, the guest layout). buf must
+     * point to 120 writable bytes. @return 0 or -errno.
+     */
+    static int64 statfs(const char* path, void* buf);
+
+    /**
+     * fstatfs(2) through the raw system call; buf as for statfs().
+     * @return 0 or -errno.
+     */
+    static int64 fstatfs(int64 fd, void* buf);
 };
 
 /**

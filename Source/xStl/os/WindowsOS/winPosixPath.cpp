@@ -127,3 +127,13 @@ int64 cPosixPath::getdents64(int64, void*, uint64)
 {
     return posixUnsupported();
 }
+
+int64 cPosixPath::statfs(const char*, void*)
+{
+    return posixUnsupported();
+}
+
+int64 cPosixPath::fstatfs(int64, void*)
+{
+    return posixUnsupported();
+}

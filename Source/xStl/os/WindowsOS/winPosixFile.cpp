@@ -146,4 +146,19 @@ int64 cPosixFile::ppoll(void* pollfds, uint64 count, const int64* timeoutNs)
     POSIX_FILE_UNSUPPORTED();
 }
 
+int64 cPosixFile::fallocate(int fd, int mode, int64 offset, int64 length)
+{
+    POSIX_FILE_UNSUPPORTED();
+}
+
+int64 cPosixFile::fadvise(int fd, int64 offset, int64 length, int advice)
+{
+    POSIX_FILE_UNSUPPORTED();
+}
+
+int64 cPosixFile::flock(int fd, int operation)
+{
+    POSIX_FILE_UNSUPPORTED();
+}
+
 #endif // defined(WIN32) || defined(_WIN32_WCE)
