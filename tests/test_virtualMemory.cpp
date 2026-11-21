@@ -124,8 +124,8 @@ public:
     {
         uint64 pageSize = cVirtualMemory::getPageSize();
 
-        cVirtualMemory small(1);
-        TESTS_ASSERT_EQUAL(small.getSize(), pageSize);
+        cVirtualMemory tiny(1);
+        TESTS_ASSERT_EQUAL(tiny.getSize(), pageSize);
 
         cVirtualMemory exact(pageSize);
         TESTS_ASSERT_EQUAL(exact.getSize(), pageSize);
