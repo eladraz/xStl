@@ -33,7 +33,7 @@
  * @file posixFile.h
  *
  * Thin POSIX file-descriptor services (read, write, open, pipes, fcntl,
- * ioctl, poll). Used by the Linux system call layer of reforge.
+ * ioctl, poll, fallocate, fadvise, flock). Used by the Linux system call layer of reforge.
  *
  * Every function returns a value >= 0 on success or -errno on failure (the
  * host errno, unchanged). No function throws on an OS error. EINTR is not
@@ -148,6 +148,24 @@ public:
      *    returns -EINVAL. Returns the number of ready descriptors.
      */
     static int64 ppoll(void* pollfds, uint64 count, const int64* timeoutNs);
+
+    /**
+     * @brief fallocate(2). 'mode' is the host FALLOC_FL_* mask, 'offset' and
+     *    'length' are in bytes. Returns 0 or -errno.
+     */
+    static int64 fallocate(int fd, int mode, int64 offset, int64 length);
+
+    /**
+     * @brief posix_fadvise(3) with the host POSIX_FADV_* 'advice'. Returns 0
+     *    or -errno. The libc error number is negated, not left in errno.
+     */
+    static int64 fadvise(int fd, int64 offset, int64 length, int advice);
+
+    /**
+     * @brief flock(2). 'operation' is the host LOCK_SH, LOCK_EX or LOCK_UN,
+     *    optionally or-ed with LOCK_NB. Returns 0 or -errno.
+     */
+    static int64 flock(int fd, int operation);
 };
 
 #endif // __TBA_STL_OS_POSIX_FILE_H

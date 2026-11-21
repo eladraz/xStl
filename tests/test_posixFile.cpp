@@ -54,6 +54,7 @@
 #include <fcntl.h>
 #include <unistd.h>
 #include <poll.h>
+#include <sys/file.h>
 #include <errno.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -312,6 +313,97 @@ public:
         TESTS_ASSERT(cPosixFile::close(fds[0]) == 0);
         TESTS_ASSERT(cPosixFile::close(fds[1]) == 0);
     }
+
+#endif
+    // flock: an exclusive lock on one open file refuses other open files
+    // (EWOULDBLOCK), shared locks coexist, LOCK_UN releases, no operation is EINVAL
+    void test_flock()
+    {
+        cTempPath path;
+        int64 fd = cPosixFile::openAt(AT_FDCWD, path.get(),
+                                      O_CREAT | O_RDWR | O_TRUNC, 0600);
+        TESTS_ASSERT(fd >= 0);
+        int64 other = cPosixFile::openAt(AT_FDCWD, path.get(), O_RDWR, 0);
+        TESTS_ASSERT(other >= 0);
+
+        TESTS_ASSERT(cPosixFile::flock((int)fd, LOCK_EX | LOCK_NB) == 0);
+        TESTS_ASSERT(cPosixFile::flock((int)other, LOCK_SH | LOCK_NB) ==
+                     -EWOULDBLOCK);
+        TESTS_ASSERT(cPosixFile::flock((int)fd, LOCK_UN) == 0);
+
+        TESTS_ASSERT(cPosixFile::flock((int)other, LOCK_SH | LOCK_NB) == 0);
+        TESTS_ASSERT(cPosixFile::flock((int)fd, LOCK_SH | LOCK_NB) == 0);
+        TESTS_ASSERT(cPosixFile::flock((int)fd, LOCK_EX | LOCK_NB) ==
+                     -EWOULDBLOCK);
+        TESTS_ASSERT(cPosixFile::flock((int)other, LOCK_UN) == 0);
+        TESTS_ASSERT(cPosixFile::flock((int)fd, LOCK_EX | LOCK_NB) == 0);
+        TESTS_ASSERT(cPosixFile::flock((int)fd, LOCK_UN) == 0);
+
+        TESTS_ASSERT(cPosixFile::flock((int)fd, 0) == -EINVAL);
+        TESTS_ASSERT(cPosixFile::flock(-1, LOCK_EX) == -EBADF);
+
+        TESTS_ASSERT(cPosixFile::close(other) == 0);
+        TESTS_ASSERT(cPosixFile::close(fd) == 0);
+    }
+
+#if POSIX_FILE_TEST_LINUX
+    // fallocate: mode 0 grows the file to offset+length keeping the data,
+    // FALLOC_FL_KEEP_SIZE allocates without changing the size; bad arguments EINVAL
+    void test_fallocate()
+    {
+        cTempPath path;
+        int64 fd = cPosixFile::openAt(AT_FDCWD, path.get(),
+                                      O_CREAT | O_RDWR | O_TRUNC, 0600);
+        TESTS_ASSERT(fd >= 0);
+        TESTS_ASSERT(cPosixFile::write(fd, POSIX_FILE_TEST_PAYLOAD,
+                                       POSIX_FILE_TEST_PAYLOAD_LEN) ==
+                     POSIX_FILE_TEST_PAYLOAD_LEN);
+
+        TESTS_ASSERT(cPosixFile::fallocate((int)fd, 0, 0, 0) == -EINVAL);
+        TESTS_ASSERT(cPosixFile::fallocate((int)fd, 0, -1, 16) == -EINVAL);
+        TESTS_ASSERT(cPosixFile::fallocate((int)fd, 0, 0, 4096) == 0);
+        TESTS_ASSERT(cPosixFile::lseek(fd, 0, SEEK_END) == 4096);
+
+        char buffer[16];
+        memset(buffer, 0, sizeof(buffer));
+        TESTS_ASSERT(cPosixFile::pread(fd, buffer, 5, 6) == 5);
+        TESTS_ASSERT(memcmp(buffer, "world", 5) == 0);
+
+        TESTS_ASSERT(cPosixFile::fallocate((int)fd, FALLOC_FL_KEEP_SIZE, 0,
+                                           8192) == 0);
+        TESTS_ASSERT(cPosixFile::lseek(fd, 0, SEEK_END) == 4096);
+
+        TESTS_ASSERT(cPosixFile::fallocate(-1, 0, 0, 16) == -EBADF);
+        TESTS_ASSERT(cPosixFile::close(fd) == 0);
+    }
+
+    // fadvise: valid advice is accepted; bad advice and a bad descriptor are
+    // errors; a pipe is ESPIPE
+    void test_fadvise()
+    {
+        cTempPath path;
+        int64 fd = cPosixFile::openAt(AT_FDCWD, path.get(),
+                                      O_CREAT | O_RDWR | O_TRUNC, 0600);
+        TESTS_ASSERT(fd >= 0);
+        TESTS_ASSERT(cPosixFile::write(fd, POSIX_FILE_TEST_PAYLOAD,
+                                       POSIX_FILE_TEST_PAYLOAD_LEN) ==
+                     POSIX_FILE_TEST_PAYLOAD_LEN);
+        TESTS_ASSERT(cPosixFile::fadvise((int)fd, 0, 0,
+                                         POSIX_FADV_SEQUENTIAL) == 0);
+        TESTS_ASSERT(cPosixFile::fadvise((int)fd, 0, 0,
+                                         POSIX_FADV_DONTNEED) == 0);
+        TESTS_ASSERT(cPosixFile::fadvise((int)fd, 0, 0, 99) == -EINVAL);
+        TESTS_ASSERT(cPosixFile::fadvise(-1, 0, 0, POSIX_FADV_NORMAL) ==
+                     -EBADF);
+        TESTS_ASSERT(cPosixFile::close(fd) == 0);
+
+        int fds[2] = { -1, -1 };
+        TESTS_ASSERT(cPosixFile::pipe2(fds, 0) == 0);
+        TESTS_ASSERT(cPosixFile::fadvise(fds[0], 0, 0, POSIX_FADV_NORMAL) ==
+                     -ESPIPE);
+        TESTS_ASSERT(cPosixFile::close(fds[0]) == 0);
+        TESTS_ASSERT(cPosixFile::close(fds[1]) == 0);
+    }
 #endif
 #if !POSIX_FILE_TEST_LINUX
     // The Linux-only services report ENOSYS on other UNIX systems
@@ -323,6 +415,8 @@ public:
         TESTS_ASSERT(cPosixFile::pipe2(fds, 0) == -ENOSYS);
         TESTS_ASSERT(cPosixFile::dup3(0, 1, 0) == -ENOSYS);
         TESTS_ASSERT(cPosixFile::ppoll(&byte, 0, &timeout) == -ENOSYS);
+        TESTS_ASSERT(cPosixFile::fallocate(0, 0, 0, 1) == -ENOSYS);
+        TESTS_ASSERT(cPosixFile::fadvise(0, 0, 0, 0) == -ENOSYS);
     }
 #endif
 #else
@@ -340,6 +434,9 @@ public:
         TESTS_EXCEPTION(cPosixFile::readv(0, &iov, 1));
         TESTS_EXCEPTION(cPosixFile::pipe2(fds, 0));
         TESTS_EXCEPTION(cPosixFile::ppoll(&byte, 0, &timeout));
+        TESTS_EXCEPTION(cPosixFile::fallocate(0, 0, 0, 1));
+        TESTS_EXCEPTION(cPosixFile::fadvise(0, 0, 0, 0));
+        TESTS_EXCEPTION(cPosixFile::flock(0, 0));
     }
 #endif
 
@@ -356,6 +453,11 @@ public:
         test_fcntlStatusFlags();
         test_fcntlLock();
         test_ioctlAndPoll();
+#endif
+        test_flock();
+#if POSIX_FILE_TEST_LINUX
+        test_fallocate();
+        test_fadvise();
 #else
         test_enosysOnOtherUnix();
 #endif

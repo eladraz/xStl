@@ -45,6 +45,7 @@
 #include <fcntl.h>
 #include <unistd.h>
 #include <poll.h>
+#include <sys/file.h>
 #include <time.h>
 #include <errno.h>
 
@@ -212,4 +213,31 @@ int64 cPosixFile::ppoll(void* pollfds, uint64 count, const int64* timeoutNs)
     (void)pollfds; (void)count; (void)timeoutNs;
     return -(int64)ENOSYS;
 #endif
+}
+
+int64 cPosixFile::fallocate(int fd, int mode, int64 offset, int64 length)
+{
+#ifdef __linux__
+    return posixResult(::fallocate(fd, mode, (off_t)offset, (off_t)length));
+#else
+    (void)fd; (void)mode; (void)offset; (void)length;
+    return -(int64)ENOSYS;
+#endif
+}
+
+int64 cPosixFile::fadvise(int fd, int64 offset, int64 length, int advice)
+{
+#ifdef __linux__
+    // posix_fadvise returns the error number itself, not -1 with errno
+    int ret = posix_fadvise(fd, (off_t)offset, (off_t)length, advice);
+    return (ret == 0) ? 0 : -(int64)ret;
+#else
+    (void)fd; (void)offset; (void)length; (void)advice;
+    return -(int64)ENOSYS;
+#endif
+}
+
+int64 cPosixFile::flock(int fd, int operation)
+{
+    return posixResult(::flock(fd, operation));
 }
