@@ -123,6 +123,11 @@ int64 cPosixPath::fchmodAt(int64, const char*, uint32, int)
     return posixUnsupported();
 }
 
+int64 cPosixPath::fchownAt(int64, const char*, int64, int64, int)
+{
+    return posixUnsupported();
+}
+
 int64 cPosixPath::getdents64(int64, void*, uint64)
 {
     return posixUnsupported();

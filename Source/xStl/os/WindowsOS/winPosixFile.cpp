@@ -161,4 +161,14 @@ int64 cPosixFile::flock(int fd, int operation)
     POSIX_FILE_UNSUPPORTED();
 }
 
+int64 cPosixFile::fchmod(int fd, uint32 mode)
+{
+    POSIX_FILE_UNSUPPORTED();
+}
+
+int64 cPosixFile::fchown(int fd, int64 uid, int64 gid)
+{
+    POSIX_FILE_UNSUPPORTED();
+}
+
 #endif // defined(WIN32) || defined(_WIN32_WCE)
