@@ -317,7 +317,7 @@ public:
 
 #endif
     // flock: an exclusive lock on one open file refuses other open files
-    // (EWOULDBLOCK), shared locks coexist, LOCK_UN releases, no operation is EINVAL
+    // (EWOULDBLOCK), shared locks coexist, LOCK_UN releases, no operation is an error
     void test_flock()
     {
         cTempPath path;
@@ -340,7 +340,9 @@ public:
         TESTS_ASSERT(cPosixFile::flock((int)fd, LOCK_EX | LOCK_NB) == 0);
         TESTS_ASSERT(cPosixFile::flock((int)fd, LOCK_UN) == 0);
 
-        TESTS_ASSERT(cPosixFile::flock((int)fd, 0) == -EINVAL);
+        // No operation: Linux says EINVAL, the BSD derivatives say EBADF
+        int64 noOp = cPosixFile::flock((int)fd, 0);
+        TESTS_ASSERT(noOp == -EINVAL || noOp == -EBADF);
         TESTS_ASSERT(cPosixFile::flock(-1, LOCK_EX) == -EBADF);
 
         TESTS_ASSERT(cPosixFile::close(other) == 0);
